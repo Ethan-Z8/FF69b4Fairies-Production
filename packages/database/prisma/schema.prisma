@@ -13,6 +13,28 @@ datasource db {
 }
 
 // example table used in the express router example
+
+model MapNode {
+  nodeID     String    @id
+  xcoord     Float
+  ycoord     Float
+  floor      String
+  building   String
+  nodeType   String
+  longName   String
+  shortName  String
+  startNodes MapEdge[] @relation("start")
+  endNodes   MapEdge[] @relation("end")
+}
+
+model MapEdge {
+  edgeID    String  @id
+  startNode String
+  endNode   String
+  start     MapNode @relation("start", fields: [startNode], references: [nodeID])
+  end       MapNode @relation("end", fields: [endNode], references: [nodeID])
+}
+
 model HighScore {
   id    Int      @id @default(autoincrement())
   time  DateTime
