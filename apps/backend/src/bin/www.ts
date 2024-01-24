@@ -2,6 +2,7 @@ import app from "../app.ts";
 import http from "http";
 import { AddressInfo } from "net";
 import { createHttpTerminator } from "http-terminator";
+import seed from "../seed.ts";
 
 // Attempt a database connection
 console.info("Connecting to database...");
@@ -17,7 +18,7 @@ try {
 }
 
 // Get port from environment and store in Express
-const port: string | undefined = process.env.PORT;
+const port: string | undefined = process.env.PORT || "3000";
 
 if (port === undefined) {
   console.error("Failed to start: Missing PORT environment variable");
@@ -118,3 +119,5 @@ function onListening(): void {
   console.info("Server listening on " + bind); // Debug output that we're listening
   console.log("Startup complete");
 }
+
+seed();
