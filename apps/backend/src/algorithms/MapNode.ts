@@ -1,4 +1,5 @@
 import { PathOrFileDescriptor, readFileSync } from "fs";
+import MapEdge from "./MapEdge.ts";
 
 export default class MapNode {
   nodeID: string;
@@ -9,7 +10,7 @@ export default class MapNode {
   nodeType: string;
   longName: string;
   shortName: string;
-  // neighbors: Array<string>;
+  neighbors: Array<string>;
 
   private constructor(properties: Array<string>) {
     let xcoord, ycoord;
@@ -27,7 +28,7 @@ export default class MapNode {
     // Have to do the x and y coordinates separately since they are numbers, not strings
     this.xcoord = Number(xcoord);
     this.ycoord = Number(ycoord);
-    // this.neighbors = new Array<string>
+    this.neighbors = new Array<string>();
   }
 
   static readCsv(filename: PathOrFileDescriptor) {
@@ -40,22 +41,18 @@ export default class MapNode {
     return splitLines.map((props) => new MapNode(props));
   }
 
-  // static connectNodes(nodes: Array<MapNode>, edgesFile: PathOrFileDescriptor): Array<MapNode> {
-  //     const input = readFileSync(edgesFile, "utf8");
-  //
-  //     // Split by lines. The first line is the headers, the last line is a blank
-  //     const lines = input.split(/\r?\n/).slice(1, -1);
-  //     lines.forEach((line) => {
-  //         let [edgeID, startNode, endNode] = line.split(",");
-  //         for (let node of nodes) {
-  //             if (node.nodeID === startNode) {
-  //                 node.neighbors.push(endNode)
-  //             }
-  //             if (node.nodeID === endNode) {
-  //                 node.neighbors.push(startNode)
-  //             }
-  //         }
-  //     });
-  //     return nodes
-  // }
+  static connectNodes(
+    nodes: Array<MapNode>,
+    edges: Array<MapEdge>,
+  ): Map<string, MapNode> {
+    const map: Map<string, MapNode> = new Map<string, MapNode>(
+      nodes.map((node) => [node.nodeID, node]),
+    );
+    for (const edge of edges) {
+      // We can safely assume the graph will contain all nodes due to foreign key constraint
+      map.get(edge.startNode)?.neighbors.push(edge.endNode);
+      map.get(edge.endNode)?.neighbors.push(edge.startNode);
+    }
+    return map;
+  }
 }
