@@ -1,0 +1,23 @@
+.loginTitleText {
+  width: 497px;
+  height: 169px;
+  flex-shrink: 0;
+
+  color: #042c5c;
+  font-family: "Jockey One";
+  font-size: 40px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 39px; /* 97.5% */
+}
+/*TODO
+   Clickable link for Back to Map
+   CSS styling (don't rely on figma)
+   Style and include buttons
+   Style and include text entry boxes*/
+
+.loginFor {
+}
+
+.idNumberEntryText {
+}
