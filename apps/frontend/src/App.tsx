@@ -1,6 +1,8 @@
 import React from "react";
 import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
-import ExampleRoute from "./routes/ExampleRoute.tsx";
+import { HomePage } from "./routes/HomePage.tsx";
+import LloginPage from "./routes/LloginPage.tsx";
+import AdminPage from "./routes/AdminPage.tsx";
 function App() {
   const router = createBrowserRouter([
     {
@@ -9,8 +11,16 @@ function App() {
       element: <Root />,
       children: [
         {
-          path: "",
-          element: <ExampleRoute />,
+          path: "/homePage",
+          element: <HomePage />,
+        },
+        {
+          path: "/loginpage",
+          element: <LloginPage />,
+        },
+        {
+          path: "/adminPage",
+          element: <AdminPage />,
         },
       ],
     },
@@ -19,8 +29,7 @@ function App() {
   return <RouterProvider router={router} />;
   function Root() {
     return (
-      <div className="w-100 h-100 d-flex flex-column overflow-auto">
-        <h1>Welcome to your starter code.</h1>
+      <div className="pageAlignment">
         <Outlet />
       </div>
     );

@@ -1,0 +1,31 @@
+.home-frame .Hospital-Copyright {
+  color: #ffffff;
+  font-family: "Anonymous Pro-Regular", Helvetica;
+  font-size: 15px;
+  font-weight: 400;
+  left: 587px;
+  letter-spacing: 1.05px;
+  line-height: normal;
+  position: absolute;
+  text-align: center;
+  top: 997px;
+  white-space: nowrap;
+}
+
+.home-frame .Top-Banner {
+  background-color: #d9d9d9;
+  height: 100px;
+  left: 1px;
+  position: absolute;
+  top: 0;
+  width: 1440px;
+}
+
+.home-frame .Hospital-Logo {
+  height: 75px;
+  left: 17px;
+  object-fit: cover;
+  position: absolute;
+  top: 12px;
+  width: 653px;
+}
