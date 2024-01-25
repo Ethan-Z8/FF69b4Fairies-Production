@@ -38,5 +38,4 @@ body {
 .pageAlignment {
   display: flex;
   justify-content: center;
-  padding-top: 15%; /*Temporary waiting for other items */
 }

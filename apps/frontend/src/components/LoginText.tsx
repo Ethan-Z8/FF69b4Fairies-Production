@@ -2,7 +2,7 @@ import "../styling/loginText.css";
 
 export function LoginText() {
   return (
-    <div>
+    <div className="mergePaddingResolve">
       <div className={"loginTitleText"}>
         <h1>For Admin and Staff Only</h1>
         <h2>Not a Staff or Admin?</h2>

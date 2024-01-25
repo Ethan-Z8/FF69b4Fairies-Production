@@ -10,7 +10,7 @@
 }
 
 .inputBox {
-  width: 438px;
+  width: 70%;
   height: 80px;
   flex-shrink: 0;
   border-radius: 20px;
@@ -40,7 +40,7 @@
 }
 
 .buttonForLogin {
-  width: 100%;
+  width: 73%;
   height: 80px;
   flex-shrink: 0;
   border-radius: 20px;
@@ -53,10 +53,6 @@
   background-color: rgb(5, 156, 164);
   color: white;
   cursor: pointer;
-}
-
-h4 {
-  text-align: right;
 }
 
 .failureMessage {
