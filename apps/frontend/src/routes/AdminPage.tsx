@@ -1,14 +1,14 @@
 import React, { useEffect } from "react";
 
-function HomePage() {
+function AdminPage() {
   useEffect(() => {
-    document.title = "home page";
+    document.title = "admin page";
     console.log(`rendered component`);
   });
   return (
     <div className="w-100 h-100 d-flex flex-column overflow-auto">
-      <h1>This is the home page.</h1>
+      <h1>This is the Admin page.</h1>
     </div>
   );
 }
-export default HomePage;
+export default AdminPage;
