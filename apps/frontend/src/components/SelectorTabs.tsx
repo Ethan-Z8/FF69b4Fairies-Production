@@ -7,7 +7,7 @@ export function SelectorTabs() {
   const handleTabClick = (tabNumber: React.SetStateAction<number>) => {
     setSelectedTab(tabNumber);
   };
-  const floorList = ["GROUND", "LL1", "LL2", "F1", "F2", "F3"];
+  const floorList = ["GRND", "LL1", "LL2", "F1", "F2", "F3"];
   return (
     <div className="selector-tabs-container">
       {[0, 1, 2, 3, 4, 5].map((tabIndex) => (

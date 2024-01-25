@@ -1,5 +1,5 @@
 import "../styling/login.css";
-import LoginButton from "./LoginButton.tsx";
+import GoToLogin from "./goToLogin.tsx";
 import React, { FormEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -89,7 +89,7 @@ export function StaffFields() {
         value={password}
         onChange={(e) => setPassword(e.target.value)}
       />
-      <LoginButton /> {/* temporary until I figure out how to route it */}
+      <GoToLogin /> {/* temporary until I figure out how to route it */}
       {loginSuccess && <div className="successMessage">Successful login!</div>}
       {loginFailure && (
         <div className="failureMessage">
