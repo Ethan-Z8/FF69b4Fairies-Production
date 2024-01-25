@@ -1,0 +1,23 @@
+.selector-tabs-container {
+  display: flex;
+}
+
+.selector-tab {
+  font-family: Arial, sans-serif;
+  font-size: 180%;
+  font-weight: bold;
+  width: 200px;
+  height: 110px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  background-color: #042c5c;
+  color: #fff;
+}
+
+.selector-tab.active {
+  background-color: #032043;
+  border-color: #032043;
+  font-weight: 900;
+}

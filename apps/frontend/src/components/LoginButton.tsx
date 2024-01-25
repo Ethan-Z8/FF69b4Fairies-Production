@@ -1,26 +1,23 @@
-import "../styling/login.css";
+import React from "react";
+import { useNavigate } from "react-router-dom";
 
-function LoginFully() {
-  return (
-    <button className="buttonForLogin" type="submit">
-      Login
-    </button>
-  );
-}
+import "../style/loginButton.css";
 
-function ForgotPassword() {
-  return (
-    <h4 className="suggestionHeader">
-      Forgot password, request help at front desk
-    </h4>
-  );
-}
+const LoginButton = () => {
+  const navigate = useNavigate();
 
-export function LoginButton() {
+  const handleButtonClick = () => {
+    navigate("/login"); // Redirects to the login page
+  };
+
   return (
     <>
-      <ForgotPassword />
-      <LoginFully />
+      <div className="Login-Banner" />
+      <div className="Login-Button" onClick={handleButtonClick}>
+        LOGIN
+      </div>
     </>
   );
-}
+};
+
+export default LoginButton;

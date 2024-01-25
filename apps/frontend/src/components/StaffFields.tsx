@@ -1,5 +1,5 @@
 import "../styling/login.css";
-import { LoginButton } from "../components/LoginButton.tsx";
+import LoginButton from "./LoginButton.tsx";
 import React, { FormEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
 

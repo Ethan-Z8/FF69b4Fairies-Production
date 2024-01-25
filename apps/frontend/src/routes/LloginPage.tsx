@@ -4,7 +4,7 @@ import { LoginText } from "../components/LoginText.tsx";
 import { BackButton } from "../components/BackButton.tsx";
 import { StaffFields } from "../components/StaffFields.tsx";
 
-function LoginPage() {
+function LloginPage() {
   useEffect(() => {
     document.title = "login page";
     console.log(`rendered component`);
@@ -18,4 +18,4 @@ function LoginPage() {
     </div>
   );
 }
-export default LoginPage;
+export default LloginPage;
