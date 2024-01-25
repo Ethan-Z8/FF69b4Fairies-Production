@@ -1,16 +1,20 @@
 import React, { useEffect } from "react";
+import "../styling/login.css";
 import { LoginText } from "../components/LoginText.tsx";
 import { BackButton } from "../components/BackButton.tsx";
+import { StaffFields } from "../components/StaffFields.tsx";
 
 function LoginPage() {
   useEffect(() => {
     document.title = "login page";
     console.log(`rendered component`);
   });
+
   return (
-    <div className="w-100 h-100 d-flex flex-column overflow-auto">
+    <div className="loginPage">
       <LoginText />
       <BackButton />
+      <StaffFields />
     </div>
   );
 }

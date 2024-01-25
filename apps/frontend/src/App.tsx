@@ -2,6 +2,7 @@ import React from "react";
 import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
 import HomePage from "./routes/homePage.tsx";
 import LoginPage from "./routes/loginPage.tsx";
+import AdminPage from "./routes/adminPage.tsx";
 function App() {
   const router = createBrowserRouter([
     {
@@ -10,12 +11,16 @@ function App() {
       element: <Root />,
       children: [
         {
-          path: "",
+          path: "/homePage",
           element: <HomePage />,
         },
         {
           path: "/loginpage",
           element: <LoginPage />,
+        },
+        {
+          path: "/adminPage",
+          element: <AdminPage />,
         },
       ],
     },
@@ -24,7 +29,7 @@ function App() {
   return <RouterProvider router={router} />;
   function Root() {
     return (
-      <div className="w-100 h-100 d-flex flex-column overflow-auto">
+      <div className="pageAlignment">
         <Outlet />
       </div>
     );
