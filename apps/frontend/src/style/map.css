@@ -1,6 +1,7 @@
 .LL1-Map {
-  height: 200%;
+  height: 300%;
   position: absolute;
-  top: 0;
+  top: -20%;
   left: 0;
+  align-content: center;
 }

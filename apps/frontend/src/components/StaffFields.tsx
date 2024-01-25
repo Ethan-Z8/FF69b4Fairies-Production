@@ -1,7 +1,7 @@
 import "../styling/login.css";
-import GoToLogin from "./goToLogin.tsx";
 import React, { FormEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import LoginButton from "./loginButton.tsx";
 
 //this is a basic counter component to show where components should be placed
 function CardHeader({
@@ -89,7 +89,7 @@ export function StaffFields() {
         value={password}
         onChange={(e) => setPassword(e.target.value)}
       />
-      <GoToLogin /> {/* temporary until I figure out how to route it */}
+      <LoginButton /> {/* temporary until I figure out how to route it */}
       {loginSuccess && <div className="successMessage">Successful login!</div>}
       {loginFailure && (
         <div className="failureMessage">
