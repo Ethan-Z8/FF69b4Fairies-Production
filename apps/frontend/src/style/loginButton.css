@@ -1,0 +1,24 @@
+.home-frame .Login-Banner {
+  background-color: #f4f4f4;
+  height: 111px;
+  left: 1269px;
+  position: absolute;
+  top: 911px;
+  width: 172px;
+}
+
+.home-frame .Login-Button {
+  color: #042c5c;
+  font-family: "Anonymous Pro-Bold", Helvetica;
+  font-size: 40px;
+  font-weight: 700;
+  height: 111px;
+  left: 1269px;
+  letter-spacing: 2.8px;
+  line-height: normal;
+  position: absolute;
+  text-align: center;
+  text-shadow: 0px 4px 4px #00000040;
+  top: 945px;
+  width: 172px;
+}
