@@ -1,7 +1,7 @@
 import "../styling/login.css";
 import React, { FormEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import LoginButton from "./loginButton.tsx";
+import LoginButton from "./LoginButton.tsx";
 
 //this is a basic counter component to show where components should be placed
 function CardHeader({

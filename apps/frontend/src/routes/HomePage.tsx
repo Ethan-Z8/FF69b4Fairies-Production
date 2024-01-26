@@ -3,8 +3,8 @@ import React, { useEffect } from "react";
 import "../style/homePage.css";
 
 import HospitalLogo from "../assets/image-1.png";
-import GoToLogin from "../components/goToLogin.tsx";
-import LL1Map from "../components/map.tsx";
+import GoToLogin from "../components/GoToLogin.tsx";
+import LL1Map from "../components/Map.tsx";
 import { SelectorTabs } from "../components/SelectorTabs.tsx";
 
 export const Desktop = () => {
