@@ -1,7 +1,7 @@
-.home-frame .LL1-Map {
-  height: 911px;
-  left: 1px;
+.LL1-Map {
+  height: 300%;
   position: absolute;
-  top: 0;
-  width: 1440px;
+  top: -20%;
+  left: -50%;
+  align-content: center;
 }

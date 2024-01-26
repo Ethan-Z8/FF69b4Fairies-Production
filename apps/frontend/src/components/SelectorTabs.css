@@ -1,4 +1,6 @@
 .selector-tabs-container {
+  top: 100%;
+  left: 0;
   display: flex;
 }
 
@@ -6,7 +8,8 @@
   font-family: Arial, sans-serif;
   font-size: 180%;
   font-weight: bold;
-  width: 200px;
+  width: calc(calc(100vw - 210px) / 6);
+  max-width: 200px;
   height: 110px;
   display: flex;
   align-items: center;

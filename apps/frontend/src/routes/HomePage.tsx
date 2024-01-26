@@ -3,8 +3,9 @@ import React, { useEffect } from "react";
 import "../style/homePage.css";
 
 import HospitalLogo from "../assets/image-1.png";
-import LoginButton from "../components/LoginButton.tsx";
-import LL1Map from "../components/LL1Map.tsx";
+import GoToLogin from "../components/GoToLogin.tsx";
+import LL1Map from "../components/Map.tsx";
+import { SelectorTabs } from "../components/SelectorTabs.tsx";
 
 export const Desktop = () => {
   return (
@@ -17,8 +18,10 @@ export const Desktop = () => {
       <div className="Hospital-Copyright">
         © Brigham and Women&#39;s hospital
       </div>
-
-      <LoginButton />
+      <div className="Bottom-Bar">
+        <SelectorTabs />
+        <GoToLogin />
+      </div>
     </div>
   );
 };
@@ -36,4 +39,4 @@ function HomePage() {
   );
 }
 
-export { HomePage };
+export default HomePage;
