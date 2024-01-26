@@ -3,8 +3,11 @@ import React, { useEffect } from "react";
 import "../style/homePage.css";
 
 import HospitalLogo from "../assets/image-1.png";
-import LoginButton from "../components/LoginButton.tsx";
+//import GoToLogin from "../components/GoToLogin.tsx";
 import LL1Map from "../components/Map.tsx";
+import { SelectorTabs } from "../components/SelectorTabs.tsx";
+//import CloseProgram from "../components/CloseProgram.tsx";
+import LogOutButton from "../components/LogOutButton.tsx";
 
 export const Desktop = () => {
   return (
@@ -17,15 +20,17 @@ export const Desktop = () => {
       <div className="Hospital-Copyright">
         © Brigham and Women&#39;s hospital
       </div>
-
-      <LoginButton />
+      <div className="Bottom-Bar">
+        <SelectorTabs />
+        <LogOutButton />
+      </div>
     </div>
   );
 };
 
 function AdminPage() {
   useEffect(() => {
-    document.title = "home page";
+    document.title = "Admin Page";
     console.log(`rendered component`);
   });
 
@@ -36,4 +41,4 @@ function AdminPage() {
   );
 }
 
-export { AdminPage };
+export default AdminPage;
