@@ -49,6 +49,7 @@ function PasswordInput({
     />
   );
 }
+
 export function StaffFields() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
