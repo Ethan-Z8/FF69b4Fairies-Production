@@ -1,0 +1,34 @@
+.selector-tabs-container {
+  top: 100%;
+  left: 0;
+  display: flex;
+  justify-content: space-between;
+  width: 100vw;
+  background-color: #042c5c;
+  margin-bottom: -5px;
+}
+
+.selector-tab {
+  font-family: Arial, sans-serif;
+  font-size: 180%;
+  font-weight: bold;
+  width: calc(calc(100vw - 210px) / 6);
+  max-width: 200px;
+  height: 110px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  background-color: #042c5c;
+  color: #fff;
+}
+
+.selector-tab.active {
+  background-color: #032043;
+  border-color: #032043;
+  font-weight: 900;
+}
+.hospitalLogo {
+  max-width: 59%;
+  margin-left: 20px;
+}
