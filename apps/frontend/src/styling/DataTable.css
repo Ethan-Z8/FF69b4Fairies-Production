@@ -1,0 +1,13 @@
+@font-face {
+  font-family: "Jockey One";
+  src: url("./JockeyOne-Regular.ttf");
+  font-weight: normal;
+}
+
+th {
+  text-align: left;
+}
+
+tr:nth-child(even) {
+  background-color: #9aaabd;
+}
