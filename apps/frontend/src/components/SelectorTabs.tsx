@@ -45,7 +45,7 @@ export function SelectorTabs({ statusOfPage }: { statusOfPage: string }) {
 
   return (
     <header className="selector-tabs-container">
-      <div>
+      <div className={"logo-container"}>
         <img className={"hospitalLogo"} src={logo} alt="Hospital Logo" />
       </div>
       {[0, 1, 2, 3, 4, 5].map((tabIndex) => (
@@ -59,7 +59,7 @@ export function SelectorTabs({ statusOfPage }: { statusOfPage: string }) {
       ))}
 
       <div className="hamburger-menu-wrapper">
-        <HamburgerMenu menuItems={["Settings", "Help", "Feedback"]} />
+        <HamburgerMenu menuItems={["F3", "F2", "F1", "LL2", "LL1", "GRND"]} />
       </div>
 
       <LoginButtonForSelectorTab

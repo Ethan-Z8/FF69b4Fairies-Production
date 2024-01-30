@@ -8,7 +8,9 @@ function HamburgerMenu({ menuItems }: { menuItems: string[] }) {
 
   return (
     <div className="hamburger-menu" onClick={toggleDropdown}>
-      <div className="hamburger-icon">☰</div>
+      <div className={`hamburger-icon ${isOpen ? "close" : ""}`}>
+        {isOpen ? "×" : "☰"}
+      </div>
       {isOpen && (
         <div className="dropdown-menu">
           {menuItems.map((item, index) => (
