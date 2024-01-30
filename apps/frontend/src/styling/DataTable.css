@@ -1,11 +1,21 @@
-@font-face {
-  font-family: "Jockey One";
-  src: url("./JockeyOne-Regular.ttf");
-  font-weight: normal;
+h1,
+h2,
+h3 {
+  font-family: "Jockey One", san-serif;
+  color: #042c5c;
 }
 
-th {
+table,
+th,
+td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+
+th,
+td {
   text-align: left;
+  padding: 10px;
 }
 
 tr:nth-child(even) {

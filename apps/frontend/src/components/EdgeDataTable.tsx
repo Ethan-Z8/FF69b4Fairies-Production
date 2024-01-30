@@ -1,3 +1,4 @@
+import "../styling/DataTable.css";
 export function EdgeDataTable() {
   return (
     <div className={"DataTable"}>
