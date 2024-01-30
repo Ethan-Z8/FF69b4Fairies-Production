@@ -1,5 +1,4 @@
 import "../styling/login.css";
-
 function LoginFully() {
   return (
     <button className="buttonForLogin" type="submit">
