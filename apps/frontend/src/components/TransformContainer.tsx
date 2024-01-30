@@ -1,5 +1,5 @@
 import React, { ReactNode, useRef, useEffect } from "react";
-import "../style/TransformContainer.css";
+import "../styling/TransformContainer.css";
 //import {Simulate} from "react-dom/test-utils";
 //import drag = Simulate.drag;
 //import {max} from "@popperjs/core/lib/utils/math";
@@ -64,15 +64,16 @@ const TransformContainer: React.FC<TransformContainerProps> = ({
         scale = Math.min(3, scale * (1 + delta * zoomSpeed));
       }
 
-      const rect = container.getBoundingClientRect();
-      const mouseX = e.clientX - rect.left;
-      const mouseY = e.clientY - rect.top;
+      // const rect = container.getBoundingClientRect();
+      // const mouseX = e.clientX - rect.left;
+      // const mouseY = e.clientY - rect.top;
 
-      const contentX = mouseX + rect.width / 2;
-      const contentY = mouseY + rect.width / 2;
+      //const contentX = mouseX + rect.width / 2;
+      //const contentY = mouseY + rect.width / 2;
 
-      content.style.transformOrigin = `${contentX}px ${contentY}px`;
-      content.style.transform = `scale(${scale}) translate(100%, 100%)`;
+      content.style.transformOrigin = `${0}px ${0}px`;
+      content.style.transform = `scale(${scale})`;
+      //translate(100%, 100%)`;
     };
 
     const handleMouseUp = () => {

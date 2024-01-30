@@ -61,7 +61,7 @@ export function StaffFields() {
     e.preventDefault();
 
     // Check if the entered username and password match the expected values
-    if (username === "ff69b4" && password === "wong") {
+    if (username === "admin" && password === "admin") {
       // Successful login
       setLoginFailure(false);
       setLoginSuccess(true);
