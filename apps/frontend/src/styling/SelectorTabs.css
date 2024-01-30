@@ -2,6 +2,10 @@
   top: 100%;
   left: 0;
   display: flex;
+  justify-content: space-between;
+  width: 100vw;
+  background-color: #042c5c;
+  margin-bottom: -5px;
 }
 
 .selector-tab {
@@ -23,4 +27,8 @@
   background-color: #032043;
   border-color: #032043;
   font-weight: 900;
+}
+.hospitalLogo {
+  max-width: 59%;
+  margin-left: 20px;
 }

@@ -13,10 +13,15 @@
   font-weight: 700;
   height: 110px;
   width: 210px;
-  position: fixed;
   bottom: 0;
   right: 0;
   line-height: normal;
   text-align: center;
   display: flex;
+}
+.Login-Button {
+  cursor: pointer;
+}
+.Login-Button:hover {
+  background-color: hsl(0, 0%, 90%);
 }

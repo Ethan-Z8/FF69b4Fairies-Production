@@ -1,0 +1,18 @@
+.transform-container {
+  border: 2px solid #000;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+}
+
+.content-container {
+  /*position: absolute;*/
+  display: flex;
+  position: relative;
+}
+.content-container > * {
+  max-width: 100%;
+  max-height: 100%;
+  /*object-fit: contain;*/
+}
