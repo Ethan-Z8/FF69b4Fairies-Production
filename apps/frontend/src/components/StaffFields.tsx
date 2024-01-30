@@ -1,7 +1,7 @@
 import "../styling/login.css";
-import LoginButton from "./LoginButton.tsx";
 import React, { FormEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import LoginButton from "./LoginButton.tsx";
 
 //this is a basic counter component to show where components should be placed
 function CardHeader({
@@ -49,6 +49,7 @@ function PasswordInput({
     />
   );
 }
+
 export function StaffFields() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -60,7 +61,7 @@ export function StaffFields() {
     e.preventDefault();
 
     // Check if the entered username and password match the expected values
-    if (username === "ff69b4" && password === "wong") {
+    if (username === "admin" && password === "admin") {
       // Successful login
       setLoginFailure(false);
       setLoginSuccess(true);

@@ -23,6 +23,7 @@ export function ExampleComponent() {
       console.log("added highscore");
     }
   }
+
   //the html returned from the component
   return (
     <div className={"example-component"}>

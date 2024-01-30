@@ -1,24 +1,73 @@
+// SelectorTabs.tsx
+
 import React, { useState } from "react";
-import "./SelectorTabs.css";
+import { useNavigate } from "react-router-dom";
+import "../styling/SelectorTabs.css";
+import logo from "../assets/image-1.png";
+import "../styling/GoToLogin.css";
 
-export function SelectorTabs() {
-  const [selectedTab, setSelectedTab] = useState(1);
+interface SelectorTabsProps {
+  statusOfPage: string;
+  onTabClick: (tabIndex: number) => void;
+}
 
-  const handleTabClick = (tabNumber: React.SetStateAction<number>) => {
-    setSelectedTab(tabNumber);
-  };
-  const floorList = ["GROUND", "LL1", "LL2", "F1", "F2", "F3"];
+function LoginButtonForSelectorTab({
+  loginorlogout,
+  onButtonClick,
+}: {
+  loginorlogout: string;
+  onButtonClick: () => void;
+}) {
   return (
-    <div className="selector-tabs-container">
+    <div className="Login-Banner">
+      <div className="Login-Button" onClick={onButtonClick}>
+        {loginorlogout}
+      </div>
+    </div>
+  );
+}
+
+export function SelectorTabs({ statusOfPage, onTabClick }: SelectorTabsProps) {
+  const [selectedTab, setSelectedTab] = useState(1);
+  const navigate = useNavigate();
+
+  const handleTabClick = (tabNumber: number) => {
+    setSelectedTab(tabNumber);
+    onTabClick(tabNumber); // Invoke the onTabClick prop here
+  };
+
+  const handleButtonClick = () => {
+    if (statusOfPage === "LOGOUT") {
+      // Redirect to homepage when clicking logout on Admin Page
+      navigate("/");
+    } else {
+      // Redirect to login page when clicking login on Home Page
+      navigate("/loginPage");
+    }
+  };
+
+  const floorList = ["GRND", "LL1", "LL2", "F1", "F2", "F3"];
+
+  return (
+    <header className="selector-tabs-container">
+      <div>
+        <img className={"hospitalLogo"} src={logo} alt="Hospital Logo" />
+      </div>
       {[0, 1, 2, 3, 4, 5].map((tabIndex) => (
         <div
           key={tabIndex}
           className={`selector-tab ${selectedTab === tabIndex ? "active" : ""}`}
-          onClick={() => handleTabClick(tabIndex)}
+          onClick={() => {
+            handleTabClick(tabIndex);
+          }}
         >
           {floorList[tabIndex]}
         </div>
       ))}
-    </div>
+      <LoginButtonForSelectorTab
+        loginorlogout={statusOfPage}
+        onButtonClick={handleButtonClick}
+      />
+    </header>
   );
 }

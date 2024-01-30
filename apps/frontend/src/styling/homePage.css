@@ -1,4 +1,14 @@
-.home-frame .Hospital-Copyright {
+.Bottom-Bar {
+  position: fixed;
+  left: 0;
+  width: 100%;
+  background-color: #042c5c;
+  color: #fff;
+  display: flex;
+  justify-content: space-between;
+}
+
+.Hospital-Copyright {
   color: #ffffff;
   font-family: "Anonymous Pro-Regular", Helvetica;
   font-size: 15px;
@@ -8,24 +18,30 @@
   line-height: normal;
   position: absolute;
   text-align: center;
-  top: 997px;
+  top: 100%;
   white-space: nowrap;
 }
 
-.home-frame .Top-Banner {
+.Top-Banner {
+  position: fixed;
   background-color: #d9d9d9;
   height: 100px;
-  left: 1px;
-  position: absolute;
+  left: 0;
+  display: flex;
   top: 0;
-  width: 1440px;
+  width: 100%;
 }
 
-.home-frame .Hospital-Logo {
+.Hospital-Logo {
   height: 75px;
   left: 17px;
   object-fit: cover;
-  position: absolute;
+  display: flex;
+  position: fixed;
   top: 12px;
   width: 653px;
+}
+.mapPage {
+  width: 100vw;
+  height: 100vh;
 }
