@@ -5,7 +5,7 @@ import { insertServiceRequest } from "database/src/Requests.ts";
 
 const router: Router = express.Router();
 
-router.get("/", async (req: Request, res: Response) => {
+router.post("/", async (req: Request, res: Response) => {
   // const serviceRequest: Prisma.ServiceRequestCreateInput = req.body;
   await insertServiceRequest(1234, "Bob");
   res.status(200).send("Successfully Inserted");
