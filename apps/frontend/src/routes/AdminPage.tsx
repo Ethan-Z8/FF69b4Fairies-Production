@@ -8,6 +8,7 @@ import LL2MapPath from "../assets/hospitalmaps/00_thelowerlevel2.png";
 import F1MapPath from "../assets/hospitalmaps/01_thefirstfloor.png";
 import F2MapPath from "../assets/hospitalmaps/02_thesecondfloor.png";
 import F3MapPath from "../assets/hospitalmaps/03_thethirdfloor.png";
+import TransformContainer from "../components/TransformContainer.tsx";
 
 export const Desktop = ({
   selectedTab,
@@ -44,7 +45,11 @@ export const Desktop = ({
       <div className="Top-Bar">
         <SelectorTabs statusOfPage={"LOGOUT"} onTabClick={onTabClick} />
       </div>
-      <LL1Map mapPath={mapPath} />
+      <div className="mapPage">
+        <TransformContainer>
+          <LL1Map mapPath={mapPath} />
+        </TransformContainer>
+      </div>
     </div>
   );
 };
