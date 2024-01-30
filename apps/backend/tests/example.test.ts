@@ -1,5 +1,6 @@
 import { expect, test } from "vitest";
 import fs from "fs";
+import { insertServiceRequest } from "database/src/Requests.ts";
 
 function sum(a: number, b: number): number {
   return a + b;
@@ -49,4 +50,8 @@ test("testing parsing the data", () => {
       data;
     },
   );
+});
+
+test("test database insertion", () => {
+  insertServiceRequest(123, "NewRequest");
 });
