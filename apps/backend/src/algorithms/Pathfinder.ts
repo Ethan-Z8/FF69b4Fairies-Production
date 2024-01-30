@@ -1,6 +1,6 @@
-import MapNode from "./MapNode.ts";
+import MapNode, { MapNodeNoNeighbors } from "./MapNode.ts";
 import MapEdge from "./MapEdge.ts";
-import { PathOrFileDescriptor } from "fs";
+
 export default class Pathfinder {
   #nodes: Map<string, MapNode>;
 
@@ -9,14 +9,10 @@ export default class Pathfinder {
    * @param NodesFileNames an array of PathOrFileDescriptors that are the names of all CSV node files it takes
    * @param EdgesFileNames an array of PathOrFileDescriptors that are the names of all CSV edge files it takes
    */
-  public constructor(
-    NodesFileNames: Array<PathOrFileDescriptor>,
-    EdgesFileNames: Array<PathOrFileDescriptor>,
-  ) {
-    const nodes: Array<MapNode> = MapNode.readCsv(NodesFileNames[0]);
-    const edges: Array<MapEdge> = MapEdge.readCsv(EdgesFileNames[0]);
+  public constructor(nodes: MapNodeNoNeighbors[], edges: MapEdge[]) {
     this.#nodes = MapNode.connectNodes(nodes, edges);
   }
+
   public findShortestPath(
     startNodeId: string,
     endNodeId: string,
@@ -56,5 +52,9 @@ export default class Pathfinder {
 
     // If no path is found, return an empty array
     return [];
+  }
+
+  public getNodes(): Map<string, MapNode> {
+    return this.#nodes;
   }
 }
