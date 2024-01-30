@@ -7,6 +7,11 @@ import logo from "../assets/image-1.png";
 import "../styling/GoToLogin.css";
 import HamburgerMenu from "./HamburgerMenu";
 
+interface SelectorTabsProps {
+  statusOfPage: string;
+  onTabClick: (tabIndex: number) => void;
+}
+
 function LoginButtonForSelectorTab({
   loginorlogout,
   onButtonClick,
@@ -23,12 +28,13 @@ function LoginButtonForSelectorTab({
   );
 }
 
-export function SelectorTabs({ statusOfPage }: { statusOfPage: string }) {
+export function SelectorTabs({ statusOfPage, onTabClick }: SelectorTabsProps) {
   const [selectedTab, setSelectedTab] = useState(1);
   const navigate = useNavigate();
 
   const handleTabClick = (tabNumber: number) => {
     setSelectedTab(tabNumber);
+    onTabClick(tabNumber); // Invoke the onTabClick prop here
   };
 
   const handleButtonClick = () => {
@@ -52,7 +58,9 @@ export function SelectorTabs({ statusOfPage }: { statusOfPage: string }) {
         <div
           key={tabIndex}
           className={`selector-tab ${selectedTab === tabIndex ? "active" : ""}`}
-          onClick={() => handleTabClick(tabIndex)}
+          onClick={() => {
+            handleTabClick(tabIndex);
+          }}
         >
           {floorList[tabIndex]}
         </div>

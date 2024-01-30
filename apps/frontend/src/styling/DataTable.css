@@ -1,0 +1,23 @@
+h1,
+h2,
+h3 {
+  font-family: "Jockey One", san-serif;
+  color: #042c5c;
+}
+
+table,
+th,
+td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  text-align: left;
+  padding: 10px;
+}
+
+tr:nth-child(even) {
+  background-color: #9aaabd;
+}
