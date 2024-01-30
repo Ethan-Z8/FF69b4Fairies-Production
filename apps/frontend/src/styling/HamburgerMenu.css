@@ -1,0 +1,40 @@
+.hamburger-menu {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  width: calc(calc(100vw - 210px) / 7);
+  height: 110px;
+}
+
+.hamburger-icon {
+  font-family: Arial, sans-serif;
+  font-size: 500%;
+  font-weight: bold;
+  background-color: #042c5c;
+  color: #ffffff;
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 95%; /* Positioned right at the bottom of the hamburger menu */
+  left: 0;
+  background-color: #042c5c;
+  width: calc(
+    calc(100vw - 210px) / 7
+  ); /* Match the width of the hamburger-menu container */
+  box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+  z-index: 1;
+}
+
+.menu-item {
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+  color: #ffffff;
+}
+
+.menu-item:hover {
+  background-color: #032043;
+}

@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import "../styling/SelectorTabs.css";
 import logo from "../assets/image-1.png";
 import "../styling/GoToLogin.css";
+import HamburgerMenu from "./HamburgerMenu";
 
 function LoginButtonForSelectorTab({
   loginorlogout,
@@ -56,6 +57,11 @@ export function SelectorTabs({ statusOfPage }: { statusOfPage: string }) {
           {floorList[tabIndex]}
         </div>
       ))}
+
+      <div className="hamburger-menu-wrapper">
+        <HamburgerMenu menuItems={["Settings", "Help", "Feedback"]} />
+      </div>
+
       <LoginButtonForSelectorTab
         loginorlogout={statusOfPage}
         onButtonClick={handleButtonClick}

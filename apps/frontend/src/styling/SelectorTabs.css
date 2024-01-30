@@ -12,7 +12,7 @@
   font-family: Arial, sans-serif;
   font-size: 180%;
   font-weight: bold;
-  width: calc(calc(100vw - 210px) / 6);
+  width: calc(calc(100vw - 210px) / 7);
   max-width: 200px;
   height: 110px;
   display: flex;
@@ -20,7 +20,7 @@
   justify-content: center;
   cursor: pointer;
   background-color: #042c5c;
-  color: #fff;
+  color: #ffffff;
 }
 
 .selector-tab.active {
@@ -28,6 +28,7 @@
   border-color: #032043;
   font-weight: 900;
 }
+
 .hospitalLogo {
   max-width: 59%;
   margin-left: 20px;
