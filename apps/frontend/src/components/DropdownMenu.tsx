@@ -8,6 +8,7 @@ interface AmountOfItemsNeededForDropDown {
   l2: string;
   l3: string;
   l4: string;
+  variant: string;
   onSelect: (selectedValue: string) => void;
 }
 
@@ -18,6 +19,7 @@ function DropdownMenu({
   l3,
   l4,
   onSelect,
+  variant,
 }: AmountOfItemsNeededForDropDown) {
   const [selectedItem, setSelectedItem] = useState(title);
 
@@ -27,7 +29,11 @@ function DropdownMenu({
   };
 
   return (
-    <DropdownButton id="dropdown-basic-button" title={selectedItem}>
+    <DropdownButton
+      variant={variant}
+      id="dropdown-basic-button"
+      title={selectedItem}
+    >
       <Dropdown.Item href="#" onClick={() => handleItemClick(l1)}>
         {l1}
       </Dropdown.Item>

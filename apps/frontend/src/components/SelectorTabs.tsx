@@ -9,6 +9,12 @@ import "../styling/GoToLogin.css";
 interface SelectorTabsProps {
   statusOfPage: string;
   onTabClick: (tabIndex: number) => void;
+  option1: string;
+  option2: string;
+  option3: string;
+  option4: string;
+  option5: string;
+  option6: string;
 }
 
 function LoginButtonForSelectorTab({
@@ -27,7 +33,16 @@ function LoginButtonForSelectorTab({
   );
 }
 
-export function SelectorTabs({ statusOfPage, onTabClick }: SelectorTabsProps) {
+export function SelectorTabs({
+  statusOfPage,
+  onTabClick,
+  option1,
+  option2,
+  option3,
+  option4,
+  option5,
+  option6,
+}: SelectorTabsProps) {
   const [selectedTab, setSelectedTab] = useState(1);
   const navigate = useNavigate();
 
@@ -46,7 +61,7 @@ export function SelectorTabs({ statusOfPage, onTabClick }: SelectorTabsProps) {
     }
   };
 
-  const floorList = ["GRND", "LL1", "LL2", "F1", "F2", "F3"];
+  const navMenuList = [option1, option2, option3, option4, option5, option6];
 
   return (
     <header className="selector-tabs-container">
@@ -61,7 +76,7 @@ export function SelectorTabs({ statusOfPage, onTabClick }: SelectorTabsProps) {
             handleTabClick(tabIndex);
           }}
         >
-          {floorList[tabIndex]}
+          {navMenuList[tabIndex]}
         </div>
       ))}
       <LoginButtonForSelectorTab

@@ -4,10 +4,23 @@ import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
 import DropdownMenu from "./DropdownMenu.tsx";
 
-function RequestingService() {
+interface differentServices {
+  typeOfService1: string;
+  typeOfService2: string;
+  typeOfService3: string;
+  typeOfService4: string;
+}
+
+function RequestService({
+  typeOfService1,
+  typeOfService2,
+  typeOfService3,
+  typeOfService4,
+}: differentServices) {
   const [show, setShow] = useState(true);
   const [typeOfService, setTypeOfService] = useState("");
   const [reason, setReason] = useState("");
+  const [nodeLoc, setNodeLoc] = useState("");
 
   const handleClose = () => {
     setShow(false);
@@ -15,7 +28,11 @@ function RequestingService() {
     setReason("");
   };
   const logData = () => {
-    console.log("Type of Service:" + typeOfService, "Reason: " + reason);
+    console.log(
+      "Type of Service:" + typeOfService,
+      "Reason: " + reason,
+      "NODE LOCATION" + nodeLoc,
+    );
     setShow(false);
   };
 
@@ -30,15 +47,30 @@ function RequestingService() {
             <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
               <DropdownMenu
                 title="Services"
-                l1={"Sanitation"}
-                l2={"Facilities"}
-                l3={"Patient Transportation"}
-                l4={"Security "}
+                l1={typeOfService1}
+                l2={typeOfService2}
+                l3={typeOfService3}
+                l4={typeOfService4}
                 onSelect={(selectedService) =>
                   setTypeOfService(selectedService)
                 }
+                variant={"primary"}
               />
             </Form.Group>
+
+            <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+              <Form.Label>Where do you need it?</Form.Label>
+              <DropdownMenu
+                title="Location"
+                l1={"NODE 1"}
+                l2={"NODE 2"}
+                l3={"NODE 3"}
+                l4={"NODE 4"}
+                onSelect={(nodeLoc) => setNodeLoc(nodeLoc)}
+                variant={"success"}
+              />
+            </Form.Group>
+
             <Form.Group
               className="mb-3"
               controlId="exampleForm.ControlTextarea1"
@@ -65,4 +97,4 @@ function RequestingService() {
   );
 }
 
-export default RequestingService;
+export default RequestService;

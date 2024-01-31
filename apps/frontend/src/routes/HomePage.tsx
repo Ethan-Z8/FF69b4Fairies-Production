@@ -1,60 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "../styling/homePage.css";
-import { SelectorTabs } from "../components/SelectorTabs.tsx";
-import LL1Map from "../components/LL1Map.tsx";
-import groundMapPath from "../assets/hospitalmaps/00_thegroundfloor.png";
-import LL1MapPath from "../assets/hospitalmaps/00_thelowerlevel1.png";
-import LL2MapPath from "../assets/hospitalmaps/00_thelowerlevel2.png";
-import F1MapPath from "../assets/hospitalmaps/01_thefirstfloor.png";
-import F2MapPath from "../assets/hospitalmaps/02_thesecondfloor.png";
-import F3MapPath from "../assets/hospitalmaps/03_thethirdfloor.png";
-import TransformContainer from "../components/TransformContainer.tsx";
-import RequestingService from "../components/RequestService.tsx";
-
-export const Desktop = ({
-  selectedTab,
-  onTabClick,
-}: {
-  selectedTab: number;
-  onTabClick: (tabIndex: number) => void;
-}) => {
-  let mapPath = LL1MapPath; //Ground map
-
-  if (selectedTab === 0) {
-    // Ground map
-    mapPath = groundMapPath;
-  }
-  if (selectedTab === 2) {
-    // LL2 map
-    mapPath = LL2MapPath;
-  }
-  if (selectedTab === 3) {
-    // F1 map
-    mapPath = F1MapPath;
-  }
-  if (selectedTab === 4) {
-    // F2 map
-    mapPath = F2MapPath;
-  }
-  if (selectedTab === 5) {
-    // F3 map
-    mapPath = F3MapPath;
-  }
-
-  return (
-    <div className="home-frame">
-      {selectedTab === 4 && <RequestingService />}
-      <div className="Top-Bar">
-        <SelectorTabs statusOfPage={"LOGIN"} onTabClick={onTabClick} />
-      </div>
-      <div className="mapPage">
-        <TransformContainer>
-          <LL1Map mapPath={mapPath} />
-        </TransformContainer>
-      </div>
-    </div>
-  );
-};
+import { Desktop } from "../components/Desktop.tsx";
+import GeneralServices from "../components/GeneralServices.tsx";
 
 function HomePage() {
   const [selectedTab, setSelectedTab] = useState(1);
@@ -70,9 +17,32 @@ function HomePage() {
 
   return (
     <div className="w-100 h-100 d-flex flex-column overflow-auto">
-      <Desktop selectedTab={selectedTab} onTabClick={handleTabClick} />
+      <Desktop
+        whatServiceOptions={<GeneralServices />}
+        menuProp1={"HELP"}
+        menuProp2={"LANGUAGE"}
+        menuProp3={"FLOWERS"}
+        menuProp4={"RELIGIOUS"}
+        menuProp5={"SERVICES"}
+        menuProp6={"ACCESSIBILITY"}
+        pageStatus={"LOGIN"}
+        selectedTab={selectedTab}
+        onTabClick={handleTabClick}
+      />
     </div>
   );
 }
 
 export default HomePage;
+
+// <div className="home-frame">
+//             {selectedTab === 4 && <RequestingService />}
+//             <div className="Top-Bar">
+//                 <SelectorTabs
+//                     option1={"HELP"}
+//                     option2={"LANGUAGE"}
+//                     option3={"FLOWERS"}
+//                     option4={"RELIGIOUS"}
+//                     option5={"SERVICES"}
+//                     option6={"TRANSPORT"}
+//                     statusOfPage={"LOGIN"} onTabClick={onTabClick} />
