@@ -1,0 +1,10 @@
+.boxHeader {
+  width: 137px;
+  flex-shrink: 0;
+  color: #042c5c;
+  text-align: center;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 900;
+  line-height: normal;
+}

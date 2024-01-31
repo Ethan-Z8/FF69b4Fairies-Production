@@ -27,4 +27,4 @@ function ServiceRequestLog() {
   );
 }
 
-export { ServiceRequestLog };
+export default ServiceRequestLog;
