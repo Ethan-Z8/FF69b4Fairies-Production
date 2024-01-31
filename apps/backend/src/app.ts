@@ -3,12 +3,12 @@ import express, { Express, NextFunction, Request, Response } from "express";
 import cookieParser from "cookie-parser";
 import logger from "morgan";
 import exampleRouter from "./routes/example.ts";
-import mapRouter from "./routes/map.ts";
-import serviceRouter from "./routes/serviceRequest.ts";
+import { mapRouter } from "./routes/map.ts";
+import { serviceRouter } from "./routes/serviceRequest.ts";
 
 const app: Express = express(); // Setup the backend
 
-// Setup generic middlewear
+// Setup generic middleware
 app.use(
   logger("dev", {
     stream: {
@@ -20,6 +20,21 @@ app.use(
 app.use(express.json()); // This processes requests as JSON
 app.use(express.urlencoded({ extended: false })); // URL parser
 app.use(cookieParser()); // Cookie parser
+
+// eslint-disable-next-line @typescript-eslint/ban-types
+function enableCors(req: Request, res: Response, next: Function) {
+  res.header("Access-Control-Allow-Origin", "*"); // Allow all origins
+  res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS"); // Allow all methods
+  res.header("Access-Control-Allow-Headers", "Content-Type, Authorization"); // Allow headers
+
+  if (req.method === "OPTIONS") {
+    res.sendStatus(200); // Respond to preflight requests
+  } else {
+    next();
+  }
+}
+
+app.use(enableCors);
 
 // Setup routers. ALL ROUTERS MUST use /api as a start point, or they
 // won't be reached by the default proxy and prod setup
