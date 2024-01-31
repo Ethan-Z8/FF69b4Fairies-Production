@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import "../styling/HamburgerMenu.css";
 
 interface MenuItem {
@@ -9,16 +9,16 @@ interface MenuItem {
 interface HamburgerMenuProps {
   menuItems: MenuItem[];
   onMenuItemClick: (index: number) => void;
-  selectedTabIndex: number; // Declaration of the property
+  selectedTabIndex: number;
 }
 
-// Updated function signature to include selectedTabIndex
-function HamburgerMenu({
+const HamburgerMenu: React.FC<HamburgerMenuProps> = ({
   menuItems,
   onMenuItemClick,
   selectedTabIndex,
-}: HamburgerMenuProps) {
+}) => {
   const [isOpen, setIsOpen] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
 
   const toggleDropdown = () => setIsOpen(!isOpen);
 
@@ -27,8 +27,34 @@ function HamburgerMenu({
     setIsOpen(false);
   };
 
+  // Update dropdown width
+  const updateDropdownWidth = () => {
+    if (menuRef.current) {
+      const menuWidth = menuRef.current.offsetWidth;
+      const dropdownMenu = document.querySelector(
+        ".dropdown-menu",
+      ) as HTMLDivElement;
+      if (dropdownMenu) {
+        dropdownMenu.style.width = `${menuWidth}px`;
+      }
+    }
+  };
+
+  useEffect(() => {
+    // Update width when dropdown opens/closes
+    updateDropdownWidth();
+
+    // Update width on window resize
+    window.addEventListener("resize", updateDropdownWidth);
+
+    // Cleanup event listener
+    return () => {
+      window.removeEventListener("resize", updateDropdownWidth);
+    };
+  }, [isOpen]); // Dependency array includes isOpen to re-calculate on open/close
+
   return (
-    <div className="hamburger-menu" onClick={toggleDropdown}>
+    <div className="hamburger-menu" onClick={toggleDropdown} ref={menuRef}>
       <div className={`hamburger-icon ${isOpen ? "close" : ""}`}>
         {isOpen ? "×" : "☰"}
       </div>
@@ -36,8 +62,8 @@ function HamburgerMenu({
         <div className="dropdown-menu">
           {menuItems.map((item, index) => (
             <div
-              key={index} // Use index as key instead of item.index to ensure uniqueness
-              className={`menu-item ${selectedTabIndex === item.index ? "active" : ""}`} // Highlight the selected tab
+              key={index}
+              className={`menu-item ${selectedTabIndex === item.index ? "active" : ""}`}
               onClick={() => handleMenuClick(item.index)}
             >
               {item.name}
@@ -47,6 +73,6 @@ function HamburgerMenu({
       )}
     </div>
   );
-}
+};
 
 export default HamburgerMenu;
