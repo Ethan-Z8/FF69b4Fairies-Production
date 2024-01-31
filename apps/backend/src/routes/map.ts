@@ -1,13 +1,11 @@
 import express, { Request, Response, Router } from "express";
-import PrismaClient from "../bin/database-connection.ts";
+import Prisma from "../bin/database-connection.ts";
 import Pathfinder from "../algorithms/Pathfinder.ts";
+import { MapNodeNoNeighbors } from "../algorithms/MapNode.ts";
+import MapEdge from "../algorithms/MapEdge.ts";
+import archiver from "archiver";
 
-type StartAndEndNodes = {
-  start?: string;
-  end?: string;
-};
-
-const router: Router = express.Router();
+export const mapRouter: Router = express.Router();
 let pathFindingGraph: Pathfinder;
 
 /**
@@ -15,10 +13,10 @@ let pathFindingGraph: Pathfinder;
  *
  * No request body needed
  */
-router.get("/", async (req: Request, res: Response) => {
+mapRouter.get("/", async (req: Request, res: Response) => {
   try {
-    const nodes = await PrismaClient.mapNode.findMany();
-    const edges = await PrismaClient.mapEdge.findMany();
+    const nodes = await Prisma.mapNode.findMany();
+    const edges = await Prisma.mapEdge.findMany();
     pathFindingGraph = new Pathfinder(nodes, edges);
 
     // The Object.fromEntries converts the graph (which is a HashMap) to an object literal, so it can be sent
@@ -33,7 +31,11 @@ router.get("/", async (req: Request, res: Response) => {
  *
  * The points are formatted at start=point1 and end=point2 in the request parameters
  */
-router.get("/path", async (req, res) => {
+mapRouter.get("/path", async (req, res) => {
+  type StartAndEndNodes = {
+    start?: string;
+    end?: string;
+  };
   const endpoints = req.query as StartAndEndNodes;
   const shortestPath: string[] = pathFindingGraph.findShortestPath(
     endpoints.start!,
@@ -49,4 +51,45 @@ router.get("/path", async (req, res) => {
     res.status(200).send(shortestPath);
   }
 });
-export default router;
+
+/**
+ * Endpoint to get all the nodes and edges in the database and export them as a zip file
+ */
+mapRouter.get("/export", async (req: Request, res: Response) => {
+  function dataToCSVBuffer(data: Array<object>): Buffer {
+    const headers: string = Object.keys(data[0]).join(",") + "\n";
+    const body: string = data
+      .map((line) => Object.values(line).join(","))
+      .join("\n");
+
+    return Buffer.from(headers + body);
+  }
+
+  try {
+    // Read from the database and convert data to buffers
+    const nodes: MapNodeNoNeighbors[] = await Prisma.mapNode.findMany();
+    const edges: MapEdge[] = await Prisma.mapEdge.findMany();
+    const nodesCSV: Buffer = dataToCSVBuffer(nodes);
+    const edgesCSV: Buffer = dataToCSVBuffer(edges);
+
+    // Create an archive of the buffers (basically a zip file) and pipe it into the response
+    const archive = archiver("zip", {
+      zlib: { level: 9 },
+    });
+    archive.append(nodesCSV, { name: "nodes.csv" });
+    archive.append(edgesCSV, { name: "edges.csv" });
+    archive.pipe(res);
+
+    // Tell the client that the response is a file named map_data.zip
+    res.set({
+      "Content-Type": "application/zip", // Set the appropriate content type
+      "Content-Disposition": 'attachment; filename="map_data.zip"', // Specify the filename
+    });
+
+    // Send the successful response
+    await archive.finalize();
+    res.send(200);
+  } catch (e) {
+    res.status(401).send("could not export file");
+  }
+});
