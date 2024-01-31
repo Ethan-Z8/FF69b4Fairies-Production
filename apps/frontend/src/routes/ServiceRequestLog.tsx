@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 
 import "../style/ServiceRequestLog.css";
 
-import { BackButton } from "../components/BackButton.tsx";
+import { BackButtonForAdmin } from "../components/BackButtonForAdmin.tsx";
 
 //Stores all service requests entered into the system
 function ServiceRequestLog() {
@@ -13,7 +13,7 @@ function ServiceRequestLog() {
 
   return (
     <div className={"ServiceTable"}>
-      <BackButton />
+      <BackButtonForAdmin />
 
       <table>
         <tr>
