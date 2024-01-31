@@ -4,6 +4,7 @@ import Pathfinder from "../algorithms/Pathfinder.ts";
 import { MapNodeNoNeighbors } from "../algorithms/MapNode.ts";
 import MapEdge from "../algorithms/MapEdge.ts";
 import archiver from "archiver";
+import MapNode from "../algorithms/MapNode.ts";
 
 export const mapRouter: Router = express.Router();
 let pathFindingGraph: Pathfinder;
@@ -49,6 +50,33 @@ mapRouter.get("/path", async (req, res) => {
       );
   } else {
     res.status(200).send(shortestPath);
+  }
+});
+
+mapRouter.get("/pathNodes", async (req: Request, res: Response) => {
+  try {
+    type StartAndEndNodes = {
+      start?: string;
+      end?: string;
+    };
+    const endpoints = req.query as StartAndEndNodes;
+    const shortestPathNodes: Map<string, MapNode> =
+      pathFindingGraph.findShortestPathNodes(endpoints.start!, endpoints.end!);
+
+    if (shortestPathNodes.size === 0) {
+      res.status(400).json({
+        error:
+          "One of your nodes is not in the database, or a path couldn't be found",
+      });
+    } else {
+      // Convert the Map values to an array for response
+
+      // You can customize the response as needed
+      res.status(200).json(Object.fromEntries(shortestPathNodes));
+    }
+  } catch (e) {
+    console.error(e);
+    res.status(500).send("Internal server error");
   }
 });
 
