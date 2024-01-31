@@ -9,6 +9,7 @@ import F1MapPath from "../assets/hospitalmaps/01_thefirstfloor.png";
 import F2MapPath from "../assets/hospitalmaps/02_thesecondfloor.png";
 import F3MapPath from "../assets/hospitalmaps/03_thethirdfloor.png";
 import TransformContainer from "../components/TransformContainer.tsx";
+import RequestingService from "../components/RequestService.tsx";
 
 export const Desktop = ({
   selectedTab,
@@ -42,6 +43,7 @@ export const Desktop = ({
 
   return (
     <div className="home-frame">
+      {selectedTab === 4 && <RequestingService />}
       <div className="Top-Bar">
         <SelectorTabs statusOfPage={"LOGIN"} onTabClick={onTabClick} />
       </div>

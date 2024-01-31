@@ -33,7 +33,7 @@ export function SelectorTabs({ statusOfPage, onTabClick }: SelectorTabsProps) {
 
   const handleTabClick = (tabNumber: number) => {
     setSelectedTab(tabNumber);
-    onTabClick(tabNumber); // Invoke the onTabClick prop here
+    onTabClick(tabNumber);
   };
 
   const handleButtonClick = () => {

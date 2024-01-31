@@ -71,6 +71,8 @@ export function StaffFields() {
       setPassword("");
       setLoginFailure(true);
       setLoginSuccess(false);
+      console.log("Username: " + username);
+      console.log("Password: " + password);
     }
   };
 
