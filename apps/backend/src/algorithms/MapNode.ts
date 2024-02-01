@@ -1,5 +1,6 @@
 import { PathOrFileDescriptor, readFileSync } from "fs";
 import MapEdge from "./MapEdge.ts";
+import { MapNodeInterface } from "../../../../packages/common/src/interfaces/MapNodeInterface.ts";
 
 /**
  * Defining an omit type that does not have an array of neighbors.
@@ -7,7 +8,7 @@ import MapEdge from "./MapEdge.ts";
  * Then, when the graph needs to be constructed, we just use the regular MapNode, so we can keep track of neighbors
  */
 export type MapNodeNoNeighbors = Omit<MapNode, "neighbors">;
-export default class MapNode {
+export default class MapNode implements MapNodeInterface {
   nodeID: string;
   xcoord: number;
   ycoord: number;
@@ -51,8 +52,16 @@ export default class MapNode {
    * @param filename -- the csv file to get data from
    */
   static csvStringToNodes(input: string): MapNode[] {
-    const lines = input.split(/\r?\n/).slice(1, -1);
-    // THe first line is the categories, and the last line is blank
+    const lines = input.split(/\r?\n/).slice(0, -1);
+    const top = lines.shift();
+    if (
+      top !== "nodeID,xcoord,ycoord,floor,building,nodeType,longName,shortName"
+    ) {
+      throw new Error(
+        `This csv does not have the right headers they should be: ${top}`,
+      );
+    }
+    // The first line is the categories, and the last line is blank
     const splitLines = lines.map((aline) => aline.split(","));
 
     return splitLines.map((props) => new MapNode(props));
