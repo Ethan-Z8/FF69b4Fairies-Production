@@ -9,9 +9,12 @@ export default class MapEdge {
     [this.edgeID, this.startNode, this.endNode] = properties;
   }
 
-  static readCsv(filename: PathOrFileDescriptor) {
+  static readCsv(filename: PathOrFileDescriptor): MapEdge[] {
     const input = readFileSync(filename, "utf8");
+    return MapEdge.csvStringToEdges(input);
+  }
 
+  static csvStringToEdges(input: string): MapEdge[] {
     // Split by lines. The first line is the headers, the last line is a blank
     const lines = input.split(/\r?\n/).slice(1, -1);
     return lines.map((line) => new MapEdge(line.split(",")));

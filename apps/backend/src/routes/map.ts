@@ -1,23 +1,32 @@
 import express, { Request, Response, Router } from "express";
 import Prisma from "../bin/database-connection.ts";
 import Pathfinder from "../algorithms/Pathfinder.ts";
-import { MapNodeNoNeighbors } from "../algorithms/MapNode.ts";
+import MapNode, { MapNodeNoNeighbors } from "../algorithms/MapNode.ts";
+import { Readable } from "stream";
 import MapEdge from "../algorithms/MapEdge.ts";
 import archiver from "archiver";
+
 import MapNode from "../algorithms/MapNode.ts";
+import multer from "multer";
 
 export const mapRouter: Router = express.Router();
 let pathFindingGraph: Pathfinder;
+const nodeCache: Set<MapNodeNoNeighbors> = new Set();
+const edgeCache: Set<MapEdge> = new Set();
+const upload = multer();
 
 /**
  * Gets the entire map. Grabs the nodes and edges from the database, then connects them
  *
  * No request body needed
  */
-mapRouter.get("/", async (req: Request, res: Response) => {
+mapRouter.get("/", async (_: Request, res: Response) => {
   try {
     const nodes = await Prisma.mapNode.findMany();
     const edges = await Prisma.mapEdge.findMany();
+    nodes.forEach((node) => nodeCache.add(node));
+    edges.forEach((edge) => edgeCache.add(edge));
+
     pathFindingGraph = new Pathfinder(nodes, edges);
 
     // The Object.fromEntries converts the graph (which is a HashMap) to an object literal, so it can be sent
@@ -34,8 +43,8 @@ mapRouter.get("/", async (req: Request, res: Response) => {
  */
 mapRouter.get("/path", async (req, res) => {
   type StartAndEndNodes = {
-    start?: string;
-    end?: string;
+    start: string;
+    end: string;
   };
   const endpoints = req.query as StartAndEndNodes;
   const shortestPath: string[] = pathFindingGraph.findShortestPath(
@@ -83,30 +92,29 @@ mapRouter.get("/pathNodes", async (req: Request, res: Response) => {
 /**
  * Endpoint to get all the nodes and edges in the database and export them as a zip file
  */
-mapRouter.get("/export", async (req: Request, res: Response) => {
-  function dataToCSVBuffer(data: Array<object>): Buffer {
+mapRouter.get("/export", async (_: Request, res: Response) => {
+  function dataToCSVStream(data: Array<object>): Readable {
     const headers: string = Object.keys(data[0]).join(",") + "\n";
     const body: string = data
       .map((line) => Object.values(line).join(","))
       .join("\n");
 
-    return Buffer.from(headers + body);
+    return Readable.from(headers + body);
   }
 
   try {
-    // Read from the database and convert data to buffers
+    // Read from the database and convert data to streams
     const nodes: MapNodeNoNeighbors[] = await Prisma.mapNode.findMany();
     const edges: MapEdge[] = await Prisma.mapEdge.findMany();
-    const nodesCSV: Buffer = dataToCSVBuffer(nodes);
-    const edgesCSV: Buffer = dataToCSVBuffer(edges);
+    const nodesCSV: Readable = dataToCSVStream(nodes);
+    const edgesCSV: Readable = dataToCSVStream(edges);
 
-    // Create an archive of the buffers (basically a zip file) and pipe it into the response
+    // Create an archive of the streams(basically a zip file) and pipe it into the response
     const archive = archiver("zip", {
       zlib: { level: 9 },
     });
     archive.append(nodesCSV, { name: "nodes.csv" });
     archive.append(edgesCSV, { name: "edges.csv" });
-    archive.pipe(res);
 
     // Tell the client that the response is a file named map_data.zip
     res.set({
@@ -116,8 +124,45 @@ mapRouter.get("/export", async (req: Request, res: Response) => {
 
     // Send the successful response
     await archive.finalize();
-    res.send(200);
+    archive.pipe(res);
+    res.status(200);
   } catch (e) {
     res.status(401).send("could not export file");
+    console.log(e);
   }
 });
+
+mapRouter.post(
+  "/import",
+  upload.array("csvFiles", 2),
+  async (req: Request, res: Response) => {
+    // Use Multer to get the files
+    const files = req.files as Express.Multer.File[];
+
+    // Parse the input files into Map Nodes and Map Edges
+    const nodesWithNeighbors = MapNode.csvStringToNodes(
+      files[0].buffer.toString(),
+    );
+    const nodes: MapNodeNoNeighbors[] =
+      MapNode.dropNeighbors(nodesWithNeighbors);
+    const edges: MapEdge[] = MapEdge.csvStringToEdges(
+      files[1].buffer.toString(),
+    );
+
+    // Insert all the provided map nodes and edges, but silently ignore duplicates
+    try {
+      await Prisma.mapNode.createMany({
+        data: nodes,
+        skipDuplicates: true,
+      });
+      await Prisma.mapEdge.createMany({
+        data: edges,
+        skipDuplicates: true,
+      });
+      res.sendStatus(200);
+    } catch (e) {
+      console.log(e);
+      res.sendStatus(401);
+    }
+  },
+);
