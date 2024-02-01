@@ -5,12 +5,19 @@ import { Prisma } from "database";
 
 export const serviceRouter: Router = express.Router();
 
-serviceRouter.post("/", async (req: Request, res: Response) => {
+<<<<<<< HEAD
+router.post("/", async (req: Request, res: Response) => {
   const serviceRequest: Prisma.ServiceRequestCreateInput = req.body;
   await insertServiceRequest(
     serviceRequest.typeService,
     serviceRequest.reason,
     serviceRequest.nodeLoc,
   );
+=======
+serviceRouter.post("/", async (req: Request, res: Response) => {
+  const serviceRequest = req.body;
+  console.log(serviceRequest);
+  await insertServiceRequest(1234, "Bob");
+>>>>>>> dev-backend
   res.status(200).send("Successfully Inserted");
 });

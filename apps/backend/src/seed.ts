@@ -2,14 +2,8 @@ import PrismaClient from "./bin/database-connection.ts";
 import MapNode, { MapNodeNoNeighbors } from "./algorithms/MapNode.ts";
 import MapEdge from "./algorithms/MapEdge.ts";
 
-const nodes: MapNodeNoNeighbors[] = MapNode.readCsv("csvFiles/L1Nodes.csv").map(
-  (node: MapNode) => {
-    // Can ignore this warning because we need to get the neighbors by name to omit them
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { neighbors, ...rest } = node;
-    return rest;
-  },
-);
+const nodesWithNeighbors: MapNode[] = MapNode.readCsv("csvFiles/L1Nodes.csv");
+const nodes: MapNodeNoNeighbors[] = MapNode.dropNeighbors(nodesWithNeighbors);
 
 const edges: MapEdge[] = MapEdge.readCsv("csvFiles/L1Edges.csv");
 const moreNodes = MapNode.readCsv("csvFiles/L1Nodes.csv");
