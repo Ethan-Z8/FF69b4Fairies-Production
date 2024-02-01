@@ -10,6 +10,10 @@ import F2MapPath from "../assets/hospitalmaps/02_thesecondfloor.png";
 import F3MapPath from "../assets/hospitalmaps/03_thethirdfloor.png";
 import TransformContainer from "../components/TransformContainer.tsx";
 
+import { DisplayPath } from "../components/DisplayPath.tsx";
+import axios from "axios";
+//import {DisplayMapNodes} from "../components/DisplayMapNodes.tsx";
+
 export const Desktop = ({
   selectedTab,
   onTabClick,
@@ -40,6 +44,9 @@ export const Desktop = ({
     mapPath = F3MapPath;
   }
 
+  const pathStart = "CLABS002L1";
+  const pathEnd = "CHALL008L1";
+
   return (
     <div className="home-frame">
       <div className="Top-Bar">
@@ -47,6 +54,7 @@ export const Desktop = ({
       </div>
       <div className="mapPage">
         <TransformContainer>
+          <DisplayPath mapPath={mapPath} start={pathStart} end={pathEnd} />
           <LL1Map mapPath={mapPath} />
         </TransformContainer>
       </div>
@@ -56,10 +64,18 @@ export const Desktop = ({
 
 function HomePage() {
   const [selectedTab, setSelectedTab] = useState(1);
-
+  async function getMapNodes() {
+    try {
+      const allNodes = await axios.get("/api/map");
+      const nodesData: Node[] = Object.values(allNodes.data);
+      console.log(nodesData);
+    } catch (error) {
+      console.error("Error fetching map nodes:", error);
+    }
+  }
   useEffect(() => {
     document.title = "home page";
-    console.log(`rendered component`);
+    getMapNodes();
   }, []);
 
   const handleTabClick = (tabIndex: number) => {
