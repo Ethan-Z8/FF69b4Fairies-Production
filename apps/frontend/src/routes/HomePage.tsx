@@ -9,12 +9,9 @@ import F1MapPath from "../assets/hospitalmaps/01_thefirstfloor.png";
 import F2MapPath from "../assets/hospitalmaps/02_thesecondfloor.png";
 import F3MapPath from "../assets/hospitalmaps/03_thethirdfloor.png";
 import TransformContainer from "../components/TransformContainer.tsx";
-//import {DisplayMapNodes} from "../components/DisplayMapNodes.tsx";
-//import {DisplayPath} from "../components/DisplayPath.tsx";
-//import {DisplayMapNodes} from "../components/DisplayMapNodes.tsx";
+
 import { DisplayPath } from "../components/DisplayPath.tsx";
-//import { DisplayMapNodes } from "../components/DisplayMapNodes.tsx";
-//import {DisplayMapNodes} from "../components/DisplayMapNodes.tsx";
+import axios from "axios";
 //import {DisplayMapNodes} from "../components/DisplayMapNodes.tsx";
 
 export const Desktop = ({
@@ -67,10 +64,18 @@ export const Desktop = ({
 
 function HomePage() {
   const [selectedTab, setSelectedTab] = useState(1);
-
+  async function getMapNodes() {
+    try {
+      const allNodes = await axios.get("/api/map");
+      const nodesData: Node[] = Object.values(allNodes.data);
+      console.log(nodesData);
+    } catch (error) {
+      console.error("Error fetching map nodes:", error);
+    }
+  }
   useEffect(() => {
     document.title = "home page";
-    console.log(`rendered component`);
+    getMapNodes();
   }, []);
 
   const handleTabClick = (tabIndex: number) => {

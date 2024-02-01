@@ -38,9 +38,12 @@ export function DisplayPath({ mapPath, start, end }: DisplayMapNodesProps) {
   useEffect(() => {
     const getMapNodes = async () => {
       try {
-        const pathString = await axios.get(
-          `/api/map/path?start=${start}&end=${end}`,
-        );
+        const pathString = await axios.get(`/api/map/path`, {
+          params: {
+            start: start,
+            end: end,
+          },
+        });
         console.log(pathString.data);
         const pathNodes = await axios.get(
           `/api/map/pathNodes?start=${start}&end=${end}`,
@@ -50,7 +53,7 @@ export function DisplayPath({ mapPath, start, end }: DisplayMapNodesProps) {
         console.log(nodesData);
         setNodes(nodesData);
       } catch (error) {
-        console.error("Error fetching map nodes:", error);
+        console.error("Error fetching map nodess:", error);
       }
     };
 
