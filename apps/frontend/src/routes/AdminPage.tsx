@@ -19,12 +19,14 @@ function AdminPage() {
     <div className="w-100 h-100 d-flex flex-column overflow-auto">
       <Desktop
         whatServiceOptions={<AdminServices />}
-        menuProp1={"ADMIN MENU"}
-        menuProp2={"UPLOAD DATA"}
-        menuProp3={"MAP DATA"}
-        menuProp4={"SERVICE DATA"}
-        menuProp5={"SERVICES"}
-        menuProp6={"TRANSPORT"}
+        navBarArray={[
+          "ADMIN MENU",
+          "UPLOAD DATA",
+          "MAP DATA",
+          "SERVICE DATA",
+          "SERVICES",
+          "TRANSPORT",
+        ]}
         pageStatus={"LOGOUT"}
         selectedTab={selectedTab}
         onTabClick={handleTabClick}
