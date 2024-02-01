@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useState, useEffect } from "react";
 import "../styling/DisplayMapNodes.css";
 import { CSSProperties } from "react";
+import NodeOnMap from "./NodeOnMap.tsx";
 
 interface Node {
   nodeID: string;
@@ -21,9 +22,20 @@ interface ImageSize {
   width: number;
   height: number;
 }
+
 export function DisplayPath({ mapPath, start, end }: DisplayMapNodesProps) {
+  const [firstClickedNodeId, setFirstClickedNodeId] = useState<string | null>(
+    start,
+  );
+  const [secondClickedNodeId, setSecondClickedNodeId] = useState<string | null>(
+    end,
+  );
   const [nodes, setNodes] = useState<Node[]>([]);
+  const [allNodes, setAllNodes] = useState<Node[]>([]);
   const [imageSize, setImageSize] = useState<ImageSize | null>(null);
+  const [counter, setCounter] = useState(false);
+
+  // error listener
   window.addEventListener("unhandledrejection", (event) => {
     const reason = event.reason;
 
@@ -35,29 +47,44 @@ export function DisplayPath({ mapPath, start, end }: DisplayMapNodesProps) {
       console.warn("Unhandled Promise Rejection with unknown reason:", reason);
     }
   });
+
   useEffect(() => {
     const getMapNodes = async () => {
       try {
-        const pathString = await axios.get(`/api/map/path`, {
+        // const pathString = await axios.get(`/api/map/path`, {
+        //   params: {
+        //     start: start,
+        //     end: end,
+        //   },
+        // });
+        //console.log(pathString.data);
+
+        const pathNodes = await axios.get(`/api/map/pathNodes`, {
           params: {
-            start: start,
-            end: end,
+            start: firstClickedNodeId,
+            end: secondClickedNodeId,
           },
         });
-        console.log(pathString.data);
-        const pathNodes = await axios.get(
-          `/api/map/pathNodes?start=${start}&end=${end}`,
-        );
-
         const nodesData: Node[] = Object.values(pathNodes.data);
-        console.log(nodesData);
         setNodes(nodesData);
       } catch (error) {
         console.error("Error fetching map nodess:", error);
       }
     };
 
+    const getAllNodes = async () => {
+      try {
+        const allNodes = await axios.get(`/api/map`);
+
+        const nodesData: Node[] = Object.values(allNodes.data);
+        setAllNodes(nodesData);
+      } catch (error) {
+        console.error("Error fetching map nodess:", error);
+      }
+    };
+
     getMapNodes();
+    getAllNodes();
 
     const img = new Image();
     img.src = mapPath;
@@ -67,12 +94,23 @@ export function DisplayPath({ mapPath, start, end }: DisplayMapNodesProps) {
         height: img.height,
       });
     };
-  }, [start, end, mapPath]);
+  }, [firstClickedNodeId, secondClickedNodeId, mapPath]);
+  const handleNodeClick = (node: Node) => {
+    if (!counter) {
+      setSecondClickedNodeId("");
+      setFirstClickedNodeId(node.nodeID);
 
-  const renderCircles = (nodes: Node[]) => {
+      setCounter(true);
+    } else {
+      setSecondClickedNodeId(node.nodeID);
+      setCounter(false);
+    }
+  };
+
+  const renderPath = (nodes: Node[]) => {
     const circles = nodes.map((one, index) => {
-      console.log(nodes); // Log nodeID to console
-      console.log("inside rendercircles");
+      // console.log(nodes); // Log nodeID to console
+      // console.log("inside rendercircles");
 
       // Calculate previous node index
       const prevIndex = index - 1;
@@ -101,16 +139,22 @@ export function DisplayPath({ mapPath, start, end }: DisplayMapNodesProps) {
 
       return (
         <div key={one.nodeID} className="node-wrapper">
-          <div
-            className="node-circle"
-            style={{ left: `${one.xcoord}px`, top: `${one.ycoord}px` }}
-          ></div>
           {prevNode && <div className="line" style={lineStyles}></div>}
         </div>
       );
     });
 
     return circles;
+  };
+
+  const renderCircles = (allNodes: Node[]) => {
+    return allNodes.map((node) => {
+      return (
+        <div key={node.nodeID}>
+          <NodeOnMap node={node} onNodeClick={() => handleNodeClick(node)} />
+        </div>
+      );
+    });
   };
 
   return (
@@ -126,7 +170,10 @@ export function DisplayPath({ mapPath, start, end }: DisplayMapNodesProps) {
           alt="map"
           style={{ width: "100%", height: "100%" }}
         />
-        <div>{renderCircles(nodes)}</div>
+
+        <div>{renderCircles(allNodes)}</div>
+
+        <div>{renderPath(nodes)}</div>
       </div>
     </div>
   );
