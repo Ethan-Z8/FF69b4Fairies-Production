@@ -1,13 +1,9 @@
 import { SelectorTabs } from "./SelectorTabs.tsx";
 import LL1Map from "../components/LL1Map.tsx";
-import groundMapPath from "../assets/hospitalmaps/00_thegroundfloor.png";
 import LL1MapPath from "../assets/hospitalmaps/00_thelowerlevel1.png";
-import LL2MapPath from "../assets/hospitalmaps/00_thelowerlevel2.png";
-import F1MapPath from "../assets/hospitalmaps/01_thefirstfloor.png";
-import F2MapPath from "../assets/hospitalmaps/02_thesecondfloor.png";
-import F3MapPath from "../assets/hospitalmaps/03_thethirdfloor.png";
 import TransformContainer from "../components/TransformContainer.tsx";
 import React from "react";
+import PathFindingForm from "./PathFindingForm.tsx";
 
 interface menuProps {
   menuProp1: string;
@@ -34,32 +30,13 @@ export const Desktop = ({
   menuProp6,
   pageStatus,
 }: menuProps) => {
-  let mapPath = LL1MapPath; //Ground map
-
-  if (selectedTab === 0) {
-    // Ground map
-    mapPath = groundMapPath;
-  }
-  if (selectedTab === 2) {
-    // LL2 map
-    mapPath = LL2MapPath;
-  }
-  if (selectedTab === 3) {
-    // F1 map
-    mapPath = F1MapPath;
-  }
-  if (selectedTab === 4) {
-    // F2 map
-    mapPath = F2MapPath;
-  }
-  if (selectedTab === 5) {
-    // F3 map
-    mapPath = F3MapPath;
-  }
+  const mapPath = LL1MapPath;
 
   return (
     <div className="home-frame">
+      {selectedTab === 2 && <PathFindingForm />}
       {selectedTab === 4 && whatServiceOptions}
+
       <div className="Top-Bar">
         <SelectorTabs
           option1={menuProp1}

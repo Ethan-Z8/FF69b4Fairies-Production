@@ -21,7 +21,7 @@ function HomePage() {
         whatServiceOptions={<GeneralServices />}
         menuProp1={"HELP"}
         menuProp2={"LANGUAGE"}
-        menuProp3={"FLOWERS"}
+        menuProp3={"PATH"}
         menuProp4={"RELIGIOUS"}
         menuProp5={"SERVICES"}
         menuProp6={"ACCESSIBILITY"}
@@ -34,15 +34,3 @@ function HomePage() {
 }
 
 export default HomePage;
-
-// <div className="home-frame">
-//             {selectedTab === 4 && <RequestingService />}
-//             <div className="Top-Bar">
-//                 <SelectorTabs
-//                     option1={"HELP"}
-//                     option2={"LANGUAGE"}
-//                     option3={"FLOWERS"}
-//                     option4={"RELIGIOUS"}
-//                     option5={"SERVICES"}
-//                     option6={"TRANSPORT"}
-//                     statusOfPage={"LOGIN"} onTabClick={onTabClick} />
