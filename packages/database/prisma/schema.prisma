@@ -35,6 +35,11 @@ model MapEdge {
   end       MapNode @relation("end", fields: [endNode], references: [nodeID])
 }
 
+model ServiceRequest {
+  id   Int    @id
+  name String
+}
+
 model HighScore {
   id    Int      @id @default(autoincrement())
   time  DateTime

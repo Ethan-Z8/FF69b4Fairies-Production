@@ -1,10 +1,9 @@
-// SelectorTabs.tsx
-
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../styling/SelectorTabs.css";
 import logo from "../assets/image-1.png";
 import "../styling/GoToLogin.css";
+import HamburgerMenu from "./HamburgerMenu"; // Ensure HamburgerMenu is used correctly
 
 interface SelectorTabsProps {
   statusOfPage: string;
@@ -33,15 +32,13 @@ export function SelectorTabs({ statusOfPage, onTabClick }: SelectorTabsProps) {
 
   const handleTabClick = (tabNumber: number) => {
     setSelectedTab(tabNumber);
-    onTabClick(tabNumber); // Invoke the onTabClick prop here
+    onTabClick(tabNumber);
   };
 
   const handleButtonClick = () => {
     if (statusOfPage === "LOGOUT") {
-      // Redirect to homepage when clicking logout on Admin Page
       navigate("/");
     } else {
-      // Redirect to login page when clicking login on Home Page
       navigate("/loginPage");
     }
   };
@@ -50,20 +47,32 @@ export function SelectorTabs({ statusOfPage, onTabClick }: SelectorTabsProps) {
 
   return (
     <header className="selector-tabs-container">
-      <div>
+      <div className={"logo-container"}>
         <img className={"hospitalLogo"} src={logo} alt="Hospital Logo" />
       </div>
       {[0, 1, 2, 3, 4, 5].map((tabIndex) => (
         <div
           key={tabIndex}
           className={`selector-tab ${selectedTab === tabIndex ? "active" : ""}`}
-          onClick={() => {
-            handleTabClick(tabIndex);
-          }}
+          onClick={() => handleTabClick(tabIndex)}
         >
           {floorList[tabIndex]}
         </div>
       ))}
+
+      <HamburgerMenu
+        menuItems={[
+          { name: "GRND", index: 0 },
+          { name: "LL1", index: 1 },
+          { name: "LL2", index: 2 },
+          { name: "F1", index: 3 },
+          { name: "F2", index: 4 },
+          { name: "F3", index: 5 },
+        ]}
+        onMenuItemClick={handleTabClick} // This ensures that clicking a menu item triggers the tab change
+        selectedTabIndex={selectedTab} // Pass the currently selected tab index
+      />
+
       <LoginButtonForSelectorTab
         loginorlogout={statusOfPage}
         onButtonClick={handleButtonClick}

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "../styling/homePage.css";
 import { SelectorTabs } from "../components/SelectorTabs.tsx";
-import LL1Map from "../components/LL1Map.tsx";
+import LL1Map from "../components/Map.tsx";
 import groundMapPath from "../assets/hospitalmaps/00_thegroundfloor.png";
 import LL1MapPath from "../assets/hospitalmaps/00_thelowerlevel1.png";
 import LL2MapPath from "../assets/hospitalmaps/00_thelowerlevel2.png";
