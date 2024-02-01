@@ -1,24 +1,31 @@
 import express, { Request, Response, Router } from "express";
-import PrismaClient from "../bin/database-connection.ts";
+import Prisma from "../bin/database-connection.ts";
 import Pathfinder from "../algorithms/Pathfinder.ts";
+import MapNode, { MapNodeNoNeighbors } from "../algorithms/MapNode.ts";
+import { Readable } from "stream";
+import MapEdge from "../algorithms/MapEdge.ts";
+import archiver from "archiver";
 
-type StartAndEndNodes = {
-  start?: string;
-  end?: string;
-};
+import multer from "multer";
 
-const router: Router = express.Router();
+export const mapRouter: Router = express.Router();
 let pathFindingGraph: Pathfinder;
+const nodeCache: Set<MapNodeNoNeighbors> = new Set();
+const edgeCache: Set<MapEdge> = new Set();
+const upload = multer();
 
 /**
  * Gets the entire map. Grabs the nodes and edges from the database, then connects them
  *
  * No request body needed
  */
-router.get("/", async (req: Request, res: Response) => {
+mapRouter.get("/", async (_: Request, res: Response) => {
   try {
-    const nodes = await PrismaClient.mapNode.findMany();
-    const edges = await PrismaClient.mapEdge.findMany();
+    const nodes = await Prisma.mapNode.findMany();
+    const edges = await Prisma.mapEdge.findMany();
+    nodes.forEach((node) => nodeCache.add(node));
+    edges.forEach((edge) => edgeCache.add(edge));
+
     pathFindingGraph = new Pathfinder(nodes, edges);
 
     // The Object.fromEntries converts the graph (which is a HashMap) to an object literal, so it can be sent
@@ -33,11 +40,23 @@ router.get("/", async (req: Request, res: Response) => {
  *
  * The points are formatted at start=point1 and end=point2 in the request parameters
  */
-router.get("/path", async (req, res) => {
+mapRouter.get("/path", async (req, res) => {
+  const nodes = await Prisma.mapNode.findMany();
+  const edges = await Prisma.mapEdge.findMany();
+  nodes.forEach((node) => nodeCache.add(node));
+  edges.forEach((edge) => edgeCache.add(edge));
+
+  pathFindingGraph = new Pathfinder(nodes, edges);
+
+  type StartAndEndNodes = {
+    start: string;
+    end: string;
+  };
   const endpoints = req.query as StartAndEndNodes;
+  console.log(endpoints.start, endpoints.end);
   const shortestPath: string[] = pathFindingGraph.findShortestPath(
-    endpoints.start!,
-    endpoints.end!,
+    endpoints.start,
+    endpoints.end,
   );
   if (shortestPath.length == 0) {
     res
@@ -49,4 +68,115 @@ router.get("/path", async (req, res) => {
     res.status(200).send(shortestPath);
   }
 });
-export default router;
+
+mapRouter.get("/pathNodes", async (req: Request, res: Response) => {
+  const nodes = await Prisma.mapNode.findMany();
+  const edges = await Prisma.mapEdge.findMany();
+  nodes.forEach((node) => nodeCache.add(node));
+  edges.forEach((edge) => edgeCache.add(edge));
+
+  pathFindingGraph = new Pathfinder(nodes, edges);
+
+  try {
+    type StartAndEndNodes = {
+      start?: string;
+      end?: string;
+    };
+    const endpoints = req.query as StartAndEndNodes;
+    const shortestPathNodes: Map<string, MapNode> =
+      pathFindingGraph.findShortestPathNodes(endpoints.start!, endpoints.end!);
+
+    if (shortestPathNodes.size === 0) {
+      res.status(400).json({
+        error:
+          "One of your nodes is not in the database, or a path couldn't be found",
+      });
+    } else {
+      // Convert the Map values to an array for response
+
+      // You can customize the response as needed
+      res.status(200).json(Object.fromEntries(shortestPathNodes));
+    }
+  } catch (e) {
+    console.error(e);
+    res.status(500).send("Internal server error");
+  }
+});
+
+/**
+ * Endpoint to get all the nodes and edges in the database and export them as a zip file
+ */
+mapRouter.get("/export", async (_: Request, res: Response) => {
+  function dataToCSVStream(data: Array<object>): Readable {
+    const headers: string = Object.keys(data[0]).join(",") + "\n";
+    const body: string = data
+      .map((line) => Object.values(line).join(","))
+      .join("\n");
+
+    return Readable.from(headers + body);
+  }
+
+  try {
+    // Read from the database and convert data to streams
+    const nodes: MapNodeNoNeighbors[] = await Prisma.mapNode.findMany();
+    const edges: MapEdge[] = await Prisma.mapEdge.findMany();
+    const nodesCSV: Readable = dataToCSVStream(nodes);
+    const edgesCSV: Readable = dataToCSVStream(edges);
+
+    // Create an archive of the streams(basically a zip file) and pipe it into the response
+    const archive = archiver("zip", {
+      zlib: { level: 9 },
+    });
+    archive.append(nodesCSV, { name: "nodes.csv" });
+    archive.append(edgesCSV, { name: "edges.csv" });
+
+    // Tell the client that the response is a file named map_data.zip
+    res.set({
+      "Content-Type": "application/zip", // Set the appropriate content type
+      "Content-Disposition": 'attachment; filename="map_data.zip"', // Specify the filename
+    });
+
+    // Send the successful response
+    await archive.finalize();
+    archive.pipe(res);
+    res.status(200);
+  } catch (e) {
+    res.status(401).send("could not export file");
+    console.log(e);
+  }
+});
+
+mapRouter.post(
+  "/import",
+  upload.array("csvFiles", 2),
+  async (req: Request, res: Response) => {
+    // Use Multer to get the files
+    const files = req.files as Express.Multer.File[];
+
+    // Parse the input files into Map Nodes and Map Edges
+    const nodesWithNeighbors = MapNode.csvStringToNodes(
+      files[0].buffer.toString(),
+    );
+    const nodes: MapNodeNoNeighbors[] =
+      MapNode.dropNeighbors(nodesWithNeighbors);
+    const edges: MapEdge[] = MapEdge.csvStringToEdges(
+      files[1].buffer.toString(),
+    );
+
+    // Insert all the provided map nodes and edges, but silently ignore duplicates
+    try {
+      await Prisma.mapNode.createMany({
+        data: nodes,
+        skipDuplicates: true,
+      });
+      await Prisma.mapEdge.createMany({
+        data: edges,
+        skipDuplicates: true,
+      });
+      res.sendStatus(200);
+    } catch (e) {
+      console.log(e);
+      res.sendStatus(401);
+    }
+  },
+);

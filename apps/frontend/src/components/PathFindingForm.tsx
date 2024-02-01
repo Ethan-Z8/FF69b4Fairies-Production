@@ -1,20 +1,31 @@
-import { FormEvent, useState } from "react";
+import React, { FormEvent, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Offcanvas from "react-bootstrap/Offcanvas";
 
-function PathFindingForm() {
+export type PathFindingFormProps = {
+  startNode: string;
+  setStartNode: (value: string) => void;
+  endNode: string;
+  setEndNode: (value: string) => void;
+  onFormSubmit: () => void;
+};
+
+function PathFindingForm({
+  startNode,
+  setStartNode,
+  endNode,
+  setEndNode,
+  onFormSubmit,
+}: PathFindingFormProps) {
   const [show, setShow] = useState(true);
-  const [path1, setPath1] = useState("");
-  const [path2, setPath2] = useState("");
 
   const handleClose = () => setShow(false);
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-    console.log("Path1: " + path1);
-    console.log("Path2: " + path2);
-    setPath1("");
-    setPath2("");
+    console.log("Path1: " + startNode);
+    console.log("Path2: " + endNode);
+    onFormSubmit();
     setShow(false);
   };
 
@@ -28,15 +39,15 @@ function PathFindingForm() {
           <form onSubmit={handleSubmit}>
             <h4>First Location</h4>
             <input
-              onChange={(e) => setPath1(e.target.value)}
+              onChange={(e) => setStartNode(e.target.value)}
               type={"text"}
-              value={path1}
+              value={startNode}
             />
             <h4>Second Location</h4>
             <input
-              onChange={(e) => setPath2(e.target.value)}
+              onChange={(e) => setEndNode(e.target.value)}
               type={"text"}
-              value={path2}
+              value={endNode}
             />
             <br />
             <Button variant="primary" type="submit">

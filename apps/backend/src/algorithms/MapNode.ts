@@ -43,7 +43,14 @@ export default class MapNode {
    */
   static readCsv(filename: PathOrFileDescriptor) {
     const input = readFileSync(filename, "utf8");
+    return MapNode.csvStringToNodes(input);
+  }
 
+  /**
+   * Creates an array of Mapnodes from a csv formatted string
+   * @param filename -- the csv file to get data from
+   */
+  static csvStringToNodes(input: string): MapNode[] {
     const lines = input.split(/\r?\n/).slice(1, -1);
     // THe first line is the categories, and the last line is blank
     const splitLines = lines.map((aline) => aline.split(","));
@@ -78,5 +85,13 @@ export default class MapNode {
       map.get(edge.endNode)?.neighbors.push(edge.startNode);
     }
     return map;
+  }
+
+  static dropNeighbors(nodes: MapNode[]): MapNodeNoNeighbors[] {
+    return nodes.map((node: MapNode) => {
+      // Can ignore this warning because we need to get the neighbors by name to omit them
+      const { neighbors, ...rest } = node; //eslint-disable-line
+      return rest;
+    });
   }
 }
