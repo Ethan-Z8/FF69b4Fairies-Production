@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 
-import "../style/ServiceRequestLog.css";
+import "../styling/ServiceRequestLog.css";
 
 import { BackButtonForAdmin } from "../components/BackButtonForAdmin.tsx";
 
@@ -17,10 +17,20 @@ function ServiceRequestLog() {
 
       <table>
         <tr>
+          <th>Name</th>
+          <th>ServiceRequest</th>
+        </tr>
+        <tr>
           <th>Doctor John</th>
           <th>Doctor Rahim</th>
           <th>Doctor Anderson</th>
           <th>Doctor Bob</th>
+        </tr>
+        <tr>
+          <th>A</th>
+          <th>B</th>
+          <th>C</th>
+          <th>D</th>
         </tr>
       </table>
     </div>
