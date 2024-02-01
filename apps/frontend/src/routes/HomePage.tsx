@@ -9,6 +9,13 @@ import F1MapPath from "../assets/hospitalmaps/01_thefirstfloor.png";
 import F2MapPath from "../assets/hospitalmaps/02_thesecondfloor.png";
 import F3MapPath from "../assets/hospitalmaps/03_thethirdfloor.png";
 import TransformContainer from "../components/TransformContainer.tsx";
+//import {DisplayMapNodes} from "../components/DisplayMapNodes.tsx";
+//import {DisplayPath} from "../components/DisplayPath.tsx";
+//import {DisplayMapNodes} from "../components/DisplayMapNodes.tsx";
+import { DisplayPath } from "../components/DisplayPath.tsx";
+//import { DisplayMapNodes } from "../components/DisplayMapNodes.tsx";
+//import {DisplayMapNodes} from "../components/DisplayMapNodes.tsx";
+//import {DisplayMapNodes} from "../components/DisplayMapNodes.tsx";
 
 export const Desktop = ({
   selectedTab,
@@ -40,6 +47,9 @@ export const Desktop = ({
     mapPath = F3MapPath;
   }
 
+  const pathStart = "CLABS002L1";
+  const pathEnd = "CHALL008L1";
+
   return (
     <div className="home-frame">
       <div className="Top-Bar">
@@ -47,6 +57,7 @@ export const Desktop = ({
       </div>
       <div className="mapPage">
         <TransformContainer>
+          <DisplayPath mapPath={mapPath} start={pathStart} end={pathEnd} />
           <LL1Map mapPath={mapPath} />
         </TransformContainer>
       </div>
