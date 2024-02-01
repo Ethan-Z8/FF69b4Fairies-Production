@@ -22,7 +22,7 @@
 
 .service-request-table th,
 .service-request-table td {
-  border: 1px solid #ddd;
+  border: 1px solid black;
   padding: 8px;
   text-align: left;
 }
@@ -33,7 +33,7 @@
 }
 
 .service-request-table th {
-  background-color: #f2f2f2;
+  background-color: white;
 }
 
 .add-row-section {
