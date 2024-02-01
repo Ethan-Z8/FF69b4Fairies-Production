@@ -19,12 +19,14 @@ function HomePage() {
     <div className="w-100 h-100 d-flex flex-column overflow-auto">
       <Desktop
         whatServiceOptions={<GeneralServices />}
-        menuProp1={"HELP"}
-        menuProp2={"LANGUAGE"}
-        menuProp3={"PATH"}
-        menuProp4={"RELIGIOUS"}
-        menuProp5={"SERVICES"}
-        menuProp6={"ACCESSIBILITY"}
+        navBarArray={[
+          "HELP",
+          "LANGUAGE",
+          "PATH",
+          "ACCESSIBILITY",
+          "SERVICES",
+          "FLOWERS",
+        ]}
         pageStatus={"LOGIN"}
         selectedTab={selectedTab}
         onTabClick={handleTabClick}
