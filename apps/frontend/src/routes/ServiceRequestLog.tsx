@@ -14,7 +14,6 @@ function ServiceRequestLog() {
   return (
     <div className={"ServiceTable"}>
       <BackButtonForAdmin />
-
       <table>
         <tr>
           <th>Name</th>
@@ -22,15 +21,11 @@ function ServiceRequestLog() {
         </tr>
         <tr>
           <th>Doctor John</th>
-          <th>Doctor Rahim</th>
-          <th>Doctor Anderson</th>
-          <th>Doctor Bob</th>
+          <th>Clean-up</th>
         </tr>
         <tr>
-          <th>A</th>
-          <th>B</th>
-          <th>C</th>
-          <th>D</th>
+          <th>Doctor Rahim</th>
+          <th>Clean-up</th>
         </tr>
       </table>
     </div>
