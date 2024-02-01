@@ -13,7 +13,7 @@ import TransformContainer from "../components/TransformContainer.tsx";
 //import {DisplayPath} from "../components/DisplayPath.tsx";
 //import {DisplayMapNodes} from "../components/DisplayMapNodes.tsx";
 import { DisplayPath } from "../components/DisplayPath.tsx";
-import { DisplayMapNodes } from "../components/DisplayMapNodes.tsx";
+//import { DisplayMapNodes } from "../components/DisplayMapNodes.tsx";
 //import {DisplayMapNodes} from "../components/DisplayMapNodes.tsx";
 //import {DisplayMapNodes} from "../components/DisplayMapNodes.tsx";
 
@@ -47,6 +47,9 @@ export const Desktop = ({
     mapPath = F3MapPath;
   }
 
+  const pathStart = "CLABS002L1";
+  const pathEnd = "CHALL008L1";
+
   return (
     <div className="home-frame">
       <div className="Top-Bar">
@@ -54,12 +57,7 @@ export const Desktop = ({
       </div>
       <div className="mapPage">
         <TransformContainer>
-          <DisplayMapNodes mapPath={mapPath} />
-          <DisplayPath
-            mapPath={mapPath}
-            start={"CDEPT003L1"}
-            end={"CHALL008L1"}
-          />
+          <DisplayPath mapPath={mapPath} start={pathStart} end={pathEnd} />
           <LL1Map mapPath={mapPath} />
         </TransformContainer>
       </div>
