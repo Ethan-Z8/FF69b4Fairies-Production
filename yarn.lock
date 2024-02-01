@@ -1147,7 +1147,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/multer@npm:^1":
+"@types/multer@npm:^1, @types/multer@npm:^1.4.11":
   version: 1.4.11
   resolution: "@types/multer@npm:1.4.11"
   dependencies:
@@ -6446,6 +6446,7 @@ __metadata:
   resolution: "softeng-starter-code@workspace:."
   dependencies:
     "@types/express": "npm:^4.17.21"
+    "@types/multer": "npm:^1.4.11"
     "@types/react": "npm:^18.0.37"
     "@types/react-dom": "npm:^18.0.11"
     "@vitest/ui": "npm:^0.33.0"

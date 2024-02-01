@@ -9,9 +9,6 @@ import archiver from "archiver";
 import multer from "multer";
 
 export const mapRouter: Router = express.Router();
-let pathFindingGraph: Pathfinder;
-const nodeCache: Set<MapNodeNoNeighbors> = new Set();
-const edgeCache: Set<MapEdge> = new Set();
 const upload = multer();
 
 /**
@@ -23,13 +20,9 @@ mapRouter.get("/", async (_: Request, res: Response) => {
   try {
     const nodes = await Prisma.mapNode.findMany();
     const edges = await Prisma.mapEdge.findMany();
-    nodes.forEach((node) => nodeCache.add(node));
-    edges.forEach((edge) => edgeCache.add(edge));
-
-    pathFindingGraph = new Pathfinder(nodes, edges);
 
     // The Object.fromEntries converts the graph (which is a HashMap) to an object literal, so it can be sent
-    res.json(Object.fromEntries(pathFindingGraph.getNodes()));
+    res.json(Object.fromEntries(MapNode.connectNodes(nodes, edges)));
   } catch (e) {
     res.status(400).send("GET map failed");
   }
@@ -41,65 +34,31 @@ mapRouter.get("/", async (_: Request, res: Response) => {
  * The points are formatted at start=point1 and end=point2 in the request parameters
  */
 mapRouter.get("/path", async (req, res) => {
-  const nodes = await Prisma.mapNode.findMany();
-  const edges = await Prisma.mapEdge.findMany();
-  nodes.forEach((node) => nodeCache.add(node));
-  edges.forEach((edge) => edgeCache.add(edge));
-
-  pathFindingGraph = new Pathfinder(nodes, edges);
-
   type StartAndEndNodes = {
     start: string;
     end: string;
   };
-  const endpoints = req.query as StartAndEndNodes;
-  console.log(endpoints.start, endpoints.end);
-  const shortestPath: string[] = pathFindingGraph.findShortestPath(
-    endpoints.start,
-    endpoints.end,
-  );
-  if (shortestPath.length == 0) {
-    res
-      .status(400)
-      .send(
-        "one of your nodes is not in the database, or a path couldn't be found",
-      );
-  } else {
-    res.status(200).send(shortestPath);
-  }
-});
-
-mapRouter.get("/pathNodes", async (req: Request, res: Response) => {
-  const nodes = await Prisma.mapNode.findMany();
-  const edges = await Prisma.mapEdge.findMany();
-  nodes.forEach((node) => nodeCache.add(node));
-  edges.forEach((edge) => edgeCache.add(edge));
-
-  pathFindingGraph = new Pathfinder(nodes, edges);
-
   try {
-    type StartAndEndNodes = {
-      start?: string;
-      end?: string;
-    };
     const endpoints = req.query as StartAndEndNodes;
-    const shortestPathNodes: Map<string, MapNode> =
-      pathFindingGraph.findShortestPathNodes(endpoints.start!, endpoints.end!);
-
-    if (shortestPathNodes.size === 0) {
-      res.status(400).json({
-        error:
-          "One of your nodes is not in the database, or a path couldn't be found",
-      });
+    const nodes = await Prisma.mapNode.findMany();
+    const edges = await Prisma.mapEdge.findMany();
+    const pathFindingGraph = new Pathfinder(nodes, edges);
+    const shortestPath: string[] = pathFindingGraph.findShortestPath(
+      endpoints.start,
+      endpoints.end,
+    );
+    if (shortestPath.length == 0) {
+      res
+        .status(400)
+        .send(
+          "one of your nodes is not in the database, or a path couldn't be found",
+        );
     } else {
-      // Convert the Map values to an array for response
-
-      // You can customize the response as needed
-      res.status(200).json(Object.fromEntries(shortestPathNodes));
+      res.status(200).send(shortestPath);
     }
   } catch (e) {
-    console.error(e);
-    res.status(500).send("Internal server error");
+    console.log(e);
+    res.sendStatus(402);
   }
 });
 
@@ -146,25 +105,37 @@ mapRouter.get("/export", async (_: Request, res: Response) => {
   }
 });
 
+/**
+ * Takes 2 csv files, one names "nodes", and one named "edges", and inserts them into the database
+ *
+ *
+ */
 mapRouter.post(
   "/import",
-  upload.array("csvFiles", 2),
+  upload.fields([
+    { name: "nodes", maxCount: 1 },
+    { name: "edges", maxCount: 1 },
+  ]),
   async (req: Request, res: Response) => {
     // Use Multer to get the files
-    const files = req.files as Express.Multer.File[];
+    // Bro what is this typecasting
+    const files = req.files as { [key: string]: Express.Multer.File[] };
+    const nodesFile = files["nodes"] as Express.Multer.File[];
+    const edgesFile: Express.Multer.File[] = files["edges"];
 
-    // Parse the input files into Map Nodes and Map Edges
-    const nodesWithNeighbors = MapNode.csvStringToNodes(
-      files[0].buffer.toString(),
-    );
-    const nodes: MapNodeNoNeighbors[] =
-      MapNode.dropNeighbors(nodesWithNeighbors);
-    const edges: MapEdge[] = MapEdge.csvStringToEdges(
-      files[1].buffer.toString(),
-    );
-
-    // Insert all the provided map nodes and edges, but silently ignore duplicates
     try {
+      // Parse the input files into Map Nodes and Map Edges
+      const nodesWithNeighbors = MapNode.csvStringToNodes(
+        nodesFile[0].buffer.toString(),
+      );
+      const nodes: MapNodeNoNeighbors[] =
+        MapNode.dropNeighbors(nodesWithNeighbors);
+
+      const edges: MapEdge[] = MapEdge.csvStringToEdges(
+        edgesFile[0].buffer.toString(),
+      );
+
+      // Insert all the provided map nodes and edges, but silently ignore duplicates
       await Prisma.mapNode.createMany({
         data: nodes,
         skipDuplicates: true,
@@ -175,7 +146,8 @@ mapRouter.post(
       });
       res.sendStatus(200);
     } catch (e) {
-      console.log(e);
+      const typedError = e as Error;
+      console.log(typedError.message);
       res.sendStatus(401);
     }
   },
