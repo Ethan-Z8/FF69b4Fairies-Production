@@ -1,5 +1,5 @@
 import { PathOrFileDescriptor, readFileSync } from "fs";
-import { MapEdgeInterface } from "../interfaces/MapEdgeInterface";
+import { MapEdgeInterface } from "../../../../packages/common/src/interfaces/MapEdgeInterface";
 
 export default class MapEdge implements MapEdgeInterface {
   edgeID: string;

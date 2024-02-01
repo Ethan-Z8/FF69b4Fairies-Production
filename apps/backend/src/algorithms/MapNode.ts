@@ -1,6 +1,6 @@
 import { PathOrFileDescriptor, readFileSync } from "fs";
 import MapEdge from "./MapEdge.ts";
-import { MapNodeInterface } from "../interfaces/MapNodeInterface.ts";
+import { MapNodeInterface } from "../../../../packages/common/src/interfaces/MapNodeInterface.ts";
 
 /**
  * Defining an omit type that does not have an array of neighbors.
