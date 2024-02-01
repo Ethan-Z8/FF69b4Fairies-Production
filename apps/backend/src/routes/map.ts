@@ -6,7 +6,6 @@ import { Readable } from "stream";
 import MapEdge from "../algorithms/MapEdge.ts";
 import archiver from "archiver";
 
-import MapNode from "../algorithms/MapNode.ts";
 import multer from "multer";
 
 export const mapRouter: Router = express.Router();
@@ -42,14 +41,22 @@ mapRouter.get("/", async (_: Request, res: Response) => {
  * The points are formatted at start=point1 and end=point2 in the request parameters
  */
 mapRouter.get("/path", async (req, res) => {
+  const nodes = await Prisma.mapNode.findMany();
+  const edges = await Prisma.mapEdge.findMany();
+  nodes.forEach((node) => nodeCache.add(node));
+  edges.forEach((edge) => edgeCache.add(edge));
+
+  pathFindingGraph = new Pathfinder(nodes, edges);
+
   type StartAndEndNodes = {
     start: string;
     end: string;
   };
   const endpoints = req.query as StartAndEndNodes;
+  console.log(endpoints.start, endpoints.end);
   const shortestPath: string[] = pathFindingGraph.findShortestPath(
-    endpoints.start!,
-    endpoints.end!,
+    endpoints.start,
+    endpoints.end,
   );
   if (shortestPath.length == 0) {
     res
@@ -63,6 +70,13 @@ mapRouter.get("/path", async (req, res) => {
 });
 
 mapRouter.get("/pathNodes", async (req: Request, res: Response) => {
+  const nodes = await Prisma.mapNode.findMany();
+  const edges = await Prisma.mapEdge.findMany();
+  nodes.forEach((node) => nodeCache.add(node));
+  edges.forEach((edge) => edgeCache.add(edge));
+
+  pathFindingGraph = new Pathfinder(nodes, edges);
+
   try {
     type StartAndEndNodes = {
       start?: string;
