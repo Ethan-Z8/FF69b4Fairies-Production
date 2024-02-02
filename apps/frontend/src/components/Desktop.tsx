@@ -1,11 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { SelectorTabs } from "./SelectorTabs.tsx";
 import Map from "../components/Map.tsx";
+import GroundFloorMapPath from "../assets/hospitalmaps/00_thegroundfloor.png";
 import LL1MapPath from "../assets/hospitalmaps/00_thelowerlevel1.png";
+import LL2MapPath from "../assets/hospitalmaps/00_thelowerlevel2.png";
+import FirstFloorMapPath from "../assets/hospitalmaps/01_thefirstfloor.png";
+import SecondFloorMapPath from "../assets/hospitalmaps/02_thesecondfloor.png";
+import ThirdFloorMapPath from "../assets/hospitalmaps/03_thethirdfloor.png";
 import TransformContainer from "../components/TransformContainer.tsx";
 import PathFindingForm from "./PathFindingForm.tsx";
 import { DisplayPath } from "./DisplayPath.tsx";
 import axios from "axios";
+
 interface menuProps {
   navBarArray: Array<string>;
   pageStatus: string;
@@ -23,13 +29,36 @@ export const Desktop = ({
 }: menuProps) => {
   const [pathStart, setPathStart] = useState<string>("");
   const [pathEnd, setPathEnd] = useState<string>("");
-
+  let mapPath = LL1MapPath;
   const handleFormSubmit = () => {
     setPathStart(pathStart);
     setPathEnd(pathEnd);
   };
 
-  const mapPath = LL1MapPath;
+  if (selectedTab === 0) {
+    mapPath = GroundFloorMapPath;
+  }
+
+  if (selectedTab === 1) {
+    mapPath = LL1MapPath;
+  }
+
+  if (selectedTab === 2) {
+    mapPath = LL2MapPath;
+  }
+
+  if (selectedTab === 3) {
+    mapPath = FirstFloorMapPath;
+  }
+
+  if (selectedTab === 4) {
+    mapPath = SecondFloorMapPath;
+  }
+
+  if (selectedTab === 5) {
+    mapPath = ThirdFloorMapPath;
+  }
+
   async function getMapNodes() {
     try {
       const allNodes = await axios.get("/api/map");
