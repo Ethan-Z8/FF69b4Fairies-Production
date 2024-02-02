@@ -1,42 +1,36 @@
-import React, { useEffect } from "react";
-
-import "../style/homePage.css";
-
-import HospitalLogo from "../assets/image-1.png";
-//import GoToLogin from "../components/GoToLogin.tsx";
-import LL1Map from "../components/Map.tsx";
-import { SelectorTabs } from "../components/SelectorTabs.tsx";
-//import CloseProgram from "../components/CloseProgram.tsx";
-import LogOutButton from "../components/LogOutButton.tsx";
-
-export const Desktop = () => {
-  return (
-    <div className="home-frame">
-      <LL1Map />
-
-      <div className="Top-Banner" />
-      <img className="Hospital-Logo" alt="Image" src={HospitalLogo} />
-
-      <div className="Hospital-Copyright">
-        © Brigham and Women&#39;s hospital
-      </div>
-      <div className="Bottom-Bar">
-        <SelectorTabs />
-        <LogOutButton />
-      </div>
-    </div>
-  );
-};
+import React, { useEffect, useState } from "react";
+import "../styling/homePage.css";
+import { Desktop } from "../components/Desktop.tsx";
+import AdminServices from "../components/AdminServices.tsx";
 
 function AdminPage() {
+  const [selectedTab, setSelectedTab] = useState(1);
+
   useEffect(() => {
-    document.title = "Admin Page";
+    document.title = "admin page";
     console.log(`rendered component`);
-  });
+  }, []);
+
+  const handleTabClick = (tabIndex: number) => {
+    setSelectedTab(tabIndex);
+  };
 
   return (
     <div className="w-100 h-100 d-flex flex-column overflow-auto">
-      <Desktop />
+      <Desktop
+        whatServiceOptions={<AdminServices />}
+        navBarArray={[
+          "ADMIN MENU",
+          "UPLOAD DATA",
+          "MAP DATA",
+          "SERVICE DATA",
+          "SERVICES",
+          "TRANSPORT",
+        ]}
+        pageStatus={"LOGOUT"}
+        selectedTab={selectedTab}
+        onTabClick={handleTabClick}
+      />
     </div>
   );
 }

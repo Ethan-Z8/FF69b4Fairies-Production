@@ -49,6 +49,7 @@ function PasswordInput({
     />
   );
 }
+
 export function StaffFields() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -60,7 +61,7 @@ export function StaffFields() {
     e.preventDefault();
 
     // Check if the entered username and password match the expected values
-    if (username === "ff69b4" && password === "wong") {
+    if (username === "admin" && password === "admin") {
       // Successful login
       setLoginFailure(false);
       setLoginSuccess(true);
@@ -70,6 +71,8 @@ export function StaffFields() {
       setPassword("");
       setLoginFailure(true);
       setLoginSuccess(false);
+      console.log("Username: " + username);
+      console.log("Password: " + password);
     }
   };
 

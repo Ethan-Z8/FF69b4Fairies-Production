@@ -6,17 +6,21 @@
 
 .home-frame .Login-Button {
   color: #042c5c;
-  font-family: "Anonymous Pro-Bold", Helvetica, sans-serif;
   align-items: center;
   justify-content: center;
   font-size: 40px;
   font-weight: 700;
   height: 110px;
   width: 210px;
-  position: fixed;
   bottom: 0;
   right: 0;
   line-height: normal;
   text-align: center;
   display: flex;
+}
+.Login-Button {
+  cursor: pointer;
+}
+.Login-Button:hover {
+  background-color: hsl(0, 0%, 90%);
 }

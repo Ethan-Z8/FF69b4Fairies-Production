@@ -1,0 +1,58 @@
+.ServiceTable {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: lightgray;
+}
+
+.service-request-table-container {
+  display: flex;
+  justify-content: center;
+  color: darkblue;
+  text-align: right;
+}
+
+.service-request-table {
+  width: 80%; /* Adjust the width as needed */
+  border-collapse: collapse;
+  background-color: lightgray;
+}
+
+.service-request-table th,
+.service-request-table td {
+  border: 1px solid black;
+  padding: 8px;
+  text-align: left;
+}
+
+.service-request-table .separator-row td {
+  border-top: 2px solid #ddd;
+  background-color: lightgray;
+}
+
+.service-request-table th {
+  background-color: white;
+}
+
+.add-row-section {
+  display: flex;
+  justify-content: center;
+}
+
+table {
+  border: 2px solid forestgreen;
+  color: black;
+  width: 800px;
+  height: 200px;
+  text-align: center;
+}
+
+th {
+  border-bottom: 1px solid black;
+}
+
+td {
+  text-align: center;
+}
