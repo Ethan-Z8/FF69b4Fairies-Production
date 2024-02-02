@@ -5,6 +5,8 @@ import LoginPage from "./routes/LoginPage.tsx";
 import AdminPage from "./routes/AdminPage.tsx";
 import MapDataPage from "./routes/MapDataPage.tsx";
 import "bootstrap/dist/css/bootstrap.min.css";
+//import ServicePage from "./routes/ServiceRequestMenu.tsx";
+import RequestLogPage from "./routes/ServiceRequestLog.tsx";
 
 function App() {
   const router = createBrowserRouter([
@@ -18,7 +20,7 @@ function App() {
           element: <HomePage />,
         },
         {
-          path: "/loginpage",
+          path: "/loginPage",
           element: <LoginPage />,
         },
         {
@@ -28,6 +30,10 @@ function App() {
         {
           path: "/mapdata",
           element: <MapDataPage />,
+        },
+        {
+          path: "/requestLogPage",
+          element: <RequestLogPage />,
         },
       ],
     },

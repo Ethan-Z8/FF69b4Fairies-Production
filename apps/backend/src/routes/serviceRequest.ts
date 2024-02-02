@@ -1,20 +1,11 @@
 import express, { Request, Response, Router } from "express";
-// import PrismaClient from "../bin/database-connection.ts";
+import prisma from "../bin/database-connection.ts";
 import { insertServiceRequest } from "database/src/Requests.ts";
 import { Prisma } from "database";
 
-export const serviceRouter: Router = express.Router();
+const router: Router = express.Router();
 
-/**
- * create a service request. For now, the location is a string
- * the request body should contain 3 fields:
- * {
- *     typeService: string,
- *     reason: string,
- *     nodeLoc: string
- * }
- */
-serviceRouter.post("/", async (req: Request, res: Response) => {
+router.post("/create", async (req: Request, res: Response) => {
   const serviceRequest: Prisma.ServiceRequestCreateInput = req.body;
   await insertServiceRequest(
     serviceRequest.typeService,
@@ -23,3 +14,20 @@ serviceRouter.post("/", async (req: Request, res: Response) => {
   );
   res.status(200).send("Successfully Inserted");
 });
+
+/**
+ * Gets all the service requests from the database
+ */
+
+router.get("/", async (req: Request, res: Response) => {
+  try {
+    const data = await prisma.serviceRequest.findMany();
+    res.json(data);
+  } catch (e) {
+    const typedError = e as Error;
+    console.log(typedError.message);
+    res.status(400).send("Error in getting service requests");
+  }
+});
+
+export default router;

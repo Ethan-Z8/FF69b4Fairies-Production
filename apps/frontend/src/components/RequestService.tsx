@@ -34,11 +34,13 @@ function RequestService({
     //   "Reason: " + reason,
     //   "NODE LOCATION" + nodeLoc,
     // );
-    axios.post("/api/serviceRequest/create", {
-      typeService: typeOfService,
-      reason: reason,
-      nodeLoc: nodeLoc,
-    });
+    axios
+      .post("/api/serviceRequest/create", {
+        typeService: typeOfService,
+        reason: reason,
+        nodeLoc: nodeLoc,
+      })
+      .then();
     setShow(false);
   };
 
