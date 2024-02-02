@@ -30,14 +30,14 @@ mapRouter.get("/", async (_: Request, res: Response) => {
 
 mapRouter.get("/allTemp", async (_: Request, res: Response) => {
   try {
+    console.log("running allTemp");
     const nodeCache: Set<MapNodeNoNeighbors> = new Set();
     const edgeCache: Set<MapEdge> = new Set();
     const nodes = await Prisma.mapNode.findMany();
     const edges = await Prisma.mapEdge.findMany();
     nodes.forEach((node) => nodeCache.add(node));
     edges.forEach((edge) => edgeCache.add(edge));
-    const pathFindingGraph: Pathfinder = new Pathfinder(nodes, edges);
-
+    const pathFindingGraph = new Pathfinder(nodes, edges);
     // The Object.fromEntries converts the graph (which is a HashMap) to an object literal, so it can be sent
     res.json(Object.fromEntries(pathFindingGraph.getNodes()));
   } catch (e) {

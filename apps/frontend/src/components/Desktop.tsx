@@ -5,7 +5,6 @@ import LL1MapPath from "../assets/hospitalmaps/00_thelowerlevel1.png";
 import TransformContainer from "../components/TransformContainer.tsx";
 import PathFindingForm from "./PathFindingForm.tsx";
 import { DisplayPath } from "./DisplayPath.tsx";
-import axios from "axios";
 interface menuProps {
   navBarArray: Array<string>;
   pageStatus: string;
@@ -30,19 +29,9 @@ export const Desktop = ({
   };
 
   const mapPath = LL1MapPath;
-  async function getMapNodes() {
-    try {
-      const allNodes = await axios.get("/api/map");
-      const nodesData: Node[] = Object.values(allNodes.data);
-      console.log(nodesData);
-    } catch (error) {
-      console.error("Error fetching map nodes:", error);
-    }
-  }
 
   useEffect(() => {
     document.title = "home page";
-    getMapNodes();
   }, []);
 
   return (
