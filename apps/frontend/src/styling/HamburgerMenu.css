@@ -1,0 +1,50 @@
+.hamburger-menu {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  width: calc(100vw / 9); /* Corrected width calculation */
+  height: 110px;
+  box-sizing: border-box; /* Include padding and border in width and height */
+  margin: 0; /* Remove any default margin */
+}
+
+.hamburger-icon {
+  font-family: Arial, sans-serif;
+  font-size: 300%;
+  font-weight: bold;
+  background-color: transparent;
+  color: #ffffff;
+  transition: transform 0.3s ease-in-out;
+}
+
+.hamburger-icon.close {
+  transform: rotate(90deg); /* Rotate the "X" for a cross effect */
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 100%; /* Positioned right at the bottom of the hamburger menu */
+  left: 0;
+  background-color: #042c5c;
+  width: 100%; /* Adjusted to match the parent's width exactly */
+  box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+  z-index: 1;
+}
+
+.menu-item {
+  padding: 10px;
+  font-family: Arial, sans-serif;
+  font-size: 100%;
+  text-align: center;
+
+  display: block;
+  color: #ffffff;
+}
+
+.menu-item.active,
+.menu-item:hover {
+  background-color: #032043;
+  font-weight: bold;
+}
