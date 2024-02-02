@@ -20,7 +20,9 @@ const HamburgerMenu: React.FC<HamburgerMenuProps> = ({
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
-  const toggleDropdown = () => setIsOpen(!isOpen);
+  const toggleDropdown = () => {
+    setIsOpen(!isOpen);
+  };
 
   const handleMenuClick = (index: number) => {
     onMenuItemClick(index);

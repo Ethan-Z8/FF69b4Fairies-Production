@@ -24,13 +24,14 @@
 }
 
 .dropdown-menu {
-  position: absolute;
   top: 100%; /* Positioned right at the bottom of the hamburger menu */
   left: 0;
-  background-color: #042c5c;
+  background-color: #042c5c !important;
   width: 100%; /* Adjusted to match the parent's width exactly */
-  box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+  box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2) !important;
   z-index: 1;
+  display: flex !important;
+  flex-direction: column !important;
 }
 
 .menu-item {
