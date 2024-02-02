@@ -3,6 +3,7 @@ import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
 import HomePage from "./routes/HomePage.tsx";
 import LoginPage from "./routes/LoginPage.tsx";
 import AdminPage from "./routes/AdminPage.tsx";
+import FileReader from "./routes/file_reader.tsx";
 import MapDataPage from "./routes/MapDataPage.tsx";
 
 function App() {
@@ -23,6 +24,10 @@ function App() {
         {
           path: "/adminPage",
           element: <AdminPage />,
+        },
+        {
+          path: "/file_reader",
+          element: <FileReader />,
         },
         {
           path: "/mapdata",

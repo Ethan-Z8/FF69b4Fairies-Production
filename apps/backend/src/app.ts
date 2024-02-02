@@ -16,7 +16,7 @@ app.use(
       write: (msg) => console.info(msg),
     },
   }),
-); // This records all HTTP requests
+); // This records all HTTP request
 app.use(express.json()); // This processes requests as JSON
 app.use(express.urlencoded({ extended: false })); // URL parser
 app.use(cookieParser()); // Cookie parser
