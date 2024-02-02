@@ -12,6 +12,11 @@ td {
   font-family: sans-serif;
 }
 
+.DataTable {
+  overflow-y: scroll;
+  height: 100%;
+}
+
 th,
 td {
   text-align: left;
@@ -20,4 +25,19 @@ td {
 
 tr:nth-child(even) {
   background-color: #9aaabd;
+}
+
+.mapdata {
+  height: 40rem;
+  width: 100%;
+  overflow-y: scroll;
+}
+
+.scrollTable {
+  width: 90%;
+}
+
+.DataTable {
+  width: 90%;
+  height: 20rem;
 }

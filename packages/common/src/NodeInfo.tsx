@@ -7,5 +7,5 @@ export type NodeInfo = {
   nodeType: string;
   longName: string;
   shortName: string;
-  nodesNextTo: string[];
+  neighbors: string[];
 };

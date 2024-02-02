@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
-//import { NodeDataTable } from "../components/NodeDataTable.tsx";
-import { EdgeDataTable } from "../components/EdgeDataTable.tsx";
+import { NodeDataTable } from "../components/NodeDataTable.tsx";
+import "../styling/DataTable.css";
+import { BackButton } from "../components/BackButton.tsx";
 
 function MapDataPage() {
   useEffect(() => {
@@ -8,11 +9,10 @@ function MapDataPage() {
     console.log(`rendered component`);
   });
 
-  //TODO: fix this (why does is it upset about what NodeDataTable returns? is this something to do with backend stuff
-  //        <NodeDataTable/>
   return (
     <div className="mapdata">
-      <EdgeDataTable />
+      <NodeDataTable />
+      <BackButton />
     </div>
   );
 }

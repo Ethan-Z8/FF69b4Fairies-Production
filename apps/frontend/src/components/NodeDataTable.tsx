@@ -1,32 +1,28 @@
 import "../styling/DataTable.css";
 import axios from "axios";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { DisplayNodeData } from "./DisplayNodeData.tsx";
 import { NodeInfo } from "common/src/NodeInfo.tsx";
+import { DisplayEdgeTable } from "./DisplayEdgeTable.tsx";
 
-async function getNodes() {
-  try {
-    const allNodes = await axios.get("/api/map");
-    //this shit doesn't work because it's not expecting to find a NodeData type? or because NodeData doesn't have array properties written into it idk man
-    const nodesData: NodeInfo[] = Object.values(allNodes.data);
-    return nodesData;
-  } catch (error) {
-    console.error("Error fetching map nodes", error);
-  }
-}
-
-export async function NodeDataTable() {
+export function NodeDataTable() {
+  const [nodes, setNodes] = useState<NodeInfo[]>([]);
   useEffect(() => {
-    getNodes();
+    axios.get("/api/map").then((res) => {
+      setNodes(Object.values(res.data));
+    });
   }, []);
 
-  const nodesResponse = await getNodes();
-
   return (
-    <div className={"DataTable"}>
-      <h2>Current Node Data</h2>
-      return(
-      <DisplayNodeData nodes={nodesResponse!} />
+    <div>
+      <div className={"DataTable"}>
+        <h2>Current Node Data</h2>
+        <DisplayNodeData nodes={nodes} />
+      </div>
+      <div className={"EdgeTable"}>
+        <h2>Current Edge Data</h2>
+        <DisplayEdgeTable nodes={nodes} />
+      </div>
     </div>
   );
 }
