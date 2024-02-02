@@ -54,6 +54,51 @@ export default class Pathfinder {
     return [];
   }
 
+  public findShortestPathNodes(
+    startNodeId: string,
+    endNodeId: string,
+  ): Map<string, MapNode> {
+    if (!this.#nodes.has(startNodeId) || !this.#nodes.has(endNodeId)) {
+      return new Map();
+    }
+
+    const visited: Set<string> = new Set();
+    const resultPath: Map<string, MapNode> = new Map();
+    const queue: Array<Array<MapNode>> = [[this.#nodes.get(startNodeId)!]];
+
+    while (queue.length > 0) {
+      const path: Array<MapNode> = queue.shift()!; // Get the first path in the queue
+      const currentNode: MapNode = path[path.length - 1];
+
+      if (currentNode.nodeID === endNodeId) {
+        // If we have reached the target node, populate the resultPath and return
+        for (const node of path) {
+          resultPath.set(node.nodeID, node);
+        }
+        return resultPath;
+      }
+
+      if (!visited.has(currentNode.nodeID)) {
+        // If the current node has not been visited yet
+        visited.add(currentNode.nodeID);
+
+        const neighbors: Array<string> = currentNode.neighbors;
+
+        for (const neighborNodeId of neighbors) {
+          if (!visited.has(neighborNodeId)) {
+            // Create a new path by extending the current path
+            const neighborNode: MapNode = this.#nodes.get(neighborNodeId)!;
+            const newPath: Array<MapNode> = [...path, neighborNode];
+            queue.push(newPath);
+          }
+        }
+      }
+    }
+
+    // If no path is found, return an empty Map
+    return new Map();
+  }
+
   public getNodes(): Map<string, MapNode> {
     return this.#nodes;
   }

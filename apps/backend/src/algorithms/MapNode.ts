@@ -1,5 +1,6 @@
 import { PathOrFileDescriptor, readFileSync } from "fs";
 import MapEdge from "./MapEdge.ts";
+import { MapNodeInterface } from "../../../../packages/common/src/interfaces/MapNodeInterface.ts";
 
 /**
  * Defining an omit type that does not have an array of neighbors.
@@ -7,7 +8,7 @@ import MapEdge from "./MapEdge.ts";
  * Then, when the graph needs to be constructed, we just use the regular MapNode, so we can keep track of neighbors
  */
 export type MapNodeNoNeighbors = Omit<MapNode, "neighbors">;
-export default class MapNode {
+export default class MapNode implements MapNodeInterface {
   nodeID: string;
   xcoord: number;
   ycoord: number;
@@ -43,9 +44,24 @@ export default class MapNode {
    */
   static readCsv(filename: PathOrFileDescriptor) {
     const input = readFileSync(filename, "utf8");
+    return MapNode.csvStringToNodes(input);
+  }
 
-    const lines = input.split(/\r?\n/).slice(1, -1);
-    // THe first line is the categories, and the last line is blank
+  /**
+   * Creates an array of Mapnodes from a csv formatted string
+   * @param filename -- the csv file to get data from
+   */
+  static csvStringToNodes(input: string): MapNode[] {
+    const lines = input.split(/\r?\n/).slice(0, -1);
+    const top = lines.shift();
+    if (
+      top !== "nodeID,xcoord,ycoord,floor,building,nodeType,longName,shortName"
+    ) {
+      throw new Error(
+        `This csv does not have the right headers they should be: ${top}`,
+      );
+    }
+    // The first line is the categories, and the last line is blank
     const splitLines = lines.map((aline) => aline.split(","));
 
     return splitLines.map((props) => new MapNode(props));
@@ -78,5 +94,13 @@ export default class MapNode {
       map.get(edge.endNode)?.neighbors.push(edge.startNode);
     }
     return map;
+  }
+
+  static dropNeighbors(nodes: MapNode[]): MapNodeNoNeighbors[] {
+    return nodes.map((node: MapNode) => {
+      // Can ignore this warning because we need to get the neighbors by name to omit them
+      const { neighbors, ...rest } = node; //eslint-disable-line
+      return rest;
+    });
   }
 }

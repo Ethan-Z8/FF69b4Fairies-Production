@@ -18,7 +18,7 @@ try {
 }
 
 // Get port from environment and store in Express
-const port: string | undefined = process.env.PORT || "3000";
+const port: string | undefined = process.env.PORT || "80";
 
 if (port === undefined) {
   console.error("Failed to start: Missing PORT environment variable");
