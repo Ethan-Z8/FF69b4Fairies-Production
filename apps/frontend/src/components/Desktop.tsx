@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { SelectorTabs } from "./SelectorTabs.tsx";
-import LL1Map from "../components/LL1Map.tsx";
+import Map from "../components/Map.tsx";
 import LL1MapPath from "../assets/hospitalmaps/00_thelowerlevel1.png";
 import TransformContainer from "../components/TransformContainer.tsx";
 import PathFindingForm from "./PathFindingForm.tsx";
@@ -68,7 +68,7 @@ export const Desktop = ({
       <div className="mapPage">
         <TransformContainer>
           <DisplayPath mapPath={mapPath} start={pathStart} end={pathEnd} />
-          <LL1Map mapPath={mapPath} />
+          <Map mapPath={mapPath} />
         </TransformContainer>
       </div>
     </div>
