@@ -1,37 +1,26 @@
-@font-face {
-  font-family: "Jockey One";
-  src: url("./JockeyOne-Regular.ttf");
-  font-weight: normal;
-}
-
 .loginTitleText {
-  width: 497px;
-  height: 80px; /* 169px */
+  height: 80px;
   flex-shrink: 0;
 
   color: #042c5c;
-  font-family: "Jockey One", sans-serif;
   font-size: 27px;
   font-style: normal;
   font-weight: 400;
-  line-height: 39px; /* 97.5% */
+  line-height: 39px;
 
   text-align: left;
 }
 .BacktoMap {
-  width: 497px;
-  height: 40px;
+  display: -webkit-box;
+  gap: 5%;
   flex-shrink: 0;
-
   color: #042c5c;
-  font-family: "Jockey One", sans-serif;
   font-size: 27px;
   font-style: normal;
   font-weight: 400;
-  line-height: 39px; /* 97.5% */
-
+  line-height: 39px;
   text-align: center;
-  padding-left: 25%;
+  padding-bottom: 5%;
 }
 
 .loginFor {
@@ -39,15 +28,11 @@
   height: 66px;
   flex-shrink: 0;
   color: #042c5c;
-  font-family: "Jockey One", sans-serif;
   font-size: 25px;
   font-style: normal;
   font-weight: 400;
   line-height: 1;
-  h3 {
-    font-size: 90%;
-  }
 }
 .mergePaddingResolve {
-  padding-bottom: 10%;
+  padding-bottom: 15%;
 }
