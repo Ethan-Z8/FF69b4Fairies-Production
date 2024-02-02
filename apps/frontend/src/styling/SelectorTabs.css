@@ -19,6 +19,7 @@
   font-family: Arial, sans-serif;
   font-size: 180%;
   font-weight: bold;
+  flex: 1;
   width: calc(100vw / 9);
   height: 110px;
   cursor: pointer;

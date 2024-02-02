@@ -8,6 +8,7 @@ import HamburgerMenu from "./HamburgerMenu"; // Ensure HamburgerMenu is used cor
 interface SelectorTabsProps {
   statusOfPage: string;
   onTabClick: (tabIndex: number) => void;
+  navBarArray: Array<string>;
 }
 
 function LoginButtonForSelectorTab({
@@ -26,7 +27,11 @@ function LoginButtonForSelectorTab({
   );
 }
 
-export function SelectorTabs({ statusOfPage, onTabClick }: SelectorTabsProps) {
+export function SelectorTabs({
+  statusOfPage,
+  onTabClick,
+  navBarArray,
+}: SelectorTabsProps) {
   const [selectedTab, setSelectedTab] = useState(1);
   const navigate = useNavigate();
 
@@ -43,8 +48,6 @@ export function SelectorTabs({ statusOfPage, onTabClick }: SelectorTabsProps) {
     }
   };
 
-  const floorList = ["GRND", "LL1", "LL2", "F1", "F2", "F3"];
-
   return (
     <header className="selector-tabs-container">
       <div className={"logo-container"}>
@@ -54,9 +57,12 @@ export function SelectorTabs({ statusOfPage, onTabClick }: SelectorTabsProps) {
         <div
           key={tabIndex}
           className={`selector-tab ${selectedTab === tabIndex ? "active" : ""}`}
-          onClick={() => handleTabClick(tabIndex)}
+          style={{ flex: `1 0 ${100 / 8}%` }}
+          onClick={() => {
+            handleTabClick(tabIndex);
+          }}
         >
-          {floorList[tabIndex]}
+          {navBarArray[tabIndex]}
         </div>
       ))}
 

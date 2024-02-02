@@ -5,9 +5,9 @@ export function LoginText() {
     <div className="mergePaddingResolve">
       <div className={"loginTitleText"}>
         <h1>For Admin and Staff Only</h1>
-        <h2>Not a Staff or Admin?</h2>
       </div>
       <div className={"BacktoMap"}>
+        <h2>Not a Staff or Admin?</h2>
         <a href={"/"}>Back to Map</a>
       </div>
       <div className={"loginFor"}>
