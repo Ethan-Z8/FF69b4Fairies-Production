@@ -28,6 +28,23 @@ mapRouter.get("/", async (_: Request, res: Response) => {
   }
 });
 
+mapRouter.get("/allTemp", async (_: Request, res: Response) => {
+  try {
+    const nodeCache: Set<MapNodeNoNeighbors> = new Set();
+    const edgeCache: Set<MapEdge> = new Set();
+    const nodes = await Prisma.mapNode.findMany();
+    const edges = await Prisma.mapEdge.findMany();
+    nodes.forEach((node) => nodeCache.add(node));
+    edges.forEach((edge) => edgeCache.add(edge));
+    const pathFindingGraph: Pathfinder = new Pathfinder(nodes, edges);
+
+    // The Object.fromEntries converts the graph (which is a HashMap) to an object literal, so it can be sent
+    res.json(Object.fromEntries(pathFindingGraph.getNodes()));
+  } catch (e) {
+    res.status(400).send("GET map failed");
+  }
+});
+
 /**
  * Gets the shortest path between two nodes
  *
@@ -59,6 +76,37 @@ mapRouter.get("/path", async (req, res) => {
   } catch (e) {
     console.log(e);
     res.sendStatus(402);
+  }
+});
+
+mapRouter.get("/pathNodes", async (req: Request, res: Response) => {
+  try {
+    type StartAndEndNodes = {
+      start?: string;
+      end?: string;
+    };
+    const endpoints = req.query as StartAndEndNodes;
+    const nodes = await Prisma.mapNode.findMany();
+    const edges = await Prisma.mapEdge.findMany();
+    const pathFindingGraph = new Pathfinder(nodes, edges);
+
+    const shortestPathNodes: Map<string, MapNode> =
+      pathFindingGraph.findShortestPathNodes(endpoints.start!, endpoints.end!);
+
+    if (shortestPathNodes.size === 0) {
+      res.status(400).json({
+        error:
+          "One of your nodes is not in the database, or a path couldn't be found",
+      });
+    } else {
+      // Convert the Map values to an array for response
+
+      // You can customize the response as needed
+      res.status(200).json(Object.fromEntries(shortestPathNodes));
+    }
+  } catch (e) {
+    console.error(e);
+    res.status(500).send("Internal server error");
   }
 });
 
