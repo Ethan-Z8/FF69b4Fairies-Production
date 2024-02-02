@@ -59,7 +59,7 @@ const TransformContainer: React.FC<TransformContainerProps> = ({
       const zoomSpeed = 0.005;
 
       if (delta < 0) {
-        scale = Math.max(1, scale * (1 + delta * zoomSpeed));
+        scale = Math.max(0.39, scale * (1 + delta * zoomSpeed));
       } else {
         scale = Math.min(3, scale * (1 + delta * zoomSpeed));
       }
