@@ -9,6 +9,12 @@ th,
 td {
   border: 1px solid black;
   border-collapse: collapse;
+  font-family: sans-serif;
+}
+
+.DataTable {
+  overflow-y: scroll;
+  height: 100%;
 }
 
 th,
@@ -19,4 +25,19 @@ td {
 
 tr:nth-child(even) {
   background-color: #9aaabd;
+}
+
+.mapdata {
+  height: 40rem;
+  width: 100%;
+  overflow-y: scroll;
+}
+
+.scrollTable {
+  width: 90%;
+}
+
+.DataTable {
+  width: 90%;
+  height: 20rem;
 }

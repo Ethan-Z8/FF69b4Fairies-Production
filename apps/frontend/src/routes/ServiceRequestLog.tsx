@@ -1,10 +1,16 @@
 import React from "react";
 import ServiceRequestTable from "../components/ServiceRequestTable";
+import { BackButton } from "../components/BackButton.tsx";
 
 const ServiceRequestLog = () => {
   const columns = ["Date", "Type", "Node", "Reason"]; // Header columns
 
-  return <ServiceRequestTable columns={columns} />;
+  return (
+    <>
+      <BackButton />
+      <ServiceRequestTable columns={columns} />
+    </>
+  );
 };
 
 export default ServiceRequestLog;

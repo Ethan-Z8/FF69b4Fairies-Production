@@ -20,12 +20,12 @@ function HomePage() {
       <Desktop
         whatServiceOptions={<GeneralServices />}
         navBarArray={[
-          "HELP",
-          "LANGUAGE",
+          "MAP DATA",
+          "UPLOAD DATA",
           "PATH",
-          "ACCESSIBILITY",
-          "SERVICES",
-          "FLOWERS",
+          "N/A",
+          "SERVICE DATA",
+          "SERVICE REQUESTS",
         ]}
         pageStatus={"LOGIN"}
         selectedTab={selectedTab}
