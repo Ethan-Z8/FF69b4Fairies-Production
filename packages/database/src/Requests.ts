@@ -2,12 +2,17 @@ import { PrismaClient } from "../.prisma/client";
 
 const prisma = new PrismaClient();
 
-export async function insertServiceRequest(id: number, name: string) {
+export async function insertServiceRequest(
+  typeService: string,
+  reason: string,
+  nodeLoc: string,
+) {
   try {
     const result = await prisma.serviceRequest.create({
       data: {
-        id,
-        name,
+        typeService,
+        reason,
+        nodeLoc,
       },
     });
 

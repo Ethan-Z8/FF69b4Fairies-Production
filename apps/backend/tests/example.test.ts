@@ -1,57 +1,53 @@
 import { expect, test } from "vitest";
-import fs from "fs";
-import { insertServiceRequest } from "database/src/Requests.ts";
+import MapNode from "../src/algorithms/MapNode.ts";
+import MapEdge from "../src/algorithms/MapEdge.ts";
+import Pathfinder from "../src/algorithms/Pathfinder.ts";
 
 function sum(a: number, b: number): number {
   return a + b;
-}
-
-interface CSVRow {
-  [key: string]: string;
-}
-
-function parseCSVFile(
-  filePath: string,
-  callback: (err: Error | null, data: CSVRow[]) => void,
-) {
-  fs.readFile(filePath, "utf8", (err, data) => {
-    if (err) {
-      callback(err, []);
-      return;
-    }
-
-    const rows: string[] = data.split("\n");
-    const headers: string[] = rows[0].split(",");
-    const result: CSVRow[] = [];
-
-    for (let i = 1; i < rows.length; i++) {
-      const row: string[] = rows[i].split(",");
-      if (row.length === headers.length) {
-        const obj: CSVRow = {};
-        for (let j = 0; j < headers.length; j++) {
-          obj[headers[j]] = row[j];
-        }
-        result.push(obj);
-      }
-    }
-
-    callback(null, result);
-  });
 }
 
 test("adds 1 + 2 to equal 3", () => {
   expect(sum(1, 2)).toBe(3);
 });
 
-test("testing parsing the data", () => {
-  parseCSVFile(
-    "../backend/csvFiles/L1Nodes.csv",
-    (error: Error | null, data: CSVRow[]) => {
-      data;
-    },
+test("testing non existent IDS", () => {
+  const nodes: MapNode[] = MapNode.readCsv("../backend/csvFiles/L1Nodes.csv");
+  const edges: MapEdge[] = MapEdge.readCsv("../backend/csvFiles/L1Edges.csv");
+  const pathfinder: Pathfinder = new Pathfinder(nodes, edges);
+  const expectedOutput: Array<string> = [];
+  expect(pathfinder.findShortestPath("err", "err")).toEqual(expectedOutput);
+});
+test("testing same path", () => {
+  const nodes: MapNode[] = MapNode.readCsv("../backend/csvFiles/L1Nodes.csv");
+  const edges: MapEdge[] = MapEdge.readCsv("../backend/csvFiles/L1Edges.csv");
+  const pathfinder: Pathfinder = new Pathfinder(nodes, edges);
+  const expectedOutput: Array<string> = ["CCONF002L1"];
+  expect(pathfinder.findShortestPath("CCONF002L1", "CCONF002L1")).toEqual(
+    expectedOutput,
   );
 });
-
-test("test database insertion", () => {
-  insertServiceRequest(123, "NewRequest");
+test("testing edges", () => {
+  const nodes: MapNode[] = MapNode.readCsv("../backend/csvFiles/L1Nodes.csv");
+  const edges: MapEdge[] = MapEdge.readCsv("../backend/csvFiles/L1Edges.csv");
+  const pathfinder: Pathfinder = new Pathfinder(nodes, edges);
+  const expectedOutput: Array<string> = ["CCONF002L1", "WELEV00HL1"];
+  expect(pathfinder.findShortestPath("CCONF002L1", "WELEV00HL1")).toEqual(
+    expectedOutput,
+  );
+});
+test("testing valid", () => {
+  const nodes: MapNode[] = MapNode.readCsv("../backend/csvFiles/L1Nodes.csv");
+  const edges: MapEdge[] = MapEdge.readCsv("../backend/csvFiles/L1Edges.csv");
+  const pathfinder: Pathfinder = new Pathfinder(nodes, edges);
+  const expectedOutput: Array<string> = [
+    "CCONF002L1",
+    "WELEV00HL1",
+    "CHALL004L1",
+    "CREST004L1",
+    "CLABS005L1",
+  ];
+  expect(pathfinder.findShortestPath("CCONF002L1", "CLABS005L1")).toEqual(
+    expectedOutput,
+  );
 });

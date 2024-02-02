@@ -36,12 +36,14 @@ model MapEdge {
 }
 
 model ServiceRequest {
-  id   Int    @id
-  name String
+  date        DateTime @id @default(now())
+  typeService String
+  reason      String
+  nodeLoc     String
 }
 
 model HighScore {
-  id    Int      @id @default(autoincrement())
+  id    Int      @id
   time  DateTime
   score Int
 }

@@ -1,26 +1,32 @@
 .selector-tabs-container {
-  top: 100%;
+  top: 0;
   left: 0;
   display: flex;
+  align-items: center;
   justify-content: space-between;
   width: 100vw;
   background-color: #042c5c;
-  margin-bottom: -5px;
+  margin-bottom: 0;
+  padding: 0;
+  height: 110px;
 }
 
-.selector-tab {
+.selector-tab,
+.logo-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   font-family: Arial, sans-serif;
   font-size: 180%;
   font-weight: bold;
-  width: calc(calc(100vw - 210px) / 6);
-  max-width: 200px;
+  flex: 1;
+  width: calc(100vw / 9);
   height: 110px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   cursor: pointer;
   background-color: #042c5c;
-  color: #fff;
+  color: #ffffff;
+  box-sizing: border-box;
+  margin: 0;
 }
 
 .selector-tab.active {
@@ -28,7 +34,9 @@
   border-color: #032043;
   font-weight: 900;
 }
+
+/* Make sure the logo does not stretch */
 .hospitalLogo {
-  max-width: 59%;
-  margin-left: 20px;
+  max-height: 100%;
+  object-fit: contain;
 }
