@@ -3,8 +3,9 @@ import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
 import HomePage from "./routes/HomePage.tsx";
 import LoginPage from "./routes/LoginPage.tsx";
 import AdminPage from "./routes/AdminPage.tsx";
-//import ServicePage from "./routes/ServiceRequestMenu.tsx";
 import RequestLogPage from "./routes/ServiceRequestLog.tsx";
+import MapDataPage from "./routes/MapDataPage.tsx";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 function App() {
   const router = createBrowserRouter([
@@ -28,6 +29,10 @@ function App() {
         {
           path: "/requestLogPage",
           element: <RequestLogPage />,
+        },
+        {
+          path: "/mapdata",
+          element: <MapDataPage />,
         },
       ],
     },
