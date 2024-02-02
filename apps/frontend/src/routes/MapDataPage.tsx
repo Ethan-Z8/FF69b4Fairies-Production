@@ -1,6 +1,7 @@
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 import { NodeDataTable } from "../components/NodeDataTable.tsx";
-import { EdgeDataTable } from "../components/EdgeDataTable.tsx";
+import "../styling/DataTable.css";
+import { BackButton } from "../components/BackButton.tsx";
 
 function MapDataPage() {
   useEffect(() => {
@@ -11,7 +12,7 @@ function MapDataPage() {
   return (
     <div className="mapdata">
       <NodeDataTable />
-      <EdgeDataTable />
+      <BackButton />
     </div>
   );
 }
