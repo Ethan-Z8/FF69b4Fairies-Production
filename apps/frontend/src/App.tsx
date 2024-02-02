@@ -5,6 +5,7 @@ import LoginPage from "./routes/LoginPage.tsx";
 import AdminPage from "./routes/AdminPage.tsx";
 import FileReader from "./routes/file_reader.tsx";
 import MapDataPage from "./routes/MapDataPage.tsx";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 function App() {
   const router = createBrowserRouter([
