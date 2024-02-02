@@ -1,34 +1,26 @@
-import React, { useState, ChangeEvent } from "react";
-
-import "../styling/ServiceRequestLog.css";
-
-//import { BackButtonForAdmin } from "../components/BackButtonForAdmin.tsx";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 
 interface ModularServiceTable {
   columns: string[];
 }
 
 interface RowData {
-  [key: string]: string;
+  date: string;
+  typeService: string;
+  reason: string;
+  nodeLoc: string;
 }
 
 const ServiceTable: React.FC<ModularServiceTable> = ({ columns }) => {
   const [tableData, setTableData] = useState<RowData[]>([]);
-  const [newRow, setNewRow] = useState<RowData>(
-    columns.reduce((acc, column) => ({ ...acc, [column]: "" }), {}),
-  );
-
-  const handleInputChange = (
-    e: ChangeEvent<HTMLInputElement>,
-    columnName: string,
-  ) => {
-    setNewRow((prevRow) => ({ ...prevRow, [columnName]: e.target.value }));
-  };
-
-  const handleAddRow = () => {
-    setTableData((prevData) => [...prevData, newRow]);
-    setNewRow(columns.reduce((acc, column) => ({ ...acc, [column]: "" }), {}));
-  };
+  // Remove 'displayData' state as it is not necessary
+  useEffect(() => {
+    axios.get("/api/serviceRequest").then((result) => {
+      console.log(result.data);
+      setTableData(result.data);
+    });
+  }, [columns]); // Only 'columns' is a dependency
 
   return (
     <div className={"service-request-table-container"}>
@@ -43,31 +35,14 @@ const ServiceTable: React.FC<ModularServiceTable> = ({ columns }) => {
         <tbody>
           {tableData.map((row, rowIndex) => (
             <tr key={rowIndex}>
-              {columns.map((column, colIndex) => (
-                <td key={colIndex}>{row[column]}</td>
-              ))}
+              <td>{row.date}</td>
+              <td>{row.typeService}</td>
+              <td>{row.reason}</td>
+              <td>{row.nodeLoc}</td>
             </tr>
           ))}
         </tbody>
       </table>
-      <div className={"add-row-section"}>
-        <h2>Add New Row</h2>
-        <form>
-          {columns.map((column, index) => (
-            <div key={index}>
-              <label>{column}</label>
-              <input
-                type="text"
-                value={newRow[column]}
-                onChange={(e) => handleInputChange(e, column)}
-              />
-            </div>
-          ))}
-          <button type="button" onClick={handleAddRow}>
-            Add Row
-          </button>
-        </form>
-      </div>
     </div>
   );
 };

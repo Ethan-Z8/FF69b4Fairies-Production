@@ -68,13 +68,13 @@ export function DisplayPath({ mapPath, start, end }: DisplayMapNodesProps) {
         const nodesData: Node[] = Object.values(pathNodes.data);
         setNodes(nodesData);
       } catch (error) {
-        console.error("Error fetching map nodess:", error);
+        console.log("Error has not selected 2 nodes ");
       }
     };
 
     const getAllNodes = async () => {
       try {
-        const allNodes = await axios.get(`/api/map`);
+        const allNodes = await axios.get(`/api/map/allTemp`);
 
         const nodesData: Node[] = Object.values(allNodes.data);
         setAllNodes(nodesData);
@@ -82,8 +82,9 @@ export function DisplayPath({ mapPath, start, end }: DisplayMapNodesProps) {
         console.error("Error fetching map nodess:", error);
       }
     };
-
-    getMapNodes();
+    if (secondClickedNodeId != null && firstClickedNodeId != null) {
+      getMapNodes();
+    }
     getAllNodes();
 
     const img = new Image();
@@ -97,7 +98,7 @@ export function DisplayPath({ mapPath, start, end }: DisplayMapNodesProps) {
   }, [firstClickedNodeId, secondClickedNodeId, mapPath]);
   const handleNodeClick = (node: Node) => {
     if (!counter) {
-      setSecondClickedNodeId("");
+      setSecondClickedNodeId(null);
       setFirstClickedNodeId(node.nodeID);
 
       setCounter(true);

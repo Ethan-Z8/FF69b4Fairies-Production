@@ -3,6 +3,7 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
 import DropdownMenu from "./DropdownMenu.tsx";
+import axios from "axios";
 
 interface differentServices {
   typeOfService1: string;
@@ -28,11 +29,18 @@ function RequestService({
     setReason("");
   };
   const logData = () => {
-    console.log(
-      "Type of Service:" + typeOfService,
-      "Reason: " + reason,
-      "NODE LOCATION" + nodeLoc,
-    );
+    // console.log(
+    //   "Type of Service:" + typeOfService,
+    //   "Reason: " + reason,
+    //   "NODE LOCATION" + nodeLoc,
+    // );
+    axios
+      .post("/api/serviceRequest/create", {
+        typeService: typeOfService,
+        reason: reason,
+        nodeLoc: nodeLoc,
+      })
+      .then();
     setShow(false);
   };
 

@@ -1,7 +1,12 @@
 import { expect, test } from "vitest";
+<<<<<<< HEAD
+import fs from "fs";
+=======
+import { insertServiceRequest } from "database/src/Requests.ts";
 import MapNode from "../src/algorithms/MapNode.ts";
 import MapEdge from "../src/algorithms/MapEdge.ts";
 import Pathfinder from "../src/algorithms/Pathfinder.ts";
+>>>>>>> dev-backend
 
 function sum(a: number, b: number): number {
   return a + b;
@@ -51,3 +56,9 @@ test("testing valid", () => {
     expectedOutput,
   );
 });
+<<<<<<< HEAD
+=======
+test("test database insertion", () => {
+  insertServiceRequest(123, "NewRequest");
+});
+>>>>>>> dev-backend
