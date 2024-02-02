@@ -43,7 +43,7 @@ model ServiceRequest {
 }
 
 model HighScore {
-  id    Int      @id @default(autoincrement())
+  id    Int      @id
   time  DateTime
   score Int
 }

@@ -1,6 +1,6 @@
 -- CreateTable
 CREATE TABLE "ServiceRequest" (
-    "id" INTEGER NOT NULL,
+    "id" SERIAL NOT NULL,
     "name" TEXT NOT NULL,
 
     CONSTRAINT "ServiceRequest_pkey" PRIMARY KEY ("id")
