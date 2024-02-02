@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { SelectorTabs } from "./SelectorTabs.tsx";
+import { useNavigate } from "react-router-dom";
 import Map from "../components/Map.tsx";
 import GroundFloorMapPath from "../assets/hospitalmaps/00_thegroundfloor.png";
 import LL1MapPath from "../assets/hospitalmaps/00_thelowerlevel1.png";
@@ -35,6 +36,8 @@ export const Desktop = ({
     setPathEnd(pathEnd);
   };
 
+  const navigate = useNavigate();
+
   if (selectedTab === 0) {
     mapPath = GroundFloorMapPath;
   }
@@ -45,6 +48,7 @@ export const Desktop = ({
 
   if (selectedTab === 2) {
     mapPath = LL2MapPath;
+    navigate("/mapdata");
   }
 
   if (selectedTab === 3) {
@@ -53,6 +57,7 @@ export const Desktop = ({
 
   if (selectedTab === 4) {
     mapPath = SecondFloorMapPath;
+    navigate("/requestLogPage");
   }
 
   if (selectedTab === 5) {
