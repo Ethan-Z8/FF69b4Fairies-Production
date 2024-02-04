@@ -4,11 +4,6 @@ import MapEdge from "./MapEdge.ts";
 export default class Pathfinder {
   #nodes: Map<string, MapNode>;
 
-  /**
-   * constructs the object to contain all the nodes
-   * @param NodesFileNames an array of PathOrFileDescriptors that are the names of all CSV node files it takes
-   * @param EdgesFileNames an array of PathOrFileDescriptors that are the names of all CSV edge files it takes
-   */
   public constructor(nodes: MapNodeNoNeighbors[], edges: MapEdge[]) {
     this.#nodes = MapNode.connectNodes(nodes, edges);
   }
