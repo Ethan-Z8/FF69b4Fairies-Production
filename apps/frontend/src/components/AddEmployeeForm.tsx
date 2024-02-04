@@ -1,7 +1,7 @@
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import "../styling/AddEmployeeForm.css";
-//simport axios from "axios";
+//import axios from "axios";
 import { useState } from "react";
 
 function AddEmployeeForm() {
