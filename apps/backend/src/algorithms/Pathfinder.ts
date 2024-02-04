@@ -4,10 +4,21 @@ import MapEdge from "./MapEdge.ts";
 export default class Pathfinder {
   #nodes: Map<string, MapNode>;
 
+  /**
+   * Constructor
+   * @param nodes Takes in an array of MapNodes with no neighbors
+   * @param edges Takes in an array of MapEdge with neighbors
+   */
   public constructor(nodes: MapNodeNoNeighbors[], edges: MapEdge[]) {
     this.#nodes = MapNode.connectNodes(nodes, edges);
   }
 
+  /**
+   * BFS algorithim takes returns the shortest path of nodes to destination
+   * @param startNodeId the initial node
+   * @param endNodeId the destination node
+   * @return an array of nodeId's that are the path it recommends if there is no path returns empty array
+   */
   public findShortestPath(
     startNodeId: string,
     endNodeId: string,
@@ -49,6 +60,12 @@ export default class Pathfinder {
     return [];
   }
 
+  /**
+   * returns the path it recommends to destination
+   * @param startNodeId the initial node
+   * @param endNodeId the destination node
+   * @return a map<string, MapNode> of nodeId's that are the path it recommends if there is no path returns empty map
+   */
   public findShortestPathNodes(
     startNodeId: string,
     endNodeId: string,
@@ -67,10 +84,19 @@ export default class Pathfinder {
     return map;
   }
 
+  /**
+   * @return the nodes that have been initilized
+   */
   public getNodes(): Map<string, MapNode> {
     return this.#nodes;
   }
-
+  /**
+   * A* Algorithm
+   * returns the path it recommends to destination
+   * @param startNodeId the initial node
+   * @param endNodeId the destination node
+   * @return a Array<string> of nodeId's that are the path it recommends if there is no path returns []
+   */
   public Astar(startNodeId: string, endNodeId: string): Array<string> {
     if (!this.#nodes.has(startNodeId) || !this.#nodes.has(endNodeId)) {
       return [];
@@ -118,9 +144,25 @@ export default class Pathfinder {
     // If no path is found, return an empty array
     return [];
   }
+
+  /**
+   * the heuristic weight between two nodes
+   * @param node1Id the first node
+   * @param node2Id the second node
+   * @return number representing the weight of path
+   * @private
+   */
   private heuristic(node1Id: string, node2Id: string): number {
     return this.distanceBetween(node1Id, node2Id);
   }
+
+  /**
+   * gets the distance between two nodes
+   * @param node1Id the first node
+   * @param node2Id the second node
+   * @return the distance between the two nodes
+   * @private
+   */
   private distanceBetween(node1Id: string, node2Id: string): number {
     const node1 = this.#nodes.get(node1Id)!;
     const node2 = this.#nodes.get(node2Id)!;
@@ -128,6 +170,12 @@ export default class Pathfinder {
     const dy = node1.ycoord - node2.ycoord;
     return Math.sqrt(dx * dx + dy * dy);
   }
+
+  /**
+   * gets the smallest FScore
+   * @param openSet
+   * @private
+   */
   private getMinFScoreNode(
     openSet: Map<string, number>,
     //fScore: Map<string, number>,
@@ -144,6 +192,14 @@ export default class Pathfinder {
 
     return minNode!;
   }
+
+  /**
+   * finds the shortest path between start node and target node
+   * @param cameFrom maps each node to its predecessor
+   * @param currentId the target node
+   * @return Array<string> the shortest path to destination
+   * @private
+   */
   private reconstructPath(
     cameFrom: Map<string, string | null>,
     currentId: string,
