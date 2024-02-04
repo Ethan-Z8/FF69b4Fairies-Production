@@ -3,8 +3,10 @@ import NavDropdown from "react-bootstrap/NavDropdown";
 import Nav from "react-bootstrap/Nav";
 import Button from "react-bootstrap/Button";
 
+//TODO: Need to take in props to check if log in
 export function Navigation() {
   const isHomePage = window.location.pathname === "/";
+
   return (
     <Navbar className="bg-body-tertiary p-3 justify-content-around">
       <Navbar.Brand>B & W Hospital</Navbar.Brand>

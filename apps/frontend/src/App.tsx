@@ -6,6 +6,7 @@ import { CreateServiceRequestPage } from "./routes/CreateServiceRequestPage.tsx"
 import { ViewServiceRequestPage } from "./routes/ViewServiceRequestPage.tsx";
 import { ImportAndExportDataPage } from "./routes/ImportAndExportDataPage.tsx";
 import { MapDataPage } from "./routes/MapDataPage.tsx";
+import { LoginPage } from "./routes/LoginPage.tsx";
 
 function App() {
   const router = createBrowserRouter([
@@ -20,7 +21,7 @@ function App() {
         },
         {
           path: "/login",
-          element: <div />,
+          element: <LoginPage />,
         },
         {
           path: "/createServiceRequest",

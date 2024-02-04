@@ -50,16 +50,16 @@ export function MapDataPage() {
   });
 
   return (
-    <Stack gap={3}>
-      <Button className="mx-auto w-50" href="/">
+    <Stack gap={3} className="overflow-auto flex-grow-1">
+      <Button className="mx-auto w-50 mt-5" href="/">
         Back to Home Page
       </Button>
       {loaded && (
-        <Table className="w-75 mx-auto">
+        <Table className="mx-auto w-75 table-striped">
           <thead>
             <tr>{headers}</tr>
           </thead>
-          {body}
+          <tbody>{body}</tbody>
         </Table>
       )}
 
