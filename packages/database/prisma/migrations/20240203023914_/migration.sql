@@ -18,3 +18,12 @@ ADD COLUMN     "nodeLoc" TEXT NOT NULL,
 ADD COLUMN     "reason" TEXT NOT NULL,
 ADD COLUMN     "typeService" TEXT NOT NULL,
 ADD CONSTRAINT "ServiceRequest_pkey" PRIMARY KEY ("date");
+
+-- CreateTable
+CREATE TABLE "Employee" (
+    "username" TEXT NOT NULL,
+    "password" TEXT NOT NULL,
+    "displayName" TEXT NOT NULL,
+
+    CONSTRAINT "Employee_pkey" PRIMARY KEY ("username")
+);
