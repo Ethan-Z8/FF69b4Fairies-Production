@@ -47,7 +47,5 @@ test("testing valid", () => {
     "CREST004L1",
     "CLABS005L1",
   ];
-  expect(pathfinder.findShortestPath("CCONF002L1", "CLABS005L1")).toEqual(
-    expectedOutput,
-  );
+  expect(pathfinder.Astar("CCONF002L1", "CLABS005L1")).toEqual(expectedOutput);
 });
