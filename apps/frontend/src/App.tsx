@@ -8,6 +8,7 @@ import MapDataPage from "./routes/MapDataPage.tsx";
 import "bootstrap/dist/css/bootstrap.min.css";
 //import ServicePage from "./routes/ServiceRequestMenu.tsx";
 import RequestLogPage from "./routes/ServiceRequestLog.tsx";
+import AddEmployeePage from "./routes/AddEmployeePage.tsx";
 
 function App() {
   const router = createBrowserRouter([
@@ -43,6 +44,10 @@ function App() {
         {
           path: "/requestLogPage",
           element: <RequestLogPage />,
+        },
+        {
+          path: "/addEmployee",
+          element: <AddEmployeePage />,
         },
       ],
     },
