@@ -1,4 +1,4 @@
-import { PrismaClient } from "../.prisma/client";
+import { PrismaClient, Progress } from "../.prisma/client";
 
 const prisma = new PrismaClient();
 
@@ -6,6 +6,12 @@ export async function insertServiceRequest(
   typeService: string,
   reason: string,
   nodeLoc: string,
+  progress: Progress,
+  emp: {
+    connect: {
+      displayName: string;
+    };
+  },
 ) {
   try {
     const result = await prisma.serviceRequest.create({
@@ -13,6 +19,8 @@ export async function insertServiceRequest(
         typeService,
         reason,
         nodeLoc,
+        progress,
+        emp,
       },
     });
 

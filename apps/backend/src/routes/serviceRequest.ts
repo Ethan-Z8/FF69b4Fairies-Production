@@ -7,10 +7,26 @@ const router: Router = express.Router();
 
 router.post("/create", async (req: Request, res: Response) => {
   const serviceRequest: Prisma.ServiceRequestCreateInput = req.body;
+  //     const serviceRequest = req.body as Prisma.ServiceRequestCreateManyInput[];
+  //     await insertServiceRequest(serviceRequest);
+  //     prisma.serviceRequest.createMany({
+  //         data: serviceRequest,
+  //         skipDuplicates: true
+  //     }).then(() => res.status(200)).catch(() => res.status(400));
+  // });
+
+  const employeeInput: { connect: { displayName: string } } = {
+    connect: {
+      displayName: "jon",
+    },
+  };
+
   await insertServiceRequest(
     serviceRequest.typeService,
     serviceRequest.reason,
     serviceRequest.nodeLoc,
+    serviceRequest.progress,
+    employeeInput,
   );
   res.status(200).send("Successfully Inserted");
 });

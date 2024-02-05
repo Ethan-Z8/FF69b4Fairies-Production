@@ -22,11 +22,16 @@ function RequestService({
   const [typeOfService, setTypeOfService] = useState("");
   const [reason, setReason] = useState("");
   const [nodeLoc, setNodeLoc] = useState("");
+  const [progress, setProgress] = useState("");
+  const [emp, setEmp] = useState("");
 
   const handleClose = () => {
     setShow(false);
     setTypeOfService("");
     setReason("");
+    setNodeLoc("");
+    setEmp("");
+    setProgress("");
   };
   const logData = () => {
     // console.log(
@@ -39,8 +44,19 @@ function RequestService({
         typeService: typeOfService,
         reason: reason,
         nodeLoc: nodeLoc,
+        progress: progress,
+        emp: {
+          connect: {
+            displayName: emp,
+          },
+        },
       })
-      .then();
+      .then((response) => {
+        console.log("Done", response);
+      })
+      .catch((error) => {
+        console.error("Axios request error:", error);
+      });
     setShow(false);
   };
 
@@ -75,6 +91,32 @@ function RequestService({
                 l3={"NODE 3"}
                 l4={"NODE 4"}
                 onSelect={(nodeLoc) => setNodeLoc(nodeLoc)}
+                variant={"success"}
+              />
+            </Form.Group>
+
+            <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+              <Form.Label>Who is assigned?</Form.Label>
+              <DropdownMenu
+                title="Assigned"
+                l1={"jon"}
+                l2={"Monty"}
+                l3={"DJ"}
+                l4={"Jacob"}
+                onSelect={(employee) => setEmp(employee)}
+                variant={"success"}
+              />
+            </Form.Group>
+
+            <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+              <Form.Label>What is progress?</Form.Label>
+              <DropdownMenu
+                title="Progress"
+                l1={"Assigned"}
+                l2={"InProgress"}
+                l3={"Completed"}
+                l4={"IDK"}
+                onSelect={(progress) => setProgress(progress)}
                 variant={"success"}
               />
             </Form.Group>
