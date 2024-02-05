@@ -153,6 +153,16 @@ export default class Pathfinder {
    * @private
    */
   private heuristic(node1Id: string, node2Id: string): number {
+    const node1: MapNode = this.#nodes.get(node1Id)!;
+    const node2: MapNode = this.#nodes.get(node2Id)!;
+    if (node1.floor !== node2.floor) {
+      if (node1.nodeType == "ELEV" && node2.nodeType == "ELEV") {
+        return 0;
+      } else {
+        return Number.POSITIVE_INFINITY;
+      }
+    }
+
     return this.distanceBetween(node1Id, node2Id);
   }
 
@@ -166,6 +176,13 @@ export default class Pathfinder {
   private distanceBetween(node1Id: string, node2Id: string): number {
     const node1 = this.#nodes.get(node1Id)!;
     const node2 = this.#nodes.get(node2Id)!;
+    if (
+      node1.floor !== node2.floor &&
+      node1.nodeType == "ELEV" &&
+      node2.nodeType == "ELEV"
+    ) {
+      return 0;
+    }
     const dx = node1.xcoord - node2.xcoord;
     const dy = node1.ycoord - node2.ycoord;
     return Math.sqrt(dx * dx + dy * dy);

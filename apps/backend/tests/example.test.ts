@@ -37,8 +37,8 @@ test("testing edges", () => {
   );
 });
 test("testing valid", () => {
-  const nodes: MapNode[] = MapNode.readCsv("../backend/csvFiles/L1Nodes.csv");
-  const edges: MapEdge[] = MapEdge.readCsv("../backend/csvFiles/L1Edges.csv");
+  const nodes: MapNode[] = MapNode.readCsv("../backend/csvFiles/nodes.csv");
+  const edges: MapEdge[] = MapEdge.readCsv("../backend/csvFiles/edges.csv");
   const pathfinder: Pathfinder = new Pathfinder(nodes, edges);
   const expectedOutput: Array<string> = [
     "CCONF002L1",
@@ -48,4 +48,18 @@ test("testing valid", () => {
     "CLABS005L1",
   ];
   expect(pathfinder.Astar("CCONF002L1", "CLABS005L1")).toEqual(expectedOutput);
+});
+test("different floors valid", () => {
+  const nodes: MapNode[] = MapNode.readCsv("../backend/csvFiles/nodes.csv");
+  const edges: MapEdge[] = MapEdge.readCsv("../backend/csvFiles/edges.csv");
+  const pathfinder: Pathfinder = new Pathfinder(nodes, edges);
+  const expectedOutput: Array<string> = [
+    "CCONF002L1",
+    "WELEV00HL1",
+    "CHALL004L1",
+    "CREST004L1",
+    "CLABS005L1",
+  ];
+  expect(pathfinder.Astar("CCONF002L1", "CLABS005L1")).toEqual(expectedOutput);
+  console.log(pathfinder.Astar("CCONF002L1", "ALABS00103"));
 });
