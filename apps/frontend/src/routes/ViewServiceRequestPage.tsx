@@ -55,7 +55,9 @@ export function ViewServiceRequestPage() {
   // ViewServiceRequestPage
   return (
     <Stack gap={3} className="mt-5">
-      <Button className="mx-auto w-50">Back To Home Page</Button>
+      <Button className="mx-auto w-50" href="/">
+        Back To Home Page
+      </Button>
       {loaded && (
         <Table className="w-75 mx-auto table-striped">
           {header}

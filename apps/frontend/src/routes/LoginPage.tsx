@@ -6,6 +6,7 @@ import Container from "react-bootstrap/Container";
 
 export function LoginPage() {
   const [loginErr, setLoginErr] = useState<boolean>(false);
+  // const navigate = useNavigate();
 
   //TODO: Add prop that will change log in button to log out button, just using localstorage for now
   function handleSubmit(e: FormEvent<HTMLFormElement>) {
@@ -19,6 +20,8 @@ export function LoginPage() {
     )! as HTMLInputElement;
     if (usernameField.value == "admin" && passwordField.value === "admin") {
       setLoginErr(false);
+      window.localStorage.setItem("loggedIn", "true");
+      window.location.href = "/";
     } else {
       setLoginErr(true);
     }
