@@ -1,18 +1,24 @@
 import express, { Request, Response, Router } from "express";
 import prisma from "../bin/database-connection.ts";
-import { insertEmployee } from "database/src/Employee.ts";
 import { Prisma } from "database";
 
 const router: Router = express.Router();
 
 router.post("/create", async (req: Request, res: Response) => {
   const employee: Prisma.EmployeeCreateInput = req.body;
-  await insertEmployee(
-    employee.username,
-    employee.password,
-    employee.displayName,
-  );
-  res.status(200).send("Successfully Inserted Employee");
+  try {
+    await prisma.employee.createMany({
+      data: [
+        {
+          ...employee,
+        },
+      ],
+    });
+    res.status(200).send("Successfully Inserted Employee");
+  } catch (e) {
+    console.log((e as Error).message);
+    res.status(400).send("Duplicate Key");
+  }
 });
 
 router.get("/", async (req: Request, res: Response) => {

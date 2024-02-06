@@ -1,18 +1,21 @@
 import express, { Request, Response, Router } from "express";
 import prisma from "../bin/database-connection.ts";
-import { insertServiceRequest } from "database/src/Requests.ts";
 import { Prisma } from "database";
 
 const router: Router = express.Router();
 
 router.post("/create", async (req: Request, res: Response) => {
-  const serviceRequest: Prisma.ServiceRequestCreateInput = req.body;
-  await insertServiceRequest(
-    serviceRequest.typeService,
-    serviceRequest.reason,
-    serviceRequest.nodeLoc,
-  );
-  res.status(200).send("Successfully Inserted");
+  const serviceRequest = req.body as Prisma.ServiceRequestCreateManyInput;
+  try {
+    await prisma.serviceRequest.createMany({
+      data: serviceRequest,
+      skipDuplicates: true,
+    });
+    res.sendStatus(200);
+  } catch (e) {
+    console.log((e as Error).message);
+    res.sendStatus(400);
+  }
 });
 
 /**
