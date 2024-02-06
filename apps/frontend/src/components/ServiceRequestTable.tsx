@@ -10,6 +10,8 @@ interface RowData {
   typeService: string;
   reason: string;
   nodeLoc: string;
+  employeeName: string;
+  progress: string;
 }
 
 const ServiceTable: React.FC<ModularServiceTable> = ({ columns }) => {
@@ -39,6 +41,8 @@ const ServiceTable: React.FC<ModularServiceTable> = ({ columns }) => {
               <td>{row.typeService}</td>
               <td>{row.reason}</td>
               <td>{row.nodeLoc}</td>
+              <td>{row.employeeName}</td>
+              <td>{row.progress}</td>
             </tr>
           ))}
         </tbody>
