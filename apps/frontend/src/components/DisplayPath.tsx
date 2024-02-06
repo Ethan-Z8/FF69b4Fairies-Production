@@ -1,8 +1,18 @@
 import axios from "axios";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext, createContext } from "react";
 import "../styling/DisplayMapNodes.css";
 import { CSSProperties } from "react";
 import NodeOnMap from "./NodeOnMap.tsx";
+
+import GR from "../assets/hospitalmaps/00_thegroundfloor.png";
+import LL1 from "../assets/hospitalmaps/00_thelowerlevel1.png";
+import LL2 from "../assets/hospitalmaps/00_thelowerlevel2.png";
+import F1 from "../assets/hospitalmaps/01_thefirstfloor.png";
+import F2 from "../assets/hospitalmaps/02_thesecondfloor.png";
+import F3 from "../assets/hospitalmaps/03_thethirdfloor.png";
+
+// PLACEHOLDER CONTEXT replace later :3
+const MapContext = createContext(1);
 
 interface Node {
   nodeID: string;
@@ -12,29 +22,24 @@ interface Node {
   ycoord: number;
 }
 
-interface DisplayMapNodesProps {
-  mapPath: string;
-  start: string;
-  end: string;
-}
-
 interface ImageSize {
   width: number;
   height: number;
 }
+const mapPath = [GR, LL1, LL2, F1, F2, F3];
 
-export function DisplayPath({ mapPath, start, end }: DisplayMapNodesProps) {
+export function DisplayPath() {
   const [firstClickedNodeId, setFirstClickedNodeId] = useState<string | null>(
-    start,
+    null,
   );
   const [secondClickedNodeId, setSecondClickedNodeId] = useState<string | null>(
-    end,
+    null,
   );
   const [nodes, setNodes] = useState<Node[]>([]);
   const [allNodes, setAllNodes] = useState<Node[]>([]);
   const [imageSize, setImageSize] = useState<ImageSize | null>(null);
   const [counter, setCounter] = useState(false);
-
+  const mapIndex = useContext(MapContext);
   // error listener
   window.addEventListener("unhandledrejection", (event) => {
     const reason = event.reason;
@@ -88,14 +93,14 @@ export function DisplayPath({ mapPath, start, end }: DisplayMapNodesProps) {
     getAllNodes();
 
     const img = new Image();
-    img.src = mapPath;
+    img.src = mapPath[mapIndex];
     img.onload = () => {
       setImageSize({
         width: img.width,
         height: img.height,
       });
     };
-  }, [firstClickedNodeId, secondClickedNodeId, mapPath]);
+  }, [firstClickedNodeId, secondClickedNodeId, mapIndex]);
   const handleNodeClick = (node: Node) => {
     if (!counter) {
       setSecondClickedNodeId(null);
@@ -167,7 +172,7 @@ export function DisplayPath({ mapPath, start, end }: DisplayMapNodesProps) {
         }
       >
         <img
-          src={mapPath}
+          src={mapPath[mapIndex]}
           alt="map"
           style={{ width: "100%", height: "100%" }}
         />
