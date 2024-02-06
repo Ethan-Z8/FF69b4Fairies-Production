@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-import { BackButton } from "../components/BackButton.tsx";
 import AddEmployeeForm from "../components/AddEmployeeForm.tsx";
 
 function AddEmployeePage() {
@@ -12,7 +11,6 @@ function AddEmployeePage() {
     <div>
       <h1>Create New Employee Login</h1>
       <AddEmployeeForm />
-      <BackButton />
     </div>
   );
 }

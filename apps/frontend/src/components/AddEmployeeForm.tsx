@@ -2,48 +2,49 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import "../styling/AddEmployeeForm.css";
 import axios from "axios";
-import { useState } from "react";
+import { FormEvent, useState } from "react";
 
 function AddEmployeeForm() {
-  const [newUsername, setNewUsername] = useState("");
-  const [newPassword, setNewPassword] = useState("");
-  const [newDisplayName, setNewDisplayName] = useState("");
+  const [username, setUsername] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [displayName, setDisplayName] = useState<string>("");
 
   const handleClose = () => {
-    setNewUsername("");
-    setNewPassword("");
-    setNewDisplayName("");
+    setUsername("");
+    setPassword("");
+    setDisplayName("");
   };
 
-  const logData = () => {
+  const logData = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     /*
-    console.log(
-      "New Username: " + newUsername,
-      "New Password: " + newPassword,
-      "New Display Name: " + newDisplayName,
-    );
+        console.log(
+          "New Username: " + username,
+          "New Password: " + password,
+          "New Display Name: " + displayName,
+        );
 
-       */
+           */
 
     axios
       .post("api/employee/create", {
-        username: newUsername,
-        password: newPassword,
-        displayName: newDisplayName,
+        username,
+        password,
+        displayName,
       })
       .then();
   };
 
   return (
     <div className={"EmployeeForm"}>
-      <Form className={"form-group-required"}>
+      <Form className={"form-group-required"} onSubmit={logData}>
         <Form.Group className="mb-3" controlId="formBasicEmail">
           <Form.Label>Employee's User Name</Form.Label>
           <Form.Control
             type="email"
             placeholder="Employee's Username"
             required
-            onChange={(e) => setNewUsername(e.target.value)}
+            onChange={(e) => setUsername(e.target.value)}
           />
         </Form.Group>
 
@@ -53,7 +54,7 @@ function AddEmployeeForm() {
             type="password"
             placeholder="Employee's Password"
             required
-            onChange={(e) => setNewPassword(e.target.value)}
+            onChange={(e) => setPassword(e.target.value)}
           />
         </Form.Group>
 
@@ -63,22 +64,25 @@ function AddEmployeeForm() {
             type="displayName"
             placeholder="Employee's Display Name"
             required
-            onChange={(e) => setNewDisplayName(e.target.value)}
+            onChange={(e) => setDisplayName(e.target.value)}
           />
           <Form.Text className="text-muted">
             This is the name that will be displayed when the user logs in.
           </Form.Text>
         </Form.Group>
+        <div className={"Buttons"}>
+          <Button
+            variant="outline-danger"
+            className="me-auto"
+            onClick={handleClose}
+          >
+            Cancel
+          </Button>
+          <Button variant="primary" type="submit">
+            Submit
+          </Button>
+        </div>
       </Form>
-
-      <div className={"Buttons"}>
-        <Button variant="secondary" onClick={handleClose}>
-          Cancel
-        </Button>
-        <Button variant="primary" type="submit" onClick={logData}>
-          Submit
-        </Button>
-      </div>
     </div>
   );
 }
