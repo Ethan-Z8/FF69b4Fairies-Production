@@ -10,12 +10,12 @@ const TransformContainer: React.FC<TransformContainerProps> = ({
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
-  const [scale, setScale] = useState(0.2);
+  const [scale, setScale] = useState(0.4);
   const [isDragging, setIsDragging] = useState(false);
   const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
   const [locX, setLocX] = useState(0);
   const [locY, setLocY] = useState(0);
-  const [scrolling, setScrolling] = useState(false);
+  const [scrolling, setScrolling] = useState(0);
 
   useEffect(() => {
     const container = containerRef.current;
@@ -33,6 +33,8 @@ const TransformContainer: React.FC<TransformContainerProps> = ({
     const rect = container.getBoundingClientRect();
 
     const handleMouseMove = (e: MouseEvent) => {
+      setLocX((container.scrollLeft + e.clientX - rect.left) / scale);
+      setLocY((container.scrollTop + e.clientY - rect.top) / scale);
       if (!isDragging) return;
 
       const deltaX = e.clientX - dragStart.x;
@@ -70,7 +72,7 @@ const TransformContainer: React.FC<TransformContainerProps> = ({
         (e.deltaY > 0 && e.deltaY < minSpeed) ||
         (e.deltaY < 0 && e.deltaY > -1 * minSpeed)
       ) {
-        setScrolling(false);
+        setScrolling(0);
         console.log("stopped scrolling");
 
         return;
@@ -78,7 +80,7 @@ const TransformContainer: React.FC<TransformContainerProps> = ({
       console.log(container.scrollLeft, container.scrollTop, locX, locY);
 
       if (!scrolling) {
-        setScrolling(true);
+        setScrolling(scrolling + 1);
         console.log("scrolling!");
         setLocX((container.scrollLeft + e.clientX - rect.left) / scale);
         setLocY((container.scrollTop + e.clientY - rect.top) / scale);
@@ -92,8 +94,8 @@ const TransformContainer: React.FC<TransformContainerProps> = ({
       else delta = e.deltaY;
 
       const zoomSpeed = 0.0005;
-      container.scrollLeft = locX * scale - e.clientX + rect.left;
-      container.scrollTop = locY * scale - e.clientY + rect.top;
+      //container.scrollLeft = locX * scale - e.clientX + rect.left;
+      //container.scrollTop = locY * scale - e.clientY + rect.top;
       if (delta < 0) {
         setScale(Math.max(0.1, scale * (1 + delta * zoomSpeed)));
       } else {
@@ -106,8 +108,8 @@ const TransformContainer: React.FC<TransformContainerProps> = ({
 
       //console.log ("locX:", locX, "locY:", locY);
       //console.log(content.scrollHeight);
-      //container.scrollLeft = locX*scale-e.clientX+rect.left;
-      //container.scrollTop = locY*scale-e.clientY+rect.top;
+      container.scrollLeft = locX * scale - e.clientX + rect.left;
+      container.scrollTop = locY * scale - e.clientY + rect.top;
 
       //translate(100%, 100%)`;
     };
