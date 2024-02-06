@@ -1,7 +1,7 @@
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import "../styling/AddEmployeeForm.css";
-//import axios from "axios";
+import axios from "axios";
 import { useState } from "react";
 
 function AddEmployeeForm() {
@@ -16,21 +16,22 @@ function AddEmployeeForm() {
   };
 
   const logData = () => {
+    /*
     console.log(
       "New Username: " + newUsername,
       "New Password: " + newPassword,
       "New Display Name: " + newDisplayName,
     );
 
-    /*
-        axios.post("api/employee", {
-            username: newUsername,
-            password: newPassword,
-            displayName: newDisplayName,
-        })
-            .then();
+       */
 
-         */
+    axios
+      .post("api/employee/create", {
+        username: newUsername,
+        password: newPassword,
+        displayName: newDisplayName,
+      })
+      .then();
   };
 
   return (
