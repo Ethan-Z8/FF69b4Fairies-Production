@@ -1,8 +1,5 @@
 import React, { ReactNode, useRef, useEffect } from "react";
 import "../styling/TransformContainer.css";
-//import {Simulate} from "react-dom/test-utils";
-//import drag = Simulate.drag;
-//import {max} from "@popperjs/core/lib/utils/math";
 
 interface TransformContainerProps {
   children: ReactNode;
