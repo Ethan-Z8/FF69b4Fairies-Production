@@ -66,15 +66,16 @@ const TransformContainer: React.FC<TransformContainerProps> = ({
       e.preventDefault();
       let delta = 0;
       const maxSpeed = 20;
-      const minSpeed = 6;
+      const minSpeed = 15;
 
       if (
         (e.deltaY > 0 && e.deltaY < minSpeed) ||
         (e.deltaY < 0 && e.deltaY > -1 * minSpeed)
       ) {
         setScrolling(0);
-        console.log("stopped scrolling");
 
+        container.scrollLeft = locX * scale - e.clientX + rect.left;
+        container.scrollTop = locY * scale - e.clientY + rect.top;
         return;
       }
       console.log(container.scrollLeft, container.scrollTop, locX, locY);
