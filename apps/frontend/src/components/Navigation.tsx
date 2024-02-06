@@ -7,7 +7,6 @@ import Button from "react-bootstrap/Button";
 export function Navigation() {
   const isHomePage = window.location.pathname === "/";
   const loggedIn = () => window.localStorage.getItem("loggedIn") === "true";
-  console.log(loggedIn());
 
   function logOut() {
     window.localStorage.removeItem("loggedIn");
@@ -22,7 +21,8 @@ export function Navigation() {
         <Nav.Link href="/createServiceRequest">Create Service Request</Nav.Link>
         <Nav.Link href="/viewServiceRequest">Service Requests</Nav.Link>
         <Nav.Link href="/importAndExportData">Import & Export Data</Nav.Link>
-        <Nav.Link href="/mapData">View Map Data</Nav.Link>
+        <Nav.Link href="/mapData">Map Data</Nav.Link>
+        {loggedIn() && <Nav.Link href="/addEmployee">Add Employee</Nav.Link>}
         {isHomePage && (
           <NavDropdown title="Floors">
             <NavDropdown.Item>Ground</NavDropdown.Item>
