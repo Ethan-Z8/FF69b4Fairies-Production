@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { SelectorTabs } from "./SelectorTabs.tsx";
-import Map from "../components/Map.tsx";
+//import Map from "../components/Map.tsx";
 // import GroundFloorMapPath from "../assets/hospitalmaps/00_thegroundfloor.png";
 import LL1MapPath from "../assets/hospitalmaps/00_thelowerlevel1.png";
 // import LL2MapPath from "../assets/hospitalmaps/00_thelowerlevel2.png";
@@ -89,7 +89,6 @@ export const Desktop = ({
       <div className="mapPage">
         <TransformContainer>
           <DisplayPath mapPath={mapPath} start={pathStart} end={pathEnd} />
-          <Map mapPath={mapPath} />
         </TransformContainer>
       </div>
     </div>

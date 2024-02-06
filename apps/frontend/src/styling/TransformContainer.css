@@ -1,16 +1,16 @@
 .transform-container {
-  border: 2px solid #000;
   height: 100vh;
   width: 100vw;
   overflow: hidden;
   position: relative;
+  transition-duration: 50ms;
 }
 
 .content-container {
   /*position: absolute;*/
-  display: flex;
-  position: relative;
+  transition-duration: 50ms;
 }
 .content-container > * {
-  /*object-fit: contain;*/
+  position: relative;
+  transition-duration: 50ms;
 }
