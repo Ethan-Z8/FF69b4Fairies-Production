@@ -42,6 +42,12 @@ model ServiceRequest {
   nodeLoc     String
 }
 
+model Employee {
+  username    String @id
+  password    String
+  displayName String
+}
+
 model HighScore {
   id    Int      @id
   time  DateTime

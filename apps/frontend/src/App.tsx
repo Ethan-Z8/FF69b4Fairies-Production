@@ -1,13 +1,16 @@
 import React from "react";
-import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
-import HomePage from "./routes/HomePage.tsx";
-import LoginPage from "./routes/LoginPage.tsx";
-import AdminPage from "./routes/AdminPage.tsx";
-import FileReader from "./routes/file_reader.tsx";
-import MapDataPage from "./routes/MapDataPage.tsx";
+import { createBrowserRouter, Outlet, RouterProvider } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { Navigation } from "./components/Navigation.tsx";
+import { CreateServiceRequestPage } from "./routes/CreateServiceRequestPage.tsx";
+import { ViewServiceRequestPage } from "./routes/ViewServiceRequestPage.tsx";
+import { ImportAndExportDataPage } from "./routes/ImportAndExportDataPage.tsx";
+import { MapDataPage } from "./routes/MapDataPage.tsx";
+import { LoginPage } from "./routes/LoginPage.tsx";
 //import ServicePage from "./routes/ServiceRequestMenu.tsx";
-import RequestLogPage from "./routes/ServiceRequestLog.tsx";
+import AddEmployeePage from "./routes/AddEmployeePage.tsx";
+import { DisplayPath } from "./components/DisplayPath.tsx";
+import TransformContainer from "./components/TransformContainer.tsx";
 
 function App() {
   const router = createBrowserRouter([
@@ -18,37 +21,47 @@ function App() {
       children: [
         {
           path: "/",
-          element: <HomePage />,
+          element: (
+            <TransformContainer>
+              <DisplayPath />
+            </TransformContainer>
+          ),
         },
         {
-          path: "/loginPage",
+          path: "/login",
           element: <LoginPage />,
         },
         {
-          path: "/adminPage",
-          element: <AdminPage />,
+          path: "/createServiceRequest",
+          element: <CreateServiceRequestPage />,
         },
         {
-          path: "/requestLogPage",
-          element: <RequestLogPage />,
+          path: "/viewServiceRequest",
+          element: <ViewServiceRequestPage />,
         },
         {
-          path: "/file_reader",
-          element: <FileReader />,
+          path: "/importAndExportData",
+          element: <ImportAndExportDataPage />,
         },
         {
-          path: "/mapdata",
+          path: "/mapData",
           element: <MapDataPage />,
         },
         {
-          path: "/requestLogPage",
-          element: <RequestLogPage />,
+          path: "/addEmployee",
+          element: <AddEmployeePage />,
         },
       ],
     },
   ]);
 
-  return <RouterProvider router={router} />;
+  return (
+    <>
+      <Navigation />
+      <RouterProvider router={router} />
+    </>
+  );
+
   function Root() {
     return (
       <div className="pageAlignment">
