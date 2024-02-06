@@ -19,9 +19,6 @@
 
 .map-container {
   position: relative;
-  width: 5000px;
-  height: 5000px;
-  border: 2px solid #000;
 }
 
 .line {
