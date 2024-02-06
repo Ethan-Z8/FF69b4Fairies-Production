@@ -8,7 +8,7 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
-  overflow: hidden;
+  overflow: auto;
 }
 body {
   display: flex;
@@ -30,10 +30,6 @@ body {
 
 .text-block {
   max-width: 600px;
-}
-
-.example-component {
-  background-color: cyan;
 }
 
 .pageAlignment {

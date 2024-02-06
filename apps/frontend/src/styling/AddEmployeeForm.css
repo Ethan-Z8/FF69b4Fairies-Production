@@ -1,0 +1,10 @@
+.EmployeeForm {
+  padding-top: 5%;
+}
+
+.Buttons {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  gap: 2%;
+}
