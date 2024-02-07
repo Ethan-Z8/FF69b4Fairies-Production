@@ -16,10 +16,14 @@ const MapContext = createContext(1);
 
 interface Node {
   nodeID: string;
-  nodeType: string;
-  shortName: string;
   xcoord: number;
   ycoord: number;
+  floor: string;
+  building: string;
+  nodeType: string;
+  longName: string;
+  shortName: string;
+  neighbors: Array<string>;
 }
 
 interface ImageSize {
@@ -30,9 +34,16 @@ const mapPath = [GR, LL1, LL2, F1, F2, F3];
 interface DisplayPathProps {
   toggleNodes: boolean;
   toggleEdges: boolean;
+  start: string;
+  end: string;
 }
 
-export function DisplayPath({ toggleNodes, toggleEdges }: DisplayPathProps) {
+export function DisplayPath({
+  toggleNodes,
+  toggleEdges,
+  start,
+  end,
+}: DisplayPathProps) {
   const [firstClickedNodeId, setFirstClickedNodeId] = useState<string | null>(
     null,
   );
@@ -44,6 +55,7 @@ export function DisplayPath({ toggleNodes, toggleEdges }: DisplayPathProps) {
   const [imageSize, setImageSize] = useState<ImageSize | null>(null);
   const [counter, setCounter] = useState(false);
   const mapIndex = useContext(MapContext);
+  const [aNodes, setANodes] = useState<{ [key: string]: Node }>({});
 
   // error listener
   window.addEventListener("unhandledrejection", (event) => {
@@ -61,18 +73,25 @@ export function DisplayPath({ toggleNodes, toggleEdges }: DisplayPathProps) {
   useEffect(() => {
     const getMapNodes = async () => {
       try {
-        // const pathString = await axios.get(`/api/map/path`, {
-        //   params: {
-        //     start: start,
-        //     end: end,
-        //   },
-        // });
-        //console.log(pathString.data);
-
         const pathNodes = await axios.get(`/api/map/pathNodes`, {
           params: {
             start: firstClickedNodeId,
             end: secondClickedNodeId,
+          },
+        });
+        const nodesData: Node[] = Object.values(pathNodes.data);
+        setNodes(nodesData);
+      } catch (error) {
+        console.log("Error has not selected 2 nodes ");
+      }
+    };
+
+    const getMapNodesByShort = async () => {
+      try {
+        const pathNodes = await axios.get(`/api/map/pathNodesShort`, {
+          params: {
+            start: start,
+            end: end,
           },
         });
         const nodesData: Node[] = Object.values(pathNodes.data);
@@ -92,9 +111,25 @@ export function DisplayPath({ toggleNodes, toggleEdges }: DisplayPathProps) {
         console.error("Error fetching map nodess:", error);
       }
     };
+
+    const all = async () => {
+      try {
+        const response = await axios.get(`/api/map/allTemp`);
+        const aNodes: { [key: string]: Node } = response.data;
+        setANodes(aNodes);
+      } catch (error) {
+        console.error("Error fetching map nodes:", error);
+      }
+    };
+
     if (secondClickedNodeId != null && firstClickedNodeId != null) {
       getMapNodes();
     }
+
+    if (start != "" && end != "") {
+      getMapNodesByShort();
+    }
+    all();
     getAllNodes();
 
     const img = new Image();
@@ -105,10 +140,12 @@ export function DisplayPath({ toggleNodes, toggleEdges }: DisplayPathProps) {
         height: img.height,
       });
     };
-  }, [firstClickedNodeId, secondClickedNodeId, mapIndex]);
+  }, [firstClickedNodeId, secondClickedNodeId, mapIndex, start, end]);
+
   const handleNodeClick = (node: Node) => {
     if (!counter) {
       setSecondClickedNodeId(null);
+      setFirstClickedNodeId(null);
       setFirstClickedNodeId(node.nodeID);
 
       setCounter(true);
@@ -119,44 +156,86 @@ export function DisplayPath({ toggleNodes, toggleEdges }: DisplayPathProps) {
   };
 
   const renderPath = () => {
-    let choose: Node[] = nodes;
-    if (toggleEdges) choose = allNodes;
+    let circles: JSX.Element[];
+    if (toggleEdges) {
+      const visitedNodeIDs = new Set<string>();
 
-    const circles = choose.map((one, index) => {
-      // console.log(nodes); // Log nodeID to console
-      // console.log("inside rendercircles");
-
-      // Calculate previous node index
-      const prevIndex = index - 1;
-      const prevNode = prevIndex >= 0 ? nodes[prevIndex] : null;
-
-      // Calculate line coordinates and rotation angle
-      const lineStyles: CSSProperties = prevNode
-        ? {
-            position: "absolute",
-            left: `${prevNode.xcoord}px`,
-            top: `${prevNode.ycoord}px`,
-            width: `${Math.sqrt(
-              Math.pow(one.xcoord - prevNode.xcoord, 2) +
-                Math.pow(one.ycoord - prevNode.ycoord, 2),
-            )}px`, // Adjust thickness as needed
-            height: "4px", // Adjust thickness as needed
-            backgroundColor: "red",
-            zIndex: 3, // Set a higher zIndex for the line
-            transformOrigin: "left center",
-            transform: `rotate(${Math.atan2(
-              one.ycoord - prevNode.ycoord,
-              one.xcoord - prevNode.xcoord,
-            )}rad)`,
+      circles = allNodes
+        .map((node) => {
+          if (visitedNodeIDs.has(node.nodeID)) {
+            return <div />;
           }
-        : {};
 
-      return (
-        <div key={one.nodeID} className="node-wrapper">
-          {prevNode && <div className="line" style={lineStyles}></div>}
-        </div>
-      );
-    });
+          visitedNodeIDs.add(node.nodeID);
+
+          return node.neighbors.map((nNode) => {
+            const prevNode = aNodes[nNode];
+            if (!prevNode) return <div />; // Skip if prevNode is undefined
+
+            const lineStyles: React.CSSProperties = {
+              position: "absolute",
+              left: `${prevNode.xcoord}px`,
+              top: `${prevNode.ycoord}px`,
+              width: `${Math.sqrt(
+                Math.pow(node.xcoord - prevNode.xcoord, 2) +
+                  Math.pow(node.ycoord - prevNode.ycoord, 2),
+              )}px`,
+              height: "4px",
+              backgroundColor: "red",
+              zIndex: 3,
+              transformOrigin: "left center",
+              transform: `rotate(${Math.atan2(
+                node.ycoord - prevNode.ycoord,
+                node.xcoord - prevNode.xcoord,
+              )}rad)`,
+            };
+            const uniqueKey = `${nNode}-${node.nodeID}`;
+            return (
+              <div key={uniqueKey} className="node-wrapper">
+                <div className="line" style={lineStyles}></div>
+              </div>
+            );
+          });
+          return <div />;
+        })
+        .flat();
+    } else {
+      circles = nodes.map((one, index) => {
+        // console.log(nodes); // Log nodeID to console
+        // console.log("inside rendercircles");
+
+        // Calculate previous node index
+        const prevIndex = index - 1;
+        const prevNode = prevIndex >= 0 ? nodes[prevIndex] : null;
+
+        // Calculate line coordinates and rotation angle
+        const lineStyles: CSSProperties = prevNode
+          ? {
+              position: "absolute",
+              left: `${prevNode.xcoord}px`,
+              top: `${prevNode.ycoord}px`,
+              width: `${Math.sqrt(
+                Math.pow(one.xcoord - prevNode.xcoord, 2) +
+                  Math.pow(one.ycoord - prevNode.ycoord, 2),
+              )}px`, // Adjust thickness as needed
+              height: "4px", // Adjust thickness as needed
+              backgroundColor: "red",
+              zIndex: 3, // Set a higher zIndex for the line
+              transformOrigin: "left center",
+              transform: `rotate(${Math.atan2(
+                one.ycoord - prevNode.ycoord,
+                one.xcoord - prevNode.xcoord,
+              )}rad)`,
+            }
+          : {};
+
+        return (
+          <div key={one.nodeID} className="node-wrapper">
+            {prevNode && <div className="line" style={lineStyles}></div>}
+          </div>
+        );
+      });
+    }
 
     return circles;
   };

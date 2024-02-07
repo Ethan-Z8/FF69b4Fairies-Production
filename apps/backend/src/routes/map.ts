@@ -99,10 +99,69 @@ mapRouter.get("/pathNodes", async (req: Request, res: Response) => {
           "One of your nodes is not in the database, or a path couldn't be found",
       });
     } else {
-      // Convert the Map values to an array for response
-
-      // You can customize the response as needed
       res.status(200).json(Object.fromEntries(shortestPathNodes));
+    }
+  } catch (e) {
+    console.error(e);
+    res.status(500).send("Internal server error");
+  }
+});
+
+mapRouter.get("/pathNodesShort", async (req: Request, res: Response) => {
+  try {
+    type StartAndEndNodes = {
+      start?: string;
+      end?: string;
+    };
+    const endpoints = req.query as StartAndEndNodes;
+    const nodes = await Prisma.mapNode.findMany();
+    const edges = await Prisma.mapEdge.findMany();
+    const pathFindingGraph = new Pathfinder(nodes, edges);
+
+    const startNodeId = pathFindingGraph.shortNameToID(endpoints.start!);
+    const endNodeId = pathFindingGraph.shortNameToID(endpoints.end!);
+
+    if (!startNodeId || !endNodeId) {
+      res.status(400).json({
+        error: "One of your nodes is not in the database",
+      });
+      return;
+    }
+
+    const shortestPathNodes: Map<string, MapNode> =
+      pathFindingGraph.findShortestPathNodes(startNodeId, endNodeId);
+
+    if (shortestPathNodes.size === 0) {
+      res.status(400).json({
+        error: "A path couldn't be found between the specified nodes",
+      });
+    } else {
+      res.status(200).json(Object.fromEntries(shortestPathNodes));
+    }
+  } catch (e) {
+    console.error(e);
+    res.status(500).send("Internal server error");
+  }
+});
+
+mapRouter.get("/id", async (req: Request, res: Response) => {
+  try {
+    type ID = {
+      id?: string;
+    };
+    const node = req.query as ID;
+    const nodes = await Prisma.mapNode.findMany();
+    const edges = await Prisma.mapEdge.findMany();
+    const pathFindingGraph = new Pathfinder(nodes, edges);
+    let found: MapNode;
+    const foundNode = pathFindingGraph.getNodeByID(node.id!);
+    if (foundNode !== undefined) {
+      found = foundNode;
+      res.status(200).json(found);
+    } else {
+      res.status(400).json({
+        error: "This node is not in the database",
+      });
     }
   } catch (e) {
     console.error(e);
