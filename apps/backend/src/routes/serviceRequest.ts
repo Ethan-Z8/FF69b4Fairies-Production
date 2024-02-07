@@ -33,4 +33,21 @@ router.get("/", async (req: Request, res: Response) => {
   }
 });
 
+router.post("/updateProgress", async (req: Request, res: Response) => {
+  type update = {
+    date: Date;
+    progress: "Assigned" | "InProgress" | "Completed";
+  };
+  const updateData = req.body as update;
+  try {
+    await prisma.serviceRequest.update({
+      where: { date: updateData.date },
+      data: { progress: updateData.progress },
+    });
+    res.sendStatus(200);
+  } catch (e) {
+    console.log((e as Error).message);
+    res.sendStatus(400);
+  }
+});
 export default router;
