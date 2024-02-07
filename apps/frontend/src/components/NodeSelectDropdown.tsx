@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { Dropdown, FormControl } from "react-bootstrap";
+import React, { useEffect, useState, useRef } from "react";
+import { Form, ListGroup } from "react-bootstrap";
 import axios from "axios";
 
 interface Node {
@@ -18,16 +18,16 @@ interface NodeSelectProps {
 
 const NodeSelectDropdown: React.FC<NodeSelectProps> = ({ label, onSelect }) => {
   const [searchTerm, setSearchTerm] = useState("");
-  const [selectedItem, setSelectedItem] = useState<string | null>(null);
-  const [items, setItems] = useState<string[]>([]);
+  const [items, setItems] = useState<Node[]>([]);
+  const [showSuggestions, setShowSuggestions] = useState(false);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     const getAllNodes = async () => {
       try {
         const allNodes = await axios.get(`/api/map/allTemp`);
         const nodesData: Node[] = Object.values(allNodes.data);
-        const namesData = nodesData.map((node) => node.shortName);
-        setItems(namesData);
+        setItems(nodesData);
       } catch (error) {
         console.error("Error fetching map nodes:", error);
       }
@@ -35,46 +35,60 @@ const NodeSelectDropdown: React.FC<NodeSelectProps> = ({ label, onSelect }) => {
     getAllNodes();
   }, []);
 
-  const handleSelect = (
-    item: string,
-    event: React.SyntheticEvent<HTMLElement>,
-  ) => {
-    setSelectedItem(item);
-    onSelect(item, event);
+  const handleFocus = () => {
+    setShowSuggestions(true);
+  };
+
+  const handleBlur = () => {
+    setTimeout(() => {
+      setShowSuggestions(false);
+    }, 200);
   };
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
+    setShowSuggestions(true);
   };
 
-  const filteredItems = items.filter((item) =>
-    item.toLowerCase().includes(searchTerm.toLowerCase()),
-  );
+  const handleSuggestionClick = (value: string) => {
+    setSearchTerm(value);
+    setShowSuggestions(false);
+    if (inputRef.current) {
+      inputRef.current.value = value;
+    }
+    onSelect(value, {} as React.SyntheticEvent<HTMLElement>);
+  };
 
   return (
-    <Dropdown>
-      <Dropdown.Toggle variant="success" id={`dropdown-${label}`}>
-        {selectedItem || label}
-      </Dropdown.Toggle>
-      <Dropdown.Menu>
-        <FormControl
-          autoFocus
-          className="mx-3 my-2 w-auto"
-          placeholder={`Search ${label}...`}
-          onChange={handleSearch}
-          value={searchTerm}
-        />
-        {filteredItems.map((item, index) => (
-          <Dropdown.Item
-            key={index}
-            eventKey={item}
-            onSelect={(event) => handleSelect(item, event)}
-          >
-            {item}
-          </Dropdown.Item>
-        ))}
-      </Dropdown.Menu>
-    </Dropdown>
+    <div>
+      <Form.Control
+        ref={inputRef}
+        type="text"
+        value={searchTerm}
+        onChange={handleSearch}
+        onFocus={handleFocus}
+        onBlur={handleBlur}
+        placeholder={label}
+      />
+      {showSuggestions && (
+        <ListGroup>
+          {items
+            .filter((node) =>
+              node.shortName.toLowerCase().includes(searchTerm.toLowerCase()),
+            )
+            .map((node) => (
+              <ListGroup.Item
+                key={node.nodeID}
+                onClick={() => handleSuggestionClick(node.shortName)}
+                style={{ cursor: "pointer" }}
+                onMouseDown={(e) => e.preventDefault()} // Prevent input blur on suggestion click
+              >
+                {node.shortName}
+              </ListGroup.Item>
+            ))}
+        </ListGroup>
+      )}
+    </div>
   );
 };
 
