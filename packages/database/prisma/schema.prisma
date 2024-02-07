@@ -36,10 +36,26 @@ model MapEdge {
 }
 
 model ServiceRequest {
-  date        DateTime @id @default(now())
-  typeService String
-  reason      String
-  nodeLoc     String
+  date         DateTime @id @default(now())
+  typeService  String
+  reason       String
+  nodeLoc      String
+  employeeName String
+  progress     Progress
+  emp          Employee @relation("employee", fields: [employeeName], references: [displayName])
+}
+
+enum Progress {
+  Assigned
+  InProgress
+  Completed
+}
+
+model Employee {
+  username        String           @id
+  password        String
+  displayName     String           @unique
+  serviceRequests ServiceRequest[] @relation("employee")
 }
 
 model HighScore {

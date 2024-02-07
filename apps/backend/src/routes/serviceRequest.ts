@@ -1,18 +1,21 @@
 import express, { Request, Response, Router } from "express";
 import prisma from "../bin/database-connection.ts";
-import { insertServiceRequest } from "database/src/Requests.ts";
 import { Prisma } from "database";
 
 const router: Router = express.Router();
 
 router.post("/create", async (req: Request, res: Response) => {
-  const serviceRequest: Prisma.ServiceRequestCreateInput = req.body;
-  await insertServiceRequest(
-    serviceRequest.typeService,
-    serviceRequest.reason,
-    serviceRequest.nodeLoc,
-  );
-  res.status(200).send("Successfully Inserted");
+  const serviceRequest = req.body as Prisma.ServiceRequestCreateManyInput;
+  try {
+    await prisma.serviceRequest.createMany({
+      data: serviceRequest,
+      skipDuplicates: true,
+    });
+    res.sendStatus(200);
+  } catch (e) {
+    console.log((e as Error).message);
+    res.sendStatus(400);
+  }
 });
 
 /**
@@ -22,7 +25,7 @@ router.post("/create", async (req: Request, res: Response) => {
 router.get("/", async (req: Request, res: Response) => {
   try {
     const data = await prisma.serviceRequest.findMany();
-    res.json(data);
+    res.status(200).json(data);
   } catch (e) {
     const typedError = e as Error;
     console.log(typedError.message);
@@ -30,4 +33,21 @@ router.get("/", async (req: Request, res: Response) => {
   }
 });
 
+router.post("/updateProgress", async (req: Request, res: Response) => {
+  type update = {
+    date: Date;
+    progress: "Assigned" | "InProgress" | "Completed";
+  };
+  const updateData = req.body as update;
+  try {
+    await prisma.serviceRequest.update({
+      where: { date: updateData.date },
+      data: { progress: updateData.progress },
+    });
+    res.sendStatus(200);
+  } catch (e) {
+    console.log((e as Error).message);
+    res.sendStatus(400);
+  }
+});
 export default router;
