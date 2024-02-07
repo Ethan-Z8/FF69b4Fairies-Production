@@ -25,7 +25,7 @@ router.post("/create", async (req: Request, res: Response) => {
 router.get("/", async (req: Request, res: Response) => {
   try {
     const data = await prisma.serviceRequest.findMany();
-    res.json(data);
+    res.status(200).json(data);
   } catch (e) {
     const typedError = e as Error;
     console.log(typedError.message);
