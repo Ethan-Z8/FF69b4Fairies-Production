@@ -27,8 +27,11 @@ interface ImageSize {
   height: number;
 }
 const mapPath = [GR, LL1, LL2, F1, F2, F3];
+interface DisplayPathProps {
+  toggleNodes: boolean;
+}
 
-export function DisplayPath() {
+export function DisplayPath({ toggleNodes }: DisplayPathProps) {
   const [firstClickedNodeId, setFirstClickedNodeId] = useState<string | null>(
     null,
   );
@@ -40,6 +43,7 @@ export function DisplayPath() {
   const [imageSize, setImageSize] = useState<ImageSize | null>(null);
   const [counter, setCounter] = useState(false);
   const mapIndex = useContext(MapContext);
+
   // error listener
   window.addEventListener("unhandledrejection", (event) => {
     const reason = event.reason;
@@ -153,14 +157,23 @@ export function DisplayPath() {
     return circles;
   };
 
-  const renderCircles = (allNodes: Node[]) => {
-    return allNodes.map((node) => {
-      return (
-        <div key={node.nodeID}>
-          <NodeOnMap node={node} onNodeClick={() => handleNodeClick(node)} />
-        </div>
-      );
-    });
+  const renderCircles = () => {
+    if (toggleNodes)
+      return allNodes.map((node) => {
+        return (
+          <div key={node.nodeID}>
+            <NodeOnMap node={node} onNodeClick={() => handleNodeClick(node)} />
+          </div>
+        );
+      });
+    else
+      return nodes.map((node) => {
+        return (
+          <div key={node.nodeID}>
+            <NodeOnMap node={node} onNodeClick={() => handleNodeClick(node)} />
+          </div>
+        );
+      });
   };
 
   return (
@@ -177,7 +190,7 @@ export function DisplayPath() {
           style={{ width: "100%", height: "100%" }}
         />
 
-        <div>{renderCircles(allNodes)}</div>
+        <div>{renderCircles()}</div>
 
         <div>{renderPath(nodes)}</div>
       </div>
