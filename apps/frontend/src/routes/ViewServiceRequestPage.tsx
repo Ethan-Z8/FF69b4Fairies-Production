@@ -1,15 +1,17 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import Table from "react-bootstrap/Table";
 import Stack from "react-bootstrap/Stack";
 import Button from "react-bootstrap/Button";
-import Dropdown from "react-bootstrap/Dropdown";
+import Form from "react-bootstrap/Form";
 
 type req = {
   date: string;
   typeService: string;
   reason: string;
   nodeLoc: string;
+  employeeName: string;
+  progress: "Assigned" | "InProgress" | "Completed";
 };
 
 export function ViewServiceRequestPage() {
@@ -18,9 +20,10 @@ export function ViewServiceRequestPage() {
 
   useEffect(() => {
     axios
-      .get("/api/serviceRequest", { baseURL: "http://localhost" })
+      .get("/api/serviceRequest")
       .then((res) => {
         console.log("Request Made");
+        console.log(res.data);
         setServiceRequests(res.data);
         setLoaded(true);
       })
@@ -29,16 +32,26 @@ export function ViewServiceRequestPage() {
       });
   }, []);
 
-  const handleStatusChange = (index: number, newStatus: string) => {
-    console.log(`Change status of request at index ${index} to ${newStatus}`);
-  };
+  function handleStatusChange(e: ChangeEvent<HTMLSelectElement>) {
+    const target = e.target as HTMLSelectElement;
+    const updateData = {
+      date: target.id,
+      progress: target.value,
+    };
+    console.log(updateData);
+    axios
+      .post("/api/serviceRequest/updateProgress", updateData)
+      .then((res) => console.log(res))
+      .catch((err) => console.log(err));
+    // console.log(`Change status of request at index ${index} to ${newStatus}`);
+  }
 
   return (
     <Stack gap={3} className="mt-5">
       <Button className="mx-auto w-50" href="/">
         Back To Home Page
       </Button>
-      {loaded ? (
+      {loaded && (
         <Table responsive striped bordered hover>
           <thead>
             <tr>
@@ -54,36 +67,23 @@ export function ViewServiceRequestPage() {
                 <td>{req.typeService}</td>
                 <td>{req.reason}</td>
                 <td>{req.nodeLoc}</td>
+                <td>{req.employeeName}</td>
                 <td>
-                  <Dropdown
-                    onSelect={(eventKey) =>
-                      eventKey && handleStatusChange(index, eventKey.toString())
-                    }
+                  <Form.Select
+                    defaultValue={req.progress}
+                    onChange={handleStatusChange}
+                    id={req.date}
                   >
-                    <Dropdown.Toggle
-                      variant="success"
-                      id={`dropdown-status-${index}`}
-                    >
-                      Change Status
-                    </Dropdown.Toggle>
-                    <Dropdown.Menu>
-                      <Dropdown.Item eventKey="To-Do">
-                        In Progress
-                      </Dropdown.Item>
-                      <Dropdown.Item eventKey="In Progress">
-                        In Progress
-                      </Dropdown.Item>
-                      <Dropdown.Item eventKey="Completed">
-                        Completed
-                      </Dropdown.Item>
-                    </Dropdown.Menu>
-                  </Dropdown>
+                    <option value="Assigned">Assigned</option>
+                    <option value="InProgress">In Progress</option>
+                    <option value="Completed">Completed</option>
+                  </Form.Select>
                 </td>
               </tr>
             ))}
           </tbody>
         </Table>
-      ) : null}
+      )}
     </Stack>
   );
 }
