@@ -93,7 +93,7 @@ export function CreateServiceRequestPage() {
             onChange={handleInputChange}
           />
           <Form.Select
-            name="Progress"
+            name="progress"
             value={formData.progress}
             onChange={handleInputChange}
           >

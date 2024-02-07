@@ -8,23 +8,19 @@ function AddEmployeeForm() {
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [displayName, setDisplayName] = useState<string>("");
+  const [success, setSuccess] = useState<boolean>(false);
+  const [err, setErr] = useState<boolean>(false);
 
   const handleClose = () => {
     setUsername("");
     setPassword("");
     setDisplayName("");
+    setErr(false);
+    setSuccess(false);
   };
 
   const logData = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    /*
-        console.log(
-          "New Username: " + username,
-          "New Password: " + password,
-          "New Display Name: " + displayName,
-        );
-
-           */
 
     axios
       .post("api/employee/create", {
@@ -32,16 +28,27 @@ function AddEmployeeForm() {
         password,
         displayName,
       })
-      .then();
+      .then(() => {
+        handleClose();
+        setSuccess(true);
+      })
+      .catch(() => {
+        setErr(true);
+        setSuccess(false);
+      });
   };
 
   return (
-    <div className={"EmployeeForm"}>
+    <div className="EmployeeForm">
+      <Button className="w-100 mb-3" href="/">
+        Back to Home Page
+      </Button>
       <Form className={"form-group-required"} onSubmit={logData}>
         <Form.Group className="mb-3" controlId="formBasicEmail">
           <Form.Label>Employee's User Name</Form.Label>
           <Form.Control
-            type="email"
+            value={username}
+            type="text"
             placeholder="Employee's Username"
             required
             onChange={(e) => setUsername(e.target.value)}
@@ -51,6 +58,7 @@ function AddEmployeeForm() {
         <Form.Group className="mb-3" controlId="formBasicPassword">
           <Form.Label>Employee's Password</Form.Label>
           <Form.Control
+            value={password}
             type="password"
             placeholder="Employee's Password"
             required
@@ -58,9 +66,10 @@ function AddEmployeeForm() {
           />
         </Form.Group>
 
-        <Form.Group className="mb-3" controlId="formDisplayName">
+        <Form.Group className="mbboo-3" controlId="formDisplayName">
           <Form.Label>Employee's Display Name</Form.Label>
           <Form.Control
+            value={displayName}
             type="displayName"
             placeholder="Employee's Display Name"
             required
@@ -83,6 +92,10 @@ function AddEmployeeForm() {
           </Button>
         </div>
       </Form>
+      {err && <div className="text-danger">Error creating user</div>}
+      {success && (
+        <div className="text-success">Successfully created employee</div>
+      )}
     </div>
   );
 }
