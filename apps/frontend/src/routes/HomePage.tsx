@@ -2,15 +2,15 @@ import React, { useState, useRef } from "react";
 import { DisplayPath } from "../components/DisplayPath.tsx";
 import TransformContainer from "../components/TransformContainer.tsx";
 import Button from "react-bootstrap/Button";
-import Form from "react-bootstrap/Form";
+import NodeSelectDropdown from "../components/NodeSelectDropdown.tsx";
 
 function HomePage() {
   const [toggleNodes, setToggleNodes] = useState(false);
   const [toggleEdges, setToggleEdges] = useState(false);
   const [shortNamePair, setShortNamePair] = useState({ start: "", end: "" });
 
-  const startRef = useRef<HTMLInputElement>(null); // Define the type of the ref
-  const endRef = useRef<HTMLInputElement>(null); // Define the type of the ref
+  const startRef = useRef<HTMLInputElement>(null);
+  const endRef = useRef<HTMLInputElement>(null);
 
   const handleToggleNodes = () => {
     setToggleNodes(!toggleNodes);
@@ -30,46 +30,64 @@ function HomePage() {
 
   return (
     <div>
-      <div
-        style={{
-          position: "fixed",
-          bottom: "5vh",
-          right: "5vw",
-          zIndex: "4",
-          width: "10%",
-        }}
-      >
-        <Form.Group controlId="start">
-          <Form.Control ref={startRef} type="text" placeholder="Enter start" />
-        </Form.Group>
-        <Form.Group controlId="end">
-          <Form.Control ref={endRef} type="text" placeholder="Enter end" />
-        </Form.Group>
-        <Button
-          onClick={handleGeneratePath}
+      <div>
+        {}
+        <div
           style={{
-            width: "10vw",
-            marginBottom: "10px",
+            position: "fixed",
+            top: "20vh",
+            right: "5vw",
+            zIndex: "4",
           }}
         >
-          Generate Path
-        </Button>
-        <Button
-          onClick={handleToggleNodes}
+          <NodeSelectDropdown
+            label="Start"
+            onSelect={(value) =>
+              setShortNamePair({ ...shortNamePair, start: value })
+            }
+          />
+          <NodeSelectDropdown
+            label="End"
+            onSelect={(value) =>
+              setShortNamePair({ ...shortNamePair, end: value })
+            }
+          />
+          <Button
+            onClick={handleGeneratePath}
+            style={{
+              width: "10vw",
+              marginBottom: "10px",
+            }}
+          >
+            Generate Path
+          </Button>
+        </div>
+        <div
           style={{
-            width: "10vw",
+            position: "fixed",
+            bottom: "5vh",
+            right: "5vw",
+            zIndex: "4",
+            width: "10%",
           }}
         >
-          Nodes: {toggleNodes ? "on" : "off"}
-        </Button>
-        <Button
-          onClick={handleToggleEdges}
-          style={{
-            width: "10vw",
-          }}
-        >
-          Edges: {toggleEdges ? "on" : "off"}
-        </Button>
+          <Button
+            onClick={handleToggleNodes}
+            style={{
+              width: "10vw",
+            }}
+          >
+            Nodes: {toggleNodes ? "on" : "off"}
+          </Button>
+          <Button
+            onClick={handleToggleEdges}
+            style={{
+              width: "10vw",
+            }}
+          >
+            Edges: {toggleEdges ? "on" : "off"}
+          </Button>
+        </div>
       </div>
       <TransformContainer>
         <DisplayPath
