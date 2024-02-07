@@ -29,9 +29,10 @@ interface ImageSize {
 const mapPath = [GR, LL1, LL2, F1, F2, F3];
 interface DisplayPathProps {
   toggleNodes: boolean;
+  toggleEdges: boolean;
 }
 
-export function DisplayPath({ toggleNodes }: DisplayPathProps) {
+export function DisplayPath({ toggleNodes, toggleEdges }: DisplayPathProps) {
   const [firstClickedNodeId, setFirstClickedNodeId] = useState<string | null>(
     null,
   );
@@ -117,8 +118,11 @@ export function DisplayPath({ toggleNodes }: DisplayPathProps) {
     }
   };
 
-  const renderPath = (nodes: Node[]) => {
-    const circles = nodes.map((one, index) => {
+  const renderPath = () => {
+    let choose: Node[] = nodes;
+    if (toggleEdges) choose = allNodes;
+
+    const circles = choose.map((one, index) => {
       // console.log(nodes); // Log nodeID to console
       // console.log("inside rendercircles");
 
@@ -192,7 +196,7 @@ export function DisplayPath({ toggleNodes }: DisplayPathProps) {
 
         <div>{renderCircles()}</div>
 
-        <div>{renderPath(nodes)}</div>
+        <div>{renderPath()}</div>
       </div>
     </div>
   );

@@ -5,10 +5,14 @@ import Button from "react-bootstrap/Button";
 
 function HomePage() {
   const [toggleNodes, setToggleNodes] = useState(false);
-  const handleToggle = () => {
+  const [toggleEdges, setToggleEdges] = useState(false);
+
+  const handleToggleNodes = () => {
     setToggleNodes(!toggleNodes);
   };
-
+  const handleToggleEdges = () => {
+    setToggleEdges(!toggleEdges);
+  };
   return (
     <div>
       <div
@@ -19,12 +23,15 @@ function HomePage() {
           zIndex: "4",
         }}
       >
-        <Button onClick={handleToggle}>
+        <Button onClick={handleToggleNodes}>
           Nodes: {toggleNodes ? "on" : "off"}
+        </Button>
+        <Button onClick={handleToggleEdges}>
+          Edges: {toggleEdges ? "on" : "off"}
         </Button>
       </div>
       <TransformContainer>
-        <DisplayPath toggleNodes={toggleNodes} />
+        <DisplayPath toggleNodes={toggleNodes} toggleEdges={toggleEdges} />
       </TransformContainer>
     </div>
   );
