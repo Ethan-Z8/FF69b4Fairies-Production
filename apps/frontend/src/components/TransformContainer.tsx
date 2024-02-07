@@ -73,7 +73,7 @@ const TransformContainer: React.FC<TransformContainerProps> = ({
         (e.deltaY < 0 && e.deltaY > -1 * minSpeed)
       ) {
         setScrolling(0);
-        console.log("stopped!");
+        //console.log("stopped!");
         container.scrollLeft = locX * scale - e.clientX + rect.left;
         container.scrollTop = locY * scale - e.clientY + rect.top;
         return;
@@ -81,7 +81,7 @@ const TransformContainer: React.FC<TransformContainerProps> = ({
 
       if (!scrolling) {
         setScrolling(scrolling + 1);
-        console.log("scrolling!");
+        //console.log("scrolling!");
 
         setLocX((container.scrollLeft + e.clientX - rect.left) / scale);
         setLocY((container.scrollTop + e.clientY - rect.top) / scale);
@@ -90,7 +90,7 @@ const TransformContainer: React.FC<TransformContainerProps> = ({
       }
       // container.scrollLeft = locX*scale-e.clientX+rect.left;
       // container.scrollTop = locY*scale-e.clientY+rect.top;
-      console.log(e.deltaY);
+      //console.log(e.deltaY);
       if (e.deltaY > maxSpeed) delta = maxSpeed;
       else if (e.deltaY < -1 * maxSpeed) delta = -1 * maxSpeed;
       else delta = e.deltaY;
