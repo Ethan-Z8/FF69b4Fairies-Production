@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import { DisplayPath } from "../components/DisplayPath.tsx";
 import TransformContainer from "../components/TransformContainer.tsx";
 import Button from "react-bootstrap/Button";
@@ -8,9 +8,10 @@ function HomePage() {
   const [toggleNodes, setToggleNodes] = useState(false);
   const [toggleEdges, setToggleEdges] = useState(false);
   const [shortNamePair, setShortNamePair] = useState({ start: "", end: "" });
-
-  const startRef = useRef<HTMLInputElement>(null);
-  const endRef = useRef<HTMLInputElement>(null);
+  const [start, setStart] = useState<string>("Start");
+  const [end, setEnd] = useState<string>("End");
+  //const startRef = useRef<HTMLInputElement>(null);
+  //const endRef = useRef<HTMLInputElement>(null);
 
   const handleToggleNodes = () => {
     setToggleNodes(!toggleNodes);
@@ -21,11 +22,8 @@ function HomePage() {
   };
 
   const handleGeneratePath = () => {
-    if (startRef.current && endRef.current) {
-      const startValue = startRef.current.value;
-      const endValue = endRef.current.value;
-      setShortNamePair({ start: startValue, end: endValue });
-    }
+    setShortNamePair({ start: start, end: end });
+    console.log(shortNamePair);
   };
 
   return (
@@ -38,20 +36,14 @@ function HomePage() {
             top: "20vh",
             right: "5vw",
             zIndex: "4",
+            width: "20%",
           }}
         >
           <NodeSelectDropdown
-            label="Start"
-            onSelect={(value) =>
-              setShortNamePair({ ...shortNamePair, start: value })
-            }
+            label={start}
+            onSelect={(value) => setStart(value)}
           />
-          <NodeSelectDropdown
-            label="End"
-            onSelect={(value) =>
-              setShortNamePair({ ...shortNamePair, end: value })
-            }
-          />
+          <NodeSelectDropdown label={end} onSelect={(value) => setEnd(value)} />
           <Button
             onClick={handleGeneratePath}
             style={{
@@ -69,6 +61,7 @@ function HomePage() {
             right: "5vw",
             zIndex: "4",
             width: "10%",
+            float: "right",
           }}
         >
           <Button
