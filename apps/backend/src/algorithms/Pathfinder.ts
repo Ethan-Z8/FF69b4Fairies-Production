@@ -90,6 +90,20 @@ export default class Pathfinder {
   public getNodes(): Map<string, MapNode> {
     return this.#nodes;
   }
+
+  public getNodeByID(id: string): MapNode | undefined {
+    return this.#nodes.get(id);
+  }
+
+  public shortNameToID(shortname: string): string {
+    for (const [id, node] of this.#nodes.entries()) {
+      if (node.shortName === shortname) {
+        return id;
+      }
+    }
+    return "";
+  }
+
   /**
    * A* Algorithm
    * returns the path it recommends to destination
