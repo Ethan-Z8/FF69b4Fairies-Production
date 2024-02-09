@@ -7,10 +7,10 @@ import { ViewServiceRequestPage } from "./routes/ViewServiceRequestPage.tsx";
 import { ImportAndExportDataPage } from "./routes/ImportAndExportDataPage.tsx";
 import { MapDataPage } from "./routes/MapDataPage.tsx";
 import { LoginPage } from "./routes/LoginPage.tsx";
-//import ServicePage from "./routes/ServiceRequestMenu.tsx";
 import AddEmployeePage from "./routes/AddEmployeePage.tsx";
 import { DisplayPath } from "./components/DisplayPath.tsx";
 import TransformContainer from "./components/TransformContainer.tsx";
+import { Auth0Provider } from "@auth0/auth0-react";
 
 function App() {
   const router = createBrowserRouter([
@@ -57,16 +57,28 @@ function App() {
 
   return (
     <>
-      <Navigation />
       <RouterProvider router={router} />
     </>
   );
 
   function Root() {
+    //const navigate = useNavigate();
+
     return (
-      <div className="pageAlignment">
-        <Outlet />
-      </div>
+      <Auth0Provider
+        useRefreshTokens
+        cacheLocation="localstorage"
+        domain="dev-zmul0qvnpdjhismy.us.auth0.com"
+        clientId="4W0MSzB55DCh8XMCKuCzJby2qFpK5hZp"
+        authorizationParams={{
+          redirect_uri: window.location.origin,
+        }}
+      >
+        <Navigation />
+        <div className="pageAlignment">
+          <Outlet />
+        </div>
+      </Auth0Provider>
     );
   }
 }

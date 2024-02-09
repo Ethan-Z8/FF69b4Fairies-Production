@@ -21,7 +21,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@auth0/auth0-react@npm:^2.1.1":
+"@auth0/auth0-react@npm:^2.2.4":
   version: 2.2.4
   resolution: "@auth0/auth0-react@npm:2.2.4"
   dependencies:
@@ -3692,11 +3692,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"frontend@workspace:apps/frontend":
+"frontend@workspace:^, frontend@workspace:apps/frontend":
   version: 0.0.0-use.local
   resolution: "frontend@workspace:apps/frontend"
   dependencies:
-    "@auth0/auth0-react": "npm:^2.1.1"
+    "@auth0/auth0-react": "npm:^2.2.4"
     "@popperjs/core": "npm:^2.11.8"
     "@tanstack/react-table": "npm:^8.9.3"
     "@types/bootstrap": "npm:^5.2.6"
@@ -6445,6 +6445,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "softeng-starter-code@workspace:."
   dependencies:
+    "@auth0/auth0-spa-js": "npm:^2.1.3"
     "@types/express": "npm:^4.17.21"
     "@types/multer": "npm:^1.4.11"
     "@types/react": "npm:^18.0.37"
@@ -6454,6 +6455,7 @@ __metadata:
     eslint: "npm:^8.56.0"
     eslint-config-custom: "workspace:*"
     express: "npm:^4.18.2"
+    frontend: "workspace:^"
     happy-dom: "npm:^10.6.3"
     husky: "npm:^8.0.0"
     multer: "npm:^1.4.5-lts.1"

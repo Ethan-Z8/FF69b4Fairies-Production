@@ -2,11 +2,11 @@ import Form from "react-bootstrap/Form";
 import Stack from "react-bootstrap/Stack";
 import Button from "react-bootstrap/Button";
 import React, { FormEvent, useState } from "react";
+//import {useNavigate} from "react-router-dom";
 import Container from "react-bootstrap/Container";
 
 export function LoginPage() {
   const [loginErr, setLoginErr] = useState<boolean>(false);
-  // const navigate = useNavigate();
 
   //TODO: Add prop that will change log in button to log out button, just using localstorage for now
   function handleSubmit(e: FormEvent<HTMLFormElement>) {
