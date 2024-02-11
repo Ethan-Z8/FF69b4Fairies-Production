@@ -33,7 +33,7 @@ interface ImageSize {
 
 const mapPath: string[] = [GR, LL1, LL2, F1, F2, F3];
 
-const mapPathNames: string[] = ["GR", "L1", "L2", "F1", "F2", "F3"];
+const mapPathNames: string[] = ["GR", "L1", "L2", "1", "2", "3"];
 
 export function DisplayPath() {
   const [firstClickedNodeId, setFirstClickedNodeId] = useState<string>("");
