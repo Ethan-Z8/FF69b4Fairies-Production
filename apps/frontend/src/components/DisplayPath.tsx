@@ -298,6 +298,32 @@ export function DisplayPath() {
             />
             <Button onClick={clearSearch}>clear</Button>
           </div>
+          <div
+            style={{
+              position: "absolute",
+              bottom: "10%",
+              zIndex: "4",
+              width: "10%",
+              float: "right",
+            }}
+          >
+            <Button
+              onClick={handleToggleNodes}
+              style={{
+                width: "10vw",
+              }}
+            >
+              Nodes: {toggleNodes ? "on" : "off"}
+            </Button>
+            <Button
+              onClick={handleToggleEdges}
+              style={{
+                width: "10vw",
+              }}
+            >
+              Edges: {toggleEdges ? "on" : "off"}
+            </Button>
+          </div>
         </div>
       </div>
       <div className="total">
@@ -319,33 +345,6 @@ export function DisplayPath() {
             <div>{renderPath()}</div>
           </div>
         </TransformContainer>
-        <div
-          style={{
-            position: "fixed",
-            bottom: "5vh",
-            right: "5vw",
-            zIndex: "4",
-            width: "10%",
-            float: "right",
-          }}
-        >
-          <Button
-            onClick={handleToggleNodes}
-            style={{
-              width: "10vw",
-            }}
-          >
-            Nodes: {toggleNodes ? "on" : "off"}
-          </Button>
-          <Button
-            onClick={handleToggleEdges}
-            style={{
-              width: "10vw",
-            }}
-          >
-            Edges: {toggleEdges ? "on" : "off"}
-          </Button>
-        </div>
       </div>
     </div>
   );
