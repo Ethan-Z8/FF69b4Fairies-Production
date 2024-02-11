@@ -1,3 +1,4 @@
+
 import React from "react";
 import { DisplayPath } from "../components/DisplayPath.tsx";
 function HomePage() {

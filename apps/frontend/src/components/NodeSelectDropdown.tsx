@@ -33,6 +33,7 @@ const NodeSelectDropdown: React.FC<NodeSelectProps> = ({ label, onSelect }) => {
       }
     };
     getAllNodes();
+
     setSearchTerm(label);
   }, [label]);
 
@@ -61,6 +62,7 @@ const NodeSelectDropdown: React.FC<NodeSelectProps> = ({ label, onSelect }) => {
   };
 
   return (
+
     <div style={{ position: "relative" }}>
       <Form.Control
         ref={inputRef}
