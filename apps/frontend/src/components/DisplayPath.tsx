@@ -33,7 +33,7 @@ interface ImageSize {
 
 const mapPath: string[] = [GR, LL1, LL2, F1, F2, F3];
 
-const mapPathNames: string[] = ["GR", "L1", "L2", "F1", "F2", "F3"];
+const mapPathNames: string[] = ["GR", "L1", "L2", "1", "2", "3"];
 
 export function DisplayPath() {
   const [firstClickedNodeId, setFirstClickedNodeId] = useState<string>("");
@@ -222,7 +222,10 @@ export function DisplayPath() {
     } else {
       circles = nodes.map((one, index) => {
         const prevIndex = index - 1;
-        const prevNode = prevIndex >= 0 ? nodes[prevIndex] : null;
+        const prevNode =
+          prevIndex >= 0 && mapPathNames[mapIndex] == nodes[prevIndex].floor
+            ? nodes[prevIndex]
+            : null;
 
         const lineStyles: React.CSSProperties = prevNode
           ? {
