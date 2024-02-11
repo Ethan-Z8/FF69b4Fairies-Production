@@ -1,0 +1,17 @@
+.selector-tabs {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+}
+
+.individual {
+  cursor: pointer;
+  padding: 10px;
+  border: 1px solid #ccc;
+  width: 16.66%;
+}
+
+.individual.active {
+  background-color: #007bff;
+  color: #fff;
+}

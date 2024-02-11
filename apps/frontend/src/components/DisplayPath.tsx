@@ -12,6 +12,7 @@ import LL2 from "../assets/hospitalmaps/00_thelowerlevel2.png";
 import F1 from "../assets/hospitalmaps/01_thefirstfloor.png";
 import F2 from "../assets/hospitalmaps/02_thesecondfloor.png";
 import F3 from "../assets/hospitalmaps/03_thethirdfloor.png";
+import SelectorTabs from "./SelectorTabs.tsx";
 
 interface Node {
   nodeID: string;
@@ -126,6 +127,10 @@ export function DisplayPath() {
   };
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
+  };
+
+  const handleMapSelect = (index: number) => {
+    setMapIndex(index);
   };
 
   const clearSearch = () => {
@@ -298,6 +303,11 @@ export function DisplayPath() {
             />
             <Button onClick={clearSearch}>clear</Button>
           </div>
+          <SelectorTabs
+            mapIndex={mapIndex}
+            onMapSelect={handleMapSelect}
+            tabNames={mapPathNames}
+          />
           <div
             style={{
               position: "absolute",
