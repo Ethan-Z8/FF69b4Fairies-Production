@@ -14,9 +14,6 @@
   height: 24px;
 }
 
-.total {
-}
-
 .map-container {
   position: relative;
 }
@@ -25,4 +22,42 @@
   position: absolute;
   background-color: red;
   z-index: 2;
+}
+.map-control-panel {
+  position: fixed;
+  top: 0;
+  right: -30%;
+  width: 30%;
+  height: 100%;
+  background-color: #eee;
+  transition: right 0.3s ease;
+  z-index: 7;
+}
+
+.menu-content {
+  height: 100%;
+  overflow-y: auto;
+}
+
+.tab {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  transform: translateY(-50%);
+  width: 2%;
+  height: 16%;
+  background-color: #ddd;
+  border: 5px;
+  cursor: pointer;
+  z-index: 6;
+  transition: right 0.3s ease;
+}
+
+.tab.open {
+  right: 28%;
+  z-index: 8;
+}
+
+.map-control-panel.open {
+  right: 0;
 }

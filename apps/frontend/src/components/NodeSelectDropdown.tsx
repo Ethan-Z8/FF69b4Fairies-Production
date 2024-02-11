@@ -33,7 +33,8 @@ const NodeSelectDropdown: React.FC<NodeSelectProps> = ({ label, onSelect }) => {
       }
     };
     getAllNodes();
-  }, []);
+    setSearchTerm(label);
+  }, [label]);
 
   const handleFocus = () => {
     setShowSuggestions(true);
@@ -60,7 +61,7 @@ const NodeSelectDropdown: React.FC<NodeSelectProps> = ({ label, onSelect }) => {
   };
 
   return (
-    <div>
+    <div style={{ position: "relative" }}>
       <Form.Control
         ref={inputRef}
         type="text"
@@ -71,22 +72,31 @@ const NodeSelectDropdown: React.FC<NodeSelectProps> = ({ label, onSelect }) => {
         placeholder={label}
       />
       {showSuggestions && (
-        <ListGroup>
-          {items
-            .filter((node) =>
-              node.shortName.toLowerCase().includes(searchTerm.toLowerCase()),
-            )
-            .map((node) => (
-              <ListGroup.Item
-                key={node.nodeID}
-                onClick={() => handleSuggestionClick(node.shortName)}
-                style={{ cursor: "pointer" }}
-                onMouseDown={(e) => e.preventDefault()} // Prevent input blur on suggestion click
-              >
-                {node.shortName}
-              </ListGroup.Item>
-            ))}
-        </ListGroup>
+        <div
+          style={{
+            position: "absolute",
+            width: "100%",
+            maxHeight: "40vh",
+            overflowY: "auto",
+          }}
+        >
+          <ListGroup>
+            {items
+              .filter((node) =>
+                node.shortName.toLowerCase().includes(searchTerm.toLowerCase()),
+              )
+              .map((node) => (
+                <ListGroup.Item
+                  key={node.nodeID}
+                  onClick={() => handleSuggestionClick(node.shortName)}
+                  style={{ cursor: "pointer" }}
+                  onMouseDown={(e) => e.preventDefault()}
+                >
+                  {node.shortName}
+                </ListGroup.Item>
+              ))}
+          </ListGroup>
+        </div>
       )}
     </div>
   );
