@@ -118,10 +118,11 @@ export function CreateServiceRequestPage() {
           label="Status"
           id="status"
           labelId="status"
-          defaultValue="Assigned"
+          defaultValue="Unassigned"
           name="status"
           required
         >
+          <MenuItem value="Unassigned">Unassigned</MenuItem>
           <MenuItem value="Assigned">Assigned</MenuItem>
           <MenuItem value="InProgress">In Progress</MenuItem>
           <MenuItem value="Completed">Completed</MenuItem>

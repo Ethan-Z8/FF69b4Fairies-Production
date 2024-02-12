@@ -8,6 +8,7 @@ import { ImportAndExportDataPage } from "./routes/ImportAndExportDataPage.tsx";
 import { LoginPage } from "./routes/LoginPage.tsx";
 import { MapDataPage } from "./routes/MapDataPage.tsx";
 import { ViewServiceRequestPage } from "./routes/ViewServiceRequestPage.tsx";
+import TransportationRequest from "./components/TransportationRequest.tsx";
 //import Button from "react-bootstrap/Button";
 
 function App() {
@@ -44,6 +45,10 @@ function App() {
         {
           path: "/addEmployee",
           element: <AddEmployeePage />,
+        },
+        {
+          path: "/transportation",
+          element: <TransportationRequest />,
         },
       ],
     },

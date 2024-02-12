@@ -1,6 +1,5 @@
 :root {
   font-family: Helvetica, Sans-Serif, serif;
-  background-color: #f4f4f4;
   font-size: 18px;
   line-height: 1.4;
   font-synthesis: none;
@@ -35,5 +34,4 @@ body {
 .pageAlignment {
   display: flex;
   justify-content: center;
-  background-color: #f4f4f4;
 }
