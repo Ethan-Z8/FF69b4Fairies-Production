@@ -12,6 +12,7 @@ import LL2 from "../assets/hospitalmaps/00_thelowerlevel2.png";
 import F1 from "../assets/hospitalmaps/01_thefirstfloor.png";
 import F2 from "../assets/hospitalmaps/02_thesecondfloor.png";
 import F3 from "../assets/hospitalmaps/03_thethirdfloor.png";
+import SelectorTabs from "./SelectorTabs.tsx";
 
 interface Node {
   nodeID: string;
@@ -32,7 +33,7 @@ interface ImageSize {
 
 const mapPath: string[] = [GR, LL1, LL2, F1, F2, F3];
 
-const mapPathNames: string[] = ["GR", "L1", "L2", "F1", "F2", "F3"];
+const mapPathNames: string[] = ["GR", "L1", "L2", "1", "2", "3"];
 
 export function DisplayPath() {
   const [firstClickedNodeId, setFirstClickedNodeId] = useState<string>("");
@@ -128,6 +129,10 @@ export function DisplayPath() {
     setMenuOpen(!menuOpen);
   };
 
+  const handleMapSelect = (index: number) => {
+    setMapIndex(index);
+  };
+
   const clearSearch = () => {
     setFirstClickedNodeId("");
     setSecondClickedNodeId("");
@@ -217,7 +222,10 @@ export function DisplayPath() {
     } else {
       circles = nodes.map((one, index) => {
         const prevIndex = index - 1;
-        const prevNode = prevIndex >= 0 ? nodes[prevIndex] : null;
+        const prevNode =
+          prevIndex >= 0 && mapPathNames[mapIndex] == nodes[prevIndex].floor
+            ? nodes[prevIndex]
+            : null;
 
         const lineStyles: React.CSSProperties = prevNode
           ? {
@@ -298,6 +306,11 @@ export function DisplayPath() {
             />
             <Button onClick={clearSearch}>clear</Button>
           </div>
+          <SelectorTabs
+            mapIndex={mapIndex}
+            onMapSelect={handleMapSelect}
+            tabNames={mapPathNames}
+          />
           <div
             style={{
               position: "absolute",
