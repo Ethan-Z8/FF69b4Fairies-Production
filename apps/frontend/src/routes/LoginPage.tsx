@@ -31,10 +31,6 @@ export function LoginPage() {
     <Container className="w-50 mt-5">
       <Form onSubmit={handleSubmit}>
         <Stack gap={3}>
-          <Button href="/" className="d-block">
-            {" "}
-            Back to Login Page
-          </Button>
           <Form.Group>
             <Form.Label>Username</Form.Label>
             <Form.Control

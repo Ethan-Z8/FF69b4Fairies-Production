@@ -68,10 +68,6 @@ export function ImportAndExportDataPage() {
 
   return (
     <Stack gap={3}>
-      <Button className="m-auto w-50 mt-5" href="/">
-        Back to Home Page
-      </Button>
-
       <Form
         className="m-auto w-50 mt-5"
         onSubmit={handleImport}

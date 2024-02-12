@@ -40,9 +40,6 @@ function AddEmployeeForm() {
 
   return (
     <div className="EmployeeForm">
-      <Button className="w-100 mb-3" href="/">
-        Back to Home Page
-      </Button>
       <Form className={"form-group-required"} onSubmit={logData}>
         <Form.Group className="mb-3" controlId="formBasicEmail">
           <Form.Label>Employee's User Name</Form.Label>

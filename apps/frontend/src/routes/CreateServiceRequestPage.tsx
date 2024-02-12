@@ -59,7 +59,6 @@ export function CreateServiceRequestPage() {
     <>
       <Form className="m-auto w-50 mt-5" onSubmit={handleSubmit}>
         <Stack gap={3}>
-          <Button href="/">Back to Home Page</Button>
           <FloatingLabel label="Choose Type of service request">
             <Form.Select
               value={formData.typeService}

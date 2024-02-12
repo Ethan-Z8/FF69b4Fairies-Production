@@ -2,7 +2,6 @@ import { MapNodeInterface } from "common/src/interfaces/MapNodeInterface.ts";
 import Table from "react-bootstrap/Table";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import Button from "react-bootstrap/Button";
 import Stack from "react-bootstrap/Stack";
 
 export function MapDataPage() {
@@ -51,9 +50,6 @@ export function MapDataPage() {
 
   return (
     <Stack gap={3} className="overflow-auto flex-grow-1">
-      <Button className="mx-auto w-50 mt-5" href="/">
-        Back to Home Page
-      </Button>
       {loaded && (
         <Table className="mx-auto w-75 table-striped">
           <thead>

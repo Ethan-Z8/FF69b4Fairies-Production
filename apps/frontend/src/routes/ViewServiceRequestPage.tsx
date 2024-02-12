@@ -2,7 +2,6 @@ import axios from "axios";
 import { ChangeEvent, useEffect, useState } from "react";
 import Table from "react-bootstrap/Table";
 import Stack from "react-bootstrap/Stack";
-import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 
 type req = {
@@ -57,9 +56,6 @@ export function ViewServiceRequestPage() {
 
   return (
     <Stack gap={3} className="mt-5">
-      <Button className="mx-auto w-50" href="/">
-        Back To Home Page
-      </Button>
       <Form.Select
         aria-label="Filter by service status"
         onChange={handleFilterChange}
