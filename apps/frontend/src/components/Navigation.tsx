@@ -1,6 +1,7 @@
 import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
 import Button from "react-bootstrap/Button";
+import logo from "../assets/logo.svg";
 
 export function Navigation() {
   const isHomePage = window.location.pathname === "/";
@@ -13,8 +14,19 @@ export function Navigation() {
   }
 
   return (
-    <Navbar className="bg-body-tertiary p-3 justify-content-around">
-      <Navbar.Brand>B & W Hospital</Navbar.Brand>
+    <Navbar className="bg-body-tertiary p-2 justify-content-around">
+      <Navbar.Brand>
+        <Nav.Link href="/">
+          <img
+            src={logo}
+            style={{
+              minHeight: "4rem",
+              margin: 0,
+              padding: 0,
+            }}
+          />
+        </Nav.Link>
+      </Navbar.Brand>
       <Nav className="d-flex justify-content-bewteen">
         {!isHomePage && <Nav.Link href="/">Home Page</Nav.Link>}
         <Nav.Link href="/createServiceRequest">Create Service Request</Nav.Link>
@@ -24,9 +36,9 @@ export function Navigation() {
         {loggedIn() && <Nav.Link href="/addEmployee">Add Employee</Nav.Link>}
       </Nav>
       {!loggedIn() ? (
-        <Button className="ml-4" href="/login">
+        <Nav.Link className="ml-4" href="/login">
           Log In
-        </Button>
+        </Nav.Link>
       ) : (
         <Button className="ml-4" onClick={logOut}>
           Log Out
