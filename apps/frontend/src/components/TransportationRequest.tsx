@@ -142,7 +142,7 @@ export function TransportationRequest() {
             placeholder="Time to Return Patient"
             type="text"
             as="input"
-            value={requestData.time2Move}
+            value={requestData.time2Return}
             name="time2Move"
             onChange={handleInputChange}
           />
