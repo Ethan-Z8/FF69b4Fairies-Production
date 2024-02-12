@@ -1,8 +1,8 @@
+import axios from "axios";
+import { FormEvent, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import "../styling/AddEmployeeForm.css";
-import axios from "axios";
-import { FormEvent, useState } from "react";
 
 function AddEmployeeForm() {
   const [username, setUsername] = useState<string>("");

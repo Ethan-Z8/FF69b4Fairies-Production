@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
 import axios from "axios";
-import NodeSelectDropdown from "./NodeSelectDropdown";
+import React, { useEffect, useState } from "react";
 import Button from "react-bootstrap/Button";
-import NodeOnMap from "./NodeOnMap";
 import "../styling/DisplayMapNodes.css";
+import NodeOnMap from "./NodeOnMap";
+import NodeSelectDropdown from "./NodeSelectDropdown";
 import TransformContainer from "./TransformContainer.tsx";
 
 import GR from "../assets/hospitalmaps/00_thegroundfloor.png";
@@ -182,43 +182,41 @@ export function DisplayPath() {
     if (toggleEdges) {
       const visitedNodeIDs = new Set<string>();
 
-      circles = allNodes
-        .map((node) => {
-          if (!visitedNodeIDs.has(node.nodeID)) {
-            visitedNodeIDs.add(node.nodeID);
+      circles = allNodes.flatMap((node) => {
+        if (!visitedNodeIDs.has(node.nodeID)) {
+          visitedNodeIDs.add(node.nodeID);
 
-            return node.neighbors.map((nNode) => {
-              const prevNode = aNodes[nNode];
-              if (!prevNode) return <div />; // Skip if prevNode is undefined
+          return node.neighbors.map((nNode) => {
+            const prevNode = aNodes[nNode];
+            if (!prevNode) return <div />; // Skip if prevNode is undefined
 
-              const lineStyles: React.CSSProperties = {
-                position: "absolute",
-                left: `${prevNode.xcoord}px`,
-                top: `${prevNode.ycoord}px`,
-                width: `${Math.sqrt(
-                  Math.pow(node.xcoord - prevNode.xcoord, 2) +
-                    Math.pow(node.ycoord - prevNode.ycoord, 2),
-                )}px`,
-                height: "4px",
-                backgroundColor: "red",
-                zIndex: 3,
-                transformOrigin: "left center",
-                transform: `rotate(${Math.atan2(
-                  node.ycoord - prevNode.ycoord,
-                  node.xcoord - prevNode.xcoord,
-                )}rad)`,
-              };
-              const uniqueKey = `${nNode}-${node.nodeID}`;
-              return (
-                <div key={uniqueKey} className="node-wrapper">
-                  <div className="line" style={lineStyles}></div>
-                </div>
-              );
-            });
-          }
-          return <div />;
-        })
-        .flat();
+            const lineStyles: React.CSSProperties = {
+              position: "absolute",
+              left: `${prevNode.xcoord}px`,
+              top: `${prevNode.ycoord}px`,
+              width: `${Math.sqrt(
+                Math.pow(node.xcoord - prevNode.xcoord, 2) +
+                  Math.pow(node.ycoord - prevNode.ycoord, 2),
+              )}px`,
+              height: "4px",
+              backgroundColor: "red",
+              zIndex: 3,
+              transformOrigin: "left center",
+              transform: `rotate(${Math.atan2(
+                node.ycoord - prevNode.ycoord,
+                node.xcoord - prevNode.xcoord,
+              )}rad)`,
+            };
+            const uniqueKey = `${nNode}-${node.nodeID}`;
+            return (
+              <div key={uniqueKey} className="node-wrapper">
+                <div className="line" style={lineStyles}></div>
+              </div>
+            );
+          });
+        }
+        return <div />;
+      });
     } else {
       circles = nodes.map((one, index) => {
         const prevIndex = index - 1;

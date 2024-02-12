@@ -1,8 +1,8 @@
-import { MapNodeInterface } from "common/src/interfaces/MapNodeInterface.ts";
-import Table from "react-bootstrap/Table";
-import { useEffect, useState } from "react";
 import axios from "axios";
+import { MapNodeInterface } from "common/src/interfaces/MapNodeInterface.ts";
+import { useEffect, useState } from "react";
 import Stack from "react-bootstrap/Stack";
+import Table from "react-bootstrap/Table";
 
 export function MapDataPage() {
   const [loaded, setLoaded] = useState<boolean>(false);
@@ -51,7 +51,7 @@ export function MapDataPage() {
   return (
     <Stack gap={3} className="overflow-auto flex-grow-1">
       {loaded && (
-        <Table className="mx-auto w-75 table-striped">
+        <Table className="mx-auto w-75 table-striped" bordered size="sm">
           <thead>
             <tr>{headers}</tr>
           </thead>

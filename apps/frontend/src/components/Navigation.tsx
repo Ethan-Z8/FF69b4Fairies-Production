@@ -1,6 +1,6 @@
-import Navbar from "react-bootstrap/Navbar";
-import Nav from "react-bootstrap/Nav";
 import Button from "react-bootstrap/Button";
+import Nav from "react-bootstrap/Nav";
+import Navbar from "react-bootstrap/Navbar";
 import logo from "../assets/logo.svg";
 
 export function Navigation() {
