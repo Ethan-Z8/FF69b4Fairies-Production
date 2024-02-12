@@ -13,4 +13,5 @@
 .content-container > * {
   position: relative;
   transition-duration: 20ms;
+  height: 200%;
 }

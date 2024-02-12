@@ -6,12 +6,13 @@ import NodeOnMap from "./NodeOnMap";
 import "../styling/DisplayMapNodes.css";
 import TransformContainer from "./TransformContainer.tsx";
 
-import GR from "../assets/hospitalmaps/00_thegroundfloor.png";
-import LL1 from "../assets/hospitalmaps/00_thelowerlevel1.png";
-import LL2 from "../assets/hospitalmaps/00_thelowerlevel2.png";
-import F1 from "../assets/hospitalmaps/01_thefirstfloor.png";
-import F2 from "../assets/hospitalmaps/02_thesecondfloor.png";
-import F3 from "../assets/hospitalmaps/03_thethirdfloor.png";
+import GR from "../assets/hospitalmaps/00_thegroundfloor-min.png";
+import LL1 from "../assets/hospitalmaps/00_thelowerlevel1-min.png";
+import LL2 from "../assets/hospitalmaps/00_thelowerlevel2-min.png";
+import F1 from "../assets/hospitalmaps/01_thefirstfloor-min.png";
+import F2 from "../assets/hospitalmaps/02_thesecondfloor-min.png";
+import F3 from "../assets/hospitalmaps/03_thethirdfloor-min.png";
+
 import SelectorTabs from "./SelectorTabs.tsx";
 
 interface Node {
@@ -40,7 +41,10 @@ export function DisplayPath() {
   const [secondClickedNodeId, setSecondClickedNodeId] = useState<string>("");
   const [nodes, setNodes] = useState<Node[]>([]);
   const [allNodes, setAllNodes] = useState<Node[]>([]);
-  const [imageSize, setImageSize] = useState<ImageSize | null>(null);
+  const [imageSize, setImageSize] = useState<ImageSize>({
+    width: 5000,
+    height: 3400,
+  });
   const [counter, setCounter] = useState(false);
   const [mapIndex, setMapIndex] = useState(1);
   const [aNodes, setANodes] = useState<{ [key: string]: Node }>({});
@@ -222,30 +226,30 @@ export function DisplayPath() {
     } else {
       circles = nodes.map((one, index) => {
         const prevIndex = index - 1;
-        const prevNode =
-          prevIndex >= 0 && mapPathNames[mapIndex] == nodes[prevIndex].floor
-            ? nodes[prevIndex]
-            : null;
+        const prevNode = prevIndex >= 0 ? nodes[prevIndex] : null;
 
-        const lineStyles: React.CSSProperties = prevNode
-          ? {
-              position: "absolute",
-              left: `${prevNode.xcoord}px`,
-              top: `${prevNode.ycoord}px`,
-              width: `${Math.sqrt(
-                Math.pow(one.xcoord - prevNode.xcoord, 2) +
-                  Math.pow(one.ycoord - prevNode.ycoord, 2),
-              )}px`,
-              height: "4px",
-              backgroundColor: "red",
-              zIndex: 3,
-              transformOrigin: "left center",
-              transform: `rotate(${Math.atan2(
-                one.ycoord - prevNode.ycoord,
-                one.xcoord - prevNode.xcoord,
-              )}rad)`,
-            }
-          : {};
+        const correctFloor = mapPathNames[mapIndex] == nodes[index].floor;
+
+        const lineStyles: React.CSSProperties =
+          prevNode && correctFloor
+            ? {
+                position: "absolute",
+                left: `${prevNode.xcoord}px`,
+                top: `${prevNode.ycoord}px`,
+                width: `${Math.sqrt(
+                  Math.pow(one.xcoord - prevNode.xcoord, 2) +
+                    Math.pow(one.ycoord - prevNode.ycoord, 2),
+                )}px`,
+                height: "4px",
+                backgroundColor: "red",
+                zIndex: 3,
+                transformOrigin: "left center",
+                transform: `rotate(${Math.atan2(
+                  one.ycoord - prevNode.ycoord,
+                  one.xcoord - prevNode.xcoord,
+                )}rad)`,
+              }
+            : {};
 
         return (
           <div key={one.nodeID} className="node-wrapper">
