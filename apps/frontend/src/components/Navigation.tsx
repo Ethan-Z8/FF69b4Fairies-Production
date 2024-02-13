@@ -1,11 +1,9 @@
-import Navbar from "react-bootstrap/Navbar";
-import NavDropdown from "react-bootstrap/NavDropdown";
-import Nav from "react-bootstrap/Nav";
 import Button from "react-bootstrap/Button";
+import Nav from "react-bootstrap/Nav";
+import Navbar from "react-bootstrap/Navbar";
+import logo from "../assets/logo.svg";
 
-//TODO: Need to take in props to check if log in
 export function Navigation() {
-  const isHomePage = window.location.pathname === "/";
   const loggedIn = () => window.localStorage.getItem("loggedIn") === "true";
 
   function logOut() {
@@ -15,29 +13,31 @@ export function Navigation() {
   }
 
   return (
-    <Navbar className="bg-body-tertiary p-3 justify-content-around">
-      <Navbar.Brand>B & W Hospital</Navbar.Brand>
+    <Navbar className="bg-body-tertiary p-2 justify-content-around">
+      <Navbar.Brand>
+        <Nav.Link href="/">
+          <img
+            src={logo}
+            style={{
+              minHeight: "4rem",
+              margin: 0,
+              padding: 0,
+            }}
+          />
+        </Nav.Link>
+      </Navbar.Brand>
       <Nav className="d-flex justify-content-bewteen">
+        <Nav.Link href="/">Home Page</Nav.Link>
         <Nav.Link href="/createServiceRequest">Create Service Request</Nav.Link>
         <Nav.Link href="/viewServiceRequest">Service Requests</Nav.Link>
         <Nav.Link href="/importAndExportData">Import & Export Data</Nav.Link>
         <Nav.Link href="/mapData">Map Data</Nav.Link>
         {loggedIn() && <Nav.Link href="/addEmployee">Add Employee</Nav.Link>}
-        {isHomePage && (
-          <NavDropdown title="Floors">
-            <NavDropdown.Item>Ground</NavDropdown.Item>
-            <NavDropdown.Item>LL1</NavDropdown.Item>
-            <NavDropdown.Item>LL2</NavDropdown.Item>
-            <NavDropdown.Item>L1</NavDropdown.Item>
-            <NavDropdown.Item>L2</NavDropdown.Item>
-            <NavDropdown.Item>L3</NavDropdown.Item>
-          </NavDropdown>
-        )}
       </Nav>
       {!loggedIn() ? (
-        <Button className="ml-4" href="/login">
+        <Nav.Link className="ml-4" href="/login">
           Log In
-        </Button>
+        </Nav.Link>
       ) : (
         <Button className="ml-4" onClick={logOut}>
           Log Out
