@@ -1,14 +1,16 @@
 import {
-  TextField,
-  Select,
-  MenuItem,
-  InputLabel,
   FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  TextField,
+  Typography,
 } from "@mui/material";
 
 export function MaintenanceRequestFields() {
   return (
     <>
+      <Typography variant="h5">Maintenance Request</Typography>
       <TextField label="Machine's Issue" name="issue" required multiline />
       <FormControl>
         <InputLabel>Type of Employee</InputLabel>

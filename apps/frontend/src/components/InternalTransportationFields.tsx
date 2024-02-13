@@ -4,6 +4,7 @@ import {
   Select,
   FormControl,
   InputLabel,
+  Typography,
 } from "@mui/material";
 import { MapNodeInterface } from "common/src/interfaces/MapNodeInterface.ts";
 import { useEffect } from "react";
@@ -19,6 +20,7 @@ export function InternalTransportationFields(
 
   return (
     <>
+      <Typography variant="h5">Internal Transportation Request</Typography>
       <FormControl>
         <InputLabel id="endloc">End Location</InputLabel>
         <Select

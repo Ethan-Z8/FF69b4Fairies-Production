@@ -4,6 +4,7 @@ import { SanitationRequestFields } from "../components/SanitationRequestFields.t
 import { MaintenanceRequestFields } from "../components/MaintenanceRequestFields.tsx";
 import { ReligionRequestFields } from "../components/ReligionRequestFields.tsx";
 import { InternalTransportationFields } from "../components/InternalTransportationFields.tsx";
+import { FlowerRequestFields } from "../components/FlowerRequestFields.tsx";
 import { MapNodeInterface } from "common/src/interfaces/MapNodeInterface.ts";
 import axios from "axios";
 import {
@@ -22,6 +23,8 @@ export function CreateServiceRequestPage() {
   const [typeRequest, setTypeRequest] = useState<string>("Sanitation");
   const [nodes, setNodes] = useState<MapNodeInterface[]>([]);
   const [loaded, setLoaded] = useState<boolean>(false);
+  const [success, setSuccess] = useState<boolean>(false);
+  const [error, setError] = useState<boolean>(false);
 
   useEffect(() => {
     axios
@@ -46,7 +49,8 @@ export function CreateServiceRequestPage() {
         return <ReligionRequestFields />;
       case "Maintenance":
         return <MaintenanceRequestFields />;
-      case "Security":
+      case "Flowers":
+        return <FlowerRequestFields />;
       default:
         return <div />;
     }
@@ -74,10 +78,18 @@ export function CreateServiceRequestPage() {
       default:
         break;
     }
-    // axios
-    //     .post("/api/serviceRequest/requests", payload)
-    //     .then(() => console.log("success"))
-    //     .catch(() => console.log("fail"));
+    axios
+      .post("/api/serviceRequest/create", payload)
+      .then(() => {
+        console.log("success");
+        setSuccess(true);
+        setError(false);
+      })
+      .catch(() => {
+        console.log("fail");
+        setSuccess(false);
+        setError(true);
+      });
     console.log(payload);
     t.reset();
   }
@@ -141,7 +153,6 @@ export function CreateServiceRequestPage() {
           name="employeeName"
           required
         />
-        {extraFields()}
         <FormControl>
           <InputLabel>Priority</InputLabel>
           <Select
@@ -173,9 +184,28 @@ export function CreateServiceRequestPage() {
             <MenuItem value="Completed">Completed</MenuItem>
           </Select>
         </FormControl>
+        {extraFields()}
         <Button variant="outlined" type="submit">
           Submit
         </Button>
+        {success && (
+          <Typography
+            sx={{
+              color: "success.main",
+            }}
+          >
+            Successfully Created Service Request
+          </Typography>
+        )}
+        {error && (
+          <Typography
+            sx={{
+              color: "error.main",
+            }}
+          >
+            Error Creating Service Request
+          </Typography>
+        )}
       </Box>
     )
   );
