@@ -129,6 +129,7 @@ export function DisplayPath() {
   const handleToggleEdges = () => {
     setToggleEdges(!toggleEdges);
   };
+
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
   };
@@ -167,7 +168,6 @@ export function DisplayPath() {
         clearSearch();
         setFirstClickedNodeId(node.nodeID);
         setShortNames({ ...shortNames, start: node.shortName });
-
         setCounter(true);
       } else {
         setClear({ nodes: false, edges: false });
@@ -177,6 +177,48 @@ export function DisplayPath() {
         setCounter(false);
       }
     }
+  };
+
+  const renderNames = () => {
+    const node1 = aNodes[firstClickedNodeId];
+    const node2 = aNodes[secondClickedNodeId];
+    if (node1 && node2)
+      return (
+        <div>
+          <div
+            style={{
+              position: "absolute",
+              left: node1.xcoord,
+              top: node1.ycoord,
+            }}
+          >
+            {node1.longName}
+          </div>
+          <div
+            style={{
+              position: "absolute",
+              left: node2.xcoord,
+              top: node2.ycoord,
+            }}
+          >
+            {node2.longName}
+          </div>
+        </div>
+      );
+    if (node1)
+      return (
+        <div>
+          <div
+            style={{
+              position: "absolute",
+              left: node1.xcoord,
+              top: node1.ycoord,
+            }}
+          >
+            {node1.longName}
+          </div>
+        </div>
+      );
   };
 
   const renderPath = () => {
@@ -191,34 +233,39 @@ export function DisplayPath() {
           if (!visitedNodeIDs.has(node.nodeID)) {
             visitedNodeIDs.add(node.nodeID);
 
-            return node.neighbors.map((nNode) => {
-              const prevNode = aNodes[nNode];
-              if (!prevNode) return <div />; // Skip if prevNode is undefined
+            if (mapPathNames[mapIndex] == node.floor)
+              return node.neighbors.map((nNode) => {
+                const prevNode = aNodes[nNode];
+                if (!prevNode) return <div />;
 
-              const lineStyles: React.CSSProperties = {
-                position: "absolute",
-                left: `${prevNode.xcoord}px`,
-                top: `${prevNode.ycoord}px`,
-                width: `${Math.sqrt(
-                  Math.pow(node.xcoord - prevNode.xcoord, 2) +
-                    Math.pow(node.ycoord - prevNode.ycoord, 2),
-                )}px`,
-                height: "4px",
-                backgroundColor: "red",
-                zIndex: 3,
-                transformOrigin: "left center",
-                transform: `rotate(${Math.atan2(
-                  node.ycoord - prevNode.ycoord,
-                  node.xcoord - prevNode.xcoord,
-                )}rad)`,
-              };
-              const uniqueKey = `${nNode}-${node.nodeID}`;
-              return (
-                <div key={uniqueKey} className="node-wrapper">
-                  <div className="line" style={lineStyles}></div>
-                </div>
-              );
-            });
+                const lineStyles: React.CSSProperties =
+                  prevNode.floor == node.floor
+                    ? {
+                        position: "absolute",
+                        left: `${prevNode.xcoord}px`,
+                        top: `${prevNode.ycoord}px`,
+                        width: `${Math.sqrt(
+                          Math.pow(node.xcoord - prevNode.xcoord, 2) +
+                            Math.pow(node.ycoord - prevNode.ycoord, 2),
+                        )}px`,
+                        height: "4px",
+                        backgroundColor: "red",
+                        zIndex: 3,
+                        transformOrigin: "left center",
+                        transform: `rotate(${Math.atan2(
+                          node.ycoord - prevNode.ycoord,
+                          node.xcoord - prevNode.xcoord,
+                        )}rad)`,
+                      }
+                    : {};
+
+                const uniqueKey = `${nNode}-${node.nodeID}`;
+                return (
+                  <div key={uniqueKey} className="node-wrapper">
+                    <div className="line" style={lineStyles}></div>
+                  </div>
+                );
+              });
           }
           return <div />;
         })
@@ -360,6 +407,7 @@ export function DisplayPath() {
             />
             <div>{renderCircles()}</div>
             <div>{renderPath()}</div>
+            <div>{renderNames()}</div>
           </div>
         </TransformContainer>
       </div>
