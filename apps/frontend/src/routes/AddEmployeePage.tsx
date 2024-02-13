@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import AddEmployeeForm from "../components/AddEmployeeForm.tsx";
+import { withAuthenticationRequired } from "@auth0/auth0-react";
 
 function AddEmployeePage() {
   useEffect(() => {
@@ -14,5 +15,8 @@ function AddEmployeePage() {
     </div>
   );
 }
+const AddEmployeePageWithAuth = withAuthenticationRequired(AddEmployeePage, {
+  onRedirecting: () => <div>Redirecting ....</div>,
+});
 
-export default AddEmployeePage;
+export default AddEmployeePageWithAuth;
