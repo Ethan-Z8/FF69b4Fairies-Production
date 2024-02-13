@@ -6,7 +6,6 @@ import NodeOnMap from "./NodeOnMap";
 import NodeSelectDropdown from "./NodeSelectDropdown";
 import TransformContainer from "./TransformContainer.tsx";
 
-import GR from "../assets/hospitalmaps/00_thegroundfloor.png";
 import LL1 from "../assets/hospitalmaps/00_thelowerlevel1.png";
 import LL2 from "../assets/hospitalmaps/00_thelowerlevel2.png";
 import F1 from "../assets/hospitalmaps/01_thefirstfloor.png";
@@ -31,10 +30,17 @@ interface ImageSize {
   height: number;
 }
 
-const mapPath: string[] = [GR, LL1, LL2, F1, F2, F3];
+const mapPath: string[] = [F3, F2, F1, LL1, LL2];
 
-const mapPathNames: string[] = ["GR", "L1", "L2", "1", "2", "3"];
+const floorNames: string[] = [
+  "Level 3",
+  "Level 2",
+  "Level 1",
+  "Lower Level 1",
+  "Lower Level 2",
+];
 
+const mapPathNames: string[] = ["3", "2", "1", "L1", "L2"];
 export function DisplayPath() {
   const [firstClickedNodeId, setFirstClickedNodeId] = useState<string>("");
   const [secondClickedNodeId, setSecondClickedNodeId] = useState<string>("");
@@ -42,7 +48,7 @@ export function DisplayPath() {
   const [allNodes, setAllNodes] = useState<Node[]>([]);
   const [imageSize, setImageSize] = useState<ImageSize | null>(null);
   const [counter, setCounter] = useState(false);
-  const [mapIndex, setMapIndex] = useState(1);
+  const [mapIndex, setMapIndex] = useState(3);
   const [aNodes, setANodes] = useState<{ [key: string]: Node }>({});
   const [clear, setClear] = useState<{ nodes: boolean; edges: boolean }>({
     nodes: true,
@@ -55,7 +61,7 @@ export function DisplayPath() {
   const [toggleEdges, setToggleEdges] = useState(false);
 
   useEffect(() => {
-    setMapIndex(1);
+    setMapIndex(3);
   }, []);
 
   useEffect(() => {
@@ -66,7 +72,7 @@ export function DisplayPath() {
 
         setAllNodes(nodesData);
       } catch (error) {
-        console.error("Error fetching map nodess:", error);
+        console.error("Error fetching map nodes:", error);
       }
     };
 
@@ -290,54 +296,52 @@ export function DisplayPath() {
         <div className="menu-content">
           <div
             style={{
-              margin: "10%",
-              padding: "10%",
-            }}
-          >
-            <NodeSelectDropdown
-              label={shortNames.start}
-              onSelect={handleStartSelect}
-            />
-            <NodeSelectDropdown
-              label={shortNames.end}
-              onSelect={handleEndSelect}
-            />
-            <Button onClick={clearSearch}>clear</Button>
-          </div>
-          <SelectorTabs
-            mapIndex={mapIndex}
-            onMapSelect={handleMapSelect}
-            tabNames={mapPathNames}
-          />
-          <div
-            style={{
               position: "absolute",
-              bottom: "10%",
-              zIndex: "4",
-              width: "10%",
+              left: "10%",
+              top: "10%",
+              height: "10%",
+              width: "80%",
               float: "right",
+              display: "flex",
+              flexDirection: "column",
+              gap: "20%",
+              zIndex: "2",
             }}
           >
-            <Button
-              onClick={handleToggleNodes}
-              style={{
-                width: "10vw",
-              }}
-            >
+            <Button onClick={handleToggleNodes}>
               Nodes: {toggleNodes ? "on" : "off"}
             </Button>
-            <Button
-              onClick={handleToggleEdges}
-              style={{
-                width: "10vw",
-              }}
-            >
+            <Button onClick={handleToggleEdges}>
               Edges: {toggleEdges ? "on" : "off"}
             </Button>
           </div>
         </div>
       </div>
       <div className="total">
+        <div
+          className="nodeSelectContainer"
+          style={{ display: "flex", flexDirection: "column" }}
+        >
+          <div style={{ display: "flex", alignItems: "center" }}>
+            <span style={{ width: "50px" }}>Start:</span>
+            <NodeSelectDropdown
+              label={shortNames.start}
+              onSelect={handleStartSelect}
+            />
+          </div>
+          <div style={{ display: "flex", alignItems: "center" }}>
+            <span style={{ width: "50px" }}>End:</span>
+            <NodeSelectDropdown
+              label={shortNames.end}
+              onSelect={handleEndSelect}
+            />
+          </div>
+        </div>
+        <SelectorTabs
+          mapIndex={mapIndex}
+          onMapSelect={handleMapSelect}
+          tabNames={floorNames}
+        />
         <TransformContainer>
           <div
             className="map-container"
