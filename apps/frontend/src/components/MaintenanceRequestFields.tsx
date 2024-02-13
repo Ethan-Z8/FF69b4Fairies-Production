@@ -11,14 +11,14 @@ export function MaintenanceRequestFields() {
   return (
     <>
       <Typography variant="h5">Maintenance Request</Typography>
-      <TextField label="Machine's Issue" name="issue" required multiline />
+      <TextField label="Machine's Issue" name="issueType" required multiline />
       <FormControl>
         <InputLabel>Type of Employee</InputLabel>
         <Select
           label="Specialist Required"
-          labelId="specialist"
+          labelId="personnelNeeded"
           defaultValue="Any"
-          name="specialist"
+          name="personnelNeeded"
           required
         >
           <MenuItem value="Any">Any</MenuItem>

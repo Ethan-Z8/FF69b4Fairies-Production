@@ -7,9 +7,25 @@ const router: Router = express.Router();
 router.post("/create", async (req: Request, res: Response) => {
   const sr = req.body as Prisma.ServiceRequestCreateManyInput;
   try {
+    console.log(sr.typeService);
+    if (
+      ![
+        "Sanitation",
+        "Religious",
+        "Flowers",
+        "Maintenance",
+        "InternalTransportation",
+      ].includes(sr.typeService)
+    ) {
+      throw new Error("No Request Type Provided");
+    }
     const parent = await prisma.serviceRequest.create({
       data: {
-        employee: sr.employee,
+        assignedTo: {
+          connect: {
+            displayName: sr.employee,
+          },
+        },
         location: sr.location,
         priority: sr.priority,
         progress: sr.progress,
@@ -19,11 +35,15 @@ router.post("/create", async (req: Request, res: Response) => {
 
     switch (sr.typeService) {
       case "Sanitation":
-        await prisma.sanitationRequest.createMany({
+        await prisma.sanitationRequest.create({
           data: {
             hazardous: req.body.hazardous,
             messDesc: req.body.messDesc,
-            id: parent.id,
+            parent: {
+              connect: {
+                id: parent.id,
+              },
+            },
           },
         });
         break;
@@ -54,7 +74,7 @@ router.post("/create", async (req: Request, res: Response) => {
           },
         });
         break;
-      case "Transportation":
+      case "InternalTransportation":
         await prisma.transportationRequest.createMany({
           data: {
             endLocation: req.body.endLocation,

@@ -45,7 +45,7 @@ export function CreateServiceRequestPage() {
         return <SanitationRequestFields />;
       case "InternalTransportation":
         return <InternalTransportationFields nodes={nodes} />;
-      case "Religion":
+      case "Religious":
         return <ReligionRequestFields />;
       case "Maintenance":
         return <MaintenanceRequestFields />;
@@ -71,10 +71,6 @@ export function CreateServiceRequestPage() {
         // This lie will convert the field to a boolean.
         payload.hazardous = !!payload.hazardous;
         break;
-      case "InternalTransportation":
-      case "Medicine":
-      case "Maintenance":
-      case "Security":
       default:
         break;
     }
@@ -112,10 +108,10 @@ export function CreateServiceRequestPage() {
         <FormControl>
           <InputLabel id="typeLabel">Request Type</InputLabel>
           <Select
-            label="requestType"
-            labelId="typeLabel"
+            label="Request Type"
+            labelId="typeService"
             defaultValue="Sanitation"
-            name="requestType"
+            name="typeService"
             onChange={(e) => setTypeRequest(e.target.value)}
           >
             <MenuItem value="Sanitation">Sanitation</MenuItem>
@@ -124,7 +120,7 @@ export function CreateServiceRequestPage() {
             </MenuItem>
             <MenuItem value="Flowers">Flowers</MenuItem>
             <MenuItem value="Maintenance">Maintenance</MenuItem>
-            <MenuItem value="Religion">Religious</MenuItem>
+            <MenuItem value="Religious">Religious</MenuItem>
           </Select>
         </FormControl>
         {/*<TextField label="Location" id="location" name="location" required />*/}
@@ -149,8 +145,8 @@ export function CreateServiceRequestPage() {
         </FormControl>
         <TextField
           label="Employee Name"
-          id="employeeName"
-          name="employeeName"
+          id="employee"
+          name="employee"
           required
         />
         <FormControl>
@@ -171,11 +167,11 @@ export function CreateServiceRequestPage() {
         <FormControl>
           <InputLabel>Status</InputLabel>
           <Select
-            label="Status"
-            id="status"
-            labelId="status"
+            label="Progress"
+            id="progress"
+            labelId="progress"
             defaultValue="Unassigned"
-            name="status"
+            name="progress"
             required
           >
             <MenuItem value="Unassigned">Unassigned</MenuItem>

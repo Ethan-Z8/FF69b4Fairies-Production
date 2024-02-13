@@ -4862,7 +4862,6 @@ __metadata:
     eslint-config-custom: "workspace:*"
     eslint-plugin-react-hooks: "npm:^4.6.0"
     eslint-plugin-react-refresh: "npm:^0.4.1"
-    latest: "npm:^0.2.0"
     localforage: "npm:^1.10.0"
     match-sorter: "npm:^6.3.1"
     prettier: "npm:latest"
