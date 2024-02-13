@@ -1,0 +1,57 @@
+.ReqTable {
+  margin: auto;
+  text-align: center;
+}
+
+h1 {
+  color: black;
+}
+table,
+th,
+td {
+  border: 2px solid;
+  border-collapse: collapse;
+  margin: auto;
+}
+
+th,
+td {
+  padding: 10px;
+  word-wrap: break-word;
+  text-align: center;
+}
+
+th {
+  background-color: lavender;
+  font-family: Consolas, sans-serif;
+  border: 2px solid;
+}
+
+td {
+  background-color: #dce2e8;
+  border: 1px solid;
+}
+
+td:nth-child(1) {
+  width: 150px;
+}
+
+td:nth-child(2) {
+  width: 100px;
+}
+
+td:nth-child(3) {
+  width: 150px;
+}
+
+td:nth-child(4) {
+  width: 150px;
+}
+
+td:nth-child(5) {
+  width: 300px;
+}
+
+td:nth-child(6) {
+  width: 100px;
+}

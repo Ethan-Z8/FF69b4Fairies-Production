@@ -5,16 +5,92 @@ import { Prisma } from "database";
 const router: Router = express.Router();
 
 router.post("/create", async (req: Request, res: Response) => {
-  const serviceRequest = req.body as Prisma.ServiceRequestCreateManyInput;
+  const sr = req.body as Prisma.ServiceRequestCreateManyInput;
   try {
-    await prisma.serviceRequest.createMany({
-      data: serviceRequest,
-      skipDuplicates: true,
+    console.log(sr.typeService);
+    if (
+      ![
+        "Sanitation",
+        "Religious",
+        "Flowers",
+        "Maintenance",
+        "InternalTransportation",
+      ].includes(sr.typeService)
+    ) {
+      throw new Error("No Request Type Provided");
+    }
+    const parent = await prisma.serviceRequest.create({
+      data: {
+        assignedTo: {
+          connect: {
+            displayName: sr.employee,
+          },
+        },
+        location: sr.location,
+        priority: sr.priority,
+        progress: sr.progress,
+        typeService: sr.typeService,
+      },
     });
+
+    switch (sr.typeService) {
+      case "Sanitation":
+        await prisma.sanitationRequest.create({
+          data: {
+            hazardous: req.body.hazardous,
+            messDesc: req.body.messDesc,
+            parent: {
+              connect: {
+                id: parent.id,
+              },
+            },
+          },
+        });
+        break;
+      case "Religious":
+        await prisma.religionRequest.createMany({
+          data: {
+            religionType: req.body.religionType,
+            typeOfService: req.body.typeOfService,
+            id: parent.id,
+          },
+        });
+        break;
+      case "Flowers":
+        await prisma.flowerRequest.createMany({
+          data: {
+            flowerType: req.body.flowerType,
+            recipient: req.body.recipient,
+            id: parent.id,
+          },
+        });
+        break;
+      case "Maintenance":
+        await prisma.maintenanceRequest.createMany({
+          data: {
+            personnelNeeded: req.body.personnelNeeded,
+            issueType: req.body.issueType,
+            id: parent.id,
+          },
+        });
+        break;
+      case "InternalTransportation":
+        await prisma.transportationRequest.createMany({
+          data: {
+            endLocation: req.body.endLocation,
+            equipmentNeeded: req.body.equipmentNeeded,
+            id: parent.id,
+          },
+        });
+        break;
+      default:
+        throw new Error("No Request Type Provided");
+    }
     res.sendStatus(200);
   } catch (e) {
-    console.log((e as Error).message);
-    res.sendStatus(400);
+    const message = (e as Error).message;
+    console.log(message);
+    res.sendStatus(400).json({ message });
   }
 });
 
@@ -24,7 +100,15 @@ router.post("/create", async (req: Request, res: Response) => {
 
 router.get("/", async (req: Request, res: Response) => {
   try {
-    const data = await prisma.serviceRequest.findMany();
+    const data = await prisma.serviceRequest.findMany({
+      include: {
+        flowerRequest: true,
+        maintenanceRequest: true,
+        religionRequest: true,
+        sanitationRequest: true,
+        transportationRequest: true,
+      },
+    });
     res.status(200).json(data);
   } catch (e) {
     const typedError = e as Error;
@@ -35,13 +119,13 @@ router.get("/", async (req: Request, res: Response) => {
 
 router.post("/updateProgress", async (req: Request, res: Response) => {
   type update = {
-    date: Date;
+    id: number;
     progress: "Assigned" | "InProgress" | "Completed";
   };
   const updateData = req.body as update;
   try {
     await prisma.serviceRequest.update({
-      where: { date: updateData.date },
+      where: { id: updateData.id },
       data: { progress: updateData.progress },
     });
     res.sendStatus(200);

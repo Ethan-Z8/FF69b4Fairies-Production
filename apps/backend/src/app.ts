@@ -6,6 +6,7 @@ import exampleRouter from "./routes/example.ts";
 import { mapRouter } from "./routes/map.ts";
 import serviceRouter from "./routes/serviceRequest.ts";
 import employeeRouter from "./routes/employee.ts";
+import religion from "./routes/religionarray";
 
 const app: Express = express(); // Setup the backend
 
@@ -43,6 +44,7 @@ app.use("/api/high-score", exampleRouter);
 app.use("/api/map", mapRouter);
 app.use("/api/serviceRequest", serviceRouter);
 app.use("/api/employee", employeeRouter);
+app.use("/api/religion", religion);
 
 /**
  * Catch all 404 errors, and forward them to the error handler
