@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import { createBrowserRouter, Outlet, RouterProvider } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Navigation } from "./components/Navigation.tsx";
@@ -62,16 +63,21 @@ function App() {
   );
 
   function Root() {
-    //const navigate = useNavigate();
+    const navigate = useNavigate();
 
     return (
       <Auth0Provider
         useRefreshTokens
         cacheLocation="localstorage"
-        domain="dev-zmul0qvnpdjhismy.us.auth0.com"
-        clientId="4W0MSzB55DCh8XMCKuCzJby2qFpK5hZp"
+        domain="dev-y3oolmq2fczbeey6.us.auth0.com"
+        clientId="ZQu8ft9CKD63fMV9DJPvSU4jZSA4s5Ur"
+        onRedirectCallback={(appState) => {
+          navigate(appState?.returnTo || window.location.pathname);
+        }}
         authorizationParams={{
           redirect_uri: window.location.origin,
+          audience: "/api",
+          scope: "openid profile email offline_access",
         }}
       >
         <Navigation />

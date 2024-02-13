@@ -6,6 +6,7 @@ import exampleRouter from "./routes/example.ts";
 import { mapRouter } from "./routes/map.ts";
 import serviceRouter from "./routes/serviceRequest.ts";
 import employeeRouter from "./routes/employee.ts";
+import { auth } from "express-oauth2-jwt-bearer";
 
 const app: Express = express(); // Setup the backend
 
@@ -63,5 +64,16 @@ app.use((err: HttpError, req: Request, res: Response): void => {
   // Reply with the error
   res.status(err.status || 500);
 });
-
+app.use("/healthcheck", function (req: Request, res: Response): void {
+  if (!process.env["VITETEST"]) {
+    app.use(
+      auth({
+        audience: "/api",
+        issuerBaseURL: "https://dev-y3oolmq2fczbeey6.us.auth0.com/",
+        tokenSigningAlg: "RS256",
+      }),
+    );
+  }
+  res.sendStatus(200);
+});
 export default app; // Export the backend, so that www.ts can start it

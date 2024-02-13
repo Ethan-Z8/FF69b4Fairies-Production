@@ -3,27 +3,40 @@ import NavDropdown from "react-bootstrap/NavDropdown";
 import Nav from "react-bootstrap/Nav";
 import Button from "react-bootstrap/Button";
 import { useAuth0 } from "@auth0/auth0-react";
+import { useEffect } from "react";
 
 //TODO: Need to take in props to check if log in
 export function Navigation() {
   const isHomePage = window.location.pathname === "/";
-  //const loggedIn = () => window.localStorage.getItem("loggedIn") === "true";
 
-  // function logOut() {
-  //   window.localStorage.removeItem("loggedIn");
-  //   console.log(loggedIn());
-  //   location.reload();
-  // }
+  const { loginWithRedirect, logout } = useAuth0();
+  const { isAuthenticated, isLoading, getAccessTokenSilently } = useAuth0();
 
-  const { loginWithRedirect, logout, isAuthenticated } = useAuth0();
+  useEffect(() => {
+    const fun = async () => {
+      try {
+        await getAccessTokenSilently();
+      } catch (error) {
+        await loginWithRedirect({
+          appState: {
+            returnTo: location.pathname,
+          },
+        });
+      }
+    };
+    if (!isLoading && isAuthenticated) {
+      fun();
+    }
+  }, [getAccessTokenSilently, isAuthenticated, isLoading, loginWithRedirect]);
 
-  const handleLogin = async () => {
-    await loginWithRedirect({
+  const handleLogin = () => {
+    loginWithRedirect({
       appState: {
         returnTo: location.pathname,
       },
     });
   };
+
   const handleLogout = async () => {
     await logout({
       logoutParams: {
