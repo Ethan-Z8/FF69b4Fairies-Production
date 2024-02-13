@@ -6,7 +6,6 @@ import NodeOnMap from "./NodeOnMap";
 import "../styling/DisplayMapNodes.css";
 import TransformContainer from "./TransformContainer.tsx";
 
-import GR from "../assets/hospitalmaps/00_thegroundfloor.png";
 import LL1 from "../assets/hospitalmaps/00_thelowerlevel1.png";
 import LL2 from "../assets/hospitalmaps/00_thelowerlevel2.png";
 import F1 from "../assets/hospitalmaps/01_thefirstfloor.png";
@@ -31,9 +30,15 @@ interface ImageSize {
   height: number;
 }
 
-const mapPath: string[] = [GR, LL1, LL2, F1, F2, F3];
+const mapPath: string[] = [F3, F2, F1, LL1, LL2];
 
-const mapPathNames: string[] = ["GR", "L1", "L2", "1", "2", "3"];
+const mapPathNames: string[] = [
+  "Level 3",
+  "Level 2",
+  "Level 1",
+  "Lower Level 1",
+  "Lower Level 2",
+];
 
 export function DisplayPath() {
   const [firstClickedNodeId, setFirstClickedNodeId] = useState<string>("");
@@ -306,11 +311,6 @@ export function DisplayPath() {
             />
             <Button onClick={clearSearch}>clear</Button>
           </div>
-          <SelectorTabs
-            mapIndex={mapIndex}
-            onMapSelect={handleMapSelect}
-            tabNames={mapPathNames}
-          />
           <div
             style={{
               position: "absolute",
@@ -340,6 +340,11 @@ export function DisplayPath() {
         </div>
       </div>
       <div className="total">
+        <SelectorTabs
+          mapIndex={mapIndex}
+          onMapSelect={handleMapSelect}
+          tabNames={mapPathNames}
+        />
         <TransformContainer>
           <div
             className="map-container"
