@@ -6,7 +6,6 @@ import NodeOnMap from "./NodeOnMap";
 import "../styling/DisplayMapNodes.css";
 import TransformContainer from "./TransformContainer.tsx";
 
-import GR from "../assets/hospitalmaps/00_thegroundfloor-min.png";
 import LL1 from "../assets/hospitalmaps/00_thelowerlevel1-min.png";
 import LL2 from "../assets/hospitalmaps/00_thelowerlevel2-min.png";
 import F1 from "../assets/hospitalmaps/01_thefirstfloor-min.png";
@@ -32,9 +31,16 @@ interface ImageSize {
   height: number;
 }
 
-const mapPath: string[] = [GR, LL1, LL2, F1, F2, F3];
+const mapPath: string[] = [LL1, LL2, F1, F2, F3];
 
-const mapPathNames: string[] = ["GR", "L1", "L2", "1", "2", "3"];
+const mapPathNames: string[] = ["L1", "L2", "1", "2", "3"];
+const floorNames: string[] = [
+  "Level 3",
+  "Level 2",
+  "Level 1",
+  "Lower Level 1",
+  "Lower Level 2",
+];
 
 export function DisplayPath() {
   const [firstClickedNodeId, setFirstClickedNodeId] = useState<string>("");
@@ -59,7 +65,7 @@ export function DisplayPath() {
   const [toggleEdges, setToggleEdges] = useState(false);
 
   useEffect(() => {
-    setMapIndex(1);
+    setMapIndex(3);
   }, []);
 
   useEffect(() => {
@@ -70,7 +76,7 @@ export function DisplayPath() {
 
         setAllNodes(nodesData);
       } catch (error) {
-        console.error("Error fetching map nodess:", error);
+        console.error("Error fetching map nodes:", error);
       }
     };
 
@@ -108,6 +114,7 @@ export function DisplayPath() {
             },
           });
           const nodesData: Node[] = Object.values(pathNodes.data);
+          console.log(nodesData);
 
           setNodes(nodesData);
         } catch (error) {
@@ -167,6 +174,7 @@ export function DisplayPath() {
         clearSearch();
         setFirstClickedNodeId(node.nodeID);
         setShortNames({ ...shortNames, start: node.shortName });
+
         setCounter(true);
       } else {
         setClear({ nodes: false, edges: false });
@@ -372,8 +380,6 @@ export function DisplayPath() {
   const renderCircles = () => {
     if (toggleNodes)
       return allNodes.map((node) => {
-        console.log(allNodes);
-
         if (node.floor === mapPathNames[mapIndex]) {
           return (
             <div key={node.nodeID}>
@@ -410,54 +416,52 @@ export function DisplayPath() {
         <div className="menu-content">
           <div
             style={{
-              margin: "10%",
-              padding: "10%",
-            }}
-          >
-            <NodeSelectDropdown
-              label={shortNames.start}
-              onSelect={handleStartSelect}
-            />
-            <NodeSelectDropdown
-              label={shortNames.end}
-              onSelect={handleEndSelect}
-            />
-            <Button onClick={clearSearch}>clear</Button>
-          </div>
-          <SelectorTabs
-            mapIndex={mapIndex}
-            onMapSelect={handleMapSelect}
-            tabNames={mapPathNames}
-          />
-          <div
-            style={{
               position: "absolute",
-              bottom: "10%",
-              zIndex: "4",
-              width: "10%",
+              left: "10%",
+              top: "10%",
+              height: "10%",
+              width: "80%",
               float: "right",
+              display: "flex",
+              flexDirection: "column",
+              gap: "20%",
+              zIndex: "2",
             }}
           >
-            <Button
-              onClick={handleToggleNodes}
-              style={{
-                width: "10vw",
-              }}
-            >
+            <Button onClick={handleToggleNodes}>
               Nodes: {toggleNodes ? "on" : "off"}
             </Button>
-            <Button
-              onClick={handleToggleEdges}
-              style={{
-                width: "10vw",
-              }}
-            >
+            <Button onClick={handleToggleEdges}>
               Edges: {toggleEdges ? "on" : "off"}
             </Button>
           </div>
         </div>
       </div>
       <div className="total">
+        <div
+          className="nodeSelectContainer"
+          style={{ display: "flex", flexDirection: "column" }}
+        >
+          <div style={{ display: "flex", alignItems: "center" }}>
+            <span style={{ width: "50px" }}>Start:</span>
+            <NodeSelectDropdown
+              label={shortNames.start}
+              onSelect={handleStartSelect}
+            />
+          </div>
+          <div style={{ display: "flex", alignItems: "center" }}>
+            <span style={{ width: "50px" }}>End:</span>
+            <NodeSelectDropdown
+              label={shortNames.end}
+              onSelect={handleEndSelect}
+            />
+          </div>
+        </div>
+        <SelectorTabs
+          mapIndex={mapIndex}
+          onMapSelect={handleMapSelect}
+          tabNames={floorNames}
+        />
         <TransformContainer>
           <div
             className="map-container"
