@@ -11,6 +11,7 @@ import {
 // import axios from "axios";
 import { FormEvent, useState } from "react";
 import { SanitationRequestFields } from "../components/SanitationRequestFields.tsx";
+import { MaintenanceRequestFields } from "../components/MaintenanceRequestFields.tsx";
 
 export function CreateServiceRequestPage() {
   const [typeRequest, setTypeRequest] = useState<string>("Sanitation");
@@ -23,6 +24,7 @@ export function CreateServiceRequestPage() {
       case "InternalTransportation":
       case "Medicine":
       case "Maintenance":
+        return <MaintenanceRequestFields />;
       case "Security":
       default:
         return <div />;
