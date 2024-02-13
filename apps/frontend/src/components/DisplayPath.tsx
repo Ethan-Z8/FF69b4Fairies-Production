@@ -349,7 +349,7 @@ export function DisplayPath() {
                   )
                 }
               >
-                Go up
+                Change Floors
               </button>
             )}
             {showChangeFloorButton2 && (
@@ -366,7 +366,7 @@ export function DisplayPath() {
                   )
                 }
               >
-                Go down
+                Change Floors
               </button>
             )}
           </div>
