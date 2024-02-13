@@ -32,7 +32,7 @@ interface ImageSize {
 
 const mapPath: string[] = [F3, F2, F1, LL1, LL2];
 
-const mapPathNames: string[] = [
+const floorNames: string[] = [
   "Level 3",
   "Level 2",
   "Level 1",
@@ -40,6 +40,7 @@ const mapPathNames: string[] = [
   "Lower Level 2",
 ];
 
+const mapPathNames: string[] = ["3", "2", "1", "L1", "L2"];
 export function DisplayPath() {
   const [firstClickedNodeId, setFirstClickedNodeId] = useState<string>("");
   const [secondClickedNodeId, setSecondClickedNodeId] = useState<string>("");
@@ -297,22 +298,6 @@ export function DisplayPath() {
         <div className="menu-content">
           <div
             style={{
-              margin: "10%",
-              padding: "10%",
-            }}
-          >
-            <NodeSelectDropdown
-              label={shortNames.start}
-              onSelect={handleStartSelect}
-            />
-            <NodeSelectDropdown
-              label={shortNames.end}
-              onSelect={handleEndSelect}
-            />
-            <Button onClick={clearSearch}>clear</Button>
-          </div>
-          <div
-            style={{
               position: "absolute",
               bottom: "10%",
               zIndex: "4",
@@ -340,10 +325,29 @@ export function DisplayPath() {
         </div>
       </div>
       <div className="total">
+        <div
+          className="nodeSelectContainer"
+          style={{ display: "flex", flexDirection: "column" }}
+        >
+          <div style={{ display: "flex", alignItems: "center" }}>
+            <span style={{ width: "50px" }}>Start:</span>
+            <NodeSelectDropdown
+              label={shortNames.start}
+              onSelect={handleStartSelect}
+            />
+          </div>
+          <div style={{ display: "flex", alignItems: "center" }}>
+            <span style={{ width: "50px" }}>End:</span>
+            <NodeSelectDropdown
+              label={shortNames.end}
+              onSelect={handleEndSelect}
+            />
+          </div>
+        </div>
         <SelectorTabs
           mapIndex={mapIndex}
           onMapSelect={handleMapSelect}
-          tabNames={mapPathNames}
+          tabNames={floorNames}
         />
         <TransformContainer>
           <div
