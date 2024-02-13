@@ -7,5 +7,5 @@ export interface MapNodeInterface {
   nodeType: string;
   longName: string;
   shortName: string;
-  neighbors: Array<string>;
+  neighbors?: Array<string>;
 }
