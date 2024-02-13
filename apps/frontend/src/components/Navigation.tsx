@@ -4,7 +4,6 @@ import Navbar from "react-bootstrap/Navbar";
 import logo from "../assets/logo.svg";
 
 export function Navigation() {
-  const isHomePage = window.location.pathname === "/";
   const loggedIn = () => window.localStorage.getItem("loggedIn") === "true";
 
   function logOut() {
@@ -28,7 +27,7 @@ export function Navigation() {
         </Nav.Link>
       </Navbar.Brand>
       <Nav className="d-flex justify-content-bewteen">
-        {!isHomePage && <Nav.Link href="/">Home Page</Nav.Link>}
+        <Nav.Link href="/">Home Page</Nav.Link>
         <Nav.Link href="/createServiceRequest">Create Service Request</Nav.Link>
         <Nav.Link href="/viewServiceRequest">Service Requests</Nav.Link>
         <Nav.Link href="/importAndExportData">Import & Export Data</Nav.Link>
