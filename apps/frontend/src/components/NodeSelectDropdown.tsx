@@ -1,6 +1,6 @@
+import axios from "axios";
 import React, { useEffect, useState, useRef } from "react";
 import { Form, ListGroup } from "react-bootstrap";
-import axios from "axios";
 
 interface Node {
   nodeID: string;
@@ -62,7 +62,6 @@ const NodeSelectDropdown: React.FC<NodeSelectProps> = ({ label, onSelect }) => {
   };
 
   return (
-
     <div style={{ position: "relative" }}>
       <Form.Control
         ref={inputRef}
