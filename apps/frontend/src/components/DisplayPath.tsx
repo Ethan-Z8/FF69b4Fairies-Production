@@ -240,7 +240,6 @@ export function DisplayPath() {
         </div>
       );
   };
-
   const renderPath = () => {
     if (clear.edges) return <div />;
     let circles: JSX.Element[];
@@ -296,6 +295,8 @@ export function DisplayPath() {
         const prevNode = prevIndex >= 0 ? nodes[prevIndex] : null;
 
         const correctFloor = mapPathNames[mapIndex] == nodes[index].floor;
+        const correctFloorPrevious =
+          prevNode && mapPathNames[mapIndex] == prevNode.floor;
 
         const lineStyles: React.CSSProperties =
           prevNode && correctFloor
@@ -318,9 +319,48 @@ export function DisplayPath() {
               }
             : {};
 
+        const showChangeFloorButton =
+          prevNode && prevNode.floor !== one.floor && correctFloor;
+        const showChangeFloorButton2 =
+          prevNode && prevNode.floor !== one.floor && correctFloorPrevious;
+
         return (
           <div key={one.nodeID} className="node-wrapper">
             {prevNode && <div className="line" style={lineStyles}></div>}
+            {showChangeFloorButton && (
+              <button
+                style={{
+                  position: "absolute",
+                  left: `${one.xcoord}px`,
+                  top: `${one.ycoord}px`,
+                  zIndex: 4,
+                }}
+                onClick={() =>
+                  setMapIndex(
+                    mapPathNames.findIndex((item) => item === prevNode.floor),
+                  )
+                }
+              >
+                Change Floor
+              </button>
+            )}
+            {showChangeFloorButton2 && (
+              <button
+                style={{
+                  position: "absolute",
+                  left: `${one.xcoord}px`,
+                  top: `${one.ycoord}px`,
+                  zIndex: 4,
+                }}
+                onClick={() =>
+                  setMapIndex(
+                    mapPathNames.findIndex((item) => item === one.floor),
+                  )
+                }
+              >
+                Change Floor
+              </button>
+            )}
           </div>
         );
       });
@@ -346,13 +386,18 @@ export function DisplayPath() {
         }
       });
     else
-      return nodes.map((node) => {
-        return (
-          <div key={node.nodeID}>
-            <NodeOnMap node={node} onNodeClick={() => handleNodeClick(node)} />
-          </div>
-        );
-      });
+      return nodes
+        .filter((node) => node.floor === mapPathNames[mapIndex])
+        .map((node) => {
+          return (
+            <div key={node.nodeID}>
+              <NodeOnMap
+                node={node}
+                onNodeClick={() => handleNodeClick(node)}
+              />
+            </div>
+          );
+        });
   };
 
   return (
