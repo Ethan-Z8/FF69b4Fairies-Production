@@ -137,7 +137,7 @@ const TransformContainer: React.FC<TransformContainerProps> = ({
       } else {
         acc[0].push(child);
       }
-      console.log(acc[0]);
+      //console.log(acc[0]);
       return acc;
     },
     [[], []],

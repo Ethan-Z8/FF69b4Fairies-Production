@@ -108,7 +108,6 @@ export function DisplayPath() {
             },
           });
           const nodesData: Node[] = Object.values(pathNodes.data);
-          console.log(nodesData);
 
           setNodes(nodesData);
         } catch (error) {
@@ -189,7 +188,14 @@ export function DisplayPath() {
             style={{
               position: "absolute",
               left: node1.xcoord,
-              top: node1.ycoord,
+              bottom: imageSize.height - node1.ycoord + 16,
+              transform: "translateX(-50%)",
+              backgroundColor: "#fff",
+              width: "10vw",
+              zIndex: 18,
+              border: "1px solid",
+              padding: "6px",
+              borderRadius: "3px",
             }}
           >
             {node1.longName}
@@ -198,7 +204,14 @@ export function DisplayPath() {
             style={{
               position: "absolute",
               left: node2.xcoord,
-              top: node2.ycoord,
+              bottom: imageSize.height - node2.ycoord + 16,
+              transform: "translateX(-50%)",
+              backgroundColor: "#fff",
+              width: "10vw",
+              zIndex: 18,
+              border: "1px solid",
+              padding: "6px",
+              borderRadius: "3px",
             }}
           >
             {node2.longName}
@@ -212,7 +225,14 @@ export function DisplayPath() {
             style={{
               position: "absolute",
               left: node1.xcoord,
-              top: node1.ycoord,
+              bottom: imageSize.height - node1.ycoord + 16,
+              transform: "translateX(-50%)",
+              backgroundColor: "#fff",
+              width: "10vw",
+              zIndex: 18,
+              border: "1px solid",
+              padding: "6px",
+              borderRadius: "6px",
             }}
           >
             {node1.longName}
@@ -312,6 +332,8 @@ export function DisplayPath() {
   const renderCircles = () => {
     if (toggleNodes)
       return allNodes.map((node) => {
+        console.log(allNodes);
+
         if (node.floor === mapPathNames[mapIndex]) {
           return (
             <div key={node.nodeID}>
