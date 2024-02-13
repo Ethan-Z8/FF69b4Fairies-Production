@@ -72,7 +72,7 @@ export function DisplayPath() {
 
         setAllNodes(nodesData);
       } catch (error) {
-        console.error("Error fetching map nodess:", error);
+        console.error("Error fetching map nodes:", error);
       }
     };
 
@@ -299,26 +299,21 @@ export function DisplayPath() {
           <div
             style={{
               position: "absolute",
-              bottom: "10%",
-              zIndex: "4",
-              width: "10%",
+              left: "10%",
+              top: "10%",
+              height: "10%",
+              width: "80%",
               float: "right",
+              display: "flex",
+              flexDirection: "column",
+              gap: "20%",
+              zIndex: "2",
             }}
           >
-            <Button
-              onClick={handleToggleNodes}
-              style={{
-                width: "10vw",
-              }}
-            >
+            <Button onClick={handleToggleNodes}>
               Nodes: {toggleNodes ? "on" : "off"}
             </Button>
-            <Button
-              onClick={handleToggleEdges}
-              style={{
-                width: "10vw",
-              }}
-            >
+            <Button onClick={handleToggleEdges}>
               Edges: {toggleEdges ? "on" : "off"}
             </Button>
           </div>
