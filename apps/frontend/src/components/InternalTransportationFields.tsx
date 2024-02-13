@@ -24,7 +24,7 @@ export function InternalTransportationFields(
       <FormControl>
         <InputLabel id="endloc">End Location</InputLabel>
         <Select
-          label="End Location"
+          label="Destination"
           labelId="endloc"
           name="endLocation"
           required
