@@ -48,7 +48,7 @@ export function DisplayPath() {
   const [allNodes, setAllNodes] = useState<Node[]>([]);
   const [imageSize, setImageSize] = useState<ImageSize | null>(null);
   const [counter, setCounter] = useState(false);
-  const [mapIndex, setMapIndex] = useState(1);
+  const [mapIndex, setMapIndex] = useState(3);
   const [aNodes, setANodes] = useState<{ [key: string]: Node }>({});
   const [clear, setClear] = useState<{ nodes: boolean; edges: boolean }>({
     nodes: true,
@@ -61,7 +61,7 @@ export function DisplayPath() {
   const [toggleEdges, setToggleEdges] = useState(false);
 
   useEffect(() => {
-    setMapIndex(1);
+    setMapIndex(3);
   }, []);
 
   useEffect(() => {

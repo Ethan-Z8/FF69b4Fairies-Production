@@ -764,7 +764,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@mui/material@npm:^5.15.10, @mui/material@npm:^5.15.9":
+"@mui/material@npm:^5.15.10":
   version: 5.15.10
   resolution: "@mui/material@npm:5.15.10"
   dependencies:
@@ -7044,7 +7044,7 @@ __metadata:
   dependencies:
     "@emotion/react": "npm:^11.11.3"
     "@emotion/styled": "npm:^11.11.0"
-    "@mui/material": "npm:^5.15.9"
+    "@mui/material": "npm:^5.15.10"
     "@types/express": "npm:^4.17.21"
     "@types/multer": "npm:^1.4.11"
     "@types/react": "npm:^18.0.37"
