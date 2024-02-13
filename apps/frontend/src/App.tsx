@@ -1,15 +1,13 @@
-import { createBrowserRouter, Outlet, RouterProvider } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { Outlet, RouterProvider, createBrowserRouter } from "react-router-dom";
 import { Navigation } from "./components/Navigation.tsx";
 import { CreateServiceRequestPage } from "./routes/CreateServiceRequestPage.tsx";
-import { ViewServiceRequestPage } from "./routes/ViewServiceRequestPage.tsx";
-import { ImportAndExportDataPage } from "./routes/ImportAndExportDataPage.tsx";
-import { MapDataPage } from "./routes/MapDataPage.tsx";
-import { LoginPage } from "./routes/LoginPage.tsx";
 import AddEmployeePage from "./routes/AddEmployeePage.tsx";
 import HomePage from "./routes/HomePage.tsx";
-import ReligionForm from "./components/ReligionForm.tsx";
-//import Button from "react-bootstrap/Button";
+import { ImportAndExportDataPage } from "./routes/ImportAndExportDataPage.tsx";
+import { LoginPage } from "./routes/LoginPage.tsx";
+import { MapDataPage } from "./routes/MapDataPage.tsx";
+import { ViewServiceRequestPage } from "./routes/ViewServiceRequestPage.tsx";
 
 function App() {
   const router = createBrowserRouter([
@@ -45,10 +43,6 @@ function App() {
         {
           path: "/addEmployee",
           element: <AddEmployeePage />,
-        },
-        {
-          path: "/createReligion",
-          element: <ReligionForm />,
         },
       ],
     },
