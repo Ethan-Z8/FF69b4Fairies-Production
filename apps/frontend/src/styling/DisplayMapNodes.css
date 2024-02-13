@@ -1,3 +1,8 @@
+.total {
+  position: relative;
+  background: none;
+}
+
 .node-circle {
   position: absolute;
   width: 16px;
@@ -5,16 +10,13 @@
   background-color: red;
   border-radius: 50%;
   transform: translate(-50%, -50%);
-  z-index: 3;
+  z-index: 1;
   transition: all 0.1s ease;
 }
 
 .node-circle:hover {
   width: 24px;
   height: 24px;
-}
-
-.total {
 }
 
 .map-container {
@@ -24,5 +26,48 @@
 .line {
   position: absolute;
   background-color: red;
+  z-index: 1;
+}
+
+.map-control-panel {
+  position: fixed;
+  bottom: 1%;
+  left: -15%;
+  width: 15%;
+  height: 10%;
+  background-color: #fff;
+  transition: left 0.3s ease;
   z-index: 2;
+  overflow-y: auto;
+}
+
+.map-control-panel.open {
+  left: 0;
+}
+
+.tab {
+  position: fixed;
+  bottom: 1%;
+  left: 0;
+  width: 50px;
+  height: 10%;
+  background-color: #007bff;
+  text-align: center;
+  cursor: pointer;
+  z-index: 2;
+  transition: left 0.3s ease;
+}
+
+.tab.open {
+  left: 15%;
+}
+
+.nodeSelectContainer {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  margin: 10px;
+  width: 15%;
+  gap: 5px;
+  z-index: 1;
 }
