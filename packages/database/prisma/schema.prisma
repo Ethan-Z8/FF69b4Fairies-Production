@@ -43,7 +43,8 @@ model ServiceRequest {
   employee    String
   progress    Progress
   priority    Priority
-  assignedTo  Employee @relation("employee", fields: [employee], references: [displayName])
+
+  assignedTo Employee @relation("employee", fields: [employee], references: [displayName])
 
   sanitationRequest     SanitationRequest?     @relation()
   transportationRequest TransportationRequest? @relation()
