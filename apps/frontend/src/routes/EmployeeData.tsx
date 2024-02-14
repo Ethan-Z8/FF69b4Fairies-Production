@@ -1,9 +1,18 @@
 import axios from "axios";
 import { FormEvent, useEffect, useState } from "react";
-import Table from "react-bootstrap/Table";
-import Stack from "react-bootstrap/Stack";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
+import DeleteIcon from "@mui/icons-material/Delete";
+import {
+  Table,
+  Typography,
+  Box,
+  TableRow,
+  TableCell,
+  TableHead,
+  TableContainer,
+  TableBody,
+} from "@mui/material";
 
 type req = {
   username: string;
@@ -41,46 +50,84 @@ export function EmployeeData() {
       .catch((err) => console.log(err));
   }
 
+  function handleDeleteEmployee(username: string) {
+    axios
+      .delete("/api/employee/delete", { data: { username } })
+      .then(() => location.reload())
+      .catch((err) => console.log(err));
+  }
+
   return (
-    <Stack gap={3} className="mt-5">
-      <h1>Employee's at Brigham and Women's Hospital</h1>
-      {loaded && (
-        <Table responsive striped bordered hover>
-          <thead>
-            <tr>
-              {Object.keys(employeeData[0] || {}).map((header) => (
-                <th key={header}>{header}</th>
+    loaded && (
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          width: "90%",
+          gap: 2,
+          mt: 2,
+        }}
+      >
+        <Typography variant="h4">Employee Data</Typography>
+        <TableContainer
+          sx={{ border: 1, borderColor: "#44444444", borderRadius: 2 }}
+        >
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell> Username</TableCell>
+                <TableCell> Password</TableCell>
+                <TableCell> Display Name</TableCell>
+                <TableCell> Delete?</TableCell>
+              </TableRow>
+            </TableHead>
+
+            <TableBody>
+              {employeeData.map((req, index) => (
+                <TableRow key={index}>
+                  <TableCell>{req.username}</TableCell>
+                  <TableCell>{"•••••••••••"}</TableCell>
+                  <TableCell>
+                    <Form
+                      onSubmit={handleFormSubmit}
+                      style={{ display: "flex" }}
+                    >
+                      <Form.Control
+                        key={`${req.displayName}`}
+                        defaultValue={req.displayName}
+                        type="input"
+                        name="displayName"
+                        style={{ width: "90%" }}
+                      />
+                      <input
+                        defaultValue={req.username}
+                        name="username"
+                        style={{ display: "none" }}
+                      />
+                      <Button
+                        type={"submit"}
+                        variant={"btn btn-outline-danger"}
+                        style={{ marginLeft: "5%", marginRight: "5%" }}
+                      >
+                        {" "}
+                        Change{" "}
+                      </Button>
+                    </Form>
+                  </TableCell>
+                  <TableCell key={"delete"}>
+                    <Button
+                      onClick={() => handleDeleteEmployee(req.username)}
+                      variant={"danger"}
+                    >
+                      <DeleteIcon />
+                    </Button>
+                  </TableCell>
+                </TableRow>
               ))}
-              <th>Delete Employee</th>
-            </tr>
-          </thead>
-          <tbody>
-            {employeeData.map((req, index) => (
-              <tr key={index}>
-                <td>{req.username}</td>
-                <td>{"Private"}</td>
-                <td>
-                  <Form onSubmit={handleFormSubmit}>
-                    <Form.Control
-                      key={`${req.displayName}`}
-                      defaultValue={req.displayName}
-                      type="input"
-                      name="displayName"
-                    />
-                    <input
-                      defaultValue={req.username}
-                      name="username"
-                      style={{ display: "none" }}
-                    />
-                    <Button type={"submit"}> Change </Button>
-                  </Form>
-                </td>
-                <td key={"delete"}>{"Display Trash Icon"}</td>
-              </tr>
-            ))}
-          </tbody>
-        </Table>
-      )}
-    </Stack>
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </Box>
+    )
   );
 }
