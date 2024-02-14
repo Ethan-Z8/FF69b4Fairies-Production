@@ -60,7 +60,7 @@ export function DisplayPath() {
     width: 5000,
     height: 3400,
   });
-  const [mapIndex, setMapIndex] = useState(1);
+  const [mapIndex, setMapIndex] = useState(0);
   const [aNodes, setANodes] = useState<{ [key: string]: Node }>({});
   const [clear, setClear] = useState<{ nodes: boolean; edges: boolean }>({
     nodes: true,
@@ -71,10 +71,6 @@ export function DisplayPath() {
 
   const [toggleNodes, setToggleNodes] = useState(true);
   const [toggleEdges, setToggleEdges] = useState(false);
-
-  useEffect(() => {
-    setMapIndex(0);
-  }, []);
 
   useEffect(() => {
     const getAllNodes = async () => {
