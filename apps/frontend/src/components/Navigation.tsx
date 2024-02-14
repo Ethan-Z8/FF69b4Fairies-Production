@@ -62,6 +62,7 @@ export function Navigation() {
         <Nav.Link href="/">
           <img
             src={image1}
+            alt="Logo"
             style={{
               maxHeight: "4rem",
               margin: 0,
