@@ -21,6 +21,21 @@ router.post("/create", async (req: Request, res: Response) => {
   }
 });
 
+router.delete("/delete", async (req: Request, res: Response) => {
+  const { username } = req.body as { username: string };
+  try {
+    await prisma.employee.delete({
+      where: {
+        username,
+      },
+    });
+    res.sendStatus(200);
+  } catch (e) {
+    console.log((e as Error).message);
+    res.sendStatus(400);
+  }
+});
+
 router.get("/", async (req: Request, res: Response) => {
   try {
     const data = await prisma.employee.findMany({
