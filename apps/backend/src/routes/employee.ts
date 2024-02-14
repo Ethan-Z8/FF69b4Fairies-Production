@@ -31,4 +31,23 @@ router.get("/", async (req: Request, res: Response) => {
     res.status(400).send("Failed to get Employee data");
   }
 });
+
+router.post("/update/displayName", async (req: Request, res: Response) => {
+  type update = {
+    username: string;
+    newDisplayName: string;
+  };
+  const updateData = req.body as update;
+  try {
+    await prisma.employee.update({
+      where: { username: updateData.username },
+      data: { displayName: updateData.newDisplayName },
+    });
+    res.sendStatus(200);
+  } catch (e) {
+    console.log((e as Error).message);
+    res.sendStatus(400);
+  }
+});
+
 export default router;

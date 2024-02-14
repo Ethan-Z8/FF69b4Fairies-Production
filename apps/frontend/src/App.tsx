@@ -9,7 +9,7 @@ import { LoginPage } from "./routes/LoginPage.tsx";
 import AddEmployeePage from "./routes/AddEmployeePage.tsx";
 import HomePage from "./routes/HomePage.tsx";
 import ReligionForm from "./components/ReligionForm.tsx";
-//import Button from "react-bootstrap/Button";
+import { EmployeeData } from "./routes/EmployeeData.tsx";
 
 function App() {
   const router = createBrowserRouter([
@@ -33,6 +33,10 @@ function App() {
         {
           path: "/viewServiceRequest",
           element: <ViewServiceRequestPage />,
+        },
+        {
+          path: "/viewEmployeeData",
+          element: <EmployeeData />,
         },
         {
           path: "/importAndExportData",
