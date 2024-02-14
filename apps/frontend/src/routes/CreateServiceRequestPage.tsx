@@ -1,3 +1,13 @@
+// import axios from "axios";
+import { FormEvent, useEffect, useState } from "react";
+import { SanitationRequestFields } from "../components/SanitationRequestFields.tsx";
+import { MaintenanceRequestFields } from "../components/MaintenanceRequestFields.tsx";
+import { ReligionRequestFields } from "../components/ReligionRequestFields.tsx";
+import { InternalTransportationFields } from "../components/InternalTransportationFields.tsx";
+import { FlowerRequestFields } from "../components/FlowerRequestFields.tsx";
+import { MapNodeInterface } from "common/src/interfaces/MapNodeInterface.ts";
+import { Employee } from "common/src/interfaces/Employee.ts";
+import axios from "axios";
 import {
   Box,
   Button,
@@ -5,16 +15,37 @@ import {
   InputLabel,
   MenuItem,
   Select,
-  TextField,
   Typography,
 } from "@mui/material";
-// import axios from "axios";
-import { FormEvent, useState } from "react";
-import { SanitationRequestFields } from "../components/SanitationRequestFields.tsx";
-import { MaintenanceRequestFields } from "../components/MaintenanceRequestFields.tsx";
 
+//TODO: Make the location selectors autocomplete forms, not basic select forms
 export function CreateServiceRequestPage() {
   const [typeRequest, setTypeRequest] = useState<string>("Sanitation");
+  const [nodes, setNodes] = useState<{ [key: string]: MapNodeInterface }>({});
+  const [loaded, setLoaded] = useState<boolean>(false);
+  const [success, setSuccess] = useState<boolean>(false);
+  const [error, setError] = useState<boolean>(false);
+  const [employees, setEmployees] = useState<Employee[]>([]);
+
+  useEffect(() => {
+    axios
+      .get("/api/map")
+      .then((res) => {
+        setNodes(res.data);
+        setLoaded(true);
+      })
+      .catch(() => {
+        setError(true);
+        setLoaded(false);
+      });
+
+    axios
+      .get("api/employee")
+      .then((res) => setEmployees(res.data))
+      .catch((e) => {
+        console.log(e.message);
+      });
+  }, []);
 
   //TODO: Paste In all
   function extraFields() {
@@ -22,10 +53,13 @@ export function CreateServiceRequestPage() {
       case "Sanitation":
         return <SanitationRequestFields />;
       case "InternalTransportation":
-      case "Medicine":
+        return <InternalTransportationFields nodes={Object.values(nodes)} />;
+      case "Religious":
+        return <ReligionRequestFields />;
       case "Maintenance":
         return <MaintenanceRequestFields />;
-      case "Security":
+      case "Flowers":
+        return <FlowerRequestFields />;
       default:
         return <div />;
     }
@@ -46,94 +80,146 @@ export function CreateServiceRequestPage() {
         // This lie will convert the field to a boolean.
         payload.hazardous = !!payload.hazardous;
         break;
-      case "InternalTransportation":
-      case "Medicine":
-      case "Maintenance":
-      case "Security":
       default:
+        break;
     }
-    // axios
-    //     .post("/api/serviceRequest/requests", payload)
-    //     .then(() => console.log("success"))
-    //     .catch(() => console.log("fail"));
+    axios
+      .post("/api/serviceRequest/create", payload)
+      .then(() => {
+        console.log("success");
+        setSuccess(true);
+        setError(false);
+      })
+      .catch(() => {
+        console.log("fail");
+        setSuccess(false);
+        setError(true);
+      });
     console.log(payload);
     t.reset();
   }
 
   return (
-    <Box
-      component="form"
-      sx={{
-        my: 8,
-        mx: "auto",
-        display: "flex",
-        flexDirection: "column",
-        gap: "1rem",
-        width: "75%",
-      }}
-      onSubmit={handleSubmit}
-    >
-      <Typography variant="h4">Create a service request</Typography>
-      <FormControl>
-        <InputLabel id="typeLabel">Request Type</InputLabel>
-        <Select
-          label="requestType"
-          labelId="typeLabel"
-          defaultValue="Sanitation"
-          name="requestType"
-          onChange={(e) => setTypeRequest(e.target.value)}
-        >
-          <MenuItem value="Sanitation">Sanitation</MenuItem>
-          <MenuItem value="InternalTransportation">
-            Internal Transportation
-          </MenuItem>
-          <MenuItem value="Medicine">Medicine</MenuItem>
-          <MenuItem value="Maintenance">Maintenance</MenuItem>
-          <MenuItem value="Security">Security</MenuItem>
-        </Select>
-      </FormControl>
-      <TextField label="Location" id="location" name="location" required />
-      <TextField
-        label="Employee Name"
-        id="employeeName"
-        name="employeeName"
-        required
-      />
-      <FormControl>
-        <InputLabel>Priority</InputLabel>
-        <Select
-          label="Priority"
-          labelId="priority"
-          defaultValue="Low"
-          name="priority"
-          required
-        >
-          <MenuItem value="Low">Low</MenuItem>
-          <MenuItem value="Medium">Medium</MenuItem>
-          <MenuItem value="High">High</MenuItem>
-          <MenuItem value="Emergency">Emergency</MenuItem>
-        </Select>
-      </FormControl>
-      <FormControl>
-        <InputLabel>Status</InputLabel>
-        <Select
-          label="Status"
-          id="status"
-          labelId="status"
-          defaultValue="Unassigned"
-          name="status"
-          required
-        >
-          <MenuItem value="Unassigned">Unassigned</MenuItem>
-          <MenuItem value="Assigned">Assigned</MenuItem>
-          <MenuItem value="InProgress">In Progress</MenuItem>
-          <MenuItem value="Completed">Completed</MenuItem>
-        </Select>
-      </FormControl>
-      {extraFields()}
-      <Button variant="outlined" type="submit">
-        Submit
-      </Button>
-    </Box>
+    loaded && (
+      <Box
+        component="form"
+        sx={{
+          my: 8,
+          mx: "auto",
+          display: "flex",
+          flexDirection: "column",
+          gap: "1rem",
+          width: "75%",
+        }}
+        onSubmit={handleSubmit}
+      >
+        <Typography variant="h4">Create a service request</Typography>
+        <FormControl>
+          <InputLabel id="typeLabel">Request Type</InputLabel>
+          <Select
+            label="Request Type"
+            labelId="typeService"
+            defaultValue="Sanitation"
+            name="typeService"
+            onChange={(e) => setTypeRequest(e.target.value)}
+          >
+            <MenuItem value="Sanitation">Sanitation</MenuItem>
+            <MenuItem value="InternalTransportation">
+              Internal Transportation
+            </MenuItem>
+            <MenuItem value="Flowers">Flowers</MenuItem>
+            <MenuItem value="Maintenance">Maintenance</MenuItem>
+            <MenuItem value="Religious">Religious</MenuItem>
+          </Select>
+        </FormControl>
+        {/*<TextField label="Location" id="location" name="location" required />*/}
+        <FormControl>
+          <InputLabel>Location</InputLabel>
+          <Select
+            key="location"
+            label="Location"
+            id="location"
+            name="location"
+            defaultValue=""
+            required
+          >
+            {Object.values(nodes).map((node) => {
+              return (
+                <MenuItem key={node.nodeID} value={node.nodeID}>
+                  {node.longName}
+                </MenuItem>
+              );
+            })}
+          </Select>
+        </FormControl>
+        <FormControl>
+          <InputLabel id="employeeLabel">Employee</InputLabel>
+          <Select
+            label="Employee"
+            labelId="employeeLabel"
+            defaultValue={employees[0]}
+            name="employee"
+            required
+          >
+            {employees.map((e) => (
+              <MenuItem value={e.username}>{e.displayName}</MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+        <FormControl>
+          <InputLabel>Priority</InputLabel>
+          <Select
+            label="Priority"
+            labelId="priority"
+            defaultValue="Low"
+            name="priority"
+            required
+          >
+            <MenuItem value="Low">Low</MenuItem>
+            <MenuItem value="Medium">Medium</MenuItem>
+            <MenuItem value="High">High</MenuItem>
+            <MenuItem value="Emergency">Emergency</MenuItem>
+          </Select>
+        </FormControl>
+        <FormControl>
+          <InputLabel>Status</InputLabel>
+          <Select
+            label="Progress"
+            id="progress"
+            labelId="progress"
+            defaultValue="Unassigned"
+            name="progress"
+            required
+          >
+            <MenuItem value="Unassigned">Unassigned</MenuItem>
+            <MenuItem value="Assigned">Assigned</MenuItem>
+            <MenuItem value="InProgress">In Progress</MenuItem>
+            <MenuItem value="Completed">Completed</MenuItem>
+          </Select>
+        </FormControl>
+        {extraFields()}
+        <Button variant="outlined" type="submit">
+          Submit
+        </Button>
+        {success && (
+          <Typography
+            sx={{
+              color: "success.main",
+            }}
+          >
+            Successfully Created Service Request
+          </Typography>
+        )}
+        {error && (
+          <Typography
+            sx={{
+              color: "error.main",
+            }}
+          >
+            Error Creating Service Request
+          </Typography>
+        )}
+      </Box>
+    )
   );
 }

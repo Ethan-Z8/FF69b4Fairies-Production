@@ -1,16 +1,18 @@
+import React from "react";
+import { useNavigate } from "react-router-dom";
+import { createBrowserRouter, Outlet, RouterProvider } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { Outlet, RouterProvider, createBrowserRouter } from "react-router-dom";
 import { Navigation } from "./components/Navigation.tsx";
 import { CreateServiceRequestPage } from "./routes/CreateServiceRequestPage.tsx";
-import AddEmployeePage from "./routes/AddEmployeePage.tsx";
 import HomePage from "./routes/HomePage.tsx";
+import { EmployeeData } from "./routes/EmployeeData.tsx";
 import { ImportAndExportDataPage } from "./routes/ImportAndExportDataPage.tsx";
 import { LoginPage } from "./routes/LoginPage.tsx";
 import { MapDataPage } from "./routes/MapDataPage.tsx";
 import { ViewServiceRequestPage } from "./routes/ViewServiceRequestPage.tsx";
-import TransportationRequest from "./components/TransportationRequest.tsx";
-//import Button from "react-bootstrap/Button";
-
+import { Auth0Provider } from "@auth0/auth0-react";
+import AddEmployeePage from "./routes/AddEmployeePage.tsx";
+import ProtectPage from "./components/ProtectPage.tsx";
 function App() {
   const router = createBrowserRouter([
     {
@@ -35,8 +37,12 @@ function App() {
           element: <ViewServiceRequestPage />,
         },
         {
+          path: "/viewEmployeeData",
+          element: <EmployeeData />,
+        },
+        {
           path: "/importAndExportData",
-          element: <ImportAndExportDataPage />,
+          element: <ProtectPage Page={ImportAndExportDataPage} />,
         },
         {
           path: "/mapData",
@@ -44,11 +50,7 @@ function App() {
         },
         {
           path: "/addEmployee",
-          element: <AddEmployeePage />,
-        },
-        {
-          path: "/transportation",
-          element: <TransportationRequest />,
+          element: <ProtectPage Page={AddEmployeePage} />,
         },
       ],
     },
@@ -56,16 +58,33 @@ function App() {
 
   return (
     <>
-      <Navigation />
       <RouterProvider router={router} />
     </>
   );
 
   function Root() {
+    const navigate = useNavigate();
+
     return (
-      <div className="pageAlignment">
-        <Outlet />
-      </div>
+      <Auth0Provider
+        useRefreshTokens
+        cacheLocation="localstorage"
+        domain="dev-y3oolmq2fczbeey6.us.auth0.com"
+        clientId="ZQu8ft9CKD63fMV9DJPvSU4jZSA4s5Ur"
+        onRedirectCallback={(appState) => {
+          navigate(appState?.returnTo || window.location.pathname);
+        }}
+        authorizationParams={{
+          redirect_uri: window.location.origin,
+          audience: "/api",
+          scope: "openid profile email offline_access",
+        }}
+      >
+        <Navigation />
+        <div className="pageAlignment">
+          <Outlet />
+        </div>
+      </Auth0Provider>
     );
   }
 }

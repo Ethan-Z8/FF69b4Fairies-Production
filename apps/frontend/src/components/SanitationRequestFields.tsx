@@ -1,8 +1,14 @@
-import { TextField, FormControlLabel, Checkbox } from "@mui/material";
+import {
+  TextField,
+  FormControlLabel,
+  Checkbox,
+  Typography,
+} from "@mui/material";
 
 export function SanitationRequestFields() {
   return (
     <>
+      <Typography variant="h5">Sanitation Request</Typography>
       <TextField
         label="Description of Mess"
         name="messDesc"

@@ -1,22 +1,27 @@
 import {
-  TextField,
-  Select,
-  MenuItem,
-  InputLabel,
   FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  TextField,
+  Typography,
 } from "@mui/material";
 
 export function MaintenanceRequestFields() {
   return (
     <>
-      <TextField label="Machine's Issue" name="issue" required multiline />
+      <Typography variant="h5">Maintenance Request</Typography>
+      <Typography variant="h6" style={{ fontSize: "16px", color: "gray" }}>
+        Created by: Justin Smith
+      </Typography>
+      <TextField label="Machine's Issue" name="issueType" required multiline />
       <FormControl>
         <InputLabel>Type of Employee</InputLabel>
         <Select
           label="Specialist Required"
-          labelId="specialist"
+          labelId="personnelNeeded"
           defaultValue="Any"
-          name="specialist"
+          name="personnelNeeded"
           required
         >
           <MenuItem value="Any">Any</MenuItem>
