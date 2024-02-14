@@ -28,11 +28,13 @@ function AddEmployeeForm() {
         password,
         displayName,
       })
-      .then(() => {
+      .then((res) => {
+        console.log(res);
         handleClose();
         setSuccess(true);
       })
-      .catch(() => {
+      .catch((err) => {
+        console.log(err);
         setErr(true);
         setSuccess(false);
       });
