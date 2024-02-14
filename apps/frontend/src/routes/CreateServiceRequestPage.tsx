@@ -21,7 +21,7 @@ import {
 //TODO: Make the location selectors autocomplete forms, not basic select forms
 export function CreateServiceRequestPage() {
   const [typeRequest, setTypeRequest] = useState<string>("Sanitation");
-  const [nodes, setNodes] = useState<MapNodeInterface[]>([]);
+  const [nodes, setNodes] = useState<{ [key: string]: MapNodeInterface }>({});
   const [loaded, setLoaded] = useState<boolean>(false);
   const [success, setSuccess] = useState<boolean>(false);
   const [error, setError] = useState<boolean>(false);
@@ -30,7 +30,7 @@ export function CreateServiceRequestPage() {
     axios
       .get("/api/map")
       .then((res) => {
-        setNodes(Array.from(Object.values(res.data)));
+        setNodes(res.data);
         setLoaded(true);
       })
       .catch(() => {
@@ -44,7 +44,7 @@ export function CreateServiceRequestPage() {
       case "Sanitation":
         return <SanitationRequestFields />;
       case "InternalTransportation":
-        return <InternalTransportationFields nodes={nodes} />;
+        return <InternalTransportationFields nodes={Object.values(nodes)} />;
       case "Religious":
         return <ReligionRequestFields />;
       case "Maintenance":
@@ -134,7 +134,7 @@ export function CreateServiceRequestPage() {
             defaultValue=""
             required
           >
-            {nodes.map((node) => {
+            {Object.values(nodes).map((node) => {
               return (
                 <MenuItem key={node.nodeID} value={node.nodeID}>
                   {node.longName}
