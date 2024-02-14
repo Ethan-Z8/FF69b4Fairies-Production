@@ -6,6 +6,7 @@ import { ReligionRequestFields } from "../components/ReligionRequestFields.tsx";
 import { InternalTransportationFields } from "../components/InternalTransportationFields.tsx";
 import { FlowerRequestFields } from "../components/FlowerRequestFields.tsx";
 import { MapNodeInterface } from "common/src/interfaces/MapNodeInterface.ts";
+import { Employee } from "common/src/interfaces/Employee.ts";
 import axios from "axios";
 import {
   Box,
@@ -14,7 +15,6 @@ import {
   InputLabel,
   MenuItem,
   Select,
-  TextField,
   Typography,
 } from "@mui/material";
 
@@ -25,6 +25,7 @@ export function CreateServiceRequestPage() {
   const [loaded, setLoaded] = useState<boolean>(false);
   const [success, setSuccess] = useState<boolean>(false);
   const [error, setError] = useState<boolean>(false);
+  const [employees, setEmployees] = useState<Employee[]>([]);
 
   useEffect(() => {
     axios
@@ -34,7 +35,15 @@ export function CreateServiceRequestPage() {
         setLoaded(true);
       })
       .catch(() => {
-        setLoaded(true);
+        setError(true);
+        setLoaded(false);
+      });
+
+    axios
+      .get("api/employee")
+      .then((res) => setEmployees(res.data))
+      .catch((e) => {
+        console.log(e.message);
       });
   }, []);
 
@@ -143,12 +152,20 @@ export function CreateServiceRequestPage() {
             })}
           </Select>
         </FormControl>
-        <TextField
-          label="Employee Name"
-          id="employee"
-          name="employee"
-          required
-        />
+        <FormControl>
+          <InputLabel id="employeeLabel">Employee</InputLabel>
+          <Select
+            label="Employee"
+            labelId="employeeLabel"
+            defaultValue={employees[0]}
+            name="employee"
+            required
+          >
+            {employees.map((e) => (
+              <MenuItem value={e.username}>{e.displayName}</MenuItem>
+            ))}
+          </Select>
+        </FormControl>
         <FormControl>
           <InputLabel>Priority</InputLabel>
           <Select
