@@ -58,9 +58,9 @@ export function Navigation() {
       <Nav className="d-flex justify-content-bewteen">
         <Nav.Link href="/">Home Page</Nav.Link>
         <Nav.Link href="/createServiceRequest">Create Service Request</Nav.Link>
-        <Nav.Link href="/viewServiceRequest">Service Requests</Nav.Link>
+        <Nav.Link href="/viewServiceRequest">View Service Requests</Nav.Link>
         <Nav.Link href="/importAndExportData">Import & Export Data</Nav.Link>
-        <Nav.Link href="/mapData">Map Data</Nav.Link>
+        <Nav.Link href="/mapData">View Map Data</Nav.Link>
         {isAuthenticated && (
           <Nav.Link href="/addEmployee">Add Employee</Nav.Link>
         )}
