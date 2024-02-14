@@ -3,6 +3,7 @@ import { FormEvent, useEffect, useState } from "react";
 import Table from "react-bootstrap/Table";
 import Stack from "react-bootstrap/Stack";
 import Form from "react-bootstrap/Form";
+import Button from "react-bootstrap/Button";
 
 type req = {
   username: string;
@@ -30,18 +31,12 @@ export function EmployeeData() {
   function handleFormSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const target = e.target as HTMLFormElement;
-    const displayName = Object.fromEntries(new FormData(target)) as {
-      displayName: string;
-    };
-    handleUserNameChange(displayName.displayName);
-  }
-  function handleUserNameChange(displayName: string) {
-    const updateData = {
-      displayName: displayName,
-    };
-    console.log(updateData);
+    const displayName = String(target.displayName.value);
+    const username = String(target.username.value);
+    const displayNameChange = { displayName, username };
+
     axios
-      .post("/api/employee/update/displayName", updateData)
+      .post("/api/employee/update/displayName", displayNameChange)
       .then((res) => console.log(res))
       .catch((err) => console.log(err));
   }
@@ -72,6 +67,12 @@ export function EmployeeData() {
                       type="input"
                       name="displayName"
                     />
+                    <input
+                      defaultValue={req.username}
+                      name="username"
+                      style={{ display: "none" }}
+                    />
+                    <Button type={"submit"}> Change </Button>
                   </Form>
                 </td>
                 <td key={"delete"}>{"Display Trash Icon"}</td>

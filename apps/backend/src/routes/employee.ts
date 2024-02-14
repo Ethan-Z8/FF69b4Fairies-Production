@@ -23,7 +23,11 @@ router.post("/create", async (req: Request, res: Response) => {
 
 router.get("/", async (req: Request, res: Response) => {
   try {
-    const data = await prisma.employee.findMany();
+    const data = await prisma.employee.findMany({
+      orderBy: {
+        username: "asc",
+      },
+    });
     res.json(data);
   } catch (e) {
     const error = e as Error;
@@ -35,14 +39,18 @@ router.get("/", async (req: Request, res: Response) => {
 router.post("/update/displayName", async (req: Request, res: Response) => {
   type update = {
     username: string;
-    newDisplayName: string;
+    displayName: string;
   };
+
   const updateData = req.body as update;
+  console.log(updateData.username);
+  console.log(updateData.displayName);
   try {
     await prisma.employee.update({
       where: { username: updateData.username },
-      data: { displayName: updateData.newDisplayName },
+      data: { displayName: updateData.displayName },
     });
+
     res.sendStatus(200);
   } catch (e) {
     console.log((e as Error).message);
