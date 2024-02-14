@@ -32,34 +32,38 @@
 .map-control-panel {
   position: fixed;
   bottom: 1%;
-  left: -15%;
-  width: 15%;
-  height: 10%;
-  background-color: #fff;
+  left: -12%;
+  width: 12%;
+  height: 12%;
+  background-color: transparent;
   transition: left 0.3s ease;
   z-index: 2;
-  overflow-y: auto;
 }
 
 .map-control-panel.open {
-  left: 0;
+  left: -1%;
 }
 
 .tab {
   position: fixed;
-  bottom: 1%;
-  left: 0;
-  width: 50px;
+  bottom: 2%;
+  left: -1%;
+  width: 2%;
   height: 10%;
   background-color: #007bff;
   text-align: center;
   cursor: pointer;
-  z-index: 2;
+  border-radius: 10px;
+
+  z-index: 4;
   transition: left 0.3s ease;
 }
 
 .tab.open {
-  left: 15%;
+  width: 1%;
+  left: 10%;
+  bottom: 3%;
+  height: 8%;
 }
 
 .nodeSelectContainer {
