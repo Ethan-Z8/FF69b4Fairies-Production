@@ -1,8 +1,8 @@
+import axios from "axios";
+import { FormEvent, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import "../styling/AddEmployeeForm.css";
-import axios from "axios";
-import { FormEvent, useState } from "react";
 
 function AddEmployeeForm() {
   const [username, setUsername] = useState<string>("");
@@ -42,9 +42,6 @@ function AddEmployeeForm() {
 
   return (
     <div className="EmployeeForm">
-      <Button className="w-100 mb-3" href="/">
-        Back to Home Page
-      </Button>
       <Form className={"form-group-required"} onSubmit={logData}>
         <Form.Group className="mb-3" controlId="formBasicEmail">
           <Form.Label>Employee's User Name</Form.Label>
