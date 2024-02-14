@@ -23,7 +23,7 @@ router.post("/create", async (req: Request, res: Response) => {
       data: {
         assignedTo: {
           connect: {
-            displayName: sr.employee,
+            username: sr.employee,
           },
         },
         location: sr.location,
@@ -100,6 +100,9 @@ router.post("/create", async (req: Request, res: Response) => {
 
 router.get("/", async (req: Request, res: Response) => {
   try {
+    /*
+      TODO send employee data as well since we are now using username as link, need to display display name in frontend
+      */
     const data = await prisma.serviceRequest.findMany({
       include: {
         flowerRequest: true,
