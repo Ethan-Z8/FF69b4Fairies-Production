@@ -1,16 +1,45 @@
-import Button from "react-bootstrap/Button";
+import { useAuth0 } from "@auth0/auth0-react";
+import { useEffect } from "react";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import logo from "../assets/logo.svg";
 
 export function Navigation() {
-  const loggedIn = () => window.localStorage.getItem("loggedIn") === "true";
+  const { loginWithRedirect, logout } = useAuth0();
+  const { isAuthenticated, isLoading, getAccessTokenSilently } = useAuth0();
 
-  function logOut() {
-    window.localStorage.removeItem("loggedIn");
-    console.log(loggedIn());
-    location.reload();
-  }
+  useEffect(() => {
+    const fun = async () => {
+      try {
+        await getAccessTokenSilently();
+      } catch (error) {
+        await loginWithRedirect({
+          appState: {
+            returnTo: location.pathname,
+          },
+        });
+      }
+    };
+    if (!isLoading && isAuthenticated) {
+      fun();
+    }
+  }, [getAccessTokenSilently, isAuthenticated, isLoading, loginWithRedirect]);
+
+  const handleLogin = () => {
+    loginWithRedirect({
+      appState: {
+        returnTo: location.pathname,
+      },
+    });
+  };
+
+  const handleLogout = async () => {
+    await logout({
+      logoutParams: {
+        returnTo: window.location.origin,
+      },
+    });
+  };
 
   return (
     <Navbar className="bg-body-tertiary p-2 justify-content-around">
@@ -32,16 +61,19 @@ export function Navigation() {
         <Nav.Link href="/viewServiceRequest">Service Requests</Nav.Link>
         <Nav.Link href="/importAndExportData">Import & Export Data</Nav.Link>
         <Nav.Link href="/mapData">Map Data</Nav.Link>
-        {loggedIn() && <Nav.Link href="/addEmployee">Add Employee</Nav.Link>}
+        {isAuthenticated && (
+          <Nav.Link href="/addEmployee">Add Employee</Nav.Link>
+        )}
       </Nav>
-      {!loggedIn() ? (
-        <Nav.Link className="ml-4" href="/login">
+      {!isAuthenticated && (
+        <Nav.Link className="ml-4" onClick={handleLogin}>
           Log In
         </Nav.Link>
-      ) : (
-        <Button className="ml-4" onClick={logOut}>
+      )}
+      {isAuthenticated && (
+        <Nav.Link className="ml-4" onClick={handleLogout}>
           Log Out
-        </Button>
+        </Nav.Link>
       )}
     </Navbar>
   );
