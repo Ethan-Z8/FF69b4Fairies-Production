@@ -6,6 +6,7 @@ import exampleRouter from "./routes/example.ts";
 import { mapRouter } from "./routes/map.ts";
 import serviceRouter from "./routes/serviceRequest.ts";
 import employeeRouter from "./routes/employee.ts";
+import { auth } from "express-oauth2-jwt-bearer";
 import religion from "./routes/religionarray";
 
 const app: Express = express(); // Setup the backend
@@ -22,6 +23,19 @@ app.use(
 app.use(express.json()); // This processes requests as JSON
 app.use(express.urlencoded({ extended: false })); // URL parser
 app.use(cookieParser()); // Cookie parser
+
+app.use("/healthcheck", function (req: Request, res: Response): void {
+  if (!process.env["VITETEST"]) {
+    app.use(
+      auth({
+        audience: "/api",
+        issuerBaseURL: "https://dev-y3oolmq2fczbeey6.us.auth0.com/",
+        tokenSigningAlg: "RS256",
+      }),
+    );
+  }
+  res.sendStatus(200);
+});
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 function enableCors(req: Request, res: Response, next: Function) {

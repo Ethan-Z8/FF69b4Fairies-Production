@@ -6,7 +6,6 @@ import Stack from "react-bootstrap/Stack";
 
 export function LoginPage() {
   const [loginErr, setLoginErr] = useState<boolean>(false);
-  // const navigate = useNavigate();
 
   //TODO: Add prop that will change log in button to log out button, just using localstorage for now
   function handleSubmit(e: FormEvent<HTMLFormElement>) {
