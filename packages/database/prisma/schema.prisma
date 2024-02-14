@@ -44,7 +44,7 @@ model ServiceRequest {
   progress    Progress
   priority    Priority
 
-  assignedTo Employee @relation("employee", fields: [employee], references: [username])
+  assignedTo Employee @relation("employee", fields: [employee], references: [username], onDelete: Cascade)
 
   sanitationRequest     SanitationRequest?     @relation()
   transportationRequest TransportationRequest? @relation()
@@ -55,35 +55,35 @@ model ServiceRequest {
 
 model SanitationRequest {
   id        Int            @id
-  parent    ServiceRequest @relation(fields: [id], references: [id])
+  parent    ServiceRequest @relation(fields: [id], references: [id], onDelete: Cascade)
   messDesc  String
   hazardous Boolean
 }
 
 model TransportationRequest {
   id              Int            @id
-  parent          ServiceRequest @relation(fields: [id], references: [id])
+  parent          ServiceRequest @relation(fields: [id], references: [id], onDelete: Cascade)
   endLocation     String
   equipmentNeeded String
 }
 
 model MaintenanceRequest {
   id              Int            @id
-  parent          ServiceRequest @relation(fields: [id], references: [id])
+  parent          ServiceRequest @relation(fields: [id], references: [id], onDelete: Cascade)
   personnelNeeded String
   issueType       String
 }
 
 model FlowerRequest {
   id         Int            @id
-  parent     ServiceRequest @relation(fields: [id], references: [id])
+  parent     ServiceRequest @relation(fields: [id], references: [id], onDelete: Cascade)
   flowerType String
   recipient  String
 }
 
 model ReligionRequest {
   id            Int            @id
-  parent        ServiceRequest @relation(fields: [id], references: [id])
+  parent        ServiceRequest @relation(fields: [id], references: [id], onDelete: Cascade)
   religionType  String
   typeOfService String
 }
