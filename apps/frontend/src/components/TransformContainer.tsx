@@ -26,6 +26,7 @@ const TransformContainer: React.FC<TransformContainerProps> = ({
   useEffect(() => {
     const container = containerRef.current;
     const content = contentRef.current;
+
     if (!container || !content) return;
     content.style.transformOrigin = `${0}px ${0}px`;
 
