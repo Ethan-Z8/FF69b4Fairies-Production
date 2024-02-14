@@ -50,7 +50,7 @@ function App() {
         },
         {
           path: "/addEmployee",
-          element: <AddEmployeePage />,
+          element: <ProtectPage Page={AddEmployeePage} />,
         },
       ],
     },
