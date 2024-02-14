@@ -120,7 +120,7 @@ router.get("/", async (req: Request, res: Response) => {
 router.post("/updateProgress", async (req: Request, res: Response) => {
   type update = {
     id: number;
-    progress: "Assigned" | "InProgress" | "Completed";
+    progress: "Unassigned" | "Assigned" | "InProgress" | "Completed";
   };
   const updateData = req.body as update;
   try {

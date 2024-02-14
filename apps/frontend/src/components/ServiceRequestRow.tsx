@@ -2,21 +2,38 @@ import { useState } from "react";
 import {
   Box,
   Collapse,
+  FormControl,
   IconButton,
+  MenuItem,
+  Select,
+  SelectChangeEvent,
+  Table,
+  TableBody,
   TableCell,
   TableRow,
   Typography,
-  Table,
-  TableBody,
 } from "@mui/material";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
-import { ServiceRequestType } from "../../../../packages/common/src/interfaces/ServiceRequest.ts";
+import { ServiceRequestType } from "common/src/interfaces/ServiceRequest.ts";
+import axios from "axios";
 
 export type ServiceRequestRowProps = ServiceRequestType;
 type stringable = { [key: string]: string | boolean };
+
 export function ServiceRequestRow(props: ServiceRequestRowProps) {
   const [open, setOpen] = useState<boolean>(false);
+
+  function handleProgressChange(e: SelectChangeEvent<unknown>) {
+    const progress = e.target.value;
+    axios
+      .post("/api/serviceRequest/updateProgress", {
+        progress,
+        id: props.id,
+      })
+      .then((res) => console.log(res))
+      .catch((err) => console.log(err.message));
+  }
 
   function customProperties(request: ServiceRequestType) {
     let uniqueField1, uniqueField2;
@@ -98,7 +115,23 @@ export function ServiceRequestRow(props: ServiceRequestRowProps) {
         <TableCell>{props.typeService}</TableCell>
         <TableCell>{props.location}</TableCell>
         <TableCell>{props.employee}</TableCell>
-        <TableCell>{props.progress}</TableCell>
+        <TableCell>
+          <FormControl>
+            <Select
+              variant="standard"
+              label="Progress"
+              labelId="progress"
+              defaultValue={props.progress}
+              name="progress"
+              onChange={handleProgressChange}
+            >
+              <MenuItem value="Unassigned">Unassigned</MenuItem>
+              <MenuItem value="Assigned">Assigned</MenuItem>
+              <MenuItem value="InProgress">In Progress</MenuItem>
+              <MenuItem value="Completed">Completed</MenuItem>
+            </Select>
+          </FormControl>
+        </TableCell>
         <TableCell>{props.priority}</TableCell>
       </TableRow>
       <TableRow>

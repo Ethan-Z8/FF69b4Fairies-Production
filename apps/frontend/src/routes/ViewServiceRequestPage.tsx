@@ -27,8 +27,6 @@ export function ViewServiceRequestPage() {
     axios
       .get("/api/serviceRequest")
       .then((res) => {
-        console.log("Request Made");
-        console.log(res.data);
         setServiceRequests(res.data);
         setLoaded(true);
       })
