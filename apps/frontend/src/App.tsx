@@ -4,12 +4,12 @@ import { createBrowserRouter, Outlet, RouterProvider } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Navigation } from "./components/Navigation.tsx";
 import { CreateServiceRequestPage } from "./routes/CreateServiceRequestPage.tsx";
-import { ViewServiceRequestPage } from "./routes/ViewServiceRequestPage.tsx";
+import HomePage from "./routes/HomePage.tsx";
+import { EmployeeData } from "./routes/EmployeeData.tsx";
 import { ImportAndExportDataPage } from "./routes/ImportAndExportDataPage.tsx";
-import { MapDataPage } from "./routes/MapDataPage.tsx";
 import { LoginPage } from "./routes/LoginPage.tsx";
-import { DisplayPath } from "./components/DisplayPath.tsx";
-import TransformContainer from "./components/TransformContainer.tsx";
+import { MapDataPage } from "./routes/MapDataPage.tsx";
+import { ViewServiceRequestPage } from "./routes/ViewServiceRequestPage.tsx";
 import { Auth0Provider } from "@auth0/auth0-react";
 import AddEmployeePage from "./routes/AddEmployeePage.tsx";
 import ProtectPage from "./components/ProtectPage.tsx";
@@ -22,11 +22,7 @@ function App() {
       children: [
         {
           path: "/",
-          element: (
-            <TransformContainer>
-              <DisplayPath />
-            </TransformContainer>
-          ),
+          element: <HomePage />,
         },
         {
           path: "/login",
@@ -39,6 +35,10 @@ function App() {
         {
           path: "/viewServiceRequest",
           element: <ViewServiceRequestPage />,
+        },
+        {
+          path: "/viewEmployeeData",
+          element: <EmployeeData />,
         },
         {
           path: "/importAndExportData",

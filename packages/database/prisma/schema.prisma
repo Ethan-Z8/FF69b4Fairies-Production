@@ -36,25 +36,76 @@ model MapEdge {
 }
 
 model ServiceRequest {
-  date         DateTime @id @default(now())
-  typeService  String
-  reason       String
-  nodeLoc      String
-  employeeName String
-  progress     Progress
-  emp          Employee @relation("employee", fields: [employeeName], references: [displayName])
+  id          Int      @id @default(autoincrement())
+  date        DateTime @default(now())
+  typeService String
+  location    String
+  employee    String
+  progress    Progress
+  priority    Priority
+
+  assignedTo Employee @relation("employee", fields: [employee], references: [username], onDelete: Cascade)
+
+  sanitationRequest     SanitationRequest?     @relation()
+  transportationRequest TransportationRequest? @relation()
+  maintenanceRequest    MaintenanceRequest?    @relation()
+  flowerRequest         FlowerRequest?         @relation()
+  religionRequest       ReligionRequest?       @relation()
+}
+
+model SanitationRequest {
+  id        Int            @id
+  parent    ServiceRequest @relation(fields: [id], references: [id], onDelete: Cascade)
+  messDesc  String
+  hazardous Boolean
+}
+
+model TransportationRequest {
+  id              Int            @id
+  parent          ServiceRequest @relation(fields: [id], references: [id], onDelete: Cascade)
+  endLocation     String
+  equipmentNeeded String
+}
+
+model MaintenanceRequest {
+  id              Int            @id
+  parent          ServiceRequest @relation(fields: [id], references: [id], onDelete: Cascade)
+  personnelNeeded String
+  issueType       String
+}
+
+model FlowerRequest {
+  id         Int            @id
+  parent     ServiceRequest @relation(fields: [id], references: [id], onDelete: Cascade)
+  flowerType String
+  recipient  String
+}
+
+model ReligionRequest {
+  id            Int            @id
+  parent        ServiceRequest @relation(fields: [id], references: [id], onDelete: Cascade)
+  religionType  String
+  typeOfService String
 }
 
 enum Progress {
+  Unassigned
   Assigned
   InProgress
   Completed
 }
 
+enum Priority {
+  Low
+  Medium
+  High
+  Emergency
+}
+
 model Employee {
-  username        String           @id
+  username        String           @id @unique
   password        String
-  displayName     String           @unique
+  displayName     String
   serviceRequests ServiceRequest[] @relation("employee")
 }
 

@@ -1,95 +1,104 @@
+import React, { useEffect, useState } from "react";
 import axios from "axios";
-import React, { useState, useEffect, useContext, createContext } from "react";
+import NodeSelectDropdown from "./NodeSelectDropdown";
+import Button from "react-bootstrap/Button";
+import NodeOnMap from "./NodeOnMap";
 import "../styling/DisplayMapNodes.css";
-import { CSSProperties } from "react";
-import NodeOnMap from "./NodeOnMap.tsx";
+import TransformContainer from "./TransformContainer.tsx";
 
-import GR from "../assets/hospitalmaps/00_thegroundfloor.png";
-import LL1 from "../assets/hospitalmaps/00_thelowerlevel1.png";
-import LL2 from "../assets/hospitalmaps/00_thelowerlevel2.png";
-import F1 from "../assets/hospitalmaps/01_thefirstfloor.png";
-import F2 from "../assets/hospitalmaps/02_thesecondfloor.png";
-import F3 from "../assets/hospitalmaps/03_thethirdfloor.png";
+import LL1 from "../assets/hospitalmaps/00_thelowerlevel1-min.png";
+import LL2 from "../assets/hospitalmaps/00_thelowerlevel2-min.png";
+import F1 from "../assets/hospitalmaps/01_thefirstfloor-min.png";
+import F2 from "../assets/hospitalmaps/02_thesecondfloor-min.png";
+import F3 from "../assets/hospitalmaps/03_thethirdfloor-min.png";
 
-// PLACEHOLDER CONTEXT replace later :3
-const MapContext = createContext(1);
+/*
+import GRLR from "../assets/hospitalmaps/00_thegroundfloor-lowRes.png";
+import LL1LR from "../assets/hospitalmaps/00_thelowerlevel1-lowRes.png";
+import LL2LR from "../assets/hospitalmaps/00_thelowerlevel2-lowRes.png";
+import F1LR from "../assets/hospitalmaps/01_thefirstfloor-lowRes.png";
+import F2LR from "../assets/hospitalmaps/02_thesecondfloor-lowRes.png";
+import F3LR from "../assets/hospitalmaps/03_thethirdfloor-lowRes.png";
+*/
+
+import SelectorTabs from "./SelectorTabs.tsx";
 
 interface Node {
   nodeID: string;
-  nodeType: string;
-  shortName: string;
   xcoord: number;
   ycoord: number;
+  floor: string;
+  building: string;
+  nodeType: string;
+  longName: string;
+  shortName: string;
+  neighbors: string[];
 }
 
 interface ImageSize {
   width: number;
   height: number;
 }
-const mapPath = [GR, LL1, LL2, F1, F2, F3];
+
+const mapPath: string[] = [LL1, LL2, F1, F2, F3];
+
+const mapPathNames: string[] = ["L1", "L2", "1", "2", "3"];
+const floorNames: string[] = [
+  "Level 3",
+  "Level 2",
+  "Level 1",
+  "Lower Level 1",
+  "Lower Level 2",
+];
 
 export function DisplayPath() {
-  const [firstClickedNodeId, setFirstClickedNodeId] = useState<string | null>(
-    null,
-  );
-  const [secondClickedNodeId, setSecondClickedNodeId] = useState<string | null>(
-    null,
-  );
+  const [firstClickedNodeId, setFirstClickedNodeId] = useState<string>("");
+  const [secondClickedNodeId, setSecondClickedNodeId] = useState<string>("");
   const [nodes, setNodes] = useState<Node[]>([]);
   const [allNodes, setAllNodes] = useState<Node[]>([]);
-  const [imageSize, setImageSize] = useState<ImageSize | null>(null);
-  const [counter, setCounter] = useState(false);
-  const mapIndex = useContext(MapContext);
-  // error listener
-  window.addEventListener("unhandledrejection", (event) => {
-    const reason = event.reason;
-
-    if (reason instanceof Error) {
-      // If the reason is an instance of Error, you can handle it accordingly
-      console.error("Unhandled Promise Rejection:", reason);
-    } else {
-      // If the reason is of unknown type, you might want to handle it gracefully
-      console.warn("Unhandled Promise Rejection with unknown reason:", reason);
-    }
+  const [imageSize, setImageSize] = useState<ImageSize>({
+    width: 5000,
+    height: 3400,
   });
+  const [mapIndex, setMapIndex] = useState(1);
+  const [aNodes, setANodes] = useState<{ [key: string]: Node }>({});
+  const [clear, setClear] = useState<{ nodes: boolean; edges: boolean }>({
+    nodes: true,
+    edges: false,
+  });
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [shortNames, setShortNames] = useState({ start: "", end: "" });
+
+  const [toggleNodes, setToggleNodes] = useState(false);
+  const [toggleEdges, setToggleEdges] = useState(false);
 
   useEffect(() => {
-    const getMapNodes = async () => {
-      try {
-        // const pathString = await axios.get(`/api/map/path`, {
-        //   params: {
-        //     start: start,
-        //     end: end,
-        //   },
-        // });
-        //console.log(pathString.data);
+    setMapIndex(0);
+  }, []);
 
-        const pathNodes = await axios.get(`/api/map/pathNodes`, {
-          params: {
-            start: firstClickedNodeId,
-            end: secondClickedNodeId,
-          },
-        });
-        const nodesData: Node[] = Object.values(pathNodes.data);
-        setNodes(nodesData);
-      } catch (error) {
-        console.log("Error has not selected 2 nodes ");
-      }
-    };
-
+  useEffect(() => {
     const getAllNodes = async () => {
       try {
         const allNodes = await axios.get(`/api/map/allTemp`);
-
         const nodesData: Node[] = Object.values(allNodes.data);
+
         setAllNodes(nodesData);
       } catch (error) {
         console.error("Error fetching map nodess:", error);
       }
     };
-    if (secondClickedNodeId != null && firstClickedNodeId != null) {
-      getMapNodes();
-    }
+
+    const all = async () => {
+      try {
+        const response = await axios.get(`/api/map/allTemp`);
+        const aNodes: { [key: string]: Node } = response.data;
+        setANodes(aNodes);
+      } catch (error) {
+        console.error("Error fetching map nodes:", error);
+      }
+    };
+
+    all();
     getAllNodes();
 
     const img = new Image();
@@ -100,86 +109,409 @@ export function DisplayPath() {
         height: img.height,
       });
     };
-  }, [firstClickedNodeId, secondClickedNodeId, mapIndex]);
-  const handleNodeClick = (node: Node) => {
-    if (!counter) {
-      setSecondClickedNodeId(null);
-      setFirstClickedNodeId(node.nodeID);
+  }, [mapIndex]);
 
-      setCounter(true);
+  useEffect(() => {
+    console.log(firstClickedNodeId, secondClickedNodeId);
+    if (secondClickedNodeId != "" && firstClickedNodeId != "") {
+      const getMapNodesByShort = async () => {
+        try {
+          const pathNodes = await axios.get(`/api/map/pathNodesShort`, {
+            params: {
+              start: aNodes[firstClickedNodeId].shortName,
+              end: aNodes[secondClickedNodeId].shortName,
+            },
+          });
+          const nodesData: Node[] = Object.values(pathNodes.data);
+
+          setNodes(nodesData);
+        } catch (error) {
+          console.log("Error has not selected 2 nodes ");
+        }
+      };
+      getMapNodesByShort();
     } else {
-      setSecondClickedNodeId(node.nodeID);
-      setCounter(false);
+      setNodes([]);
+    }
+  }, [aNodes, secondClickedNodeId, firstClickedNodeId]);
+
+  const handleToggleNodes = () => {
+    clearSearch();
+    setToggleNodes(!toggleNodes);
+  };
+
+  const handleToggleEdges = () => {
+    setToggleEdges(!toggleEdges);
+  };
+
+  const toggleMenu = () => {
+    setMenuOpen(!menuOpen);
+  };
+
+  const handleMapSelect = (index: number) => {
+    setMapIndex(index);
+  };
+
+  const clearSearch = () => {
+    setFirstClickedNodeId("");
+    setSecondClickedNodeId("");
+    setShortNames({ start: "", end: "" });
+  };
+
+  const handleStartSelect = (value: string) => {
+    allNodes.map((node) => {
+      if (node.shortName == value) {
+        setFirstClickedNodeId(node.nodeID);
+        setShortNames({ ...shortNames, start: node.shortName });
+      }
+    });
+  };
+
+  const handleEndSelect = (value: string) => {
+    allNodes.map((node) => {
+      if (node.shortName == value) {
+        setSecondClickedNodeId(node.nodeID);
+        setShortNames({ ...shortNames, end: node.shortName });
+      }
+    });
+  };
+
+  const handleNodeClick = (node: Node) => {
+    if (node) {
+      switch (node.nodeID) {
+        case firstClickedNodeId: {
+          console.log("undo first");
+          setFirstClickedNodeId("");
+          setShortNames({ ...shortNames, start: "" });
+          break;
+        }
+        case secondClickedNodeId: {
+          console.log("undo second");
+          setSecondClickedNodeId("");
+          setShortNames({ ...shortNames, end: "" });
+          break;
+        }
+        default: {
+          if (firstClickedNodeId == "") {
+            // console.log(firstClickedNodeId);
+            setFirstClickedNodeId(node.nodeID);
+            setShortNames({ ...shortNames, start: node.shortName });
+          } else if (secondClickedNodeId == "") {
+            setClear({ nodes: false, edges: false });
+            setSecondClickedNodeId(node.nodeID);
+            setShortNames({ ...shortNames, end: node.shortName });
+          }
+        }
+      }
     }
   };
 
-  const renderPath = (nodes: Node[]) => {
-    const circles = nodes.map((one, index) => {
-      // console.log(nodes); // Log nodeID to console
-      // console.log("inside rendercircles");
+  // const renderNames = () => {
+  //   const node1 = aNodes[firstClickedNodeId];
+  //   const node2 = aNodes[secondClickedNodeId];
+  //   if (node1 && node2)
+  //     return (
+  //       <div>
+  //         <div
+  //           style={{
+  //             position: "absolute",
+  //             left: node1.xcoord,
+  //             bottom: imageSize.height - node1.ycoord + 16,
+  //             transform: "translateX(-50%)",
+  //             backgroundColor: "#fff",
+  //             width: "10vw",
+  //             zIndex: 18,
+  //             border: "1px solid",
+  //             padding: "6px",
+  //             borderRadius: "3px",
+  //           }}
+  //         >
+  //           {node1.longName}
+  //         </div>
+  //         <div
+  //           style={{
+  //             position: "absolute",
+  //             left: node2.xcoord,
+  //             bottom: imageSize.height - node2.ycoord + 16,
+  //             transform: "translateX(-50%)",
+  //             backgroundColor: "#fff",
+  //             width: "10vw",
+  //             zIndex: 18,
+  //             border: "1px solid",
+  //             padding: "6px",
+  //             borderRadius: "3px",
+  //           }}
+  //         >
+  //           {node2.longName}
+  //         </div>
+  //       </div>
+  //     );
+  //   if (node1)
+  //     return (
+  //       <div>
+  //         <div
+  //           style={{
+  //             position: "absolute",
+  //             left: node1.xcoord,
+  //             bottom: imageSize.height - node1.ycoord + 16,
+  //             transform: "translateX(-50%)",
+  //             backgroundColor: "#fff",
+  //             width: "10vw",
+  //             zIndex: 18,
+  //             border: "1px solid",
+  //             padding: "6px",
+  //             borderRadius: "6px",
+  //           }}
+  //         >
+  //           {node1.longName}
+  //         </div>
+  //       </div>
+  //     );
+  // };
+  const renderPath = () => {
+    if (clear.edges) return <div />;
+    let circles: JSX.Element[];
 
-      // Calculate previous node index
-      const prevIndex = index - 1;
-      const prevNode = prevIndex >= 0 ? nodes[prevIndex] : null;
+    if (toggleEdges) {
+      const visitedNodeIDs = new Set<string>();
 
-      // Calculate line coordinates and rotation angle
-      const lineStyles: CSSProperties = prevNode
-        ? {
-            position: "absolute",
-            left: `${prevNode.xcoord}px`,
-            top: `${prevNode.ycoord}px`,
-            width: `${Math.sqrt(
-              Math.pow(one.xcoord - prevNode.xcoord, 2) +
-                Math.pow(one.ycoord - prevNode.ycoord, 2),
-            )}px`, // Adjust thickness as needed
-            height: "4px", // Adjust thickness as needed
-            backgroundColor: "red",
-            zIndex: 3, // Set a higher zIndex for the line
-            transformOrigin: "left center",
-            transform: `rotate(${Math.atan2(
-              one.ycoord - prevNode.ycoord,
-              one.xcoord - prevNode.xcoord,
-            )}rad)`,
+      circles = allNodes
+        .map((node) => {
+          if (!visitedNodeIDs.has(node.nodeID)) {
+            visitedNodeIDs.add(node.nodeID);
+
+            if (mapPathNames[mapIndex] == node.floor)
+              return node.neighbors.map((nNode) => {
+                const prevNode = aNodes[nNode];
+                if (!prevNode) return <div />;
+
+                const lineStyles: React.CSSProperties =
+                  prevNode?.floor == node.floor
+                    ? {
+                        position: "absolute",
+                        left: `${prevNode.xcoord}px`,
+                        top: `${prevNode.ycoord}px`,
+                        width: `${Math.sqrt(
+                          Math.pow(node.xcoord - prevNode.xcoord, 2) +
+                            Math.pow(node.ycoord - prevNode.ycoord, 2),
+                        )}px`,
+                        height: "4px",
+                        backgroundColor: "red",
+                        zIndex: 3,
+                        transformOrigin: "left center",
+                        transform: `translate(0, -2px) rotate(${Math.atan2(
+                          node.ycoord - prevNode.ycoord,
+                          node.xcoord - prevNode.xcoord,
+                        )}rad)`,
+                      }
+                    : {};
+
+                const uniqueKey = `${nNode}-${node.nodeID}`;
+                return (
+                  <div key={uniqueKey} className="node-wrapper">
+                    <div className="line" style={lineStyles}></div>
+                  </div>
+                );
+              });
           }
-        : {};
+          return <div />;
+        })
+        .flat();
+    } else {
+      circles = nodes.map((one, index) => {
+        const prevIndex = index - 1;
+        const prevNode = prevIndex >= 0 ? nodes[prevIndex] : null;
 
-      return (
-        <div key={one.nodeID} className="node-wrapper">
-          {prevNode && <div className="line" style={lineStyles}></div>}
-        </div>
-      );
-    });
+        const correctFloor = mapPathNames[mapIndex] == nodes[index].floor;
+
+        const lineStyles: React.CSSProperties =
+          prevNode && correctFloor && prevNode.floor == mapPathNames[mapIndex]
+            ? {
+                position: "absolute",
+                left: `${prevNode.xcoord}px`,
+                top: `${prevNode.ycoord}px`,
+                width: `${Math.sqrt(
+                  Math.pow(one.xcoord - prevNode.xcoord, 2) +
+                    Math.pow(one.ycoord - prevNode.ycoord, 2),
+                )}px`,
+                height: "4px",
+                backgroundColor: "red",
+                zIndex: 3,
+                transformOrigin: "left center",
+                transform: `rotate(${Math.atan2(
+                  one.ycoord - prevNode.ycoord,
+                  one.xcoord - prevNode.xcoord,
+                )}rad)`,
+              }
+            : {};
+
+        const nextNode = nodes[index + 1];
+        let swapNode: Node | null = null;
+        if (prevNode && prevNode.floor !== one.floor) swapNode = prevNode;
+        else if (nextNode && nextNode.floor !== one.floor) swapNode = nextNode;
+
+        const showChangeFloorButton = swapNode && correctFloor;
+
+        const showChangeFloorButton2 =
+          nextNode && nextNode.floor !== one.floor && correctFloor;
+
+        const arrowDirection =
+          swapNode && mapPathNames.indexOf(swapNode.floor) < mapIndex
+            ? "down"
+            : "up";
+
+        return (
+          <div key={one.nodeID} className="node-wrapper">
+            <div>
+              {prevNode && <div className="line" style={lineStyles}></div>}
+              {showChangeFloorButton && (
+                <div
+                  className={`arrow-${arrowDirection}`}
+                  style={{
+                    position: "absolute",
+                    left: `${one.xcoord}px`,
+                    top: `${one.ycoord}px`,
+                    zIndex: 4,
+                  }}
+                  onClick={() =>
+                    setMapIndex(
+                      mapPathNames.findIndex(
+                        (item) => item === swapNode!.floor,
+                      ),
+                    )
+                  }
+                ></div>
+              )}
+              {showChangeFloorButton2 && (
+                <div
+                  className={`arrow-${arrowDirection}`}
+                  style={{
+                    position: "absolute",
+                    left: `${one.xcoord}px`,
+                    top: `${one.ycoord}px`,
+                    zIndex: 4,
+                  }}
+                  onClick={() =>
+                    setMapIndex(
+                      mapPathNames.findIndex(
+                        (item) => item === swapNode!.floor,
+                      ),
+                    )
+                  }
+                ></div>
+              )}
+            </div>
+          </div>
+        );
+      });
+    }
 
     return circles;
   };
 
-  const renderCircles = (allNodes: Node[]) => {
-    return allNodes.map((node) => {
-      return (
-        <div key={node.nodeID}>
-          <NodeOnMap node={node} onNodeClick={() => handleNodeClick(node)} />
-        </div>
-      );
-    });
+  const renderCircles = () => {
+    if (toggleNodes)
+      return allNodes.map((node) => {
+        if (node.floor === mapPathNames[mapIndex]) {
+          return (
+            <div key={node.nodeID}>
+              <NodeOnMap
+                node={node}
+                onNodeClick={() => handleNodeClick(node)}
+              />
+            </div>
+          );
+        }
+      });
+    else
+      return nodes
+        .filter((node) => node.floor === mapPathNames[mapIndex])
+        .map((node) => {
+          return (
+            <div key={node.nodeID}>
+              <NodeOnMap
+                node={node}
+                onNodeClick={() => handleNodeClick(node)}
+              />
+            </div>
+          );
+        });
   };
 
   return (
-    <div className="total">
-      <div
-        className="map-container"
-        style={
-          imageSize ? { width: imageSize.width, height: imageSize.height } : {}
-        }
-      >
-        <img
-          src={mapPath[mapIndex]}
-          alt="map"
-          style={{ width: "100%", height: "100%" }}
+    <div>
+      <div className={`tab ${menuOpen ? "open" : ""}`} onClick={toggleMenu}>
+        {" "}
+        {"<"}{" "}
+      </div>
+      <div className={`map-control-panel ${menuOpen ? "open" : ""}`}>
+        <div className="menu-content">
+          <div
+            style={{
+              position: "absolute",
+              left: "10%",
+              top: "10%",
+              height: "10%",
+              width: "80%",
+              float: "right",
+              display: "flex",
+              flexDirection: "column",
+              gap: "20%",
+              zIndex: "2",
+            }}
+          >
+            <Button onClick={handleToggleNodes}>
+              Nodes: {toggleNodes ? "on" : "off"}
+            </Button>
+            <Button onClick={handleToggleEdges}>
+              Edges: {toggleEdges ? "on" : "off"}
+            </Button>
+          </div>
+        </div>
+      </div>
+      <div className="total">
+        <div
+          className="nodeSelectContainer"
+          style={{ display: "flex", flexDirection: "column" }}
+        >
+          <div style={{ display: "flex", alignItems: "center" }}>
+            <span style={{ width: "50px" }}>Start:</span>
+            <NodeSelectDropdown
+              label={shortNames.start}
+              onSelect={handleStartSelect}
+            />
+          </div>
+          <div style={{ display: "flex", alignItems: "center" }}>
+            <span style={{ width: "50px" }}>End:</span>
+            <NodeSelectDropdown
+              label={shortNames.end}
+              onSelect={handleEndSelect}
+            />
+          </div>
+        </div>
+        <SelectorTabs
+          mapIndex={mapIndex}
+          onMapSelect={handleMapSelect}
+          tabNames={floorNames}
         />
-
-        <div>{renderCircles(allNodes)}</div>
-
-        <div>{renderPath(nodes)}</div>
+        <TransformContainer>
+          <div
+            className="map-container"
+            style={
+              imageSize
+                ? { width: imageSize.width, height: imageSize.height }
+                : {}
+            }
+          >
+            <img
+              src={mapPath[mapIndex]}
+              alt="map"
+              style={{ width: "100%", height: "100%" }}
+            />
+            <div>{renderCircles()}</div>
+            <div>{renderPath()}</div>
+          </div>
+        </TransformContainer>
       </div>
     </div>
   );

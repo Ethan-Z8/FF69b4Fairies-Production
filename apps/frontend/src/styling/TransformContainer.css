@@ -1,5 +1,5 @@
 .transform-container {
-  height: 100vh;
+  height: 88vh;
   width: 100vw;
   overflow: hidden;
   position: relative;
@@ -13,4 +13,5 @@
 .content-container > * {
   position: relative;
   transition-duration: 20ms;
+  height: 200%;
 }
