@@ -5,6 +5,7 @@ import {
   FormControl,
   InputLabel,
   MenuItem,
+  Paper,
   Select,
   Table,
   TableBody,
@@ -39,13 +40,19 @@ export function ViewServiceRequestPage() {
 
   return (
     loaded && (
-      <Box
+      <Paper
+        elevation={24}
         sx={{
+          my: 8,
+          mx: "auto",
           display: "flex",
           flexDirection: "column",
+          gap: "1rem",
           width: "90%",
-          gap: 2,
-          mt: 2,
+          border: "8px solid #012D5A", // Add border styling here
+          borderRadius: "8px", // Add border-radius for rounded corners
+          padding: "1rem",
+          margin: "1rem",
         }}
       >
         <Typography variant="h4">Service Requests</Typography>
@@ -119,7 +126,7 @@ export function ViewServiceRequestPage() {
             </TableBody>
           </Table>
         </TableContainer>
-      </Box>
+      </Paper>
     )
   );
 }

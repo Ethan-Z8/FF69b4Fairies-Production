@@ -1,3 +1,4 @@
+import { Paper } from "@mui/material";
 import axios, { AxiosResponse } from "axios";
 import { FormEvent, useState } from "react";
 import Button from "react-bootstrap/Button";
@@ -67,52 +68,68 @@ export function ImportAndExportDataPage() {
   }
 
   return (
-    <Stack gap={3}>
-      <Form
-        className="m-auto w-50 mt-5"
-        onSubmit={handleImport}
-        encType="multipart/form-data"
-      >
-        <Form.Group as={Row}>
-          <h4>Import Map Data</h4>
-          <Form.Label column sm={2} className="mb-3">
-            Edges CSV
-          </Form.Label>
-          <Col sm={10}>
-            <Form.Control type="file" id="edgesInput" accept=".csv" />
-          </Col>
-          <Form.Label column sm={2}>
-            Nodes CSV
-          </Form.Label>
-          <Col sm={10}>
-            <Form.Control type="file" id="nodesInput" accept=".csv" />
-          </Col>
-          <Col>
-            <Button type="submit" className="mt-3 w-100">
-              Import
-            </Button>
-          </Col>
+    <Paper
+      elevation={24}
+      sx={{
+        my: 8,
+        mx: "auto",
+        display: "flex",
+        flexDirection: "column",
+        gap: "1rem",
+        width: "75%",
+        border: "8px solid #012D5A", // Add border styling here
+        borderRadius: "8px", // Add border-radius for rounded corners
+        padding: "1rem",
+        margin: "1rem",
+      }}
+    >
+      <Stack gap={3}>
+        <Form
+          className="m-auto w-50 mt-5"
+          onSubmit={handleImport}
+          encType="multipart/form-data"
+        >
+          <Form.Group as={Row}>
+            <h4>Import Map Data</h4>
+            <Form.Label column sm={2} className="mb-3">
+              Edges CSV
+            </Form.Label>
+            <Col sm={10}>
+              <Form.Control type="file" id="edgesInput" accept=".csv" />
+            </Col>
+            <Form.Label column sm={2}>
+              Nodes CSV
+            </Form.Label>
+            <Col sm={10}>
+              <Form.Control type="file" id="nodesInput" accept=".csv" />
+            </Col>
+            <Col>
+              <Button type="submit" className="mt-3 w-100">
+                Import
+              </Button>
+            </Col>
+            <Form.Text
+              className="text-danger"
+              style={{ visibility: importErr ? "visible" : "hidden" }}
+            >
+              Error Importing Data
+            </Form.Text>
+          </Form.Group>
+        </Form>
+
+        <Form className="m-auto w-50 mt-5" onSubmit={handleExport}>
+          <Form.Group controlId="exportCsv" as={Stack}>
+            <h4>Export Map Data as CSV</h4>
+            <Button type="submit">Export</Button>
+          </Form.Group>
           <Form.Text
             className="text-danger"
-            style={{ visibility: importErr ? "visible" : "hidden" }}
+            style={{ visibility: exportErr ? "visible" : "hidden" }}
           >
-            Error Importing Data
+            Error Exporting Data
           </Form.Text>
-        </Form.Group>
-      </Form>
-
-      <Form className="m-auto w-50 mt-5" onSubmit={handleExport}>
-        <Form.Group controlId="exportCsv" as={Stack}>
-          <h4>Export Map Data as CSV</h4>
-          <Button type="submit">Export</Button>
-        </Form.Group>
-        <Form.Text
-          className="text-danger"
-          style={{ visibility: exportErr ? "visible" : "hidden" }}
-        >
-          Error Exporting Data
-        </Form.Text>
-      </Form>
-    </Stack>
+        </Form>
+      </Stack>
+    </Paper>
   );
 }

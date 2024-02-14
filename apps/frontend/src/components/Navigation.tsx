@@ -2,11 +2,23 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { useEffect } from "react";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
-import logo from "../assets/logo.svg";
+// import logo from "../assets/logo.svg";
+import image1 from "../assets/image-1.png";
 
 export function Navigation() {
   const { loginWithRedirect, logout } = useAuth0();
   const { isAuthenticated, isLoading, getAccessTokenSilently } = useAuth0();
+  const defaultStyles = {
+    color: "white",
+    transition: "color 0.3s",
+    padding: "30px", // Default padding
+  };
+
+  const hoverStyles = {
+    ...defaultStyles,
+    backgroundColor: "transparent", // Default background color
+  };
+  const hoverBackgroundColor = "darkblue"; // Change to the desired hover background color
 
   useEffect(() => {
     const fun = async () => {
@@ -42,13 +54,16 @@ export function Navigation() {
   };
 
   return (
-    <Navbar className="bg-body-tertiary p-2 justify-content-around">
+    <Navbar
+      style={{ backgroundColor: "#012D5A" }}
+      className="p-2 justify-content-around"
+    >
       <Navbar.Brand>
         <Nav.Link href="/">
           <img
-            src={logo}
+            src={image1}
             style={{
-              minHeight: "4rem",
+              maxHeight: "4rem",
               margin: 0,
               padding: 0,
             }}
@@ -56,25 +71,61 @@ export function Navigation() {
         </Nav.Link>
       </Navbar.Brand>
       <Nav className="d-flex justify-content-bewteen">
-        <Nav.Link href="/">Home Page</Nav.Link>
-        <Nav.Link href="/createServiceRequest">Create Service Request</Nav.Link>
-        <Nav.Link href="/viewServiceRequest">View Service Requests</Nav.Link>
-        <Nav.Link href="/importAndExportData">Import & Export Data</Nav.Link>
-        <Nav.Link href="/mapData">View Map Data</Nav.Link>
+        <Nav.Link style={{ color: "white" }} href="/">
+          Home Page
+        </Nav.Link>
+        <Nav.Link style={{ color: "white" }} href="/createServiceRequest">
+          Create Service Request
+        </Nav.Link>
+        <Nav.Link style={{ color: "white" }} href="/viewServiceRequest">
+          View Service Requests
+        </Nav.Link>
+        <Nav.Link style={{ color: "white" }} href="/importAndExportData">
+          Import & Export Data
+        </Nav.Link>
+        <Nav.Link style={{ color: "white" }} href="/mapData">
+          View Map Data
+        </Nav.Link>
         {isAuthenticated && (
           <>
-            <Nav.Link href="/addEmployee">Add Employee</Nav.Link>
-            <Nav.Link href="/viewEmployeeData">View Employees</Nav.Link>
+            <Nav.Link style={{ color: "white" }} href="/addEmployee">
+              Add Employee
+            </Nav.Link>
+            <Nav.Link style={{ color: "white" }} href="/viewEmployeeData">
+              View Employees
+            </Nav.Link>
           </>
         )}
       </Nav>
       {!isAuthenticated && (
-        <Nav.Link className="ml-4" onClick={handleLogin}>
+        <Nav.Link
+          style={hoverStyles}
+          className="ml-4"
+          onMouseOver={(e) =>
+            (e.currentTarget.style.backgroundColor = hoverBackgroundColor)
+          }
+          onMouseOut={(e) =>
+            (e.currentTarget.style.backgroundColor =
+              hoverStyles.backgroundColor)
+          }
+          onClick={handleLogin}
+        >
           Log In
         </Nav.Link>
       )}
       {isAuthenticated && (
-        <Nav.Link className="ml-4" onClick={handleLogout}>
+        <Nav.Link
+          style={hoverStyles}
+          className="ml-4"
+          onMouseOver={(e) =>
+            (e.currentTarget.style.backgroundColor = hoverBackgroundColor)
+          }
+          onMouseOut={(e) =>
+            (e.currentTarget.style.backgroundColor =
+              hoverStyles.backgroundColor)
+          }
+          onClick={handleLogout}
+        >
           Log Out
         </Nav.Link>
       )}
