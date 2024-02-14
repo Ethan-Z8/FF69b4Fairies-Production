@@ -121,7 +121,7 @@ export function ServiceRequestRow(props: ServiceRequestRowProps) {
               variant="standard"
               label="Progress"
               labelId="progress"
-              defaultValue={props.progress}
+              value={props.progress}
               name="progress"
               onChange={handleProgressChange}
             >
