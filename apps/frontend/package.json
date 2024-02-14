@@ -17,6 +17,7 @@
     "@auth0/auth0-react": "^2.1.1",
     "@emotion/react": "^11.11.3",
     "@emotion/styled": "^11.11.0",
+    "@mui/icons-material": "^5.15.10",
     "@mui/material": "^5.15.10",
     "@popperjs/core": "^2.11.8",
     "@tanstack/react-table": "^8.9.3",
