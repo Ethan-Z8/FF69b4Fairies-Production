@@ -44,11 +44,11 @@ const mapPath: string[] = [LL1, LL2, F1, F2, F3];
 
 const mapPathNames: string[] = ["L1", "L2", "1", "2", "3"];
 const floorNames: string[] = [
-  "Level 3",
-  "Level 2",
-  "Level 1",
-  "Lower Level 1",
   "Lower Level 2",
+  "Lower Level 1",
+  "Level 1",
+  "Level 2",
+  "Level 3",
 ];
 
 export function DisplayPath() {
@@ -69,7 +69,7 @@ export function DisplayPath() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [shortNames, setShortNames] = useState({ start: "", end: "" });
 
-  const [toggleNodes, setToggleNodes] = useState(false);
+  const [toggleNodes, setToggleNodes] = useState(true);
   const [toggleEdges, setToggleEdges] = useState(false);
 
   useEffect(() => {
@@ -440,10 +440,10 @@ export function DisplayPath() {
 
   return (
     <div>
-      <div className={`tab ${menuOpen ? "open" : ""}`} onClick={toggleMenu}>
-        {" "}
-        {"<"}{" "}
-      </div>
+      <div
+        className={`tab ${menuOpen ? "open" : ""}`}
+        onClick={toggleMenu}
+      ></div>
       <div className={`map-control-panel ${menuOpen ? "open" : ""}`}>
         <div className="menu-content">
           <div
@@ -488,6 +488,7 @@ export function DisplayPath() {
               onSelect={handleEndSelect}
             />
           </div>
+          <Button onClick={clearSearch}>Clear</Button>
         </div>
         <SelectorTabs
           mapIndex={mapIndex}
