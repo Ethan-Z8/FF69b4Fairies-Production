@@ -6,9 +6,8 @@ import {
   TableCell,
   TableRow,
   Typography,
-  List,
-  ListItem,
-  ListItemText,
+  Table,
+  TableBody,
 } from "@mui/material";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
@@ -67,14 +66,18 @@ export function ServiceRequestRow(props: ServiceRequestRowProps) {
 
     return (
       <>
-        <ListItem>
-          <ListItemText primary={uniqueField1} />
-          <ListItemText primary={uniqueData1} />
-        </ListItem>
-        <ListItem>
-          <ListItemText primary={uniqueField2} />
-          <ListItemText primary={uniqueData2} />
-        </ListItem>
+        <Table sx={{ width: "50%" }}>
+          <TableBody>
+            <TableRow>
+              <TableCell>{uniqueField1}</TableCell>
+              <TableCell>{uniqueData1}</TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell>{uniqueField2}</TableCell>
+              <TableCell>{uniqueData2}</TableCell>
+            </TableRow>
+          </TableBody>
+        </Table>
       </>
     );
   }
@@ -105,7 +108,7 @@ export function ServiceRequestRow(props: ServiceRequestRowProps) {
               <Typography variant="h6" gutterBottom component="div">
                 Details
               </Typography>
-              <List>{customProperties(props)}</List>
+              {customProperties(props)}
             </Box>
           </Collapse>
         </TableCell>

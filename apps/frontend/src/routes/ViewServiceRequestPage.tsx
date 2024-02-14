@@ -4,12 +4,14 @@ import { ChangeEvent, useEffect, useState } from "react";
 // import Stack from "react-bootstrap/Stack";
 // import Table from "react-bootstrap/Table";
 import {
-  TableHead,
   Table,
-  TableContainer,
-  TableRow,
-  TableCell,
   TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Typography,
+  Box,
 } from "@mui/material";
 import { ServiceRequestRow } from "../components/ServiceRequestRow.tsx";
 import { ServiceRequestType } from "common/src/interfaces/ServiceRequest.ts";
@@ -60,77 +62,41 @@ export function ViewServiceRequestPage() {
     return req.progress === filter;
   });
 
-  // return (
-  //   <Stack gap={3} className="mt-5">
-  //     <Form.Select
-  //       aria-label="Filter by service status"
-  //       onChange={handleFilterChange}
-  //       className="w-25 mx-auto"
-  //     >
-  //       <option value="Any">Any</option>
-  //       <option value="Assigned">Assigned</option>
-  //       <option value="InProgress">In Progress</option>
-  //       <option value="Completed">Completed</option>
-  //     </Form.Select>
-  //     {loaded && (
-  //       <Table responsive striped bordered hover>
-  //         <thead>
-  //           <tr>
-  //             {Object.keys(serviceRequests[0] || {}).map((header) => (
-  //               <th key={header}>{header}</th>
-  //             ))}
-  //           </tr>
-  //         </thead>
-  //         <tbody>
-  //           {filteredServiceRequests.map((req, index) => (
-  //             <tr key={index}>
-  //               <td>{req.date.slice(0, 10)}</td>
-  //               <td>{req.typeService}</td>
-  //               <td>{req.reason}</td>
-  //               <td>{req.nodeLoc}</td>
-  //               <td>{req.employeeName}</td>
-  //               <td>
-  //                 <Form.Select
-  //                   key={`${req.date}-${req.progress}`} // Unique key based on date and progress
-  //                   defaultValue={req.progress}
-  //                   onChange={handleStatusChange}
-  //                   id={req.date}
-  //                 >
-  //                   <option value="Assigned">Assigned</option>
-  //                   <option value="InProgress">In Progress</option>
-  //                   <option value="Completed">Completed</option>
-  //                 </Form.Select>
-  //               </td>
-  //             </tr>
-  //           ))}
-  //         </tbody>
-  //       </Table>
-  //     )}
-  //   </Stack>
-  // );
-
   return (
     loaded && (
-      <TableContainer>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell />
-              <TableCell>Date</TableCell>
-              <TableCell>Type Of Service</TableCell>
-              <TableCell>Location</TableCell>
-              <TableCell>Employee</TableCell>
-              <TableCell>Progress</TableCell>
-              <TableCell>Priority</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {serviceRequests.map((row) => {
-              return <ServiceRequestRow {...row} />;
-            })}
-          </TableBody>
-        </Table>
-      </TableContainer>
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          width: "90%",
+          gap: 2,
+          mt: 2,
+        }}
+      >
+        <Typography variant="h4">Service Requests</Typography>
+        <TableContainer
+          sx={{ border: 1, borderColor: "#44444444", borderRadius: 2 }}
+        >
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell />
+                <TableCell>Date</TableCell>
+                <TableCell>Type Of Service</TableCell>
+                <TableCell>Location</TableCell>
+                <TableCell>Employee</TableCell>
+                <TableCell>Progress</TableCell>
+                <TableCell>Priority</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {serviceRequests.map((row) => {
+                return <ServiceRequestRow {...row} />;
+              })}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </Box>
     )
   );
 }
