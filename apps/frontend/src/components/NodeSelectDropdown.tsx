@@ -62,7 +62,7 @@ const NodeSelectDropdown: React.FC<NodeSelectProps> = ({ label, onSelect }) => {
   };
 
   return (
-    <div style={{ position: "relative" }}>
+    <div style={{ zIndex: 25, position: "relative" }}>
       <Form.Control
         ref={inputRef}
         type="text"
@@ -81,22 +81,26 @@ const NodeSelectDropdown: React.FC<NodeSelectProps> = ({ label, onSelect }) => {
             overflowY: "auto",
           }}
         >
-          <ListGroup>
-            {items
-              .filter((node) =>
-                node.shortName.toLowerCase().includes(searchTerm.toLowerCase()),
-              )
-              .map((node) => (
-                <ListGroup.Item
-                  key={node.nodeID}
-                  onClick={() => handleSuggestionClick(node.shortName)}
-                  style={{ cursor: "pointer" }}
-                  onMouseDown={(e) => e.preventDefault()}
-                >
-                  {node.shortName}
-                </ListGroup.Item>
-              ))}
-          </ListGroup>
+          <div style={{ zIndex: 30 }}>
+            <ListGroup>
+              {items
+                .filter((node) =>
+                  node.shortName
+                    .toLowerCase()
+                    .includes(searchTerm.toLowerCase()),
+                )
+                .map((node) => (
+                  <ListGroup.Item
+                    key={node.nodeID}
+                    onClick={() => handleSuggestionClick(node.shortName)}
+                    style={{ cursor: "pointer" }}
+                    onMouseDown={(e) => e.preventDefault()}
+                  >
+                    {node.shortName}
+                  </ListGroup.Item>
+                ))}
+            </ListGroup>
+          </div>
         </div>
       )}
     </div>

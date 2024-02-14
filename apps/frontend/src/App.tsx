@@ -4,6 +4,7 @@ import { Navigation } from "./components/Navigation.tsx";
 import { CreateServiceRequestPage } from "./routes/CreateServiceRequestPage.tsx";
 import AddEmployeePage from "./routes/AddEmployeePage.tsx";
 import HomePage from "./routes/HomePage.tsx";
+import { EmployeeData } from "./routes/EmployeeData.tsx";
 import { ImportAndExportDataPage } from "./routes/ImportAndExportDataPage.tsx";
 import { LoginPage } from "./routes/LoginPage.tsx";
 import { MapDataPage } from "./routes/MapDataPage.tsx";
@@ -31,6 +32,10 @@ function App() {
         {
           path: "/viewServiceRequest",
           element: <ViewServiceRequestPage />,
+        },
+        {
+          path: "/viewEmployeeData",
+          element: <EmployeeData />,
         },
         {
           path: "/importAndExportData",
