@@ -71,3 +71,67 @@
   gap: 5px;
   z-index: 1;
 }
+
+.arrow-up {
+  width: 0;
+  height: 0;
+  border-left: 24px solid transparent;
+  border-right: 24px solid transparent;
+  border-bottom: 48px solid darkred;
+  position: absolute;
+  transform: translate(-50%, -120%);
+  transition: all 0.3s; /* Adding transition for smooth hover effect */
+}
+
+.arrow-down {
+  width: 0;
+  height: 0;
+  border-left: 24px solid transparent;
+  border-right: 24px solid transparent;
+  border-top: 48px solid darkred;
+  position: absolute;
+  transform: translate(-50%, 20%);
+  transition: all 0.1s; /* Adding transition for smooth hover effect */
+}
+
+.arrow-up:hover {
+  border-bottom-width: 64px;
+  border-left-width: 32px;
+  border-right-width: 32px;
+}
+
+.arrow-down:hover {
+  border-top-width: 64px;
+  border-left-width: 32px;
+  border-right-width: 32px;
+}
+
+/*
+.arrow-up {
+  border-bottom-width: 32px;
+}
+
+.arrow-down:before, .arrow-up:before {
+  content: "";
+  position: absolute;
+  top: 100%;
+  width: 0;
+  height: 0;
+}
+
+.arrow-down:before {
+  border-left: 12px solid transparent;
+  border-right: 12px solid transparent;
+  border-top: 24px solid red;
+}
+
+.arrow-up:before {
+  border-left: 16px solid transparent;
+  border-right: 16px solid transparent;
+  border-top: 32px solid red;
+}
+*/
+
+.popup {
+  transition: all 75ms ease;
+}

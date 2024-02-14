@@ -8,11 +8,7 @@ export function MapDataPage() {
 
   return (
     <Box sx={{ mt: 2, mr: "auto", ml: 10 }}>
-      <Tabs
-        value={tab}
-        onChange={(e, newVal) => setTab(newVal)}
-        aria-label="lab API tabs example"
-      >
+      <Tabs value={tab} onChange={(e, newVal) => setTab(newVal)}>
         <Tab label="Node Data" value="node" />
         <Tab label="Edge Data" value="edge" />
       </Tabs>

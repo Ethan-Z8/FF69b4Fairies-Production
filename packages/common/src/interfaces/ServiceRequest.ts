@@ -1,4 +1,5 @@
 export type ServiceRequestType = {
+  id: string;
   date: string;
   typeService: string;
   location: string;

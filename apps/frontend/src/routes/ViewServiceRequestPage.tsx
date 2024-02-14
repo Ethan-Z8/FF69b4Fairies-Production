@@ -1,9 +1,11 @@
 import axios from "axios";
-import { ChangeEvent, useEffect, useState } from "react";
-// import Form from "react-bootstrap/Form";
-// import Stack from "react-bootstrap/Stack";
-// import Table from "react-bootstrap/Table";
+import { useEffect, useState } from "react";
 import {
+  Box,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
   Table,
   TableBody,
   TableCell,
@@ -11,7 +13,6 @@ import {
   TableHead,
   TableRow,
   Typography,
-  Box,
 } from "@mui/material";
 import { ServiceRequestRow } from "../components/ServiceRequestRow.tsx";
 import { ServiceRequestType } from "common/src/interfaces/ServiceRequest.ts";
@@ -21,14 +22,13 @@ export function ViewServiceRequestPage() {
   const [serviceRequests, setServiceRequests] = useState<
     Array<ServiceRequestType>
   >([]);
-  const [filter, setFilter] = useState<string>("Any");
+  const [statusFilter, setStatusFilter] = useState("");
+  const [typeServiceFilter, setTypeServiceFilter] = useState("");
 
   useEffect(() => {
     axios
       .get("/api/serviceRequest")
       .then((res) => {
-        console.log("Request Made");
-        console.log(res.data);
         setServiceRequests(res.data);
         setLoaded(true);
       })
@@ -36,31 +36,6 @@ export function ViewServiceRequestPage() {
         console.log(e.message);
       });
   }, []);
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  function handleStatusChange(e: ChangeEvent<HTMLSelectElement>) {
-    const target = e.target as HTMLSelectElement;
-    const updateData = {
-      date: target.id,
-      progress: target.value,
-    };
-    console.log(updateData);
-    axios
-      .post("/api/serviceRequest/updateProgress", updateData)
-      .then((res) => console.log(res))
-      .catch((err) => console.log(err));
-  }
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  function handleFilterChange(e: ChangeEvent<HTMLSelectElement>) {
-    setFilter(e.target.value);
-  }
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const filteredServiceRequests = serviceRequests.filter((req) => {
-    if (filter === "Any") return true;
-    return req.progress === filter;
-  });
 
   return (
     loaded && (
@@ -74,6 +49,41 @@ export function ViewServiceRequestPage() {
         }}
       >
         <Typography variant="h4">Service Requests</Typography>
+        <Box sx={{ display: "flex", gap: 2, width: "50%" }}>
+          <FormControl sx={{ flex: 1 }}>
+            <InputLabel>Progress Filter</InputLabel>
+            <Select
+              value={statusFilter}
+              label="Status Filter"
+              id="status"
+              onChange={(e) => setStatusFilter(e.target.value)}
+            >
+              <MenuItem value="">Any</MenuItem>
+              <MenuItem value="Unassigned">Unassigned</MenuItem>
+              <MenuItem value="Assigned">Assigned</MenuItem>
+              <MenuItem value="InProgress">In Progress</MenuItem>
+              <MenuItem value="Completed">Completed</MenuItem>
+            </Select>
+          </FormControl>
+          <FormControl sx={{ flex: 1 }}>
+            <InputLabel id="typeServiceLabel">Service Type Filter</InputLabel>
+            <Select
+              value={typeServiceFilter}
+              label="Service Type Filter"
+              id="type"
+              onChange={(e) => setTypeServiceFilter(e.target.value)}
+            >
+              <MenuItem value=""> Any</MenuItem>
+              <MenuItem value="Maintenance">Maintenance</MenuItem>
+              <MenuItem value="Religious">Religious</MenuItem>
+              <MenuItem value="Sanitation">Sanitation</MenuItem>
+              <MenuItem value="Flowers">Flowers</MenuItem>
+              <MenuItem value="InternalTransportation">
+                Internal Transportation
+              </MenuItem>
+            </Select>
+          </FormControl>
+        </Box>
         <TableContainer
           sx={{ border: 1, borderColor: "#44444444", borderRadius: 2 }}
         >
@@ -90,9 +100,22 @@ export function ViewServiceRequestPage() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {serviceRequests.map((row) => {
-                return <ServiceRequestRow {...row} />;
-              })}
+              {serviceRequests
+                .filter((req) => {
+                  if (statusFilter !== "") {
+                    return req.progress === statusFilter;
+                  }
+                  return true;
+                })
+                .filter((req) => {
+                  if (typeServiceFilter !== "") {
+                    return req.typeService === typeServiceFilter;
+                  }
+                  return true;
+                })
+                .map((row) => {
+                  return <ServiceRequestRow {...row} />;
+                })}
             </TableBody>
           </Table>
         </TableContainer>
