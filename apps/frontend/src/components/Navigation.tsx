@@ -62,7 +62,10 @@ export function Navigation() {
         <Nav.Link href="/importAndExportData">Import & Export Data</Nav.Link>
         <Nav.Link href="/mapData">View Map Data</Nav.Link>
         {isAuthenticated && (
-          <Nav.Link href="/addEmployee">Add Employee</Nav.Link>
+          <>
+            <Nav.Link href="/addEmployee">Add Employee</Nav.Link>
+            <Nav.Link href="/viewEmployeeData">View Employees</Nav.Link>
+          </>
         )}
       </Nav>
       {!isAuthenticated && (
