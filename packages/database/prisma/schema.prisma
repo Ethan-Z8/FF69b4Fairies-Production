@@ -44,7 +44,7 @@ model ServiceRequest {
   progress    Progress
   priority    Priority
 
-  assignedTo Employee @relation("employee", fields: [employee], references: [displayName])
+  assignedTo Employee @relation("employee", fields: [employee], references: [username])
 
   sanitationRequest     SanitationRequest?     @relation()
   transportationRequest TransportationRequest? @relation()
@@ -103,9 +103,9 @@ enum Priority {
 }
 
 model Employee {
-  username        String           @id
+  username        String           @id @unique
   password        String
-  displayName     String           @unique
+  displayName     String
   serviceRequests ServiceRequest[] @relation("employee")
 }
 
