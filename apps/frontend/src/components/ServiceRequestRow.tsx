@@ -32,7 +32,7 @@ export function ServiceRequestRow(props: ServiceRequestRowProps) {
         uniqueField2 = "Hazardous: ";
         break;
       case "Religious":
-        uniqueData1 = (request.religionRequest as stringable).religion;
+        uniqueData1 = (request.religionRequest as stringable).religionType;
         uniqueData2 = (request.religionRequest as stringable).typeOfService;
         uniqueField1 = "Religion: ";
         uniqueField2 = "Type Of Service: ";
@@ -46,7 +46,7 @@ export function ServiceRequestRow(props: ServiceRequestRowProps) {
       case "Maintenance":
         uniqueData1 = (request.maintenanceRequest as stringable)
           .personnelNeeded;
-        uniqueData2 = (request.religionRequest as stringable).issueType;
+        uniqueData2 = (request.maintenanceRequest as stringable).issueType;
         uniqueField1 = "Personnel Needed: ";
         uniqueField2 = "Type Of Issue: ";
         break;
