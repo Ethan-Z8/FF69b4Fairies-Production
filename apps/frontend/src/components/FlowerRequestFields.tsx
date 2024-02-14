@@ -27,6 +27,9 @@ export function FlowerRequestFields() {
   return (
     <>
       <Typography variant="h5">Flower Request</Typography>
+      <Typography variant="h6" style={{ fontSize: "16px", color: "gray" }}>
+        Created by: Max Friedman
+      </Typography>
       <TextField name="recipient" label="Recipient" required />
       <TextField select name="flowerType" label="Flower Type" required>
         {flowerOptions.map((option) => (

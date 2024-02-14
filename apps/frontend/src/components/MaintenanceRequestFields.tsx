@@ -11,6 +11,9 @@ export function MaintenanceRequestFields() {
   return (
     <>
       <Typography variant="h5">Maintenance Request</Typography>
+      <Typography variant="h6" style={{ fontSize: "16px", color: "gray" }}>
+        Created by: Justin Smith
+      </Typography>
       <TextField label="Machine's Issue" name="issueType" required multiline />
       <FormControl>
         <InputLabel>Type of Employee</InputLabel>
