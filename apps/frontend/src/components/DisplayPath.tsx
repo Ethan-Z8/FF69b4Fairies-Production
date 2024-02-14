@@ -12,6 +12,15 @@ import F1 from "../assets/hospitalmaps/01_thefirstfloor-min.png";
 import F2 from "../assets/hospitalmaps/02_thesecondfloor-min.png";
 import F3 from "../assets/hospitalmaps/03_thethirdfloor-min.png";
 
+/*
+import GRLR from "../assets/hospitalmaps/00_thegroundfloor-lowRes.png";
+import LL1LR from "../assets/hospitalmaps/00_thelowerlevel1-lowRes.png";
+import LL2LR from "../assets/hospitalmaps/00_thelowerlevel2-lowRes.png";
+import F1LR from "../assets/hospitalmaps/01_thefirstfloor-lowRes.png";
+import F2LR from "../assets/hospitalmaps/02_thesecondfloor-lowRes.png";
+import F3LR from "../assets/hospitalmaps/03_thethirdfloor-lowRes.png";
+*/
+
 import SelectorTabs from "./SelectorTabs.tsx";
 
 interface Node {
@@ -51,7 +60,6 @@ export function DisplayPath() {
     width: 5000,
     height: 3400,
   });
-  const [counter, setCounter] = useState(false);
   const [mapIndex, setMapIndex] = useState(1);
   const [aNodes, setANodes] = useState<{ [key: string]: Node }>({});
   const [clear, setClear] = useState<{ nodes: boolean; edges: boolean }>({
@@ -65,7 +73,7 @@ export function DisplayPath() {
   const [toggleEdges, setToggleEdges] = useState(false);
 
   useEffect(() => {
-    setMapIndex(3);
+    setMapIndex(0);
   }, []);
 
   useEffect(() => {
@@ -76,7 +84,7 @@ export function DisplayPath() {
 
         setAllNodes(nodesData);
       } catch (error) {
-        console.error("Error fetching map nodes:", error);
+        console.error("Error fetching map nodess:", error);
       }
     };
 
@@ -104,6 +112,7 @@ export function DisplayPath() {
   }, [mapIndex]);
 
   useEffect(() => {
+    console.log(firstClickedNodeId, secondClickedNodeId);
     if (secondClickedNodeId != "" && firstClickedNodeId != "") {
       const getMapNodesByShort = async () => {
         try {
@@ -114,7 +123,6 @@ export function DisplayPath() {
             },
           });
           const nodesData: Node[] = Object.values(pathNodes.data);
-          console.log(nodesData);
 
           setNodes(nodesData);
         } catch (error) {
@@ -170,84 +178,96 @@ export function DisplayPath() {
 
   const handleNodeClick = (node: Node) => {
     if (node) {
-      if (!counter) {
-        clearSearch();
-        setFirstClickedNodeId(node.nodeID);
-        setShortNames({ ...shortNames, start: node.shortName });
-
-        setCounter(true);
-      } else {
-        setClear({ nodes: false, edges: false });
-        setSecondClickedNodeId(node.nodeID);
-        setShortNames({ ...shortNames, end: node.shortName });
-
-        setCounter(false);
+      switch (node.nodeID) {
+        case firstClickedNodeId: {
+          console.log("undo first");
+          setFirstClickedNodeId("");
+          setShortNames({ ...shortNames, start: "" });
+          break;
+        }
+        case secondClickedNodeId: {
+          console.log("undo second");
+          setSecondClickedNodeId("");
+          setShortNames({ ...shortNames, end: "" });
+          break;
+        }
+        default: {
+          if (firstClickedNodeId == "") {
+            // console.log(firstClickedNodeId);
+            setFirstClickedNodeId(node.nodeID);
+            setShortNames({ ...shortNames, start: node.shortName });
+          } else if (secondClickedNodeId == "") {
+            setClear({ nodes: false, edges: false });
+            setSecondClickedNodeId(node.nodeID);
+            setShortNames({ ...shortNames, end: node.shortName });
+          }
+        }
       }
     }
   };
 
-  const renderNames = () => {
-    const node1 = aNodes[firstClickedNodeId];
-    const node2 = aNodes[secondClickedNodeId];
-    if (node1 && node2)
-      return (
-        <div>
-          <div
-            style={{
-              position: "absolute",
-              left: node1.xcoord,
-              bottom: imageSize.height - node1.ycoord + 16,
-              transform: "translateX(-50%)",
-              backgroundColor: "#fff",
-              width: "10vw",
-              zIndex: 18,
-              border: "1px solid",
-              padding: "6px",
-              borderRadius: "3px",
-            }}
-          >
-            {node1.longName}
-          </div>
-          <div
-            style={{
-              position: "absolute",
-              left: node2.xcoord,
-              bottom: imageSize.height - node2.ycoord + 16,
-              transform: "translateX(-50%)",
-              backgroundColor: "#fff",
-              width: "10vw",
-              zIndex: 18,
-              border: "1px solid",
-              padding: "6px",
-              borderRadius: "3px",
-            }}
-          >
-            {node2.longName}
-          </div>
-        </div>
-      );
-    if (node1)
-      return (
-        <div>
-          <div
-            style={{
-              position: "absolute",
-              left: node1.xcoord,
-              bottom: imageSize.height - node1.ycoord + 16,
-              transform: "translateX(-50%)",
-              backgroundColor: "#fff",
-              width: "10vw",
-              zIndex: 18,
-              border: "1px solid",
-              padding: "6px",
-              borderRadius: "6px",
-            }}
-          >
-            {node1.longName}
-          </div>
-        </div>
-      );
-  };
+  // const renderNames = () => {
+  //   const node1 = aNodes[firstClickedNodeId];
+  //   const node2 = aNodes[secondClickedNodeId];
+  //   if (node1 && node2)
+  //     return (
+  //       <div>
+  //         <div
+  //           style={{
+  //             position: "absolute",
+  //             left: node1.xcoord,
+  //             bottom: imageSize.height - node1.ycoord + 16,
+  //             transform: "translateX(-50%)",
+  //             backgroundColor: "#fff",
+  //             width: "10vw",
+  //             zIndex: 18,
+  //             border: "1px solid",
+  //             padding: "6px",
+  //             borderRadius: "3px",
+  //           }}
+  //         >
+  //           {node1.longName}
+  //         </div>
+  //         <div
+  //           style={{
+  //             position: "absolute",
+  //             left: node2.xcoord,
+  //             bottom: imageSize.height - node2.ycoord + 16,
+  //             transform: "translateX(-50%)",
+  //             backgroundColor: "#fff",
+  //             width: "10vw",
+  //             zIndex: 18,
+  //             border: "1px solid",
+  //             padding: "6px",
+  //             borderRadius: "3px",
+  //           }}
+  //         >
+  //           {node2.longName}
+  //         </div>
+  //       </div>
+  //     );
+  //   if (node1)
+  //     return (
+  //       <div>
+  //         <div
+  //           style={{
+  //             position: "absolute",
+  //             left: node1.xcoord,
+  //             bottom: imageSize.height - node1.ycoord + 16,
+  //             transform: "translateX(-50%)",
+  //             backgroundColor: "#fff",
+  //             width: "10vw",
+  //             zIndex: 18,
+  //             border: "1px solid",
+  //             padding: "6px",
+  //             borderRadius: "6px",
+  //           }}
+  //         >
+  //           {node1.longName}
+  //         </div>
+  //       </div>
+  //     );
+  // };
   const renderPath = () => {
     if (clear.edges) return <div />;
     let circles: JSX.Element[];
@@ -266,7 +286,7 @@ export function DisplayPath() {
                 if (!prevNode) return <div />;
 
                 const lineStyles: React.CSSProperties =
-                  prevNode.floor == node.floor
+                  prevNode?.floor == node.floor
                     ? {
                         position: "absolute",
                         left: `${prevNode.xcoord}px`,
@@ -279,7 +299,7 @@ export function DisplayPath() {
                         backgroundColor: "red",
                         zIndex: 3,
                         transformOrigin: "left center",
-                        transform: `rotate(${Math.atan2(
+                        transform: `translate(0, -2px) rotate(${Math.atan2(
                           node.ycoord - prevNode.ycoord,
                           node.xcoord - prevNode.xcoord,
                         )}rad)`,
@@ -303,11 +323,9 @@ export function DisplayPath() {
         const prevNode = prevIndex >= 0 ? nodes[prevIndex] : null;
 
         const correctFloor = mapPathNames[mapIndex] == nodes[index].floor;
-        const correctFloorPrevious =
-          prevNode && mapPathNames[mapIndex] == prevNode.floor;
 
         const lineStyles: React.CSSProperties =
-          prevNode && correctFloor
+          prevNode && correctFloor && prevNode.floor == mapPathNames[mapIndex]
             ? {
                 position: "absolute",
                 left: `${prevNode.xcoord}px`,
@@ -327,48 +345,62 @@ export function DisplayPath() {
               }
             : {};
 
-        const showChangeFloorButton =
-          prevNode && prevNode.floor !== one.floor && correctFloor;
+        const nextNode = nodes[index + 1];
+        let swapNode: Node | null = null;
+        if (prevNode && prevNode.floor !== one.floor) swapNode = prevNode;
+        else if (nextNode && nextNode.floor !== one.floor) swapNode = nextNode;
+
+        const showChangeFloorButton = swapNode && correctFloor;
+
         const showChangeFloorButton2 =
-          prevNode && prevNode.floor !== one.floor && correctFloorPrevious;
+          nextNode && nextNode.floor !== one.floor && correctFloor;
+
+        const arrowDirection =
+          swapNode && mapPathNames.indexOf(swapNode.floor) < mapIndex
+            ? "down"
+            : "up";
 
         return (
           <div key={one.nodeID} className="node-wrapper">
-            {prevNode && <div className="line" style={lineStyles}></div>}
-            {showChangeFloorButton && (
-              <button
-                style={{
-                  position: "absolute",
-                  left: `${one.xcoord}px`,
-                  top: `${one.ycoord}px`,
-                  zIndex: 4,
-                }}
-                onClick={() =>
-                  setMapIndex(
-                    mapPathNames.findIndex((item) => item === prevNode.floor),
-                  )
-                }
-              >
-                Change Floors
-              </button>
-            )}
-            {showChangeFloorButton2 && (
-              <button
-                style={{
-                  position: "absolute",
-                  left: `${one.xcoord}px`,
-                  top: `${one.ycoord}px`,
-                  zIndex: 4,
-                }}
-                onClick={() =>
-                  setMapIndex(
-                    mapPathNames.findIndex((item) => item === one.floor),
-                  )
-                }
-              >
-                Change Floors
-              </button>
-            )}
+            <div>
+              {prevNode && <div className="line" style={lineStyles}></div>}
+              {showChangeFloorButton && (
+                <div
+                  className={`arrow-${arrowDirection}`}
+                  style={{
+                    position: "absolute",
+                    left: `${one.xcoord}px`,
+                    top: `${one.ycoord}px`,
+                    zIndex: 4,
+                  }}
+                  onClick={() =>
+                    setMapIndex(
+                      mapPathNames.findIndex(
+                        (item) => item === swapNode!.floor,
+                      ),
+                    )
+                  }
+                ></div>
+              )}
+              {showChangeFloorButton2 && (
+                <div
+                  className={`arrow-${arrowDirection}`}
+                  style={{
+                    position: "absolute",
+                    left: `${one.xcoord}px`,
+                    top: `${one.ycoord}px`,
+                    zIndex: 4,
+                  }}
+                  onClick={() =>
+                    setMapIndex(
+                      mapPathNames.findIndex(
+                        (item) => item === swapNode!.floor,
+                      ),
+                    )
+                  }
+                ></div>
+              )}
+            </div>
           </div>
         );
       });
@@ -478,7 +510,6 @@ export function DisplayPath() {
             />
             <div>{renderCircles()}</div>
             <div>{renderPath()}</div>
-            <div>{renderNames()}</div>
           </div>
         </TransformContainer>
       </div>
