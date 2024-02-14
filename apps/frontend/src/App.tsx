@@ -12,6 +12,7 @@ import { DisplayPath } from "./components/DisplayPath.tsx";
 import TransformContainer from "./components/TransformContainer.tsx";
 import { Auth0Provider } from "@auth0/auth0-react";
 import AddEmployeePage from "./routes/AddEmployeePage.tsx";
+import ProtectPage from "./components/ProtectPage.tsx";
 function App() {
   const router = createBrowserRouter([
     {
@@ -41,7 +42,7 @@ function App() {
         },
         {
           path: "/importAndExportData",
-          element: <ImportAndExportDataPage />,
+          element: <ProtectPage Page={ImportAndExportDataPage} />,
         },
         {
           path: "/mapData",
