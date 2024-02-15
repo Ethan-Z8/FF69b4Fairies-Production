@@ -8,17 +8,6 @@ import image1 from "../assets/image-1.png";
 export function Navigation() {
   const { loginWithRedirect, logout } = useAuth0();
   const { isAuthenticated, isLoading, getAccessTokenSilently } = useAuth0();
-  const defaultStyles = {
-    color: "white",
-    transition: "color 0.3s",
-    padding: "30px", // Default padding
-  };
-
-  const hoverStyles = {
-    ...defaultStyles,
-    backgroundColor: "transparent", // Default background color
-  };
-  const hoverBackgroundColor = "darkblue"; // Change to the desired hover background color
 
   useEffect(() => {
     const fun = async () => {
@@ -100,15 +89,8 @@ export function Navigation() {
       </Nav>
       {!isAuthenticated && (
         <Nav.Link
-          style={hoverStyles}
+          style={{ color: "white" }}
           className="ml-4"
-          onMouseOver={(e) =>
-            (e.currentTarget.style.backgroundColor = hoverBackgroundColor)
-          }
-          onMouseOut={(e) =>
-            (e.currentTarget.style.backgroundColor =
-              hoverStyles.backgroundColor)
-          }
           onClick={handleLogin}
         >
           Log In
@@ -116,15 +98,8 @@ export function Navigation() {
       )}
       {isAuthenticated && (
         <Nav.Link
-          style={hoverStyles}
+          style={{ color: "white" }}
           className="ml-4"
-          onMouseOver={(e) =>
-            (e.currentTarget.style.backgroundColor = hoverBackgroundColor)
-          }
-          onMouseOut={(e) =>
-            (e.currentTarget.style.backgroundColor =
-              hoverStyles.backgroundColor)
-          }
           onClick={handleLogout}
         >
           Log Out
