@@ -1,0 +1,17 @@
+.dropdown-toggle {
+  color: white;
+}
+
+.dropdown-toggle:hover {
+  color: white;
+}
+
+.dropdown-toggle::after {
+  color: white;
+}
+.dropdown-toggle:focus {
+  color: white;
+}
+.dropdown-toggle:active {
+  color: white;
+}
