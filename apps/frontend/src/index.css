@@ -18,6 +18,7 @@ body {
 #root {
   height: 100%;
   width: 100%;
+  background: linear-gradient(180deg, lightgray, transparent);
 }
 
 .heading-text {
