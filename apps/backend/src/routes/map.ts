@@ -259,3 +259,14 @@ mapRouter.post(
     }
   },
 );
+
+mapRouter.get("/edges", async (req: Request, res: Response) => {
+  try {
+    const edges = await Prisma.mapEdge.findMany();
+    res.status(200).json(edges);
+  } catch (e) {
+    const message = (e as Error).message;
+    console.log(message);
+    res.sendStatus(400);
+  }
+});

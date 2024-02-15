@@ -1,12 +1,11 @@
+import React, { FormEvent, useState } from "react";
+import Button from "react-bootstrap/Button";
+import Container from "react-bootstrap/Container";
 import Form from "react-bootstrap/Form";
 import Stack from "react-bootstrap/Stack";
-import Button from "react-bootstrap/Button";
-import React, { FormEvent, useState } from "react";
-import Container from "react-bootstrap/Container";
 
 export function LoginPage() {
   const [loginErr, setLoginErr] = useState<boolean>(false);
-  // const navigate = useNavigate();
 
   //TODO: Add prop that will change log in button to log out button, just using localstorage for now
   function handleSubmit(e: FormEvent<HTMLFormElement>) {
@@ -31,10 +30,6 @@ export function LoginPage() {
     <Container className="w-50 mt-5">
       <Form onSubmit={handleSubmit}>
         <Stack gap={3}>
-          <Button href="/" className="d-block">
-            {" "}
-            Back to Login Page
-          </Button>
           <Form.Group>
             <Form.Label>Username</Form.Label>
             <Form.Control

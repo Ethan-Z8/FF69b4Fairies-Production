@@ -1,30 +1,35 @@
 import axios from "axios";
-import { ChangeEvent, useEffect, useState } from "react";
-import Table from "react-bootstrap/Table";
-import Stack from "react-bootstrap/Stack";
-import Button from "react-bootstrap/Button";
-import Form from "react-bootstrap/Form";
-
-type req = {
-  date: string;
-  typeService: string;
-  reason: string;
-  nodeLoc: string;
-  employeeName: string;
-  progress: "Assigned" | "InProgress" | "Completed";
-};
+import { useEffect, useState } from "react";
+import {
+  Box,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Paper,
+  Select,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Typography,
+} from "@mui/material";
+import { ServiceRequestRow } from "../components/ServiceRequestRow.tsx";
+import { ServiceRequestType } from "common/src/interfaces/ServiceRequest.ts";
 
 export function ViewServiceRequestPage() {
   const [loaded, setLoaded] = useState<boolean>(false);
-  const [serviceRequests, setServiceRequests] = useState<Array<req>>([]);
-  const [filter, setFilter] = useState<string>("Any");
+  const [serviceRequests, setServiceRequests] = useState<
+    Array<ServiceRequestType>
+  >([]);
+  const [statusFilter, setStatusFilter] = useState("");
+  const [typeServiceFilter, setTypeServiceFilter] = useState("");
 
   useEffect(() => {
     axios
       .get("/api/serviceRequest")
       .then((res) => {
-        console.log("Request Made");
-        console.log(res.data);
         setServiceRequests(res.data);
         setLoaded(true);
       })
@@ -33,77 +38,95 @@ export function ViewServiceRequestPage() {
       });
   }, []);
 
-  function handleStatusChange(e: ChangeEvent<HTMLSelectElement>) {
-    const target = e.target as HTMLSelectElement;
-    const updateData = {
-      date: target.id,
-      progress: target.value,
-    };
-    console.log(updateData);
-    axios
-      .post("/api/serviceRequest/updateProgress", updateData)
-      .then((res) => console.log(res))
-      .catch((err) => console.log(err));
-  }
-
-  function handleFilterChange(e: ChangeEvent<HTMLSelectElement>) {
-    setFilter(e.target.value);
-  }
-
-  const filteredServiceRequests = serviceRequests.filter((req) => {
-    if (filter === "Any") return true;
-    return req.progress === filter;
-  });
-
   return (
-    <Stack gap={3} className="mt-5">
-      <Button className="mx-auto w-50" href="/">
-        Back To Home Page
-      </Button>
-      <Form.Select
-        aria-label="Filter by service status"
-        onChange={handleFilterChange}
-        className="w-25 mx-auto"
+    loaded && (
+      <Paper
+        elevation={24}
+        sx={{
+          my: 8,
+          mx: "auto",
+          display: "flex",
+          flexDirection: "column",
+          gap: "1rem",
+          width: "90%",
+          border: "8px solid #012D5A", // Add border styling here
+          borderRadius: "8px", // Add border-radius for rounded corners
+          padding: "1rem",
+          margin: "1rem",
+        }}
       >
-        <option value="Any">Any</option>
-        <option value="Assigned">Assigned</option>
-        <option value="InProgress">In Progress</option>
-        <option value="Completed">Completed</option>
-      </Form.Select>
-      {loaded && (
-        <Table responsive striped bordered hover>
-          <thead>
-            <tr>
-              {Object.keys(serviceRequests[0] || {}).map((header) => (
-                <th key={header}>{header}</th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {filteredServiceRequests.map((req, index) => (
-              <tr key={index}>
-                <td>{req.date.slice(0, 10)}</td>
-                <td>{req.typeService}</td>
-                <td>{req.reason}</td>
-                <td>{req.nodeLoc}</td>
-                <td>{req.employeeName}</td>
-                <td>
-                  <Form.Select
-                    key={`${req.date}-${req.progress}`} // Unique key based on date and progress
-                    defaultValue={req.progress}
-                    onChange={handleStatusChange}
-                    id={req.date}
-                  >
-                    <option value="Assigned">Assigned</option>
-                    <option value="InProgress">In Progress</option>
-                    <option value="Completed">Completed</option>
-                  </Form.Select>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </Table>
-      )}
-    </Stack>
+        <Typography variant="h4">Service Requests</Typography>
+        <Box sx={{ display: "flex", gap: 2, width: "50%" }}>
+          <FormControl sx={{ flex: 1 }}>
+            <InputLabel>Progress Filter</InputLabel>
+            <Select
+              value={statusFilter}
+              label="Status Filter"
+              id="status"
+              onChange={(e) => setStatusFilter(e.target.value)}
+            >
+              <MenuItem value="">Any</MenuItem>
+              <MenuItem value="Unassigned">Unassigned</MenuItem>
+              <MenuItem value="Assigned">Assigned</MenuItem>
+              <MenuItem value="InProgress">In Progress</MenuItem>
+              <MenuItem value="Completed">Completed</MenuItem>
+            </Select>
+          </FormControl>
+          <FormControl sx={{ flex: 1 }}>
+            <InputLabel id="typeServiceLabel">Service Type Filter</InputLabel>
+            <Select
+              value={typeServiceFilter}
+              label="Service Type Filter"
+              id="type"
+              onChange={(e) => setTypeServiceFilter(e.target.value)}
+            >
+              <MenuItem value=""> Any</MenuItem>
+              <MenuItem value="Maintenance">Maintenance</MenuItem>
+              <MenuItem value="Religious">Religious</MenuItem>
+              <MenuItem value="Sanitation">Sanitation</MenuItem>
+              <MenuItem value="Flowers">Flowers</MenuItem>
+              <MenuItem value="InternalTransportation">
+                Internal Transportation
+              </MenuItem>
+            </Select>
+          </FormControl>
+        </Box>
+        <TableContainer
+          sx={{ border: 1, borderColor: "#44444444", borderRadius: 2 }}
+        >
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell />
+                <TableCell>Date</TableCell>
+                <TableCell>Type Of Service</TableCell>
+                <TableCell>Location</TableCell>
+                <TableCell>Employee</TableCell>
+                <TableCell>Progress</TableCell>
+                <TableCell>Priority</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {serviceRequests
+                .filter((req) => {
+                  if (statusFilter !== "") {
+                    return req.progress === statusFilter;
+                  }
+                  return true;
+                })
+                .filter((req) => {
+                  if (typeServiceFilter !== "") {
+                    return req.typeService === typeServiceFilter;
+                  }
+                  return true;
+                })
+                .map((row) => {
+                  return <ServiceRequestRow {...row} />;
+                })}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </Paper>
+    )
   );
 }
