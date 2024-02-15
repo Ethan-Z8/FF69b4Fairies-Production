@@ -1,11 +1,14 @@
 import { Paper } from "@mui/material";
 import axios, { AxiosResponse } from "axios";
 import { FormEvent, useState } from "react";
-import Button from "react-bootstrap/Button";
+//import Button from "react-bootstrap/Button";
+import Button from "@mui/material/Button";
 import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 import Stack from "react-bootstrap/Stack";
+import FileUploadOutlinedIcon from "@mui/icons-material/FileUploadOutlined";
+import FileDownloadIcon from "@mui/icons-material/FileDownload";
 
 //TODO: Need to make this work properly with the create
 export function ImportAndExportDataPage() {
@@ -104,7 +107,12 @@ export function ImportAndExportDataPage() {
               <Form.Control type="file" id="nodesInput" accept=".csv" />
             </Col>
             <Col>
-              <Button type="submit" className="mt-3 w-100">
+              <Button
+                type="submit"
+                className="mt-3 w-100"
+                variant="outlined"
+                endIcon={<FileUploadOutlinedIcon />}
+              >
                 Import
               </Button>
             </Col>
@@ -120,7 +128,14 @@ export function ImportAndExportDataPage() {
         <Form className="m-auto w-50 mt-5" onSubmit={handleExport}>
           <Form.Group controlId="exportCsv" as={Stack}>
             <h4>Export Map Data as CSV</h4>
-            <Button type="submit">Export</Button>
+            <Button
+              type="submit"
+              variant="outlined"
+              endIcon={<FileDownloadIcon />}
+            >
+              {" "}
+              Download edges and nodes{" "}
+            </Button>
           </Form.Group>
           <Form.Text
             className="text-danger"
