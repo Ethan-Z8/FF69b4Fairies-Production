@@ -61,6 +61,7 @@ const RAW_RUNTIME_STATE =
       [null, {\
         "packageLocation": "./",\
         "packageDependencies": [\
+          ["@auth0/auth0-spa-js", "npm:2.1.3"],\
           ["@emotion/react", "virtual:f7b030241781449f9f163484f540f772ec3707fc5214186cd12bce9e472ad0dbf6db26b799fb1d7d9f7a9e4faeedac41da01e533ee775acb5c8a31c546a0661d#npm:11.11.3"],\
           ["@emotion/styled", "virtual:f7b030241781449f9f163484f540f772ec3707fc5214186cd12bce9e472ad0dbf6db26b799fb1d7d9f7a9e4faeedac41da01e533ee775acb5c8a31c546a0661d#npm:11.11.0"],\
           ["@material-ui/core", "virtual:f7b030241781449f9f163484f540f772ec3707fc5214186cd12bce9e472ad0dbf6db26b799fb1d7d9f7a9e4faeedac41da01e533ee775acb5c8a31c546a0661d#npm:4.12.4"],\
@@ -78,6 +79,7 @@ const RAW_RUNTIME_STATE =
           ["eslint", "npm:8.56.0"],\
           ["eslint-config-custom", "workspace:configs/eslint-config-custom"],\
           ["express", "npm:4.18.2"],\
+          ["frontend", "workspace:apps/frontend"],\
           ["happy-dom", "npm:10.11.2"],\
           ["husky", "npm:8.0.3"],\
           ["latest", "npm:0.2.0"],\
@@ -2107,7 +2109,7 @@ const RAW_RUNTIME_STATE =
     ]],\
     ["@swc/core", [\
       ["npm:1.3.104", {\
-        "packageLocation": "./.yarn/unplugged/@swc-core-virtual-c05b44c01c/node_modules/@swc/core/",\
+        "packageLocation": "./.yarn/unplugged/@swc-core-virtual-a4b47a6257/node_modules/@swc/core/",\
         "packageDependencies": [\
           ["@swc/core", "npm:1.3.104"]\
         ],\
@@ -3915,7 +3917,7 @@ const RAW_RUNTIME_STATE =
           ["express-oauth2-jwt-bearer", "npm:1.6.0"],\
           ["http-errors", "npm:1.6.3"],\
           ["http-terminator", "npm:3.2.0"],\
-          ["jose", "npm:4.15.4"],\
+          ["jose", "npm:5.2.2"],\
           ["morgan", "npm:1.9.1"],\
           ["multer", "npm:1.4.5-lts.1"],\
           ["nodemon", "npm:3.0.3"],\
@@ -7473,6 +7475,13 @@ const RAW_RUNTIME_STATE =
           ["jose", "npm:4.15.4"]\
         ],\
         "linkType": "HARD"\
+      }],\
+      ["npm:5.2.2", {\
+        "packageLocation": "./.yarn/cache/jose-npm-5.2.2-e921996149-174b2e955f.zip/node_modules/jose/",\
+        "packageDependencies": [\
+          ["jose", "npm:5.2.2"]\
+        ],\
+        "linkType": "HARD"\
       }]\
     ]],\
     ["js-tokens", [\
@@ -10957,6 +10966,7 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./",\
         "packageDependencies": [\
           ["softeng-starter-code", "workspace:."],\
+          ["@auth0/auth0-spa-js", "npm:2.1.3"],\
           ["@emotion/react", "virtual:f7b030241781449f9f163484f540f772ec3707fc5214186cd12bce9e472ad0dbf6db26b799fb1d7d9f7a9e4faeedac41da01e533ee775acb5c8a31c546a0661d#npm:11.11.3"],\
           ["@emotion/styled", "virtual:f7b030241781449f9f163484f540f772ec3707fc5214186cd12bce9e472ad0dbf6db26b799fb1d7d9f7a9e4faeedac41da01e533ee775acb5c8a31c546a0661d#npm:11.11.0"],\
           ["@material-ui/core", "virtual:f7b030241781449f9f163484f540f772ec3707fc5214186cd12bce9e472ad0dbf6db26b799fb1d7d9f7a9e4faeedac41da01e533ee775acb5c8a31c546a0661d#npm:4.12.4"],\
@@ -10974,6 +10984,7 @@ const RAW_RUNTIME_STATE =
           ["eslint", "npm:8.56.0"],\
           ["eslint-config-custom", "workspace:configs/eslint-config-custom"],\
           ["express", "npm:4.18.2"],\
+          ["frontend", "workspace:apps/frontend"],\
           ["happy-dom", "npm:10.11.2"],\
           ["husky", "npm:8.0.3"],\
           ["latest", "npm:0.2.0"],\
