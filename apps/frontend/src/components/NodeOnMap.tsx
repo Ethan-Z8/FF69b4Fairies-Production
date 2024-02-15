@@ -21,19 +21,35 @@ interface NodeOnMapProps {
 const NodeOnMap: React.FC<NodeOnMapProps> = ({ node, onNodeClick }) => {
   const { xcoord, ycoord, longName } = node;
   const [isHovered, setIsHovered] = useState(false);
-  //const [isHoveredPopup, setIsHoveredPopup] = useState(false);
-
   const [isClicked, setIsClicked] = useState(false);
   const nodeRef = useRef<HTMLDivElement>(null);
   const [hoverShift, setHoverShift] = useState(true);
+  let clickTimer: ReturnType<typeof setTimeout>;
+  let hoverTimer: ReturnType<typeof setTimeout>;
+  const [hoverWait, setHoverWait] = useState(false);
+
+  const [reachedTimeout, setReachedTimeout] = useState(false);
 
   const handleClick = () => {
     if (onNodeClick) {
-      setIsClicked(!isClicked);
-      onNodeClick(node);
+      clearTimeout(clickTimer);
+      if (!reachedTimeout) {
+        onNodeClick(node);
+      }
     } else {
       console.log("");
     }
+  };
+
+  const handleMouseDown = () => {
+    clickTimer = setTimeout(() => {
+      setIsClicked(!isClicked);
+      setReachedTimeout(true);
+    }, 500);
+  };
+
+  const handleMouseUp = () => {
+    clearTimeout(clickTimer);
   };
 
   const handleMouseEnter = () => {
@@ -46,11 +62,16 @@ const NodeOnMap: React.FC<NodeOnMapProps> = ({ node, onNodeClick }) => {
 
   const handleMouseEnterNode = () => {
     setIsHovered(true);
+    hoverTimer = setTimeout(() => {
+      setHoverWait(true);
+    }, 500);
     //setIsHoveredPopup(true);
   };
 
   const handleMouseLeaveNode = () => {
     setIsHovered(false);
+    clearTimeout(hoverTimer);
+    setHoverWait(false);
     //setIsHoveredPopup(false);
   };
 
@@ -70,10 +91,12 @@ const NodeOnMap: React.FC<NodeOnMapProps> = ({ node, onNodeClick }) => {
         onClick={handleClick}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
+        onMouseDown={handleMouseDown}
+        onMouseUp={handleMouseUp}
         ref={nodeRef}
       >
         <div className="node-circle" />
-        {isHovered && !isClicked && (
+        {hoverWait && (
           <div
             className="popup"
             style={{
@@ -83,7 +106,7 @@ const NodeOnMap: React.FC<NodeOnMapProps> = ({ node, onNodeClick }) => {
               backgroundColor: "#fff",
               bottom: "-120%",
               left: "50%",
-              transform: "translateX(-50%)",
+              transform: "translate(-50%, -5%)",
               padding: "10px",
               border: "1px solid #ccc",
               borderRadius: "5px",
@@ -98,7 +121,7 @@ const NodeOnMap: React.FC<NodeOnMapProps> = ({ node, onNodeClick }) => {
             <p>Node Type: {node.nodeType}</p>
           </div>
         )}
-        {isClicked && (
+        {isHovered && (
           <div className="long-name-display">
             <div
               className="node-circle"
