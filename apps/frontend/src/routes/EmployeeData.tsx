@@ -69,8 +69,8 @@ export function EmployeeData() {
           flexDirection: "column",
           gap: "1rem",
           width: "80%",
-          border: "8px solid #012D5A", // Add border styling here
-          borderRadius: "8px", // Add border-radius for rounded corners
+          border: "8px solid #012D5A",
+          borderRadius: "8px",
           padding: "1rem",
           margin: "1rem",
         }}

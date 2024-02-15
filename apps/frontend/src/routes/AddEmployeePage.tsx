@@ -17,8 +17,9 @@ function AddEmployeePage() {
         mx: "auto",
         display: "flex",
         flexDirection: "column",
-        gap: "1rem",
         width: "50%",
+
+        gap: "1rem",
         border: "8px solid #012D5A", // Add border styling here
         borderRadius: "8px", // Add border-radius for rounded corners
         padding: "1rem",
