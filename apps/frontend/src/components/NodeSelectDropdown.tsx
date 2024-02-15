@@ -21,13 +21,19 @@ const NodeSelectDropdown: React.FC<NodeSelectProps> = ({ label, onSelect }) => {
   const [items, setItems] = useState<Node[]>([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
+  let focusTimer: ReturnType<typeof setTimeout>;
 
   useEffect(() => {
     const getAllNodes = async () => {
       try {
         const allNodes = await axios.get(`/api/map/allTemp`);
         const nodesData: Node[] = Object.values(allNodes.data);
-        setItems(nodesData);
+
+        const filteredNodes = nodesData.filter(
+          (node) => node.nodeType != "HALL",
+        );
+
+        setItems(filteredNodes);
       } catch (error) {
         console.error("Error fetching map nodes:", error);
       }
@@ -38,18 +44,24 @@ const NodeSelectDropdown: React.FC<NodeSelectProps> = ({ label, onSelect }) => {
   }, [label]);
 
   const handleFocus = () => {
+    clearTimeout(focusTimer);
     setShowSuggestions(true);
+    focusTimer = setTimeout(() => {
+      setShowSuggestions(false);
+    }, 2000);
   };
 
   const handleBlur = () => {
-    setTimeout(() => {
-      setShowSuggestions(false);
-    }, 200);
+    setShowSuggestions(false);
   };
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
+    clearTimeout(focusTimer);
     setShowSuggestions(true);
+    focusTimer = setTimeout(() => {
+      setShowSuggestions(false);
+    }, 2000);
   };
 
   const handleSuggestionClick = (value: string) => {
@@ -96,7 +108,7 @@ const NodeSelectDropdown: React.FC<NodeSelectProps> = ({ label, onSelect }) => {
                     style={{ cursor: "pointer" }}
                     onMouseDown={(e) => e.preventDefault()}
                   >
-                    {node.shortName}
+                    {node.longName}
                   </ListGroup.Item>
                 ))}
             </ListGroup>

@@ -196,6 +196,11 @@ export function DisplayPath() {
             setClear({ nodes: false, edges: false });
             setSecondClickedNodeId(node.nodeID);
             setShortNames({ ...shortNames, end: node.shortName });
+          } else {
+            clearSearch();
+            setFirstClickedNodeId(node.nodeID);
+            setSecondClickedNodeId("");
+            setShortNames({ start: node.shortName, end: "" });
           }
         }
       }
@@ -408,7 +413,7 @@ export function DisplayPath() {
   const renderCircles = () => {
     if (toggleNodes)
       return allNodes.map((node) => {
-        if (node.floor === mapPathNames[mapIndex]) {
+        if (node.floor === mapPathNames[mapIndex] && node.nodeType != "HALL") {
           return (
             <div key={node.nodeID}>
               <NodeOnMap
