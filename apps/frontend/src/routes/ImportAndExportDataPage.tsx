@@ -35,7 +35,7 @@ export function ImportAndExportDataPage() {
         },
       })
       .then((res) => {
-        console.log(res);
+        console.log("res", res);
       })
       .catch((e: Error) => {
         console.log(e.message);
@@ -79,9 +79,9 @@ export function ImportAndExportDataPage() {
         display: "flex",
         flexDirection: "column",
         gap: "1rem",
-        width: "75%",
+        width: "50%",
         border: "8px solid #012D5A", // Add border styling here
-        borderRadius: "8px", // Add border-radius for rounded corners
+        borderRadius: "9px", // Add border-radius for rounded corners
         padding: "1rem",
         margin: "1rem",
       }}
