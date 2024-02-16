@@ -80,7 +80,7 @@ export function DisplayPath() {
 
         setAllNodes(nodesData);
       } catch (error) {
-        console.error("Error fetching map nodess:", error);
+        console.error("Error fetching map nodes:", error);
       }
     };
 
@@ -414,11 +414,16 @@ export function DisplayPath() {
     if (toggleNodes)
       return allNodes.map((node) => {
         if (node.floor === mapPathNames[mapIndex] && node.nodeType != "HALL") {
+          const isStartNode = node.nodeID === firstClickedNodeId;
+          const isEndNode = node.nodeID === secondClickedNodeId;
           return (
             <div key={node.nodeID}>
               <NodeOnMap
                 node={node}
                 onNodeClick={() => handleNodeClick(node)}
+                className={`${
+                  isStartNode ? "start-node" : isEndNode ? "end-node" : ""
+                }`}
               />
             </div>
           );
@@ -428,11 +433,19 @@ export function DisplayPath() {
       return nodes
         .filter((node) => node.floor === mapPathNames[mapIndex])
         .map((node) => {
+          const isStartNode = node.nodeID === firstClickedNodeId;
+          {
+            /*Finish Implementation of start/end node color*/
+          }
+          const isEndNode = node.nodeID === secondClickedNodeId;
           return (
             <div key={node.nodeID}>
               <NodeOnMap
                 node={node}
                 onNodeClick={() => handleNodeClick(node)}
+                className={`${
+                  isStartNode ? "start-node" : isEndNode ? "end-node" : ""
+                }`}
               />
             </div>
           );

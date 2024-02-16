@@ -16,6 +16,7 @@ interface Node {
 interface NodeOnMapProps {
   node: Node;
   onNodeClick?: (node: Node) => void;
+  className?: string;
 }
 
 const NodeOnMap: React.FC<NodeOnMapProps> = ({ node, onNodeClick }) => {
@@ -129,7 +130,7 @@ const NodeOnMap: React.FC<NodeOnMapProps> = ({ node, onNodeClick }) => {
                 position: "absolute",
                 width: "24px",
                 height: "24px",
-                backgroundColor: "red",
+                backgroundColor: "#012D5A",
                 borderRadius: "50%",
                 transform: `translate(-12px, -12px)`,
                 zIndex: 24,

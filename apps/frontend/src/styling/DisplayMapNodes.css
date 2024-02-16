@@ -7,11 +7,22 @@
   position: absolute;
   width: 16px;
   height: 16px;
-  background-color: red;
+  background-color: #012d5a;
   border-radius: 50%;
   transform: translate(-50%, -50%);
   z-index: 1;
+  border: 2px solid black;
   transition: all 0.1s ease;
+}
+
+.start-node {
+  background-color: green;
+  border: 2px solid black;
+}
+
+.end-node {
+  background-color: red;
+  border: 2px solid black;
 }
 
 .node-circle:hover {
@@ -25,7 +36,7 @@
 
 .line {
   position: absolute;
-  background-color: red;
+  background-color: black;
   z-index: 1;
 }
 
