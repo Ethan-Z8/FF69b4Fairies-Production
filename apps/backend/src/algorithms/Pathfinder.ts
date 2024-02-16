@@ -10,9 +10,17 @@ export default class Pathfinder {
    * @param nodes Takes in an array of MapNodes with no neighbors
    * @param edges Takes in an array of MapEdge with neighbors
    */
-  public constructor(nodes: MapNodeNoNeighbors[], edges: MapEdge[]) {
+  public constructor(
+    nodes: MapNodeNoNeighbors[],
+    edges: MapEdge[],
+    strategyPattern?: AlgoStrategyPattern,
+  ) {
     this.#nodes = MapNode.connectNodes(nodes, edges);
-    this.pattern = new AStarAlgo();
+    if (strategyPattern) {
+      this.pattern = strategyPattern;
+    } else {
+      this.pattern = new AStarAlgo();
+    }
   }
 
   /**

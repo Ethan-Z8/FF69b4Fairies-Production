@@ -5,9 +5,11 @@ import MapNode, { MapNodeNoNeighbors } from "../algorithms/MapNode.ts";
 import { Readable } from "stream";
 import MapEdge from "../algorithms/MapEdge.ts";
 import archiver from "archiver";
-
 import multer from "multer";
-
+import AlgoStrategyPattern from "../algorithms/AlgoStrategyPattern.ts";
+import AStarAlgo from "../algorithms/AStarAlgo.ts";
+import BFSAlgo from "../algorithms/BFSAlgo.ts";
+import DFSAlgo from "../algorithms/DFSAlgo.ts";
 export const mapRouter: Router = express.Router();
 const upload = multer();
 
@@ -112,11 +114,20 @@ mapRouter.get("/pathNodesShort", async (req: Request, res: Response) => {
     type StartAndEndNodes = {
       start?: string;
       end?: string;
+      algo?: string;
     };
+    let strategyPattern: AlgoStrategyPattern = new AStarAlgo();
     const endpoints = req.query as StartAndEndNodes;
+    console.log(endpoints.algo);
+    if (endpoints.algo === "BFS") {
+      strategyPattern = new BFSAlgo();
+    } else if (endpoints.algo == "DFS") {
+      strategyPattern = new DFSAlgo();
+    }
+
     const nodes = await Prisma.mapNode.findMany();
     const edges = await Prisma.mapEdge.findMany();
-    const pathFindingGraph = new Pathfinder(nodes, edges);
+    const pathFindingGraph = new Pathfinder(nodes, edges, strategyPattern);
 
     const startNodeId = pathFindingGraph.shortNameToID(endpoints.start!);
     const endNodeId = pathFindingGraph.shortNameToID(endpoints.end!);

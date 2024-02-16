@@ -22,6 +22,7 @@ import F3LR from "../assets/hospitalmaps/03_thethirdfloor-lowRes.png";
 */
 
 import SelectorTabs from "./SelectorTabs.tsx";
+import { MenuItem, Select } from "@mui/material";
 
 interface Node {
   nodeID: string;
@@ -56,6 +57,7 @@ export function DisplayPath() {
   const [secondClickedNodeId, setSecondClickedNodeId] = useState<string>("");
   const [nodes, setNodes] = useState<Node[]>([]);
   const [allNodes, setAllNodes] = useState<Node[]>([]);
+  const [ChosenAlgorithim, setChosenAlgorithim] = useState<string>("AStarAlgo");
   const [imageSize, setImageSize] = useState<ImageSize>({
     width: 5000,
     height: 3400,
@@ -116,6 +118,7 @@ export function DisplayPath() {
             params: {
               start: aNodes[firstClickedNodeId].shortName,
               end: aNodes[secondClickedNodeId].shortName,
+              algo: ChosenAlgorithim,
             },
           });
           const nodesData: Node[] = Object.values(pathNodes.data);
@@ -129,7 +132,7 @@ export function DisplayPath() {
     } else {
       setNodes([]);
     }
-  }, [aNodes, secondClickedNodeId, firstClickedNodeId]);
+  }, [aNodes, secondClickedNodeId, firstClickedNodeId, ChosenAlgorithim]);
 
   const handleToggleNodes = () => {
     clearSearch();
@@ -491,6 +494,26 @@ export function DisplayPath() {
           onMapSelect={handleMapSelect}
           tabNames={floorNames}
         />
+        <Select
+          defaultValue={"AStarAlgo"}
+          inputProps={{
+            name: "age",
+            id: "uncontrolled-native",
+          }}
+          style={{
+            position: "absolute",
+            left: "93%",
+            top: "90%",
+            zIndex: "5",
+            backgroundColor: "white",
+            borderRadius: 25,
+          }}
+          onChange={(e) => setChosenAlgorithim(e.target.value)}
+        >
+          <MenuItem value={"AStarAlgo"}>AStar</MenuItem>
+          <MenuItem value={"BFS"}>BFS</MenuItem>
+          <MenuItem value={"DFS"}>DFS</MenuItem>
+        </Select>
         <TransformContainer>
           <div
             className="map-container"
