@@ -1,5 +1,5 @@
 import { PathOrFileDescriptor, readFileSync } from "fs";
-import { Employee } from "../../../../packages/common/src/interfaces/Employee.ts";
+import { Employee } from "common/src/interfaces/Employee.ts";
 
 export default class EmployeeData implements Employee {
   username: string;
