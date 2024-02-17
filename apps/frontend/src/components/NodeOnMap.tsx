@@ -140,7 +140,7 @@ const NodeOnMap: React.FC<NodeOnMapProps> = ({ node, onNodeClick }) => {
               : "none",
           }}
         />
-        // TODO fix z-values to display this popup
+        {/*TODO fix z-values to display this popup*/}
         {hoverWait && (
           <div
             className="popup"
