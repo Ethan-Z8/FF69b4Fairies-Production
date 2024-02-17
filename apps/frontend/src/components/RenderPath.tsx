@@ -1,4 +1,5 @@
 import React from "react";
+import "../styling/DisplayMapNodes.css";
 
 interface Node {
   nodeID: string;
@@ -89,19 +90,25 @@ const RenderPath: React.FC<Props> = ({
           ? {
               position: "absolute",
               left: `${prevNode.xcoord}px`,
-              top: `${prevNode.ycoord}px`,
-              width: `${Math.sqrt(
-                Math.pow(one.xcoord - prevNode.xcoord, 2) +
-                  Math.pow(one.ycoord - prevNode.ycoord, 2),
-              )}px`,
-              height: "4px",
-              backgroundColor: "red",
+              top: `${prevNode.ycoord - 10}px`,
+              width: `${
+                Math.sqrt(
+                  Math.pow(one.xcoord - prevNode.xcoord, 2) +
+                    Math.pow(one.ycoord - prevNode.ycoord, 2),
+                ) - 10
+              }px`,
+              height: "20px",
               zIndex: 3,
               transformOrigin: "left center",
               transform: `rotate(${Math.atan2(
                 one.ycoord - prevNode.ycoord,
                 one.xcoord - prevNode.xcoord,
               )}rad)`,
+              backgroundImage:
+                "url('https://static.thenounproject.com/png/634840-200.png')",
+              backgroundSize: "contain",
+              backgroundColor: "transparent",
+              animation: "moveArrows 1s linear infinite",
             }
           : {};
 
