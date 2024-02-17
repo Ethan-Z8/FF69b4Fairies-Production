@@ -1,5 +1,7 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import "../styling/DisplayMapNodes.css";
+import { ServiceRequestType } from "common/src/interfaces/ServiceRequest.ts";
+import axios from "axios";
 
 interface Node {
   nodeID: string;
@@ -30,6 +32,31 @@ const NodeOnMap: React.FC<NodeOnMapProps> = ({ node, onNodeClick }) => {
   const [hoverWait, setHoverWait] = useState(false);
 
   const [reachedTimeout, setReachedTimeout] = useState(false);
+  const [serviceRequests, setServiceRequests] = useState<
+    Array<ServiceRequestType>
+  >([]);
+  // const [loaded, setLoaded] = useState<boolean>(false);
+
+  useEffect(() => {
+    axios
+      .get("/api/serviceRequest")
+      .then((res) => {
+        setServiceRequests(res.data);
+        //setLoaded(true);
+      })
+      .catch((e: Error) => {
+        console.log(e.message);
+      });
+  }, []);
+  console.log(serviceRequests);
+
+  const hasServiceRequest = serviceRequests.some(
+    (request) => request.location === node.nodeID,
+  );
+  const numberOfServiceRequests = serviceRequests.filter(
+    (request) => request.location === node.nodeID,
+  ).length;
+  const has5PlusServiceRequest = numberOfServiceRequests >= 5;
 
   const handleClick = () => {
     if (onNodeClick) {
@@ -80,6 +107,10 @@ const NodeOnMap: React.FC<NodeOnMapProps> = ({ node, onNodeClick }) => {
     setHoverShift(!hoverShift);
   };
 
+  const serviceReqColor = {
+    backgroundColor: "#ff69b4",
+  };
+
   return (
     <div>
       <div
@@ -88,6 +119,8 @@ const NodeOnMap: React.FC<NodeOnMapProps> = ({ node, onNodeClick }) => {
           position: "absolute",
           left: `${xcoord}px`,
           top: `${ycoord}px`,
+          // backgroundColor: hasServiceRequest ? "red" : "transparent",
+          // animation: isNodeInServiceRequests ? "flashAnimation 1s infinite alternate" : "none",
         }}
         onClick={handleClick}
         onMouseEnter={handleMouseEnter}
@@ -96,7 +129,18 @@ const NodeOnMap: React.FC<NodeOnMapProps> = ({ node, onNodeClick }) => {
         onMouseUp={handleMouseUp}
         ref={nodeRef}
       >
-        <div className="node-circle" />
+        <div
+          className="node-circle"
+          style={{
+            backgroundColor: hasServiceRequest
+              ? serviceReqColor.backgroundColor
+              : "#009ca6",
+            animation: has5PlusServiceRequest
+              ? "flashAnimation .7s infinite"
+              : "none",
+          }}
+        />
+        // TODO fix z-values to display this popup
         {hoverWait && (
           <div
             className="popup"
@@ -130,10 +174,15 @@ const NodeOnMap: React.FC<NodeOnMapProps> = ({ node, onNodeClick }) => {
                 position: "absolute",
                 width: "24px",
                 height: "24px",
-                backgroundColor: "#009ca6",
+                backgroundColor: hasServiceRequest
+                  ? serviceReqColor.backgroundColor
+                  : "#009ca6",
+                animation: has5PlusServiceRequest
+                  ? "flashAnimation .7s infinite"
+                  : "none",
                 borderRadius: "50%",
                 transform: `translate(-12px, -12px)`,
-                zIndex: 24,
+                zIndex: 0,
               }}
               onMouseEnter={handleMouseEnterNode}
               onMouseLeave={handleMouseLeaveNode}
