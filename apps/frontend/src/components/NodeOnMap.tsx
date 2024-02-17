@@ -130,7 +130,7 @@ const NodeOnMap: React.FC<NodeOnMapProps> = ({ node, onNodeClick }) => {
                 position: "absolute",
                 width: "24px",
                 height: "24px",
-                backgroundColor: "#012D5A",
+                backgroundColor: "#009ca6",
                 borderRadius: "50%",
                 transform: `translate(-12px, -12px)`,
                 zIndex: 24,
