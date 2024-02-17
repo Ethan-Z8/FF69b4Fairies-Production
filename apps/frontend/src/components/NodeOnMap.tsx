@@ -140,7 +140,6 @@ const NodeOnMap: React.FC<NodeOnMapProps> = ({ node, onNodeClick }) => {
               : "none",
           }}
         />
-        {/*TODO fix z-values to display this popup*/}
         {hoverWait && (
           <div
             className="popup"
@@ -182,7 +181,7 @@ const NodeOnMap: React.FC<NodeOnMapProps> = ({ node, onNodeClick }) => {
                   : "none",
                 borderRadius: "50%",
                 transform: `translate(-12px, -12px)`,
-                zIndex: 0,
+                zIndex: 23,
               }}
               onMouseEnter={handleMouseEnterNode}
               onMouseLeave={handleMouseLeaveNode}
