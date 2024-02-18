@@ -1,4 +1,4 @@
-import { ToggleButtonGroup, ToggleButton } from "@mui/material";
+import { ToggleButtonGroup, ToggleButton, Button } from "@mui/material";
 
 export interface ToggleModeButtonProps {
   currentMode: string;
@@ -9,13 +9,36 @@ export function ToggleModeButton({
   currentMode,
   setCurrentMode,
 }: ToggleModeButtonProps) {
+  function handleChange(
+    e: React.MouseEvent<HTMLElement>,
+    newAlignment: string,
+  ) {
+    console.log(newAlignment);
+    setCurrentMode(newAlignment);
+  }
   return (
     <ToggleButtonGroup
+      color="primary"
       value={currentMode}
-      onChange={(_, s) => setCurrentMode(s)}
+      exclusive
+      onChange={handleChange}
     >
-      <ToggleButton value="Navigation">Navigation</ToggleButton>
-      <ToggleButton value="Request">Request</ToggleButton>
+      <ToggleButton
+        value="Navigation"
+        component={Button}
+        variant="contained"
+        color="primary"
+      >
+        Navigation
+      </ToggleButton>
+      <ToggleButton
+        value="Request"
+        component={Button}
+        variant="contained"
+        color="primary"
+      >
+        Request
+      </ToggleButton>
     </ToggleButtonGroup>
   );
 }
