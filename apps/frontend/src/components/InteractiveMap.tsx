@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import NodeSelectDropdown from "./NodeSelectDropdown";
+import NodeSelectDropdown from "./HomePageMap/NodeSelectDropdown.tsx";
 import Button from "react-bootstrap/Button";
 import "../styling/DisplayMapNodes.css";
-import TransformContainer from "./TransformContainer.tsx";
+import TransformContainer from "./HomePageMap/TransformContainer.tsx";
 
 import LL1 from "../assets/hospitalmaps/00_thelowerlevel1-min.png";
 import LL2 from "../assets/hospitalmaps/00_thelowerlevel2-min.png";
@@ -20,9 +20,9 @@ import F2LR from "../assets/hospitalmaps/02_thesecondfloor-lowRes.png";
 import F3LR from "../assets/hospitalmaps/03_thethirdfloor-lowRes.png";
 */
 
-import SelectorTabs from "./SelectorTabs.tsx";
-import RenderCircles from "./RenderCircles.tsx";
-import RenderPath from "./RenderPath.tsx";
+import SelectorTabs from "./HomePageMap/SelectorTabs.tsx";
+import RenderCircles from "./HomePageMap/RenderCircles.tsx";
+import RenderPath from "./HomePageMap/RenderPath.tsx";
 
 interface Node {
   nodeID: string;
@@ -121,7 +121,6 @@ export function InteractiveMap() {
   }, []);
 
   useEffect(() => {
-    console.log(firstClickedNodeId, secondClickedNodeId);
     if (secondClickedNodeId !== "" && firstClickedNodeId !== "") {
       const getPathNodes = async () => {
         try {

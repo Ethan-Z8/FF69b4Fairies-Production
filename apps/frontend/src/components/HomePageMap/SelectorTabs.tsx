@@ -1,5 +1,5 @@
 import React from "react";
-import "../styling/SelectorTabs.css";
+import "../../styling/SelectorTabs.css";
 
 interface SelectorTabsProps {
   mapIndex: number;

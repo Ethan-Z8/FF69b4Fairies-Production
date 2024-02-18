@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import NodeSelectDropdown from "./NodeSelectDropdown";
+import NodeSelectDropdown from "./HomePageMap/NodeSelectDropdown.tsx";
 import Button from "react-bootstrap/Button";
 import NodeOnMap from "./NodeOnMap";
 import "../styling/DisplayMapNodes.css";
-import TransformContainer from "./TransformContainer.tsx";
+import TransformContainer from "./HomePageMap/TransformContainer.tsx";
 
 import LL1 from "../assets/hospitalmaps/00_thelowerlevel1-min.png";
 import LL2 from "../assets/hospitalmaps/00_thelowerlevel2-min.png";
@@ -21,7 +21,7 @@ import F2LR from "../assets/hospitalmaps/02_thesecondfloor-lowRes.png";
 import F3LR from "../assets/hospitalmaps/03_thethirdfloor-lowRes.png";
 */
 
-import SelectorTabs from "./SelectorTabs.tsx";
+import SelectorTabs from "./HomePageMap/SelectorTabs.tsx";
 
 interface Node {
   nodeID: string;
