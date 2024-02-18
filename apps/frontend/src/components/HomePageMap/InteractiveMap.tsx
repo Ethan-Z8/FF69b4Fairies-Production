@@ -205,6 +205,12 @@ export function InteractiveMap() {
 
   return (
     <div>
+      <StartEndSelect
+        start={firstClickedNodeId}
+        end={secondClickedNodeId}
+        onSelectStart={handleStartSelect}
+        onSelectEnd={handleEndSelect}
+      />
       <div
         className={`tab ${menuOpen ? "open" : ""}`}
         onClick={toggleMenu}
@@ -234,14 +240,7 @@ export function InteractiveMap() {
           </div>
         </div>
       </div>
-      <div>
-        <StartEndSelect
-          start={firstClickedNodeId}
-          end={secondClickedNodeId}
-          onSelectStart={handleStartSelect}
-          onSelectEnd={handleEndSelect}
-        />
-      </div>
+
       <div className="total">
         <SelectorTabs
           mapIndex={mapIndex}

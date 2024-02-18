@@ -57,6 +57,22 @@ const StartEndSelect: React.FC<NodeSelectProps> = ({
   }, []);
 
   useEffect(() => {
+    if (start && nodes[start]) {
+      setStartName(nodes[start].longName);
+    } else {
+      setStartName("");
+    }
+  }, [start, startID, nodes]);
+
+  useEffect(() => {
+    if (end && nodes[end]) {
+      setEndName(nodes[end].longName);
+    } else {
+      setEndName("");
+    }
+  }, [end, endID, nodes]);
+
+  useEffect(() => {
     const handleMouseDown = () => {
       if (!isFocused) {
         //setShowSuggestions([false, false]);
@@ -87,9 +103,23 @@ const StartEndSelect: React.FC<NodeSelectProps> = ({
     e: React.ChangeEvent<HTMLInputElement>,
     onSelect: (item: string, event: React.SyntheticEvent<HTMLElement>) => void,
     setTerm: React.Dispatch<React.SetStateAction<string>>,
+    setName: React.Dispatch<React.SetStateAction<string>>,
   ) => {
-    if (items.filter((node) => node.nodeID == e.target.value)) {
-      setTerm(e.target.value);
+    setName(e.target.value);
+    const results = items.filter(
+      (node) =>
+        node.nodeID == e.target.value ||
+        node.shortName == e.target.value ||
+        node.longName == e.target.value,
+    );
+
+    if (results.length == 1) {
+      setTerm(results[0].nodeID);
+      if (inputRef.current) {
+        inputRef.current.value = results[0].nodeID;
+      }
+
+      onSelect(results[0].nodeID, {} as React.SyntheticEvent<HTMLElement>);
     } else {
       setTerm("");
     }
@@ -98,20 +128,7 @@ const StartEndSelect: React.FC<NodeSelectProps> = ({
 
     //  setShowSuggestions([false, false]);
 
-    setTerm(e.target.value);
-
     //    setShowSuggestions([false, false]);
-
-    if (inputRef.current) {
-      inputRef.current.value = e.target.value;
-    }
-
-    onSelect(e.target.value, {} as React.SyntheticEvent<HTMLElement>);
-
-    if (items.length > 0) {
-      setStartName(nodes[startID].longName);
-      setEndName(nodes[endID].longName);
-    }
   };
 
   // const handleSuggestionClick = (
@@ -129,35 +146,135 @@ const StartEndSelect: React.FC<NodeSelectProps> = ({
   // };
 
   return (
-    <div onMouseLeave={handleMouseLeave}>
-      <input
-        type="text"
-        value={startName}
-        onChange={(e) => handleSearch(e, onSelectStart, setStartID)}
-        onFocus={handleFocusStart}
-        style={{
-          border: "1px solid #ccc",
-          borderRadius: "4px",
-          padding: "8px",
-          fontSize: "16px",
-          outline: "none",
-          width: "20%",
-        }}
-      />
-      <input
-        type="text"
-        value={endName}
-        onChange={(e) => handleSearch(e, onSelectEnd, setEndID)}
-        onFocus={handleFocusEnd}
-        style={{
-          border: "1px solid #ccc",
-          borderRadius: "4px",
-          padding: "8px",
-          fontSize: "16px",
-          outline: "none",
-          width: "20%",
-        }}
-      />
+    <div
+      onMouseLeave={handleMouseLeave}
+      style={{
+        position: "fixed",
+        borderRadius: "16px",
+        left: "8px",
+        top: "112px",
+        zIndex: 30,
+        width: "20%",
+        backgroundColor: "transparent",
+        boxShadow: "1px 2px 2px rgba(0, 0, 0, 0.4)",
+      }}
+    >
+      <div style={{ position: "relative" }}>
+        <input
+          ref={inputRef}
+          type="text"
+          value={startName}
+          onChange={(e) =>
+            handleSearch(e, onSelectStart, setStartID, setStartName)
+          }
+          onFocus={handleFocusStart}
+          style={{
+            border: "0px solid #ccc",
+            borderTopRightRadius: "16px",
+            borderTopLeftRadius: "16px",
+            paddingLeft: "16px",
+            fontSize: "18px",
+            outline: "none",
+            width: "100%",
+            minHeight: "48px",
+            backgroundColor: "#0E6244",
+            color: "white",
+          }}
+        />
+        {startName && (
+          <div
+            style={{
+              position: "absolute",
+              top: "100%",
+              left: 0,
+              width: "100%",
+              backgroundColor: "white",
+            }}
+          >
+            <ul>
+              {items
+                .filter((node) =>
+                  node.shortName
+                    .toLowerCase()
+                    .includes(startName.toLowerCase()),
+                )
+                .map((node) => (
+                  <li
+                    key={node.nodeID}
+                    onClick={() => {
+                      onSelectStart(
+                        node.nodeID,
+                        {} as React.SyntheticEvent<HTMLElement>,
+                      );
+                      setStartName(node.shortName);
+                    }}
+                  >
+                    {node.longName}
+                  </li>
+                ))}
+            </ul>
+          </div>
+        )}
+      </div>
+      <div style={{ position: "relative" }}>
+        <input
+          type="text"
+          value={endName}
+          onChange={(e) => handleSearch(e, onSelectEnd, setEndID, setEndName)}
+          onFocus={handleFocusEnd}
+          style={{
+            border: "0px solid #ccc",
+            borderBottomRightRadius: "16px",
+            borderBottomLeftRadius: "16px",
+            paddingLeft: "16px",
+            fontSize: "18px",
+            outline: "none",
+            width: "100%",
+            minHeight: "48px",
+            backgroundColor: "#8B2121",
+            color: "white",
+          }}
+        />
+        {endName && (
+          <div
+            style={{
+              position: "absolute",
+              top: "100%",
+              left: 0,
+              width: "100%",
+              backgroundColor: "white",
+            }}
+          >
+            <ul>
+              {items
+                .filter(
+                  (node) =>
+                    node.shortName
+                      .toLowerCase()
+                      .includes(endName.toLowerCase()) ||
+                    node.longName
+                      .toLowerCase()
+                      .includes(endName.toLowerCase()) ||
+                    node.nodeID.toLowerCase().includes(endName.toLowerCase()),
+                )
+                .map((node) => (
+                  <li
+                    key={node.nodeID}
+                    onClick={() => {
+                      onSelectEnd(
+                        node.nodeID,
+                        {} as React.SyntheticEvent<HTMLElement>,
+                      );
+                      setEndName(node.longName);
+                    }}
+                  >
+                    {node.longName}
+                  </li>
+                ))}
+            </ul>
+          </div>
+        )}
+      </div>
     </div>
   );
 };

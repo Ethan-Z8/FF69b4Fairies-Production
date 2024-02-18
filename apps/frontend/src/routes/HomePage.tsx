@@ -21,8 +21,7 @@ function HomePage() {
   // load all the nodes on load of Homepage
   const [nodes, setNodes] = useState<{ [key: string]: Node }>();
 
-  console.log(mapIndex);
-  console.log(nodes);
+  console.log(nodes, mapIndex);
   useEffect(() => {
     const all = async () => {
       try {
