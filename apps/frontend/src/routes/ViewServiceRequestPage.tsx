@@ -69,7 +69,7 @@ export function ViewServiceRequestPage() {
         }}
       >
         <Typography variant="h4">Service Requests</Typography>
-        <Box sx={{ display: "flex", gap: 2, width: "50%" }}>
+        <Box sx={{ display: "flex", gap: 2, width: "53%" }}>
           <FormControl sx={{ flex: 1 }}>
             <InputLabel>Progress Filter</InputLabel>
             <Select
