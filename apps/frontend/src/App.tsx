@@ -14,6 +14,7 @@ import { Auth0Provider } from "@auth0/auth0-react";
 import AddEmployeePage from "./routes/AddEmployeePage.tsx";
 import ProtectPage from "./components/ProtectPage.tsx";
 import { ImportAndExportEmployeePage } from "./routes/ImportAndExportEmployeePage.tsx";
+import UserProfile from "./routes/UserProfile.tsx";
 
 function App() {
   const router = createBrowserRouter([
@@ -29,6 +30,10 @@ function App() {
         {
           path: "/login",
           element: <LoginPage />,
+        },
+        {
+          path: "/userProfile",
+          element: <UserProfile />,
         },
         {
           path: "/createServiceRequest",
