@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { InteractiveMap } from "../components/InteractiveMap.tsx";
+//import { InteractiveMap } from "../components/InteractiveMap.tsx";
 import axios from "axios";
+import { InteractiveMap } from "../components/HomePageMap/InteractiveMap.tsx";
+//import {DisplayPath} from "../components/DisplayPath.tsx";
 
 interface Node {
   nodeID: string;

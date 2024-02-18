@@ -1,5 +1,5 @@
 import React, { useState, useRef } from "react";
-import "../styling/DisplayMapNodes.css";
+import "../../styling/DisplayMapNodes.css";
 
 interface Node {
   nodeID: string;

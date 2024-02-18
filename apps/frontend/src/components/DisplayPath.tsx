@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import NodeSelectDropdown from "./HomePageMap/NodeSelectDropdown.tsx";
 import Button from "react-bootstrap/Button";
-import NodeOnMap from "./NodeOnMap";
+import NodeOnMap from "./HomePageMap/NodeOnMap.tsx";
 import "../styling/DisplayMapNodes.css";
 import TransformContainer from "./HomePageMap/TransformContainer.tsx";
 
