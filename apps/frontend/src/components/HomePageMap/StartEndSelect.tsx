@@ -30,12 +30,11 @@ const StartEndSelect: React.FC<NodeSelectProps> = ({
   const [endID, setEndID] = useState(end);
   const [startName, setStartName] = useState("");
   const [endName, setEndName] = useState("");
-
   const [nodes, setNodes] = useState<{ [key: string]: Node }>({});
   const [items, setItems] = useState<Node[]>([]);
-  //const [showSuggestions, setShowSuggestions] = useState([false, false]);
   const [isFocused, setIsFocused] = useState(false);
-
+  const [bothIDsSet, setBothIDsSet] = useState(false); // Track if both start and end IDs are set
+  const [showSuggestions, setShowSuggestions] = useState([false, false]);
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -46,7 +45,7 @@ const StartEndSelect: React.FC<NodeSelectProps> = ({
         const nodesData: Node[] = Object.values(allNodes.data);
 
         const filteredNodes = nodesData.filter(
-          (node) => node.nodeType != "HALL",
+          (node) => node.nodeType !== "HALL",
         );
         setItems(filteredNodes);
       } catch (error) {
@@ -59,23 +58,27 @@ const StartEndSelect: React.FC<NodeSelectProps> = ({
   useEffect(() => {
     if (start && nodes[start]) {
       setStartName(nodes[start].longName);
+      setStartID(start);
     } else {
       setStartName("");
+      setStartID("");
     }
-  }, [start, startID, nodes]);
+  }, [start, nodes]);
 
   useEffect(() => {
     if (end && nodes[end]) {
       setEndName(nodes[end].longName);
+      setEndID(end);
     } else {
       setEndName("");
+      setEndID("");
     }
-  }, [end, endID, nodes]);
+  }, [end, nodes]);
 
   useEffect(() => {
     const handleMouseDown = () => {
       if (!isFocused) {
-        //setShowSuggestions([false, false]);
+        setShowSuggestions([false, false]);
       }
     };
     document.addEventListener("mousedown", handleMouseDown);
@@ -85,14 +88,25 @@ const StartEndSelect: React.FC<NodeSelectProps> = ({
     };
   }, [isFocused]);
 
+  useEffect(() => {
+    // Check if both startID and endID are set
+    if (startID != "" && endID != "") {
+      setBothIDsSet(true);
+      console.log("asdfkalsd");
+    } else {
+      setBothIDsSet(false);
+      console.log("AJFLKSAJKF");
+    }
+  }, [startID, endID]);
+
   const handleFocusStart = () => {
     setIsFocused(true);
-    //setShowSuggestions([true, false]);
+    setShowSuggestions([true, false]);
   };
 
   const handleFocusEnd = () => {
     setIsFocused(true);
-    //setShowSuggestions([false, true]);
+    setShowSuggestions([false, true]);
   };
 
   const handleMouseLeave = () => {
@@ -108,12 +122,12 @@ const StartEndSelect: React.FC<NodeSelectProps> = ({
     setName(e.target.value);
     const results = items.filter(
       (node) =>
-        node.nodeID == e.target.value ||
-        node.shortName == e.target.value ||
-        node.longName == e.target.value,
+        node.nodeID === e.target.value ||
+        node.shortName === e.target.value ||
+        node.longName === e.target.value,
     );
 
-    if (results.length == 1) {
+    if (results.length === 1) {
       setTerm(results[0].nodeID);
       if (inputRef.current) {
         inputRef.current.value = results[0].nodeID;
@@ -123,27 +137,7 @@ const StartEndSelect: React.FC<NodeSelectProps> = ({
     } else {
       setTerm("");
     }
-
-    //if (startID != '' && endID != '')
-
-    //  setShowSuggestions([false, false]);
-
-    //    setShowSuggestions([false, false]);
   };
-
-  // const handleSuggestionClick = (
-  //   value: string,
-  //   onSelect: (item: string, event: React.SyntheticEvent<HTMLElement>) => void,
-  //   setTerm: React.Dispatch<React.SetStateAction<string>>
-  // ) => {
-  //
-  //   setTerm(value);
-  //   setShowSuggestions([false, false]);
-  //   if (inputRef.current) {
-  //     inputRef.current.value = value;
-  //   }
-  //   onSelect(value, {} as React.SyntheticEvent<HTMLElement>);
-  // };
 
   return (
     <div
@@ -153,13 +147,12 @@ const StartEndSelect: React.FC<NodeSelectProps> = ({
         borderRadius: "16px",
         left: "8px",
         top: "112px",
-        zIndex: 30,
+        zIndex: 20,
         width: "20%",
         backgroundColor: "transparent",
-        boxShadow: "1px 2px 2px rgba(0, 0, 0, 0.4)",
       }}
     >
-      <div style={{ position: "relative" }}>
+      <div style={{ position: "relative", zIndex: 21 }}>
         <input
           ref={inputRef}
           type="text"
@@ -179,9 +172,10 @@ const StartEndSelect: React.FC<NodeSelectProps> = ({
             minHeight: "48px",
             backgroundColor: "#0E6244",
             color: "white",
+            boxShadow: "1px 2px 2px rgba(0, 0, 0, 0.4)",
           }}
         />
-        {startName && (
+        {showSuggestions[0] && startName && (
           <div
             style={{
               position: "absolute",
@@ -216,7 +210,7 @@ const StartEndSelect: React.FC<NodeSelectProps> = ({
           </div>
         )}
       </div>
-      <div style={{ position: "relative" }}>
+      <div>
         <input
           type="text"
           value={endName}
@@ -233,9 +227,13 @@ const StartEndSelect: React.FC<NodeSelectProps> = ({
             minHeight: "48px",
             backgroundColor: "#8B2121",
             color: "white",
+            marginTop: bothIDsSet ? "calc(100vh - 216px)" : 0,
+            transition: "margin-top 0.5s ease",
+            boxShadow: "1px 2px 2px rgba(0, 0, 0, 0.4)",
+            zIndex: 26,
           }}
         />
-        {endName && (
+        {showSuggestions[1] && endName && (
           <div
             style={{
               position: "absolute",
@@ -280,26 +278,3 @@ const StartEndSelect: React.FC<NodeSelectProps> = ({
 };
 
 export default StartEndSelect;
-
-/*
-
-<div
-  className="nodeSelectContainer"
-  style={{display: "flex", flexDirection: "column"}}
->
-  <div style={{display: "flex", alignItems: "center"}}>
-    <span style={{width: "50px"}}>Start:</span>
-    <NodeSelectDropdown
-      label={shortNames.start}
-      onSelect={handleStartSelect}
-    />
-  </div>
-  <div style={{display: "flex", alignItems: "center"}}>
-    <span style={{width: "50px"}}>End:</span>
-    <NodeSelectDropdown
-      label={shortNames.end}
-      onSelect={handleEndSelect}
-    />
-  </div>
-  <Button onClick={clearSearch}>Clear</Button>
-</div>*/
