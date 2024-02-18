@@ -1,5 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState, useRef } from "react";
+import "./StartEndSelect.css";
 
 interface Node {
   nodeID: string;
@@ -177,12 +178,17 @@ const StartEndSelect: React.FC<NodeSelectProps> = ({
         />
         {showSuggestions[0] && startName && (
           <div
+            className="scroll-container"
             style={{
               position: "absolute",
-              top: "100%",
+              top: "24px",
               left: 0,
-              width: "100%",
+              width: "75%",
               backgroundColor: "white",
+              zIndex: -1,
+              maxHeight: "600%",
+              borderRadius: "16px",
+              overflow: "auto",
             }}
           >
             <ul>
@@ -235,12 +241,17 @@ const StartEndSelect: React.FC<NodeSelectProps> = ({
         />
         {showSuggestions[1] && endName && (
           <div
+            className="scroll-container"
             style={{
               position: "absolute",
-              top: "100%",
+              top: "72px",
               left: 0,
-              width: "100%",
+              width: "75%",
               backgroundColor: "white",
+              zIndex: -1,
+              maxHeight: "300%",
+              borderRadius: "16px",
+              overflow: "auto",
             }}
           >
             <ul>
