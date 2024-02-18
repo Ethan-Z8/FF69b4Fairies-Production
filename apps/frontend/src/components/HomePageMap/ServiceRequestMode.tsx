@@ -14,12 +14,15 @@ import F3 from "../../assets/hospitalmaps/03_thethirdfloor-min.png";
 const maps = { L2: LL2, L1: LL1, "1": F1, "2": F2, "3": F3 };
 export interface ServiceRequestModeProps {
   nodes: MapNodeInterface[];
-  currentFloor: "L2" | "L1" | "1" | "2" | "3";
+  currentFloor: string;
+  setHoveredNode: (node: string) => void;
 }
 export function ServiceRequestMode({
   nodes,
   currentFloor,
+  setHoveredNode,
 }: ServiceRequestModeProps) {
+  console.log("sr nodes", nodes);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [selectedNode, setSelectedNode] = useState("");
   const [serviceRequests, setServiceRequests] = useState<ServiceRequestType[]>(
@@ -41,17 +44,20 @@ export function ServiceRequestMode({
     {} as { [key: string]: number },
   );
 
-  const serviceRequestNodes = nodes.map((node) => (
-    <ServiceRequestNode
-      nodeInfo={node}
-      numRequests={reqsPerLocation[node.nodeID] || 0}
-      setSelectedNode={setSelectedNode}
-      key={node.nodeID}
-    />
-  ));
+  const serviceRequestNodes = nodes
+    .filter((node) => node.floor === currentFloor)
+    .map((node) => (
+      <ServiceRequestNode
+        nodeInfo={node}
+        numRequests={reqsPerLocation[node.nodeID] || 0}
+        setSelectedNode={setSelectedNode}
+        key={node.nodeID}
+        setHoveredNode={setHoveredNode}
+      />
+    ));
 
-  function getMapImage(currentFloor: keyof typeof maps) {
-    return <img src={maps[currentFloor]} />;
+  function getMapImage(currentFloor: string) {
+    return <img src={maps[currentFloor as keyof typeof maps]} />;
   }
   return (
     <TransformContainer>
