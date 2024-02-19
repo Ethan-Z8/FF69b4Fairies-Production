@@ -2,14 +2,14 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import NodeSelectDropdown from "./NodeSelectDropdown";
 import Button from "react-bootstrap/Button";
-import "../styling/DisplayMapNodes.css";
+import "../../styling/DisplayMapNodes.css";
 import TransformContainer from "./TransformContainer.tsx";
 
-import LL1 from "../assets/hospitalmaps/00_thelowerlevel1-min.png";
-import LL2 from "../assets/hospitalmaps/00_thelowerlevel2-min.png";
-import F1 from "../assets/hospitalmaps/01_thefirstfloor-min.png";
-import F2 from "../assets/hospitalmaps/02_thesecondfloor-min.png";
-import F3 from "../assets/hospitalmaps/03_thethirdfloor-min.png";
+import LL1 from "../../assets/hospitalmaps/00_thelowerlevel1-min.png";
+import LL2 from "../../assets/hospitalmaps/00_thelowerlevel2-min.png";
+import F1 from "../../assets/hospitalmaps/01_thefirstfloor-min.png";
+import F2 from "../../assets/hospitalmaps/02_thesecondfloor-min.png";
+import F3 from "../../assets/hospitalmaps/03_thethirdfloor-min.png";
 
 /*
 import GRLR from "../assets/hospitalmaps/00_thegroundfloor-lowRes.png";
@@ -52,7 +52,7 @@ const floorNames: string[] = [
   "Level 3",
 ];
 
-export function InteractiveMap() {
+export function NavigationMode() {
   const [firstClickedNodeId, setFirstClickedNodeId] = useState<string>("");
   const [secondClickedNodeId, setSecondClickedNodeId] = useState<string>("");
   const [nodes, setNodes] = useState<Node[]>([]);
