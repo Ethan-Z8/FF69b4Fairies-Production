@@ -100,25 +100,23 @@ const NodeOnMap: React.FC<NodeOnMapProps> = ({ node, onNodeClick }) => {
           <div
             className="popup"
             style={{
-              width: `${15}vw`,
-              position: "absolute",
+              width: `${25}vw`,
+              position: "fixed",
               zIndex: 23,
-              backgroundColor: "#fff",
-              bottom: "-120%",
-              left: "50%",
-              transform: "translate(-50%, -5%)",
-              padding: "10px",
+              backgroundColor: "white",
+              top: 0,
+              transform: "translate(-100%,0)",
+              padding: "15px",
               border: "1px solid #ccc",
-              borderRadius: "5px",
-              fontSize: 30,
+              borderRadius: "15px",
             }}
           >
-            <p>{longName}</p>
-            <p>ID: {node.nodeID}</p>
-            <p>Short Name: {node.shortName}</p>
-            <p>Floor: {node.floor}</p>
-            <p>Building: {node.building}</p>
-            <p>Node Type: {node.nodeType}</p>
+            <h4>{longName}</h4>
+            <h5>ID: {node.nodeID}</h5>
+            <h5>Short Name: {node.shortName}</h5>
+            <h5>Floor: {node.floor}</h5>
+            <h5>Building: {node.building}</h5>
+            <h5>Node Type: {node.nodeType}</h5>
           </div>
         )}
         {isHovered && (
