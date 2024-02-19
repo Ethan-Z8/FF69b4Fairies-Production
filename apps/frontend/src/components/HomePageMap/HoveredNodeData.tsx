@@ -34,7 +34,7 @@ const StartEndSelect: React.FC<HoveredNodeDataProps> = ({ node }) => {
         position: "absolute",
         borderRadius: "16px",
         height: locCollapse ? "48px" : "30vh",
-        width: "10wv",
+        width: "30wv",
         right: "8px",
         top: "128px",
         backgroundColor: "white",
@@ -46,14 +46,15 @@ const StartEndSelect: React.FC<HoveredNodeDataProps> = ({ node }) => {
         <div>
           <div>{node.longName}</div>
           <div>{node.nodeID}</div>
-          <div>{node.nodeType}</div>
-
-          <div>{node.shortName}</div>
-          <div>{node.floor}</div>
-          <div>{node.building}</div>
+          <div>Type: {node.nodeType}</div>
+          <div>Floor: {node.floor}</div>
+          <div>Buidling: {node.building}</div>
+          <div>
+            Short Name: <br />
+            {node.shortName}
+          </div>
         </div>
       )}
-      ;
     </div>
   );
 };

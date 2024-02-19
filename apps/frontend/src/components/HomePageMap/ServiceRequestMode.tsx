@@ -96,10 +96,6 @@ export function ServiceRequestMode({
       />
     ));
 
-  /*function getMapImage(currentFloor: string) {
-  return <img src={maps[currentFloor as keyof typeof maps]}/>;
-}*/
-
   return (
     <div>
       <TransformContainer>

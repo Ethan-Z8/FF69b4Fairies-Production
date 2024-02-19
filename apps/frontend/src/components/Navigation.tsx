@@ -66,7 +66,7 @@ export function Navigation() {
           Home Page
         </Nav.Link>
         <NavDropdown
-          title={<span style={{ color: "white" }}>Service Requests</span>}
+          title={<span style={{ color: "white" }}>Service Requests </span>}
           className="navbar-item"
         >
           <NavDropdown.Item href="/createServiceRequest">
@@ -76,20 +76,24 @@ export function Navigation() {
             View Service Requests
           </NavDropdown.Item>
         </NavDropdown>
-        <NavDropdown title={<span style={{ color: "white" }}>Map Data</span>}>
-          <Nav.Link href="/importAndExportData">Import & Export Data</Nav.Link>
-          <Nav.Link href="/mapData">View Map Data</Nav.Link>
-        </NavDropdown>
+
         {isAuthenticated && (
-          <NavDropdown
-            title={<span style={{ color: "white" }}>Employee Data</span>}
-          >
-            <Nav.Link href="/addEmployee">Add Employee</Nav.Link>
-            <Nav.Link href="/viewEmployeeData">View Employees</Nav.Link>
-            <Nav.Link href="/importAndExportEmployee">
-              Import & Export Employee Data
-            </Nav.Link>
-          </NavDropdown>
+          <>
+            <NavDropdown
+              title={<span style={{ color: "white" }}>Map Data</span>}
+            >
+              <Nav.Link href="/importAndExportData">
+                Import & Export Data
+              </Nav.Link>
+              <Nav.Link href="/mapData">View Map Data</Nav.Link>
+            </NavDropdown>
+            <NavDropdown
+              title={<span style={{ color: "white" }}>Employee Data</span>}
+            >
+              <Nav.Link href="/addEmployee">Add Employee</Nav.Link>
+              <Nav.Link href="/viewEmployeeData">View Employees</Nav.Link>
+            </NavDropdown>
+          </>
         )}
       </Nav>
       {!isAuthenticated && (
