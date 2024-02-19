@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import NodeSelectDropdown from "./NodeSelectDropdown";
 import Button from "react-bootstrap/Button";
 import "../../styling/DisplayMapNodes.css";
 import TransformContainer from "./TransformContainer.tsx";
@@ -23,6 +22,7 @@ import F3LR from "../assets/hospitalmaps/03_thethirdfloor-lowRes.png";
 import SelectorTabs from "./SelectorTabs.tsx";
 import RenderCircles from "./RenderCircles.tsx";
 import RenderPath from "./RenderPath.tsx";
+import StartEndSelect from "./StartEndSelect.tsx";
 
 interface Node {
   nodeID: string;
@@ -71,7 +71,6 @@ export function NavigationMode() {
     edges: false,
   });
   const [menuOpen, setMenuOpen] = useState(false);
-  const [shortNames, setShortNames] = useState({ start: "", end: "" });
 
   const [toggleNodes, setToggleNodes] = useState(true);
   const [toggleEdges, setToggleEdges] = useState(false);
@@ -163,31 +162,14 @@ export function NavigationMode() {
   const clearSearch = () => {
     setFirstClickedNodeId("");
     setSecondClickedNodeId("");
-    setShortNames({ start: "", end: "" });
   };
 
   const handleStartSelect = (value: string) => {
-    allNodes.forEach((node) => {
-      if (node.shortName === value) {
-        setFirstClickedNodeId(node.nodeID);
-        setShortNames((prevShortNames) => ({
-          ...prevShortNames,
-          start: node.shortName,
-        }));
-      }
-    });
+    setFirstClickedNodeId(value);
   };
 
   const handleEndSelect = (value: string) => {
-    allNodes.forEach((node) => {
-      if (node.shortName === value) {
-        setSecondClickedNodeId(node.nodeID);
-        setShortNames((prevShortNames) => ({
-          ...prevShortNames,
-          end: node.shortName,
-        }));
-      }
-    });
+    setSecondClickedNodeId(value);
   };
 
   const handleNodeClick = (node: Node) => {
@@ -196,40 +178,23 @@ export function NavigationMode() {
         case firstClickedNodeId: {
           console.log("undo first");
           setFirstClickedNodeId("");
-          setShortNames((prevShortNames) => ({
-            ...prevShortNames,
-            start: "",
-          }));
           break;
         }
         case secondClickedNodeId: {
           console.log("undo second");
           setSecondClickedNodeId("");
-          setShortNames((prevShortNames) => ({
-            ...prevShortNames,
-            end: "",
-          }));
           break;
         }
         default: {
           if (firstClickedNodeId === "") {
             setFirstClickedNodeId(node.nodeID);
-            setShortNames((prevShortNames) => ({
-              ...prevShortNames,
-              start: node.shortName,
-            }));
           } else if (secondClickedNodeId === "") {
             setClear({ nodes: false, edges: false });
             setSecondClickedNodeId(node.nodeID);
-            setShortNames((prevShortNames) => ({
-              ...prevShortNames,
-              end: node.shortName,
-            }));
           } else {
             clearSearch();
             setFirstClickedNodeId(node.nodeID);
             setSecondClickedNodeId("");
-            setShortNames({ start: node.shortName, end: "" });
           }
         }
       }
@@ -268,25 +233,13 @@ export function NavigationMode() {
         </div>
       </div>
       <div className="total">
-        <div
-          className="nodeSelectContainer"
-          style={{ display: "flex", flexDirection: "column" }}
-        >
-          <div style={{ display: "flex", alignItems: "center" }}>
-            <span style={{ width: "50px" }}>Start:</span>
-            <NodeSelectDropdown
-              label={shortNames.start}
-              onSelect={handleStartSelect}
-            />
-          </div>
-          <div style={{ display: "flex", alignItems: "center" }}>
-            <span style={{ width: "50px" }}>End:</span>
-            <NodeSelectDropdown
-              label={shortNames.end}
-              onSelect={handleEndSelect}
-            />
-          </div>
-          <Button onClick={clearSearch}>Clear</Button>
+        <div className="nodeSelectContainer" style={{}}>
+          <StartEndSelect
+            start={firstClickedNodeId}
+            end={secondClickedNodeId}
+            onSelectStart={handleStartSelect}
+            onSelectEnd={handleEndSelect}
+          />
         </div>
         <SelectorTabs
           mapIndex={mapIndex}
