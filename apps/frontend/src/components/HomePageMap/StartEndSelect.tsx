@@ -1,16 +1,24 @@
 import axios from "axios";
-import React, { useEffect, useState, useRef } from "react";
+import React, {
+  Dispatch,
+  useEffect,
+  useState,
+  useRef,
+  SetStateAction,
+} from "react";
 import "./StartEndSelect.css";
 
 interface Node {
   nodeID: string;
+  xcoord: number;
+  ycoord: number;
   floor: string;
   building: string;
   nodeType: string;
   longName: string;
   shortName: string;
+  neighbors: string[];
 }
-
 interface NodeSelectProps {
   start: string;
   end: string;
@@ -19,6 +27,7 @@ interface NodeSelectProps {
     event: React.SyntheticEvent<HTMLElement>,
   ) => void;
   onSelectEnd: (item: string, event: React.SyntheticEvent<HTMLElement>) => void;
+  onHoverNode: Dispatch<SetStateAction<Node | null>>;
 }
 
 const StartEndSelect: React.FC<NodeSelectProps> = ({
@@ -26,6 +35,7 @@ const StartEndSelect: React.FC<NodeSelectProps> = ({
   end,
   onSelectStart,
   onSelectEnd,
+  onHoverNode,
 }) => {
   const [startID, setStartID] = useState(start);
   const [endID, setEndID] = useState(end);
@@ -209,6 +219,12 @@ const StartEndSelect: React.FC<NodeSelectProps> = ({
                 )
                 .map((node) => (
                   <li
+                    onMouseEnter={() => {
+                      onHoverNode(node);
+                    }}
+                    onMouseLeave={() => {
+                      onHoverNode(null);
+                    }}
                     key={node.nodeID}
                     onClick={() => {
                       onSelectStart(
@@ -290,6 +306,12 @@ const StartEndSelect: React.FC<NodeSelectProps> = ({
                 )
                 .map((node) => (
                   <li
+                    onMouseEnter={() => {
+                      onHoverNode(node);
+                    }}
+                    onMouseLeave={() => {
+                      onHoverNode(null);
+                    }}
                     key={node.nodeID}
                     onClick={() => {
                       onSelectEnd(

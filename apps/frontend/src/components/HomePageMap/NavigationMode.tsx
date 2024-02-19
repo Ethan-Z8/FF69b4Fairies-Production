@@ -23,6 +23,7 @@ import SelectorTabs from "./SelectorTabs.tsx";
 import RenderCircles from "./RenderCircles.tsx";
 import RenderPath from "./RenderPath.tsx";
 import StartEndSelect from "./StartEndSelect.tsx";
+import HoveredNodeData from "./HoveredNodeData.tsx";
 
 interface Node {
   nodeID: string;
@@ -74,6 +75,7 @@ export function NavigationMode() {
 
   const [toggleNodes, setToggleNodes] = useState(true);
   const [toggleEdges, setToggleEdges] = useState(false);
+  const [hoveredNode, setHoveredNode] = useState<Node | null>(null);
 
   useEffect(() => {
     const getAllNodes = async () => {
@@ -239,6 +241,7 @@ export function NavigationMode() {
             end={secondClickedNodeId}
             onSelectStart={handleStartSelect}
             onSelectEnd={handleEndSelect}
+            onHoverNode={setHoveredNode}
           />
         </div>
         <SelectorTabs
@@ -289,6 +292,7 @@ export function NavigationMode() {
             />
           </div>
         </TransformContainer>
+        <HoveredNodeData node={hoveredNode} />
       </div>
     </div>
   );
