@@ -9,12 +9,9 @@ export function ToggleModeButton({
   currentMode,
   setCurrentMode,
 }: ToggleModeButtonProps) {
-  function handleChange(
-    e: React.MouseEvent<HTMLElement>,
-    newAlignment: string,
-  ) {
-    console.log(newAlignment);
-    setCurrentMode(newAlignment);
+  function handleChange(e: React.MouseEvent<HTMLElement>, newMode: string) {
+    console.log(newMode);
+    setCurrentMode(newMode);
   }
   return (
     <ToggleButtonGroup

@@ -80,7 +80,7 @@ export function DisplayPath() {
 
         setAllNodes(nodesData);
       } catch (error) {
-        console.error("Error fetching map nodess:", error);
+        console.error("Error fetching map nodes:", error);
       }
     };
 
@@ -297,7 +297,7 @@ export function DisplayPath() {
                             Math.pow(node.ycoord - prevNode.ycoord, 2),
                         )}px`,
                         height: "4px",
-                        backgroundColor: "red",
+                        backgroundColor: "black",
                         zIndex: 3,
                         transformOrigin: "left center",
                         transform: `translate(0, -2px) rotate(${Math.atan2(
@@ -336,7 +336,7 @@ export function DisplayPath() {
                     Math.pow(one.ycoord - prevNode.ycoord, 2),
                 )}px`,
                 height: "4px",
-                backgroundColor: "red",
+                backgroundColor: "black",
                 zIndex: 3,
                 transformOrigin: "left center",
                 transform: `rotate(${Math.atan2(

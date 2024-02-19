@@ -25,6 +25,10 @@ export function ViewServiceRequestPage() {
   >([]);
   const [statusFilter, setStatusFilter] = useState("");
   const [typeServiceFilter, setTypeServiceFilter] = useState("");
+  const [employeeFilter, setEmployeeFilter] = useState("");
+  const [employees, setEmployees] = useState<
+    Array<{ username: string; displayName: string }>
+  >([]);
 
   useEffect(() => {
     axios
@@ -32,6 +36,15 @@ export function ViewServiceRequestPage() {
       .then((res) => {
         setServiceRequests(res.data);
         setLoaded(true);
+      })
+      .catch((e: Error) => {
+        console.log(e.message);
+      });
+
+    axios
+      .get("/api/employee")
+      .then((res) => {
+        setEmployees(res.data);
       })
       .catch((e: Error) => {
         console.log(e.message);
@@ -49,14 +62,14 @@ export function ViewServiceRequestPage() {
           flexDirection: "column",
           gap: "1rem",
           width: "90%",
-          border: "8px solid #012D5A", // Add border styling here
-          borderRadius: "8px", // Add border-radius for rounded corners
+          border: "8px solid #012D5A",
+          borderRadius: "8px",
           padding: "1rem",
           margin: "1rem",
         }}
       >
         <Typography variant="h4">Service Requests</Typography>
-        <Box sx={{ display: "flex", gap: 2, width: "50%" }}>
+        <Box sx={{ display: "flex", gap: 2, width: "53%" }}>
           <FormControl sx={{ flex: 1 }}>
             <InputLabel>Progress Filter</InputLabel>
             <Select
@@ -90,6 +103,22 @@ export function ViewServiceRequestPage() {
               </MenuItem>
             </Select>
           </FormControl>
+          <FormControl sx={{ flex: 1 }}>
+            <InputLabel>Employee Filter</InputLabel>
+            <Select
+              value={employeeFilter}
+              label="Employee Filter"
+              id="employee"
+              onChange={(e) => setEmployeeFilter(e.target.value)}
+            >
+              <MenuItem value="">Any</MenuItem>
+              {employees.map((employee) => (
+                <MenuItem key={employee.username} value={employee.username}>
+                  {employee.displayName}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
         </Box>
         <TableContainer
           sx={{ border: 1, borderColor: "#44444444", borderRadius: 2 }}
@@ -117,6 +146,12 @@ export function ViewServiceRequestPage() {
                 .filter((req) => {
                   if (typeServiceFilter !== "") {
                     return req.typeService === typeServiceFilter;
+                  }
+                  return true;
+                })
+                .filter((req) => {
+                  if (employeeFilter !== "") {
+                    return req.employee === employeeFilter;
                   }
                   return true;
                 })

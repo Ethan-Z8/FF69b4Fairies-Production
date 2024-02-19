@@ -193,20 +193,20 @@ const StartEndSelect: React.FC<NodeSelectProps> = ({
             boxShadow: "1px -1px 2px rgba(0, 0, 0, 0.2)",
             caretColor: isStartFocused ? "white" : "transparent",
           }}
+          placeholder="Start Location"
         />
         {showSuggestions[0] && (
           <div
             className="scroll-container"
             style={{
               position: "absolute",
-              top: "24px",
               left: 0,
-              width: "75%",
               backgroundColor: "white",
               zIndex: -1,
               height: "30vh",
               borderRadius: "16px",
-              overflow: "auto",
+              overflow: "hidden",
+              overflowY: "scroll",
               boxShadow: "1px 2px 2px rgba(0, 0, 0, 0.2)",
             }}
           >
@@ -274,6 +274,7 @@ const StartEndSelect: React.FC<NodeSelectProps> = ({
             boxShadow: "1px 2px 2px rgba(0, 0, 0, 0.2)",
             zIndex: isEndFocused ? 28 : 26,
           }}
+          placeholder="End Location"
         />
         {showSuggestions[1] && (
           <div

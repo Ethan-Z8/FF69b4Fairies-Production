@@ -7,7 +7,7 @@ import { MapNodeInterface } from "common/src/interfaces/MapNodeInterface.ts";
 import { ToggleModeButton } from "../components/HomePageMap/ToggleModeButton.tsx";
 //import {DisplayPath} from "../components/DisplayPath.tsx";
 
-const floors = ["LL2", "LL1", "F1", "F2", "F3"];
+const floorIndices = ["LL2", "LL1", "F1", "F2", "F3"];
 function HomePage() {
   const [mapIndex, setMapIndex] = useState(0);
   const [mode, setMode] = useState("Navigation");
@@ -36,8 +36,7 @@ function HomePage() {
       ) : (
         <ServiceRequestMode
           nodes={Object.values(nodes!)}
-          currentFloor={floors[mapIndex]}
-          setHoveredNode={(a: string) => console.log(a)}
+          currentFloor={floorIndices[mapIndex]}
         />
       )}
       <div style={{ top: 20, right: 20, position: "absolute" }}>

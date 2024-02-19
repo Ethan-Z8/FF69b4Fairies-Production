@@ -17,13 +17,11 @@ const mapPathNames = Object.keys(maps) as Array<keyof typeof maps>;
 export interface ServiceRequestModeProps {
   nodes: MapNodeInterface[];
   currentFloor: string;
-  setHoveredNode: (node: string) => void;
 }
 
 export function ServiceRequestMode({
   nodes,
   currentFloor,
-  setHoveredNode,
 }: ServiceRequestModeProps) {
   console.log("sr nodes", nodes);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -31,6 +29,8 @@ export function ServiceRequestMode({
   const [serviceRequests, setServiceRequests] = useState<ServiceRequestType[]>(
     [],
   );
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [hoveredNode, setHoveredNode] = useState("");
   const [imageSizes, setImageSizes] = useState<{
     [key: string]: { width: number; height: number };
   }>({
@@ -81,7 +81,7 @@ export function ServiceRequestMode({
       acc[req.location] = ++acc[req.location] || 1;
       return acc;
     },
-    {} as { [key: string]: number },
+    {} as { [nodeID: string]: number },
   );
 
   const serviceRequestNodes = nodes

@@ -22,3 +22,7 @@
 .scroll-container::-webkit-scrollbar-button {
   display: none;
 }
+
+input::-webkit-input-placeholder {
+  color: #ffffff88;
+}

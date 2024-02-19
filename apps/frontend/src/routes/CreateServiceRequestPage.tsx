@@ -9,13 +9,13 @@ import { MapNodeInterface } from "common/src/interfaces/MapNodeInterface.ts";
 import { Employee } from "common/src/interfaces/Employee.ts";
 import axios from "axios";
 import {
+  Box,
   Button,
   FormControl,
   InputLabel,
   MenuItem,
   Select,
   Typography,
-  Paper,
 } from "@mui/material";
 
 //TODO: Make the location selectors autocomplete forms, not basic select forms
@@ -101,8 +101,7 @@ export function CreateServiceRequestPage() {
 
   return (
     loaded && (
-      <Paper
-        elevation={24}
+      <Box
         component="form"
         sx={{
           my: 8,
@@ -110,11 +109,7 @@ export function CreateServiceRequestPage() {
           display: "flex",
           flexDirection: "column",
           gap: "1rem",
-          width: "80%",
-          border: "8px solid #012D5A", // Add border styling here
-          borderRadius: "8px", // Add border-radius for rounded corners
-          padding: "1rem",
-          margin: "1rem",
+          width: "75%",
         }}
         onSubmit={handleSubmit}
       >
@@ -224,7 +219,7 @@ export function CreateServiceRequestPage() {
             Error Creating Service Request
           </Typography>
         )}
-      </Paper>
+      </Box>
     )
   );
 }
