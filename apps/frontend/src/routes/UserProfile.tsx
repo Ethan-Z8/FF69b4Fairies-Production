@@ -1,9 +1,15 @@
 //Access via "/userProfile" from localhost:3000
 import React from "react";
 import { useAuth0 } from "@auth0/auth0-react";
-import { Button, Avatar, Typography, Container } from "@mui/material";
+import {
+  Button,
+  Avatar,
+  Typography,
+  Container,
+  TableContainer,
+} from "@mui/material";
 //import { Employee } from "common/src/interfaces/Employee.ts";
-//import {ViewServiceRequestPage} from "./ViewServiceRequestPage.tsx";
+import { ViewServiceRequestPage } from "./ViewServiceRequestPage.tsx";
 
 const UserProfile: React.FC = () => {
   const { user, logout } = useAuth0();
@@ -33,7 +39,9 @@ const UserProfile: React.FC = () => {
       >
         Your assigned service requests...
       </Typography>
-
+      <TableContainer>
+        <ViewServiceRequestPage />
+      </TableContainer>
       <Button
         variant="contained"
         onClick={handleLogout}
