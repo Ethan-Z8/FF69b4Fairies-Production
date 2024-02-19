@@ -1,5 +1,5 @@
 import React, { useState, useRef } from "react";
-import "../styling/DisplayMapNodes.css";
+import "../../styling/DisplayMapNodes.css";
 
 interface Node {
   nodeID: string;
@@ -25,8 +25,6 @@ const NodeOnMap: React.FC<NodeOnMapProps> = ({ node, onNodeClick }) => {
   const nodeRef = useRef<HTMLDivElement>(null);
   const [hoverShift, setHoverShift] = useState(true);
   let clickTimer: ReturnType<typeof setTimeout>;
-  let hoverTimer: ReturnType<typeof setTimeout>;
-  const [hoverWait, setHoverWait] = useState(false);
 
   const [reachedTimeout, setReachedTimeout] = useState(false);
 
@@ -62,16 +60,11 @@ const NodeOnMap: React.FC<NodeOnMapProps> = ({ node, onNodeClick }) => {
 
   const handleMouseEnterNode = () => {
     setIsHovered(true);
-    hoverTimer = setTimeout(() => {
-      setHoverWait(true);
-    }, 500);
     //setIsHoveredPopup(true);
   };
 
   const handleMouseLeaveNode = () => {
     setIsHovered(false);
-    clearTimeout(hoverTimer);
-    setHoverWait(false);
     //setIsHoveredPopup(false);
   };
 
@@ -96,29 +89,7 @@ const NodeOnMap: React.FC<NodeOnMapProps> = ({ node, onNodeClick }) => {
         ref={nodeRef}
       >
         <div className="node-circle" />
-        {hoverWait && (
-          <div
-            className="popup"
-            style={{
-              width: `${25}vw`,
-              position: "fixed",
-              zIndex: 23,
-              backgroundColor: "white",
-              top: 0,
-              transform: "translate(-100%,0)",
-              padding: "15px",
-              border: "1px solid #ccc",
-              borderRadius: "15px",
-            }}
-          >
-            <h4>{longName}</h4>
-            <h5>ID: {node.nodeID}</h5>
-            <h5>Short Name: {node.shortName}</h5>
-            <h5>Floor: {node.floor}</h5>
-            <h5>Building: {node.building}</h5>
-            <h5>Node Type: {node.nodeType}</h5>
-          </div>
-        )}
+
         {isHovered && (
           <div className="long-name-display">
             <div

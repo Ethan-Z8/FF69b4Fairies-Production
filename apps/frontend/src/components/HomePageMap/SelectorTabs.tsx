@@ -1,8 +1,9 @@
 import React from "react";
-import "../styling/SelectorTabs.css";
+import "../../styling/SelectorTabs.css";
 import Button from "@mui/material/Button";
 import ToggleButtonGroup from "@mui/material/ButtonGroup";
 import Box from "@mui/material/Box";
+import "../../styling/SelectorTabs.css";
 
 interface SelectorTabsProps {
   mapIndex: number;

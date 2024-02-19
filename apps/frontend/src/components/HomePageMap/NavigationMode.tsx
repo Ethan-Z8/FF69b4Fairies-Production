@@ -1,15 +1,14 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import NodeSelectDropdown from "./NodeSelectDropdown";
 import Button from "react-bootstrap/Button";
-import "../styling/DisplayMapNodes.css";
+import "../../styling/DisplayMapNodes.css";
 import TransformContainer from "./TransformContainer.tsx";
 
-import LL1 from "../assets/hospitalmaps/00_thelowerlevel1-min.png";
-import LL2 from "../assets/hospitalmaps/00_thelowerlevel2-min.png";
-import F1 from "../assets/hospitalmaps/01_thefirstfloor-min.png";
-import F2 from "../assets/hospitalmaps/02_thesecondfloor-min.png";
-import F3 from "../assets/hospitalmaps/03_thethirdfloor-min.png";
+import LL1 from "../../assets/hospitalmaps/00_thelowerlevel1-min.png";
+import LL2 from "../../assets/hospitalmaps/00_thelowerlevel2-min.png";
+import F1 from "../../assets/hospitalmaps/01_thefirstfloor-min.png";
+import F2 from "../../assets/hospitalmaps/02_thesecondfloor-min.png";
+import F3 from "../../assets/hospitalmaps/03_thethirdfloor-min.png";
 
 /*
 import GRLR from "../assets/hospitalmaps/00_thegroundfloor-lowRes.png";
@@ -23,6 +22,8 @@ import F3LR from "../assets/hospitalmaps/03_thethirdfloor-lowRes.png";
 import SelectorTabs from "./SelectorTabs.tsx";
 import RenderCircles from "./RenderCircles.tsx";
 import RenderPath from "./RenderPath.tsx";
+import StartEndSelect from "./StartEndSelect.tsx";
+import HoveredNodeData from "./HoveredNodeData.tsx";
 
 interface Node {
   nodeID: string;
@@ -52,7 +53,7 @@ const floorNames: string[] = [
   "Level 3",
 ];
 
-export function InteractiveMap() {
+export function NavigationMode() {
   const [firstClickedNodeId, setFirstClickedNodeId] = useState<string>("");
   const [secondClickedNodeId, setSecondClickedNodeId] = useState<string>("");
   const [nodes, setNodes] = useState<Node[]>([]);
@@ -71,10 +72,10 @@ export function InteractiveMap() {
     edges: false,
   });
   const [menuOpen, setMenuOpen] = useState(false);
-  const [shortNames, setShortNames] = useState({ start: "", end: "" });
 
   const [toggleNodes, setToggleNodes] = useState(true);
   const [toggleEdges, setToggleEdges] = useState(false);
+  const [hoveredNode, setHoveredNode] = useState<Node | null>(null);
 
   useEffect(() => {
     const getAllNodes = async () => {
@@ -121,7 +122,6 @@ export function InteractiveMap() {
   }, []);
 
   useEffect(() => {
-    console.log(firstClickedNodeId, secondClickedNodeId);
     if (secondClickedNodeId !== "" && firstClickedNodeId !== "") {
       const getPathNodes = async () => {
         try {
@@ -164,31 +164,14 @@ export function InteractiveMap() {
   const clearSearch = () => {
     setFirstClickedNodeId("");
     setSecondClickedNodeId("");
-    setShortNames({ start: "", end: "" });
   };
 
   const handleStartSelect = (value: string) => {
-    allNodes.forEach((node) => {
-      if (node.shortName === value) {
-        setFirstClickedNodeId(node.nodeID);
-        setShortNames((prevShortNames) => ({
-          ...prevShortNames,
-          start: node.shortName,
-        }));
-      }
-    });
+    setFirstClickedNodeId(value);
   };
 
   const handleEndSelect = (value: string) => {
-    allNodes.forEach((node) => {
-      if (node.shortName === value) {
-        setSecondClickedNodeId(node.nodeID);
-        setShortNames((prevShortNames) => ({
-          ...prevShortNames,
-          end: node.shortName,
-        }));
-      }
-    });
+    setSecondClickedNodeId(value);
   };
 
   const handleNodeClick = (node: Node) => {
@@ -197,40 +180,23 @@ export function InteractiveMap() {
         case firstClickedNodeId: {
           console.log("undo first");
           setFirstClickedNodeId("");
-          setShortNames((prevShortNames) => ({
-            ...prevShortNames,
-            start: "",
-          }));
           break;
         }
         case secondClickedNodeId: {
           console.log("undo second");
           setSecondClickedNodeId("");
-          setShortNames((prevShortNames) => ({
-            ...prevShortNames,
-            end: "",
-          }));
           break;
         }
         default: {
           if (firstClickedNodeId === "") {
             setFirstClickedNodeId(node.nodeID);
-            setShortNames((prevShortNames) => ({
-              ...prevShortNames,
-              start: node.shortName,
-            }));
           } else if (secondClickedNodeId === "") {
             setClear({ nodes: false, edges: false });
             setSecondClickedNodeId(node.nodeID);
-            setShortNames((prevShortNames) => ({
-              ...prevShortNames,
-              end: node.shortName,
-            }));
           } else {
             clearSearch();
             setFirstClickedNodeId(node.nodeID);
             setSecondClickedNodeId("");
-            setShortNames({ start: node.shortName, end: "" });
           }
         }
       }
@@ -269,25 +235,14 @@ export function InteractiveMap() {
         </div>
       </div>
       <div className="total">
-        <div
-          className="nodeSelectContainer"
-          style={{ display: "flex", flexDirection: "column" }}
-        >
-          <div style={{ display: "flex", alignItems: "center" }}>
-            <span style={{ width: "50px" }}>Start:</span>
-            <NodeSelectDropdown
-              label={shortNames.start}
-              onSelect={handleStartSelect}
-            />
-          </div>
-          <div style={{ display: "flex", alignItems: "center" }}>
-            <span style={{ width: "50px" }}>End:</span>
-            <NodeSelectDropdown
-              label={shortNames.end}
-              onSelect={handleEndSelect}
-            />
-          </div>
-          <Button onClick={clearSearch}>Clear</Button>
+        <div className="nodeSelectContainer" style={{}}>
+          <StartEndSelect
+            start={firstClickedNodeId}
+            end={secondClickedNodeId}
+            onSelectStart={handleStartSelect}
+            onSelectEnd={handleEndSelect}
+            onHoverNode={setHoveredNode}
+          />
         </div>
         <SelectorTabs
           mapIndex={mapIndex}
@@ -337,6 +292,7 @@ export function InteractiveMap() {
             />
           </div>
         </TransformContainer>
+        <HoveredNodeData node={hoveredNode} />
       </div>
     </div>
   );
