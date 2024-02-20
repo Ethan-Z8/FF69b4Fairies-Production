@@ -42,8 +42,8 @@ interface ImageSize {
   height: number;
 }
 
-const mapPath: string[] = [LL1, LL2, F1, F2, F3];
-const mapPathNames: string[] = ["L1", "L2", "1", "2", "3"];
+const mapPath: string[] = [LL2, LL1, F1, F2, F3];
+const mapPathNames: string[] = ["L2", "L1", "1", "2", "3"];
 
 const floorNames: string[] = [
   "Lower Level 2",

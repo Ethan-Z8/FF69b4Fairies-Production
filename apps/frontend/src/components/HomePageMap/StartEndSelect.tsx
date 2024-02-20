@@ -88,7 +88,6 @@ const StartEndSelect: React.FC<NodeSelectProps> = ({
   }, [end, nodes]);
 
   useEffect(() => {
-    console.log(isStartFocused, isEndFocused);
     const handleMouseDown = () => {
       //console.log(isStartFocused);
       if (!isStartFocused && !isEndFocused) {
