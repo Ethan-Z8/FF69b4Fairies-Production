@@ -35,7 +35,7 @@ const UserProfile: React.FC = () => {
         fontSize={"15px"}
         color={"gray"}
         gutterBottom
-        style={{ marginTop: "100px", marginRight: "250px" }}
+        style={{ marginTop: "50px", marginRight: "300px" }}
       >
         Your assigned service requests...
       </Typography>
@@ -45,7 +45,7 @@ const UserProfile: React.FC = () => {
       <Button
         variant="contained"
         onClick={handleLogout}
-        style={{ marginTop: "350px" }}
+        style={{ marginTop: "50px" }}
       >
         Sign Out
       </Button>
