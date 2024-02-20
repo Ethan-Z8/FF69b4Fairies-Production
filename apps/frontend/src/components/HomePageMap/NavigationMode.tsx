@@ -173,12 +173,14 @@ export function NavigationMode() {
           setMapIndex(hoveredFloorIndex);
         }
       }, 750);
-    } /*
-    else {
-      timeoutId = setTimeout(() => {
+    } else {
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+      }
+      /*timeoutId = setTimeout(() => {
         setMapIndex(defaultMap);
-      }, 100);
-    }*/
+      }, 100);*/
+    }
 
     return () => {
       if (timeoutId) {
