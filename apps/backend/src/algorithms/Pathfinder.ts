@@ -116,7 +116,6 @@ export default class Pathfinder {
         }
       }
     }
-
     return directions;
   }
 }
