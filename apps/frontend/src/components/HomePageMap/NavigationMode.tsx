@@ -132,8 +132,16 @@ export function NavigationMode() {
             },
           });
           const nodesData: Node[] = Object.values(pathNodes.data);
-
           setNodes(nodesData);
+          if (hoveredNode != null) {
+            const hoveredFloorIndex = mapPathNames.findIndex(
+              (floor) =>
+                floor.toLowerCase() === hoveredNode.floor.toLowerCase(),
+            );
+            if (hoveredFloorIndex !== -1) {
+              setMapIndex(hoveredFloorIndex);
+            }
+          }
         } catch (error) {
           console.log("Error has not selected 2 nodes ");
         }
@@ -142,7 +150,32 @@ export function NavigationMode() {
     } else {
       setNodes([]);
     }
-  }, [aNodes, secondClickedNodeId, firstClickedNodeId]);
+  }, [hoveredNode, aNodes, secondClickedNodeId, firstClickedNodeId]);
+
+  useEffect(() => {
+    let timeoutId: NodeJS.Timeout | undefined;
+
+    if (hoveredNode != null) {
+      timeoutId = setTimeout(() => {
+        const hoveredFloorIndex = mapPathNames.findIndex(
+          (floor) => floor.toLowerCase() === hoveredNode.floor.toLowerCase(),
+        );
+        if (hoveredFloorIndex !== -1) {
+          setMapIndex(hoveredFloorIndex);
+        }
+      }, 750);
+    } else {
+      timeoutId = setTimeout(() => {
+        setMapIndex(0);
+      }, 100);
+    }
+
+    return () => {
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+      }
+    };
+  }, [hoveredNode]);
 
   const handleToggleNodes = () => {
     clearSearch();
@@ -279,6 +312,7 @@ export function NavigationMode() {
               floor={mapPathNames[mapIndex]}
               toggleNodes={toggleNodes}
               handleNodeClick={handleNodeClick}
+              handleNodeHover={setHoveredNode}
             />
             <RenderPath
               allNodes={allNodes}
