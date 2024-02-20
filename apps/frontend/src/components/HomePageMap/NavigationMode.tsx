@@ -76,6 +76,7 @@ export function NavigationMode() {
   const [toggleNodes, setToggleNodes] = useState(true);
   const [toggleEdges, setToggleEdges] = useState(false);
   const [hoveredNode, setHoveredNode] = useState<Node | null>(null);
+  const [defaultMap, setDefaultMap] = useState(0);
 
   useEffect(() => {
     const getAllNodes = async () => {
@@ -133,6 +134,12 @@ export function NavigationMode() {
           });
           const nodesData: Node[] = Object.values(pathNodes.data);
           setNodes(nodesData);
+          const defaultMapIndex = mapPathNames.findIndex(
+            (floor) => floor.toLowerCase() == aNodes[firstClickedNodeId].floor,
+          );
+          if (defaultMapIndex !== -1) {
+            setDefaultMap(defaultMapIndex);
+          }
           if (hoveredNode != null) {
             const hoveredFloorIndex = mapPathNames.findIndex(
               (floor) =>
@@ -164,18 +171,19 @@ export function NavigationMode() {
           setMapIndex(hoveredFloorIndex);
         }
       }, 750);
-    } else {
+    } /*
+    else {
       timeoutId = setTimeout(() => {
-        setMapIndex(0);
+        setMapIndex(defaultMap);
       }, 100);
-    }
+    }*/
 
     return () => {
       if (timeoutId) {
         clearTimeout(timeoutId);
       }
     };
-  }, [hoveredNode]);
+  }, [defaultMap, hoveredNode]);
 
   const handleToggleNodes = () => {
     clearSearch();

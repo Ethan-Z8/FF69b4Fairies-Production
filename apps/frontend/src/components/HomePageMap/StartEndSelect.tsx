@@ -144,7 +144,6 @@ const StartEndSelect: React.FC<NodeSelectProps> = ({
       if (inputRef.current) {
         inputRef.current.value = results[0].nodeID;
       }
-
       onSelect(results[0].nodeID, {} as React.SyntheticEvent<HTMLElement>);
     } else {
       setTerm("");
@@ -172,6 +171,7 @@ const StartEndSelect: React.FC<NodeSelectProps> = ({
           onChange={(e) => {
             handleSearch(e, onSelectStart, setStartID, setStartName);
             if (isStartFocused) setShowSuggestions([true, false]);
+            setShowSuggestions([true, false]);
           }}
           onFocus={handleFocusStart}
           onClick={() => setShowSuggestions([true, false])}
@@ -218,39 +218,59 @@ const StartEndSelect: React.FC<NodeSelectProps> = ({
               boxShadow: "1px 2px 2px rgba(0, 0, 0, 0.2)",
             }}
           >
-            <ul style={{ listStyleType: "none", padding: "32px 0 0 0" }}>
-              {items.map((node) => (
-                <li
-                  onMouseEnter={() => {
-                    onHoverNode(node);
-                    setHoveredItem(node.nodeID); // Set hovered item
-                  }}
-                  onMouseLeave={() => {
-                    onHoverNode(null);
-                    setHoveredItem(null); // Clear hovered item
-                  }}
-                  key={node.nodeID}
-                  onClick={() => {
-                    onSelectStart(
-                      node.nodeID,
-                      {} as React.SyntheticEvent<HTMLElement>,
-                    );
-                    setStartName(node.shortName);
-                  }}
-                  style={{
-                    backgroundColor:
-                      hoveredItem === node.nodeID
-                        ? "rgba(255, 255, 255, 0.1)"
-                        : "white", // Apply hover effect
-                    padding: "8px",
-                    cursor: "pointer",
-                    marginBottom: "4px",
-                    transition: "background-color 0.1s",
-                  }}
-                >
-                  {node.longName}
-                </li>
-              ))}
+            <ul
+              style={{ listStyleType: "none", padding: "32px 0 0 0" }}
+              onMouseEnter={() => setIsStartFocused(true)}
+            >
+              {items
+                .filter(
+                  (node) =>
+                    node.shortName
+                      .toLowerCase()
+                      .includes(startName.toLowerCase()) ||
+                    node.longName
+                      .toLowerCase()
+                      .includes(startName.toLowerCase()) ||
+                    node.nodeID
+                      .toLowerCase()
+                      .includes(startName.toLowerCase()) ||
+                    node.nodeType
+                      .toLowerCase()
+                      .includes(startName.toLowerCase()),
+                )
+                .map((node) => (
+                  <li
+                    onMouseEnter={() => {
+                      onHoverNode(node);
+                      setHoveredItem(node.nodeID); // Set hovered item
+                    }}
+                    onMouseLeave={() => {
+                      onHoverNode(null);
+                      setHoveredItem(null); // Clear hovered item
+                    }}
+                    key={node.nodeID}
+                    onClick={() => {
+                      onSelectStart(
+                        node.nodeID,
+                        {} as React.SyntheticEvent<HTMLElement>,
+                      );
+                      setStartName(node.shortName);
+                      setShowSuggestions([true, false]);
+                    }}
+                    style={{
+                      backgroundColor:
+                        hoveredItem === node.nodeID
+                          ? "rgba(255, 255, 255, 0.1)"
+                          : "white", // Apply hover effect
+                      padding: "8px",
+                      cursor: "pointer",
+                      marginBottom: "4px",
+                      transition: "background-color 0.1s",
+                    }}
+                  >
+                    {node.longName}
+                  </li>
+                ))}
             </ul>
           </div>
         )}
@@ -261,7 +281,8 @@ const StartEndSelect: React.FC<NodeSelectProps> = ({
           value={endName}
           onChange={(e) => {
             handleSearch(e, onSelectEnd, setEndID, setEndName);
-            if (isEndFocused) setShowSuggestions([true, false]);
+            if (isEndFocused) setShowSuggestions([false, true]);
+            setShowSuggestions([false, true]);
           }}
           onFocus={handleFocusEnd}
           onClick={() => setShowSuggestions([false, true])}
@@ -287,8 +308,8 @@ const StartEndSelect: React.FC<NodeSelectProps> = ({
           style={{
             position: "absolute",
             right: "16px",
-            top: "50%",
-            transform: "translateY(25%)",
+            top: "100%",
+            transform: "translateY(-150%)",
           }}
         >
           <span style={{ color: "#fff", fontSize: "12px" }}>▼</span>
@@ -298,7 +319,7 @@ const StartEndSelect: React.FC<NodeSelectProps> = ({
             className="scroll-container"
             style={{
               position: "absolute",
-              top: "72px",
+              top: "80%",
               left: 0,
               width: "75%",
               backgroundColor: "white",
@@ -309,39 +330,55 @@ const StartEndSelect: React.FC<NodeSelectProps> = ({
               boxShadow: "1px 2px 2px rgba(0, 0, 0, 0.2)",
             }}
           >
-            <ul style={{ listStyleType: "none", padding: "32px 0 0 0" }}>
-              {items.map((node) => (
-                <li
-                  onMouseEnter={() => {
-                    onHoverNode(node);
-                    setHoveredItem(node.nodeID); // Set hovered item
-                  }}
-                  onMouseLeave={() => {
-                    onHoverNode(null);
-                    setHoveredItem(null); // Clear hovered item
-                  }}
-                  key={node.nodeID}
-                  onClick={() => {
-                    onSelectEnd(
-                      node.nodeID,
-                      {} as React.SyntheticEvent<HTMLElement>,
-                    );
-                    setEndName(node.shortName);
-                  }}
-                  style={{
-                    backgroundColor:
-                      hoveredItem === node.nodeID
-                        ? "rgba(255, 255, 255, 0.1)"
-                        : "white", // Apply hover effect
-                    padding: "8px",
-                    cursor: "pointer",
-                    marginBottom: "4px",
-                    transition: "background-color 0.1s",
-                  }}
-                >
-                  {node.longName}
-                </li>
-              ))}
+            <ul
+              style={{ listStyleType: "none", padding: "32px 0 0 0" }}
+              onMouseEnter={() => setIsEndFocused(true)}
+            >
+              {items
+                .filter(
+                  (node) =>
+                    node.shortName
+                      .toLowerCase()
+                      .includes(endName.toLowerCase()) ||
+                    node.longName
+                      .toLowerCase()
+                      .includes(endName.toLowerCase()) ||
+                    node.nodeID.toLowerCase().includes(endName.toLowerCase()) ||
+                    node.nodeType.toLowerCase().includes(endName.toLowerCase()),
+                )
+                .map((node) => (
+                  <li
+                    onMouseEnter={() => {
+                      onHoverNode(node);
+                      setHoveredItem(node.nodeID); // Set hovered item
+                    }}
+                    onMouseLeave={() => {
+                      onHoverNode(null);
+                      setHoveredItem(null); // Clear hovered item
+                    }}
+                    key={node.nodeID}
+                    onClick={() => {
+                      onSelectEnd(
+                        node.nodeID,
+                        {} as React.SyntheticEvent<HTMLElement>,
+                      );
+                      setEndName(node.shortName);
+                      setShowSuggestions([false, true]);
+                    }}
+                    style={{
+                      backgroundColor:
+                        hoveredItem === node.nodeID
+                          ? "rgba(255, 255, 255, 0.1)"
+                          : "white", // Apply hover effect
+                      padding: "8px",
+                      cursor: "pointer",
+                      marginBottom: "4px",
+                      transition: "background-color 0.1s",
+                    }}
+                  >
+                    {node.longName}
+                  </li>
+                ))}
             </ul>
           </div>
         )}
@@ -349,5 +386,4 @@ const StartEndSelect: React.FC<NodeSelectProps> = ({
     </div>
   );
 };
-
 export default StartEndSelect;
