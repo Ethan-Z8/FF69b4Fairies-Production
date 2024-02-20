@@ -2,6 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import {
   Box,
+  Button,
   FormControl,
   InputLabel,
   MenuItem,
@@ -15,6 +16,7 @@ import {
   TableRow,
   Typography,
 } from "@mui/material";
+import RestartAltIcon from "@mui/icons-material/RestartAlt";
 import { ServiceRequestRow } from "../components/ServiceRequestRow.tsx";
 import { ServiceRequestType } from "common/src/interfaces/ServiceRequest.ts";
 import "../styling/viewRequestPage.css";
@@ -52,6 +54,25 @@ export function ViewServiceRequestPage() {
       });
   }, []);
 
+  const inProgressCount = serviceRequests.filter(
+    (request) => request.progress === "InProgress",
+  ).length;
+  const completedCount = serviceRequests.filter(
+    (request) => request.progress === "Completed",
+  ).length;
+  const unassignedCount = serviceRequests.filter(
+    (request) => request.progress === "Unassigned",
+  ).length;
+  const assignedCount = serviceRequests.filter(
+    (request) => request.progress === "Assigned",
+  ).length;
+
+  const resetFilters = () => {
+    setStatusFilter("");
+    setTypeServiceFilter("");
+    setEmployeeFilter("");
+  };
+
   return (
     loaded && (
       <div className={"topContainer"}>
@@ -63,7 +84,7 @@ export function ViewServiceRequestPage() {
             display: "flex",
             flexDirection: "column",
             gap: "1rem",
-            width: "90%",
+            width: "98%",
             border: "8px solid #012D5A",
             borderRadius: "8px",
             padding: "1rem",
@@ -74,21 +95,65 @@ export function ViewServiceRequestPage() {
             <div className={"dashboardLeft"}>
               <div className={"topRow"}>
                 <div className={"text"}>
-                  <h3>Unassigned</h3>
+                  <Typography
+                    variant="h6"
+                    onClick={() => setStatusFilter("Unassigned")}
+                    style={{
+                      color: "white",
+                      fontSize: "32px",
+                      textShadow: "2px 2px 4px rgba(0, 0, 0, 1)",
+                      cursor: "pointer",
+                    }}
+                  >
+                    Unassigned<p>{unassignedCount}</p>
+                  </Typography>
                 </div>
                 <div className={"text"}>
-                  <h3>Assigned</h3>
+                  <Typography
+                    variant="h6"
+                    onClick={() => setStatusFilter("Assigned")}
+                    style={{
+                      color: "white",
+                      fontSize: "32px",
+                      textShadow: "2px 2px 4px rgba(0, 0, 0, 1)",
+                      cursor: "pointer",
+                    }}
+                  >
+                    Assigned<p>{assignedCount}</p>
+                  </Typography>
                 </div>
               </div>
               <div className={"bottomRow"}>
                 <div className={"rowLeft"}>
                   <div className={"text"}>
-                    <h3>In Progress</h3>
+                    <Typography
+                      variant="h6"
+                      onClick={() => setStatusFilter("InProgress")}
+                      style={{
+                        color: "white",
+                        fontSize: "32px",
+                        textShadow: "2px 2px 4px rgba(0, 0, 0, 1)",
+                        cursor: "pointer",
+                      }}
+                    >
+                      In Progress<p>{inProgressCount}</p>
+                    </Typography>
                   </div>
                 </div>
                 <div className={"rowRight"}>
                   <div className={"text"}>
-                    <h3>Completed</h3>
+                    <Typography
+                      variant="h6"
+                      onClick={() => setStatusFilter("Completed")}
+                      style={{
+                        color: "white",
+                        fontSize: "32px",
+                        textShadow: "2px 2px 4px rgba(0, 0, 0, 1)",
+                        cursor: "pointer",
+                      }}
+                    >
+                      Completed<p>{completedCount}</p>
+                    </Typography>
                   </div>
                 </div>
               </div>
@@ -98,7 +163,7 @@ export function ViewServiceRequestPage() {
             </div>
           </div>
           <Typography variant="h4">Service Requests</Typography>
-          <Box sx={{ display: "flex", gap: 2, width: "53%" }}>
+          <Box sx={{ display: "flex", gap: 2, width: "65%" }}>
             <FormControl sx={{ flex: 1 }}>
               <InputLabel>Progress Filter</InputLabel>
               <Select
@@ -148,6 +213,13 @@ export function ViewServiceRequestPage() {
                 ))}
               </Select>
             </FormControl>
+            <Button
+              variant="outlined"
+              onClick={resetFilters}
+              style={{ color: "red", borderColor: "red" }}
+            >
+              Reset Filters <RestartAltIcon />
+            </Button>
           </Box>
           <TableContainer
             sx={{ border: 1, borderColor: "#44444444", borderRadius: 2 }}

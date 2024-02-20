@@ -163,6 +163,19 @@ const NodeOnMap: React.FC<NodeOnMapProps> = ({ node, onNodeClick }) => {
             <p>Floor: {node.floor}</p>
             <p>Building: {node.building}</p>
             <p>Node Type: {node.nodeType}</p>
+            {serviceRequests
+              .filter((request) => request.location === node.nodeID)
+              .map((request, index) => (
+                <div key={index}>
+                  {/*<p>Service Request {index + 1}</p>*/}
+                  <p style={{ color: "#ff69b4" }}>
+                    Type: {request.typeService}{" "}
+                  </p>
+                  {/*<p>Description: {request.}</p>*/}
+                  <p style={{ color: "#ff69b4" }}>Status: {request.progress}</p>
+                  {/* Add other relevant information */}
+                </div>
+              ))}
           </div>
         )}
         {isHovered && (
