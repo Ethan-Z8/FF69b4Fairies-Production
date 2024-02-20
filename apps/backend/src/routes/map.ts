@@ -75,7 +75,7 @@ mapRouter.get("/path", async (req, res) => {
     }
   } catch (e) {
     console.log(e);
-    res.sendStatus(402);
+    res.sendStatus(400);
   }
 });
 
@@ -104,6 +104,35 @@ mapRouter.get("/pathNodes", async (req: Request, res: Response) => {
   } catch (e) {
     console.error(e);
     res.status(500).send("Internal server error");
+  }
+});
+
+mapRouter.get("/getActiveFloors", async (req: Request, res: Response) => {
+  console.log("test");
+  const endpoints = req.query as StartAndEndNodes;
+  type StartAndEndNodes = {
+    start: string;
+    end: string;
+  };
+  try {
+    const nodes = await Prisma.mapNode.findMany();
+    const edges = await Prisma.mapEdge.findMany();
+    const pathFindingGraph = new Pathfinder(nodes, edges);
+    const shortestPath: MapNode[] = Array.from(
+      pathFindingGraph
+        .findShortestPathNodes(endpoints.start, endpoints.end)
+        .values(),
+    );
+    const activeFloors: string[] = [];
+    shortestPath.forEach((node) => {
+      if (!activeFloors.includes(node.floor)) {
+        activeFloors.push(node.floor);
+      }
+    });
+    res.status(200).json(activeFloors);
+  } catch (e) {
+    console.log(e);
+    res.sendStatus(400);
   }
 });
 

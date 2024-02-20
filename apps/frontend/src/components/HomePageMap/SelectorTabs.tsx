@@ -1,21 +1,54 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "../../styling/SelectorTabs.css";
 import Button from "@mui/material/Button";
 import ToggleButtonGroup from "@mui/material/ButtonGroup";
 import Box from "@mui/material/Box";
-import "../../styling/SelectorTabs.css";
+import axios from "axios";
 
 interface SelectorTabsProps {
   mapIndex: number;
   onMapSelect: (index: number) => void;
   tabNames: string[];
+  start: string;
+  end: string;
 }
 
 const SelectorTabs: React.FC<SelectorTabsProps> = ({
   mapIndex,
   onMapSelect,
   tabNames,
+  start,
+  end,
 }) => {
+  const [activeFloor, setActiveFloor] = useState<string[]>([]);
+
+  useEffect(() => {
+    const getActiveFloors = async () => {
+      try {
+        const res = await axios.get("/api/map/getActiveFloors", {
+          params: { start, end },
+        });
+        setActiveFloor(res.data);
+        console.log(res);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    getActiveFloors();
+  }, [start, end]);
+
+  const floorMap = new Map<string, string>();
+  floorMap.set("F1", "1");
+  floorMap.set("F2", "2");
+  floorMap.set("F3", "3");
+  floorMap.set("LL1", "L1");
+  floorMap.set("LL2", "L2");
+
+  const isFloorActive = (floor: string) => {
+    const prefixedFloor = floorMap.get(floor);
+    return prefixedFloor ? activeFloor.includes(prefixedFloor) : false;
+  };
+
   const handleTabClick = (index: number) => {
     onMapSelect(index);
   };
@@ -29,7 +62,7 @@ const SelectorTabs: React.FC<SelectorTabsProps> = ({
         },
         position: "absolute",
         bottom: 0,
-        right: 0,
+        right: 20,
         zIndex: 1,
         backgroundColor: "transparent",
         boxShadow: 0,
@@ -53,28 +86,26 @@ const SelectorTabs: React.FC<SelectorTabsProps> = ({
               className={`individual ${mapIndex === tabNames.length - 1 - index ? "active" : ""}`}
               onClick={() => handleTabClick(tabNames.length - 1 - index)}
               sx={{
+                padding: "10px 20px",
                 "&.MuiButton-root": {
-                  width: "100%",
-                  height: "3rem",
-                  backgroundColor: "#042c5c",
-                  borderRadius: "6px",
-                  border: "5px solid",
-                  gap: 10,
-                  transition:
-                    "background-color 0.3s ease, color 0.3s ease,  transform .3s ease;",
+                  borderColor: isFloorActive(tab) ? "lightblue" : "#042c5c",
+                  backgroundColor: isFloorActive(tab) ? "lightblue" : "#042c5c",
+                  transition: "background-color 0.3s ease, color 0.3s ease",
                   boxShadow: 5,
-                  borderColor: "white",
-                  margin: ".5rem",
+                  fontSize: "20px",
                 },
                 "&.active": {
-                  borderColor: "#f4bc3c",
-                  color: "white",
-                  backgroundColor: "#042c5c",
-                  transform: "translate(-40px)",
-                  justifyContent: "center",
+                  color: "black",
+                  backgroundColor: "#f4bc3c",
+                  transform: "none",
+                  width: 100,
                 },
-                "&:hover": {
-                  backgroundColor: "hsl(230, 100%, 15%)",
+
+                "&.individual:first-of-type": {
+                  borderRadius: "16px 16px 0px 0px",
+                },
+                "&.individual:last-of-type": {
+                  borderRadius: "0px 0px 16px 16px",
                 },
               }}
             >

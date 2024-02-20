@@ -45,13 +45,7 @@ interface ImageSize {
 const mapPath: string[] = [LL1, LL2, F1, F2, F3];
 const mapPathNames: string[] = ["L1", "L2", "1", "2", "3"];
 
-const floorNames: string[] = [
-  "Lower Level 2",
-  "Lower Level 1",
-  "Level 1",
-  "Level 2",
-  "Level 3",
-];
+const floorNames: string[] = ["LL1", "LL2", "F1", "F2", "F3"];
 
 export function NavigationMode() {
   const [firstClickedNodeId, setFirstClickedNodeId] = useState<string>("");
@@ -248,6 +242,8 @@ export function NavigationMode() {
           mapIndex={mapIndex}
           onMapSelect={handleMapSelect}
           tabNames={floorNames}
+          start={firstClickedNodeId}
+          end={secondClickedNodeId}
         />
         <TransformContainer>
           <div
