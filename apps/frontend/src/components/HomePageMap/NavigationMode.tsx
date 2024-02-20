@@ -164,7 +164,7 @@ export function NavigationMode() {
   useEffect(() => {
     let timeoutId: NodeJS.Timeout | undefined;
 
-    if (hoveredNode != null) {
+    if (hoveredNode != null && hoveredNode.floor != mapPathNames[mapIndex]) {
       timeoutId = setTimeout(() => {
         const hoveredFloorIndex = mapPathNames.findIndex(
           (floor) => floor.toLowerCase() === hoveredNode.floor.toLowerCase(),
@@ -172,7 +172,7 @@ export function NavigationMode() {
         if (hoveredFloorIndex !== -1) {
           setMapIndex(hoveredFloorIndex);
         }
-      }, 750);
+      }, 650);
     } else {
       if (timeoutId) {
         clearTimeout(timeoutId);
@@ -187,7 +187,7 @@ export function NavigationMode() {
         clearTimeout(timeoutId);
       }
     };
-  }, [hoveredNode]);
+  }, [hoveredNode, mapIndex]);
 
   const handleToggleNodes = () => {
     clearSearch();

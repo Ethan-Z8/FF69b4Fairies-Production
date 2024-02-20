@@ -7,6 +7,7 @@ import React, {
   SetStateAction,
 } from "react";
 import "./StartEndSelect.css";
+import TextDirectionPathFinding from "./TextDirectionPathFinding.tsx";
 
 interface Node {
   nodeID: string;
@@ -242,11 +243,13 @@ const StartEndSelect: React.FC<NodeSelectProps> = ({
                   <li
                     onMouseEnter={() => {
                       onHoverNode(node);
-                      setHoveredItem(node.nodeID); // Set hovered item
+                      setHoveredItem(node.nodeID);
+                      console.log(hoveredItem);
                     }}
                     onMouseLeave={() => {
                       onHoverNode(null);
-                      setHoveredItem(null); // Clear hovered item
+                      setHoveredItem(null);
+                      console.log(hoveredItem);
                     }}
                     key={node.nodeID}
                     onClick={() => {
@@ -258,13 +261,15 @@ const StartEndSelect: React.FC<NodeSelectProps> = ({
                       setShowSuggestions([true, false]);
                     }}
                     style={{
-                      backgroundColor:
-                        hoveredItem === node.nodeID
-                          ? "rgba(255, 255, 255, 0.1)"
-                          : "white", // Apply hover effect
+                      /*                      backgroundColor:
+                                              hoveredItem == node.nodeID
+                                                ? "rgba(255, 255, 255, 0.1)"
+                                                : "white",*/
                       padding: "8px",
                       cursor: "pointer",
-                      marginBottom: "4px",
+                      marginBottom: "2px",
+                      marginTop: "2px",
+
                       transition: "background-color 0.1s",
                     }}
                   >
@@ -289,7 +294,7 @@ const StartEndSelect: React.FC<NodeSelectProps> = ({
           style={{
             border: "5px solid rgba(0, 0, 0, 0.1)",
             borderBottomRightRadius: "16px",
-            borderBottomLeftRadius: "16px",
+            borderBottomLeftRadius: showSuggestions[1] ? "4px" : "16px",
             paddingLeft: "16px",
             fontSize: "18px",
             outline: "none",
@@ -298,7 +303,7 @@ const StartEndSelect: React.FC<NodeSelectProps> = ({
             backgroundColor: "#8B2121",
             color: "white",
             marginTop: bothIDsSet ? "calc(100vh - 216px)" : 0,
-            transition: "margin-top 0.5s ease",
+            transition: "margin-top 500m ease, border-bottom-left 200ms ease",
             boxShadow: "1px 2px 2px rgba(0, 0, 0, 0.2)",
             zIndex: isEndFocused ? 28 : 26,
           }}
@@ -314,6 +319,16 @@ const StartEndSelect: React.FC<NodeSelectProps> = ({
         >
           <span style={{ color: "#fff", fontSize: "12px" }}>▼</span>
         </div>
+        {bothIDsSet && (
+          <div
+            style={{
+              position: "absolute",
+              top: "0px",
+            }}
+          >
+            <TextDirectionPathFinding start={startID} end={endID} />
+          </div>
+        )}
         {showSuggestions[1] && (
           <div
             className="scroll-container"
@@ -331,7 +346,10 @@ const StartEndSelect: React.FC<NodeSelectProps> = ({
             }}
           >
             <ul
-              style={{ listStyleType: "none", padding: "32px 0 0 0" }}
+              style={{
+                listStyleType: "none",
+                padding: "32px 0 0 0",
+              }}
               onMouseEnter={() => setIsEndFocused(true)}
             >
               {items
@@ -350,13 +368,12 @@ const StartEndSelect: React.FC<NodeSelectProps> = ({
                   <li
                     onMouseEnter={() => {
                       onHoverNode(node);
-                      setHoveredItem(node.nodeID); // Set hovered item
+                      setHoveredItem(node.nodeID);
                     }}
                     onMouseLeave={() => {
                       onHoverNode(null);
-                      setHoveredItem(null); // Clear hovered item
+                      setHoveredItem(null);
                     }}
-                    key={node.nodeID}
                     onClick={() => {
                       onSelectEnd(
                         node.nodeID,
@@ -366,13 +383,15 @@ const StartEndSelect: React.FC<NodeSelectProps> = ({
                       setShowSuggestions([false, true]);
                     }}
                     style={{
-                      backgroundColor:
-                        hoveredItem === node.nodeID
-                          ? "rgba(255, 255, 255, 0.1)"
-                          : "white", // Apply hover effect
+                      /*                      backgroundColor:
+                                                hoveredItem == node.nodeID
+                                                  ? "rgba(255, 255, 255, 0.1)"
+                                                  : "white",*/
                       padding: "8px",
                       cursor: "pointer",
-                      marginBottom: "4px",
+                      marginBottom: "2px",
+                      marginTop: "2px",
+
                       transition: "background-color 0.1s",
                     }}
                   >
