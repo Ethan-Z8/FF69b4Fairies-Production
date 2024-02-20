@@ -5,8 +5,11 @@ import MapNode, { MapNodeNoNeighbors } from "../algorithms/MapNode.ts";
 import { Readable } from "stream";
 import MapEdge from "../algorithms/MapEdge.ts";
 import archiver from "archiver";
-
 import multer from "multer";
+import AlgoStrategyPattern from "../algorithms/AlgoStrategyPattern.ts";
+import AStarAlgo from "../algorithms/AStarAlgo.ts";
+import BFSAlgo from "../algorithms/BFSAlgo.ts";
+import DFSAlgo from "../algorithms/DFSAlgo.ts";
 
 export const mapRouter: Router = express.Router();
 const upload = multer();
@@ -79,6 +82,35 @@ mapRouter.get("/path", async (req, res) => {
   }
 });
 
+/**
+ * Getting Text Directions End point
+ * Takes in a Start node and end Node
+ * Returns Text Directions
+ */
+mapRouter.get("/getTextDirections", async (req: Request, res: Response) => {
+  console.log("endpoint");
+  const endpoints = req.query as StartAndEndNodes;
+  type StartAndEndNodes = {
+    start: string;
+    end: string;
+  };
+  try {
+    const nodes = await Prisma.mapNode.findMany();
+    const edges = await Prisma.mapEdge.findMany();
+    const pathFindingGraph = new Pathfinder(nodes, edges);
+    console.log(endpoints.end);
+    const getTextDirections: string[] = pathFindingGraph.generateDirections(
+      endpoints.start,
+      endpoints.end,
+    );
+    console.log(getTextDirections);
+
+    res.status(200).json(getTextDirections);
+  } catch (e) {
+    res.sendStatus(400).send("LOL");
+  }
+});
+
 mapRouter.get("/pathNodes", async (req: Request, res: Response) => {
   try {
     type StartAndEndNodes = {
@@ -112,11 +144,20 @@ mapRouter.get("/pathNodesShort", async (req: Request, res: Response) => {
     type StartAndEndNodes = {
       start?: string;
       end?: string;
+      algo?: string;
     };
+    let strategyPattern: AlgoStrategyPattern = new AStarAlgo();
     const endpoints = req.query as StartAndEndNodes;
+    console.log(endpoints.algo);
+    if (endpoints.algo === "BFS") {
+      strategyPattern = new BFSAlgo();
+    } else if (endpoints.algo == "DFS") {
+      strategyPattern = new DFSAlgo();
+    }
+
     const nodes = await Prisma.mapNode.findMany();
     const edges = await Prisma.mapEdge.findMany();
-    const pathFindingGraph = new Pathfinder(nodes, edges);
+    const pathFindingGraph = new Pathfinder(nodes, edges, strategyPattern);
 
     const startNodeId = pathFindingGraph.shortNameToID(endpoints.start!);
     const endNodeId = pathFindingGraph.shortNameToID(endpoints.end!);
