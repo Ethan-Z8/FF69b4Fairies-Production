@@ -1,39 +1,43 @@
-import { useEffect, useState } from "react";
-import { ServiceRequestType } from "common/src/interfaces/ServiceRequest.ts";
+import React, { useCallback, useEffect, useState } from "react";
 import axios from "axios";
-import { MapNodeInterface } from "common/src/interfaces/MapNodeInterface.ts";
-import { ServiceRequestNode } from "./ServiceRequestNode.tsx";
+import "../../styling/DisplayMapNodes.css";
 import TransformContainer from "./TransformContainer.tsx";
 
-import LL2 from "../../assets/hospitalmaps/00_thelowerlevel2-min.png";
 import LL1 from "../../assets/hospitalmaps/00_thelowerlevel1-min.png";
+import LL2 from "../../assets/hospitalmaps/00_thelowerlevel2-min.png";
 import F1 from "../../assets/hospitalmaps/01_thefirstfloor-min.png";
 import F2 from "../../assets/hospitalmaps/02_thesecondfloor-min.png";
 import F3 from "../../assets/hospitalmaps/03_thethirdfloor-min.png";
 
-const maps = { L2: LL2, L1: LL1, "1": F1, "2": F2, "3": F3 };
-const mapPathNames = Object.keys(maps) as Array<keyof typeof maps>;
+import SelectorTabs from "./SelectorTabs.tsx";
+import HoveredNodeData from "./HoveredNodeData.tsx";
+import { MapNodeInterface } from "common/src/interfaces/MapNodeInterface.ts";
+import { ServiceRequestType } from "common/src/interfaces/ServiceRequest.ts";
+import { ServiceRequestNode } from "./ServiceRequestNode.tsx";
+import { ServiceRequestsAtNode } from "./ServiceRequestsAtNode.tsx";
 
-export interface ServiceRequestModeProps {
-  nodes: MapNodeInterface[];
-  currentFloor: string;
+const floorNames: string[] = ["LL1", "LL2", "F1", "F2", "F3"];
+
+const mapPath: string[] = [LL2, LL1, F1, F2, F3];
+const mapPathNames: string[] = ["L2", "L1", "1", "2", "3"];
+
+interface ImageSize {
+  width: number;
+  height: number;
 }
 
-export function ServiceRequestMode({
-  nodes,
-  currentFloor,
-}: ServiceRequestModeProps) {
-  console.log("sr nodes", nodes);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [selectedNode, setSelectedNode] = useState("");
-  const [serviceRequests, setServiceRequests] = useState<ServiceRequestType[]>(
-    [],
+export function ServiceRequestMode() {
+  const [nodes, setNodes] = useState<{ [nodeID: string]: MapNodeInterface }>(
+    {},
   );
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [mapIndex, setMapIndex] = useState(1);
   const [hoveredNode, setHoveredNode] = useState("");
-  const [imageSizes, setImageSizes] = useState<{
-    [key: string]: { width: number; height: number };
-  }>({
+  const [requestCounts, setRequestCounts] = useState<{
+    [nodeID: string]: number;
+  }>({});
+  const [selectedNode, setSelectedNode] = useState("");
+  const [requests, setRequests] = useState<ServiceRequestType[]>([]);
+  const [imageSizes, setImageSizes] = useState<{ [key: string]: ImageSize }>({
     L1: { width: 0, height: 0 },
     L2: { width: 0, height: 0 },
     "1": { width: 0, height: 0 },
@@ -42,89 +46,100 @@ export function ServiceRequestMode({
   });
 
   useEffect(() => {
-    axios
-      .get("/api/serviceRequest")
-      .then((res) => setServiceRequests(res.data))
-      .catch((err) => console.log(err.message));
-  }, []);
+    axios.get("/api/map").then((res) => setNodes(res.data));
+    axios.get("/api/serviceRequest").then((res) => {
+      const payload = res.data as ServiceRequestType[];
+      setRequests(payload);
+      const counts = payload.reduce(
+        (acc, curr) => {
+          acc[curr.location] = ++acc[curr.location] || 1;
+          return acc;
+        },
+        {} as { [nodeID: string]: number },
+      );
+      setRequestCounts(counts);
+    });
 
-  useEffect(() => {
-    const preloadImages = (paths: string[], callback: () => void) => {
-      let loadedCount = 0;
-
-      paths.forEach((path) => {
+    const preloadImages = () => {
+      mapPath.forEach((path, index) => {
         const img = new Image();
         img.src = path;
         img.onload = () => {
-          loadedCount++;
-          if (loadedCount === paths.length) {
-            callback(); // Invoke the callback once all images are loaded
-          }
+          setImageSizes((prevSizes) => ({
+            ...prevSizes,
+            [mapPathNames[index]]: {
+              width: img.width,
+              height: img.height,
+            },
+          }));
         };
       });
     };
 
-    preloadImages(Object.values(maps), () => {
-      // All images are preloaded
-      const sizes: { [key: string]: { width: number; height: number } } = {};
-      mapPathNames.forEach((name) => {
-        const img = new Image();
-        img.src = maps[name];
-        sizes[name] = { width: img.width, height: img.height };
-      });
-      setImageSizes(sizes);
-    });
+    preloadImages();
   }, []);
 
-  const reqsPerLocation = serviceRequests.reduce(
-    (acc, req) => {
-      acc[req.location] = ++acc[req.location] || 1;
-      return acc;
-    },
-    {} as { [nodeID: string]: number },
-  );
-
-  const serviceRequestNodes = nodes
-    .filter((node) => node.floor === currentFloor)
-    .map((node) => (
-      <ServiceRequestNode
-        nodeInfo={node}
-        numRequests={reqsPerLocation[node.nodeID] || 0}
-        setSelectedNode={setSelectedNode}
-        key={node.nodeID}
-        setHoveredNode={setHoveredNode}
-      />
-    ));
+  const handleHoveredNode = useCallback((nodeID: string) => {
+    setHoveredNode(nodeID);
+  }, []);
+  const handleSelectedNode = useCallback((nodeID: string) => {
+    setSelectedNode(nodeID);
+  }, []);
 
   return (
     <div>
-      <TransformContainer>
-        <div
-          className="map-container"
-          style={
-            imageSizes[mapPathNames[0]]
-              ? {
-                  width: imageSizes[mapPathNames[0]].width,
-                  height: imageSizes[mapPathNames[0]].height,
-                }
-              : {}
-          }
-        >
-          {mapPathNames.map((name, index) => (
-            <img
-              key={index}
-              src={maps[name]}
-              alt={`map-${index}`}
-              style={{
-                width: "100%",
-                height: "100%",
-                display: index === 4 ? "block" : "none",
-              }}
-            />
-          ))}
-          {serviceRequestNodes}
-        </div>
-      </TransformContainer>
+      <div className="total">
+        <SelectorTabs
+          mapIndex={mapIndex}
+          onMapSelect={setMapIndex}
+          tabNames={floorNames}
+          start={""}
+          end={""}
+        />
+        <TransformContainer>
+          <div
+            className="map-container"
+            style={
+              imageSizes[mapPathNames[mapIndex]]
+                ? {
+                    width: imageSizes[mapPathNames[mapIndex]].width,
+                    height: imageSizes[mapPathNames[mapIndex]].height,
+                  }
+                : {}
+            }
+          >
+            {mapPath.map((path, index) => (
+              <img
+                key={index}
+                src={path}
+                alt={`map-${index}`}
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  display: index === mapIndex ? "block" : "none",
+                }}
+              />
+            ))}
+            {nodes &&
+              Object.values(nodes!)
+                .filter((node) => node.floor === mapPathNames[mapIndex])
+                .filter((node) => node.nodeType !== "HALL")
+                .map((node) => {
+                  return (
+                    <ServiceRequestNode
+                      setHoveredNode={handleHoveredNode}
+                      nodeInfo={node}
+                      numRequests={requestCounts[node.nodeID]}
+                      setSelectedNode={handleSelectedNode}
+                      key={node.nodeID}
+                    />
+                  );
+                })}
+          </div>
+        </TransformContainer>
+        <HoveredNodeData node={nodes[hoveredNode]} />
+        <ServiceRequestsAtNode nodeID={selectedNode} requests={requests} />
+      </div>
     </div>
   );
 }

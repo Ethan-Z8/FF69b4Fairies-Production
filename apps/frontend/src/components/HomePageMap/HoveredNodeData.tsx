@@ -1,21 +1,12 @@
 import React, { useState } from "react";
-interface Node {
-  nodeID: string;
-  xcoord: number;
-  ycoord: number;
-  floor: string;
-  building: string;
-  nodeType: string;
-  longName: string;
-  shortName: string;
-  neighbors: string[];
+import { MapNodeInterface } from "common/src/interfaces/MapNodeInterface.ts";
+
+type Node = MapNodeInterface;
+interface StartEndSelectProps {
+  node: MapNodeInterface | Node | null;
 }
 
-interface HoveredNodeDataProps {
-  node: Node | null;
-}
-
-const StartEndSelect: React.FC<HoveredNodeDataProps> = ({ node }) => {
+function StartEndSelect({ node }: StartEndSelectProps) {
   const [locCollapse, setLocCollapse] = useState(false);
 
   /*  useEffect(() => {
@@ -57,6 +48,6 @@ const StartEndSelect: React.FC<HoveredNodeDataProps> = ({ node }) => {
       )}
     </div>
   );
-};
+}
 
 export default StartEndSelect;

@@ -7,6 +7,7 @@ import React, {
   SetStateAction,
 } from "react";
 import "./StartEndSelect.css";
+import TextDirectionPathFinding from "./TextDirectionPathFinding.tsx";
 
 interface Node {
   nodeID: string;
@@ -19,6 +20,7 @@ interface Node {
   shortName: string;
   neighbors: string[];
 }
+
 interface NodeSelectProps {
   start: string;
   end: string;
@@ -45,9 +47,10 @@ const StartEndSelect: React.FC<NodeSelectProps> = ({
   const [items, setItems] = useState<Node[]>([]);
   const [isStartFocused, setIsStartFocused] = useState(false);
   const [isEndFocused, setIsEndFocused] = useState(false);
-  const [bothIDsSet, setBothIDsSet] = useState(false); // Track if both start and end IDs are set
+  const [bothIDsSet, setBothIDsSet] = useState(false);
   const [showSuggestions, setShowSuggestions] = useState([false, false]);
   const inputRef = useRef<HTMLInputElement>(null);
+  const [hoveredItem, setHoveredItem] = useState<string | null>(null);
 
   useEffect(() => {
     const getAllNodes = async () => {
@@ -88,9 +91,7 @@ const StartEndSelect: React.FC<NodeSelectProps> = ({
   }, [end, nodes]);
 
   useEffect(() => {
-    console.log(isStartFocused, isEndFocused);
     const handleMouseDown = () => {
-      //console.log(isStartFocused);
       if (!isStartFocused && !isEndFocused) {
         setShowSuggestions([false, false]);
       }
@@ -103,16 +104,10 @@ const StartEndSelect: React.FC<NodeSelectProps> = ({
   }, [isEndFocused, isStartFocused]);
 
   useEffect(() => {
-    // Check if both startID and endID are set
-
-    if (startID != "" && endID != "") {
+    if (startID !== "" && endID !== "") {
       setBothIDsSet(true);
-
-      //console.log("asdfkalsd");
     } else {
       setBothIDsSet(false);
-
-      //console.log("AJFLKSAJKF");
     }
     setShowSuggestions([false, false]);
   }, [startID, endID]);
@@ -125,11 +120,12 @@ const StartEndSelect: React.FC<NodeSelectProps> = ({
     setIsEndFocused(true);
   };
 
-  // Modify handleMouseLeave function to reset both focused states
   const handleMouseLeave = () => {
     setIsStartFocused(false);
     setIsEndFocused(false);
+    setHoveredItem(null); // Clear hovered item when mouse leaves
   };
+
   const handleSearch = (
     e: React.ChangeEvent<HTMLInputElement>,
     onSelect: (item: string, event: React.SyntheticEvent<HTMLElement>) => void,
@@ -149,7 +145,6 @@ const StartEndSelect: React.FC<NodeSelectProps> = ({
       if (inputRef.current) {
         inputRef.current.value = results[0].nodeID;
       }
-
       onSelect(results[0].nodeID, {} as React.SyntheticEvent<HTMLElement>);
     } else {
       setTerm("");
@@ -174,13 +169,15 @@ const StartEndSelect: React.FC<NodeSelectProps> = ({
           ref={inputRef}
           type="text"
           value={startName}
-          onChange={(e) =>
-            handleSearch(e, onSelectStart, setStartID, setStartName)
-          }
+          onChange={(e) => {
+            handleSearch(e, onSelectStart, setStartID, setStartName);
+            if (isStartFocused) setShowSuggestions([true, false]);
+            setShowSuggestions([true, false]);
+          }}
           onFocus={handleFocusStart}
           onClick={() => setShowSuggestions([true, false])}
           style={{
-            border: "0px solid #ccc",
+            border: "5px solid rgba(0, 0, 0, 0.1)",
             borderTopRightRadius: "16px",
             borderTopLeftRadius: "16px",
             paddingLeft: "16px",
@@ -195,13 +192,25 @@ const StartEndSelect: React.FC<NodeSelectProps> = ({
           }}
           placeholder="Start Location"
         />
+        <div
+          style={{
+            position: "absolute",
+            right: "16px",
+            top: "50%",
+            transform: "translateY(-50%)",
+          }}
+        >
+          <span style={{ color: "#fff", fontSize: "12px" }}>▼</span>
+        </div>
         {showSuggestions[0] && (
           <div
             className="scroll-container"
             style={{
               position: "absolute",
               left: 0,
+              top: "24px",
               backgroundColor: "white",
+              width: "75%",
               zIndex: -1,
               height: "30vh",
               borderRadius: "16px",
@@ -210,20 +219,37 @@ const StartEndSelect: React.FC<NodeSelectProps> = ({
               boxShadow: "1px 2px 2px rgba(0, 0, 0, 0.2)",
             }}
           >
-            <ul style={{ listStyleType: "none", padding: "32px 0 0 0" }}>
+            <ul
+              style={{ listStyleType: "none", padding: "32px 0 0 0" }}
+              onMouseEnter={() => setIsStartFocused(true)}
+            >
               {items
-                .filter((node) =>
-                  node.shortName
-                    .toLowerCase()
-                    .includes(startName.toLowerCase()),
+                .filter(
+                  (node) =>
+                    node.shortName
+                      .toLowerCase()
+                      .includes(startName.toLowerCase()) ||
+                    node.longName
+                      .toLowerCase()
+                      .includes(startName.toLowerCase()) ||
+                    node.nodeID
+                      .toLowerCase()
+                      .includes(startName.toLowerCase()) ||
+                    node.nodeType
+                      .toLowerCase()
+                      .includes(startName.toLowerCase()),
                 )
                 .map((node) => (
                   <li
                     onMouseEnter={() => {
                       onHoverNode(node);
+                      setHoveredItem(node.nodeID);
+                      console.log(hoveredItem);
                     }}
                     onMouseLeave={() => {
                       onHoverNode(null);
+                      setHoveredItem(null);
+                      console.log(hoveredItem);
                     }}
                     key={node.nodeID}
                     onClick={() => {
@@ -232,12 +258,18 @@ const StartEndSelect: React.FC<NodeSelectProps> = ({
                         {} as React.SyntheticEvent<HTMLElement>,
                       );
                       setStartName(node.shortName);
+                      setShowSuggestions([true, false]);
                     }}
                     style={{
-                      backgroundColor: "white",
+                      /*                      backgroundColor:
+                                              hoveredItem == node.nodeID
+                                                ? "rgba(255, 255, 255, 0.1)"
+                                                : "white",*/
                       padding: "8px",
                       cursor: "pointer",
-                      marginBottom: "4px",
+                      marginBottom: "2px",
+                      marginTop: "2px",
+
                       transition: "background-color 0.1s",
                     }}
                   >
@@ -252,16 +284,17 @@ const StartEndSelect: React.FC<NodeSelectProps> = ({
         <input
           type="text"
           value={endName}
-          onChange={(e) => handleSearch(e, onSelectEnd, setEndID, setEndName)}
-          onFocus={handleFocusEnd}
-          onClick={() => {
+          onChange={(e) => {
+            handleSearch(e, onSelectEnd, setEndID, setEndName);
+            if (isEndFocused) setShowSuggestions([false, true]);
             setShowSuggestions([false, true]);
-            //console.log("clicked end");
           }}
+          onFocus={handleFocusEnd}
+          onClick={() => setShowSuggestions([false, true])}
           style={{
-            border: "0px solid #ccc",
+            border: "5px solid rgba(0, 0, 0, 0.1)",
             borderBottomRightRadius: "16px",
-            borderBottomLeftRadius: "16px",
+            borderBottomLeftRadius: showSuggestions[1] ? "4px" : "16px",
             paddingLeft: "16px",
             fontSize: "18px",
             outline: "none",
@@ -270,18 +303,38 @@ const StartEndSelect: React.FC<NodeSelectProps> = ({
             backgroundColor: "#8B2121",
             color: "white",
             marginTop: bothIDsSet ? "calc(100vh - 216px)" : 0,
-            transition: "margin-top 0.5s ease",
+            transition: "margin-top 500m ease, border-bottom-left 200ms ease",
             boxShadow: "1px 2px 2px rgba(0, 0, 0, 0.2)",
             zIndex: isEndFocused ? 28 : 26,
           }}
-          placeholder="End Location"
+          placeholder="Enter Destination"
         />
+        <div
+          style={{
+            position: "absolute",
+            right: "16px",
+            top: "100%",
+            transform: "translateY(-150%)",
+          }}
+        >
+          <span style={{ color: "#fff", fontSize: "12px" }}>▼</span>
+        </div>
+        {bothIDsSet && (
+          <div
+            style={{
+              position: "absolute",
+              top: "0px",
+            }}
+          >
+            <TextDirectionPathFinding start={startID} end={endID} />
+          </div>
+        )}
         {showSuggestions[1] && (
           <div
             className="scroll-container"
             style={{
               position: "absolute",
-              top: "72px",
+              top: "80%",
               left: 0,
               width: "75%",
               backgroundColor: "white",
@@ -289,11 +342,16 @@ const StartEndSelect: React.FC<NodeSelectProps> = ({
               height: "30vh",
               borderRadius: "16px",
               overflow: "auto",
-              caretColor: isEndFocused ? "white" : "transparent",
               boxShadow: "1px 2px 2px rgba(0, 0, 0, 0.2)",
             }}
           >
-            <ul style={{ listStyleType: "none", padding: "32px 0 0 0" }}>
+            <ul
+              style={{
+                listStyleType: "none",
+                padding: "32px 0 0 0",
+              }}
+              onMouseEnter={() => setIsEndFocused(true)}
+            >
               {items
                 .filter(
                   (node) =>
@@ -303,29 +361,37 @@ const StartEndSelect: React.FC<NodeSelectProps> = ({
                     node.longName
                       .toLowerCase()
                       .includes(endName.toLowerCase()) ||
-                    node.nodeID.toLowerCase().includes(endName.toLowerCase()),
+                    node.nodeID.toLowerCase().includes(endName.toLowerCase()) ||
+                    node.nodeType.toLowerCase().includes(endName.toLowerCase()),
                 )
                 .map((node) => (
                   <li
                     onMouseEnter={() => {
                       onHoverNode(node);
+                      setHoveredItem(node.nodeID);
                     }}
                     onMouseLeave={() => {
                       onHoverNode(null);
+                      setHoveredItem(null);
                     }}
-                    key={node.nodeID}
                     onClick={() => {
                       onSelectEnd(
                         node.nodeID,
                         {} as React.SyntheticEvent<HTMLElement>,
                       );
                       setEndName(node.shortName);
+                      setShowSuggestions([false, true]);
                     }}
                     style={{
-                      backgroundColor: "white",
+                      /*                      backgroundColor:
+                                                hoveredItem == node.nodeID
+                                                  ? "rgba(255, 255, 255, 0.1)"
+                                                  : "white",*/
                       padding: "8px",
                       cursor: "pointer",
-                      marginBottom: "4px",
+                      marginBottom: "2px",
+                      marginTop: "2px",
+
                       transition: "background-color 0.1s",
                     }}
                   >
@@ -339,5 +405,4 @@ const StartEndSelect: React.FC<NodeSelectProps> = ({
     </div>
   );
 };
-
 export default StartEndSelect;

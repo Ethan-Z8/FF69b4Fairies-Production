@@ -1,6 +1,5 @@
 import { MapNodeInterface } from "common/src/interfaces/MapNodeInterface.ts";
 import "../../styling/DisplayMapNodes.css";
-import { useCallback } from "react";
 
 export interface ServiceRequestNodeProps {
   nodeInfo: MapNodeInterface;
@@ -16,17 +15,15 @@ export function ServiceRequestNode({
   setHoveredNode,
 }: ServiceRequestNodeProps) {
   const style = {
-    top: nodeInfo.xcoord,
-    left: nodeInfo.ycoord,
+    top: nodeInfo.ycoord,
+    left: nodeInfo.xcoord,
     backgroundColor: numRequests >= 5 ? "#ff69b4" : "#009ca6",
+    height: 16,
+    width: 15,
   };
-  const handleClick = useCallback(
-    (e: React.MouseEvent) => {
-      const t = e.target as HTMLDivElement;
-      setSelectedNode(t.id);
-    },
-    [setSelectedNode],
-  );
+  const handleClick = () => {
+    setSelectedNode(nodeInfo.nodeID);
+  };
 
   return (
     <div

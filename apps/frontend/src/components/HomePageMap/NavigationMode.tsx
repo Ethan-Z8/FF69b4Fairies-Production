@@ -42,10 +42,10 @@ interface ImageSize {
   height: number;
 }
 
-const mapPath: string[] = [LL1, LL2, F1, F2, F3];
-const mapPathNames: string[] = ["L1", "L2", "1", "2", "3"];
+const mapPath: string[] = [LL2, LL1, F1, F2, F3];
+const mapPathNames: string[] = ["L2", "L1", "1", "2", "3"];
 
-const floorNames: string[] = ["LL1", "LL2", "F1", "F2", "F3"];
+const floorNames: string[] = ["LL2", "LL1", "F1", "F2", "F3"];
 
 export function NavigationMode() {
   const [firstClickedNodeId, setFirstClickedNodeId] = useState<string>("");
@@ -70,6 +70,7 @@ export function NavigationMode() {
   const [toggleNodes, setToggleNodes] = useState(true);
   const [toggleEdges, setToggleEdges] = useState(false);
   const [hoveredNode, setHoveredNode] = useState<Node | null>(null);
+  //const [defaultMap, setDefaultMap] = useState(0);
 
   useEffect(() => {
     const getAllNodes = async () => {
@@ -126,8 +127,24 @@ export function NavigationMode() {
             },
           });
           const nodesData: Node[] = Object.values(pathNodes.data);
-
           setNodes(nodesData);
+
+          const defaultMapIndex = mapPathNames.findIndex(
+            (floor) => floor.toLowerCase() == aNodes[firstClickedNodeId].floor,
+          );
+          if (defaultMapIndex !== -1) {
+            setMapIndex(defaultMapIndex);
+            //setDefaultMap(defaultMapIndex);
+          }
+          if (hoveredNode != null) {
+            const hoveredFloorIndex = mapPathNames.findIndex(
+              (floor) =>
+                floor.toLowerCase() === hoveredNode.floor.toLowerCase(),
+            );
+            if (hoveredFloorIndex !== -1) {
+              setMapIndex(hoveredFloorIndex);
+            }
+          }
         } catch (error) {
           console.log("Error has not selected 2 nodes ");
         }
@@ -136,7 +153,35 @@ export function NavigationMode() {
     } else {
       setNodes([]);
     }
-  }, [aNodes, secondClickedNodeId, firstClickedNodeId]);
+  }, [hoveredNode, aNodes, secondClickedNodeId, firstClickedNodeId]);
+
+  useEffect(() => {
+    let timeoutId: NodeJS.Timeout | undefined;
+
+    if (hoveredNode != null && hoveredNode.floor != mapPathNames[mapIndex]) {
+      timeoutId = setTimeout(() => {
+        const hoveredFloorIndex = mapPathNames.findIndex(
+          (floor) => floor.toLowerCase() === hoveredNode.floor.toLowerCase(),
+        );
+        if (hoveredFloorIndex !== -1) {
+          setMapIndex(hoveredFloorIndex);
+        }
+      }, 650);
+    } else {
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+      }
+      /*timeoutId = setTimeout(() => {
+        setMapIndex(defaultMap);
+      }, 100);*/
+    }
+
+    return () => {
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+      }
+    };
+  }, [hoveredNode, mapIndex]);
 
   const handleToggleNodes = () => {
     clearSearch();
@@ -275,6 +320,7 @@ export function NavigationMode() {
               floor={mapPathNames[mapIndex]}
               toggleNodes={toggleNodes}
               handleNodeClick={handleNodeClick}
+              handleNodeHover={setHoveredNode}
             />
             <RenderPath
               allNodes={allNodes}
