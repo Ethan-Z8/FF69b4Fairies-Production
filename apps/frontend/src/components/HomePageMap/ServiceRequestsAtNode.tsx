@@ -12,6 +12,7 @@ import { useState } from "react";
 import { CreateRequestAtNodeModal } from "./CreateRequestAtNodeModal.tsx";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import { ServiceRequestInfoModal } from "./ServiceRequestInfoModal.tsx";
 
 export interface ServiceRequestsAtNodeProps {
   nodeID: string;
@@ -32,16 +33,14 @@ export function ServiceRequestsAtNode({
     contents = <div>No Service Requests at {nodeID}</div>;
   } else {
     contents = reqsAtLoc.map((req) => (
-      <div key={req.id} style={{ textAlign: "center" }}>
-        {req.typeService} request for {req.employee}
-      </div>
+      <ServiceRequestInfoModal request={req} />
     ));
   }
 
   return (
     <Card
       sx={{
-        maxHeight: "20%",
+        maxHeight: "25%",
         overflow: "hidden",
         overflowY: "auto",
         borderBottomRightRadius: "16px",

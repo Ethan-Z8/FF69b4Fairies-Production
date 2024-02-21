@@ -136,7 +136,7 @@ export function ServiceRequestMode() {
           style={{
             display: "flex",
             position: "absolute",
-            width: "20%",
+            width: "23%",
             top: 20,
             left: 20,
             flexDirection: "column",
@@ -155,6 +155,9 @@ export function ServiceRequestMode() {
               "&:focus-within .MuiAutocomplete-inputRoot": {
                 borderColor: "#ff69b4 important",
               },
+              ".MuiAutocomplete-inputRoot": {
+                color: "white",
+              },
             }}
             getOptionLabel={(node) => (node ? node.longName : "")}
             value={nodes[selectedNode] || null}
@@ -165,7 +168,7 @@ export function ServiceRequestMode() {
                 sx={{
                   borderTopLeftRadius: "16px",
                   borderTopRightRadius: "16px",
-                  backgroundColor: "#012d5aaa",
+                  backgroundColor: "#012d5a",
                   "&:hover": {
                     borderColor: "transparent !important",
                   },
