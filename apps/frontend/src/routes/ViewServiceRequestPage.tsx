@@ -132,37 +132,41 @@ export function ViewServiceRequestPage() {
           <div className={"dashboard"}>
             <div className={"dashboardLeft"}>
               <div className={"topRow"}>
-                <div className={"text"}>
-                  <Typography
-                    variant="h6"
-                    onClick={() => setStatusFilter("Unassigned")}
-                    style={{
-                      color: "white",
-                      fontSize: "32px",
-                      textShadow: "2px 2px 4px rgba(0, 0, 0, 1)",
-                      cursor: "pointer",
-                    }}
-                  >
-                    Unassigned<p>{unassignedCount}</p>
-                  </Typography>
+                <div className={"rowTopLeft"}>
+                  <div className={"text"}>
+                    <Typography
+                      variant="h6"
+                      onClick={() => setStatusFilter("Unassigned")}
+                      style={{
+                        color: "white",
+                        fontSize: "32px",
+                        textShadow: "2px 2px 4px rgba(0, 0, 0, 1)",
+                        cursor: "pointer",
+                      }}
+                    >
+                      Unassigned<p>{unassignedCount}</p>
+                    </Typography>
+                  </div>
                 </div>
-                <div className={"text"}>
-                  <Typography
-                    variant="h6"
-                    onClick={() => setStatusFilter("Assigned")}
-                    style={{
-                      color: "white",
-                      fontSize: "32px",
-                      textShadow: "2px 2px 4px rgba(0, 0, 0, 1)",
-                      cursor: "pointer",
-                    }}
-                  >
-                    Assigned<p>{assignedCount}</p>
-                  </Typography>
+                <div className={"rowTopRight"}>
+                  <div className={"text"}>
+                    <Typography
+                      variant="h6"
+                      onClick={() => setStatusFilter("Assigned")}
+                      style={{
+                        color: "white",
+                        fontSize: "32px",
+                        textShadow: "2px 2px 4px rgba(0, 0, 0, 1)",
+                        cursor: "pointer",
+                      }}
+                    >
+                      Assigned<p>{assignedCount}</p>
+                    </Typography>
+                  </div>
                 </div>
               </div>
               <div className={"bottomRow"}>
-                <div className={"rowLeft"}>
+                <div className={"rowBottomLeft"}>
                   <div className={"text"}>
                     <Typography
                       variant="h6"
@@ -178,7 +182,7 @@ export function ViewServiceRequestPage() {
                     </Typography>
                   </div>
                 </div>
-                <div className={"rowRight"}>
+                <div className={"rowBottomRight"}>
                   <div className={"text"}>
                     <Typography
                       variant="h6"
