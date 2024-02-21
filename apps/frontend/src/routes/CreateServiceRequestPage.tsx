@@ -155,13 +155,15 @@ export function CreateServiceRequestPage({
             defaultValue={node || ""}
             required
           >
-            {Object.values(nodes).map((node) => {
-              return (
-                <MenuItem key={node.nodeID} value={node.nodeID}>
-                  {node.longName}
-                </MenuItem>
-              );
-            })}
+            {Object.values(nodes)
+              .filter((node) => node.nodeType !== "HALL")
+              .map((node) => {
+                return (
+                  <MenuItem key={node.nodeID} value={node.nodeID}>
+                    {node.longName}
+                  </MenuItem>
+                );
+              })}
           </Select>
         </FormControl>
         <FormControl>
