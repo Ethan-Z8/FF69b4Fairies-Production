@@ -76,6 +76,9 @@ export function NavigationMode() {
   const [toggleEdges, setToggleEdges] = useState(false);
   const [hoveredNode, setHoveredNode] = useState<Node | null>(null);
   const [ChosenAlgorithim, setChosenAlgorithim] = useState<string>("AStarAlgo");
+  const [zoomToCoords, setZoomToCoords] = useState<
+    { x: number; y: number } | undefined
+  >(undefined);
 
   //const [defaultMap, setDefaultMap] = useState(0);
 
@@ -151,6 +154,14 @@ export function NavigationMode() {
         }
       };
       getPathNodes();
+      const hoveredFloorIndex = mapPathNames.findIndex(
+        (floor) =>
+          floor.toLowerCase() ===
+          aNodes[firstClickedNodeId].floor.toLowerCase(),
+      );
+      if (hoveredFloorIndex !== -1) {
+        setMapIndex(hoveredFloorIndex);
+      }
     } else {
       setNodes([]);
     }
@@ -331,7 +342,14 @@ export function NavigationMode() {
             end={secondClickedNodeId}
             onSelectStart={handleStartSelect}
             onSelectEnd={handleEndSelect}
-            onHoverNode={setHoveredNode}
+            onHoverNode={(node) => {
+              setHoveredNode(node);
+              if (node) {
+                setZoomToCoords({ x: node.xcoord, y: node.ycoord });
+              } else {
+                setZoomToCoords(undefined);
+              }
+            }}
           />
         </div>
         <SelectorTabs
@@ -341,13 +359,7 @@ export function NavigationMode() {
           start={firstClickedNodeId}
           end={secondClickedNodeId}
         />
-        <TransformContainer
-          zoomToCoordinate={
-            hoveredNode
-              ? { x: hoveredNode.xcoord, y: hoveredNode.ycoord }
-              : undefined
-          }
-        >
+        <TransformContainer zoomToCoordinate={zoomToCoords}>
           <div
             className="map-container"
             style={

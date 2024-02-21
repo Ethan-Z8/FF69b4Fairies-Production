@@ -198,6 +198,7 @@ const TransformContainer: React.FC<TransformContainerProps> = ({
       setLocY((container.scrollTop + targetTop - rect.top) / newScale);
 
       setTimeout(() => {
+        console.log("zoomedto");
         handleGradualScroll(targetLeft, targetTop, 280);
         content.style.transform = `scale(${newScale})`;
       }, 600);

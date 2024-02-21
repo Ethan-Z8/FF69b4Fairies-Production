@@ -1,11 +1,5 @@
 import axios from "axios";
-import React, {
-  Dispatch,
-  useEffect,
-  useState,
-  useRef,
-  SetStateAction,
-} from "react";
+import React, { useEffect, useState, useRef } from "react";
 import "./StartEndSelect.css";
 import TextDirectionPathFinding from "./TextDirectionPathFinding.tsx";
 
@@ -29,7 +23,7 @@ interface NodeSelectProps {
     event: React.SyntheticEvent<HTMLElement>,
   ) => void;
   onSelectEnd: (item: string, event: React.SyntheticEvent<HTMLElement>) => void;
-  onHoverNode: Dispatch<SetStateAction<Node | null>>;
+  onHoverNode: (node: Node | null) => void;
 }
 
 const StartEndSelect: React.FC<NodeSelectProps> = ({
@@ -316,8 +310,8 @@ const StartEndSelect: React.FC<NodeSelectProps> = ({
         <div>
           <div
             onClick={() => {
-              setStartID("");
-              setEndID("");
+              onSelectStart("", {} as React.SyntheticEvent<HTMLElement>);
+              onSelectEnd("", {} as React.SyntheticEvent<HTMLElement>);
             }}
             className="HAHAHHA"
             style={{
