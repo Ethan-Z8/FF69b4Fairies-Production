@@ -144,7 +144,7 @@ export function CreateServiceRequestPage() {
           </Select>
         </FormControl>
         <FormControl>
-          <InputLabel id="locationLabel">Location</InputLabel>
+          <InputLabel id="locationLabel"></InputLabel>
           <Autocomplete
             options={Object.values(nodes).filter(
               (node) => node.nodeType !== "HALL",
