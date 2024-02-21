@@ -291,7 +291,7 @@ export function Navigation() {
               <Avatar
                 alt={user?.name || "User"}
                 src={user?.picture}
-                sx={{ width: 45, height: 45 }}
+                sx={{ width: 50, height: 50 }}
               />
 
               <Popover
@@ -309,7 +309,7 @@ export function Navigation() {
                 }}
               >
                 <ClickAwayListener onClickAway={handleProfileMenuClose}>
-                  <Container className="Profile_Container">
+                  <Container className="profileContainer">
                     <button onClick={handleLogout}>
                       <SvgIcon component={LogoutIcon} />
                     </button>
@@ -320,20 +320,34 @@ export function Navigation() {
                     />
                     <Typography
                       variant={"h6"}
-                      gutterBottom
-                      style={{ marginTop: "10px" }}
+                      mt={3}
+                      // mb={1}
+                      textAlign={"center"}
+                      // style={{ marginTop: "10px" }}
                     >
-                      Hello, {user?.name}
+                      Hello,
+                    </Typography>
+                    <Typography
+                      variant={"h6"}
+                      gutterBottom
+                      // mt={1}
+                      mb={2}
+                      textAlign={"center"}
+                      // style={{ marginTop: "10px" }}
+                    >
+                      {user?.name}
                     </Typography>
 
                     {/* <MenuItem onClick={handleLogout}>Logout</MenuItem> */}
-                    <Chip
-                      label="Manage your account"
-                      component="a"
-                      href="/Auth0Profile"
-                      variant="outlined"
-                      clickable
-                    />
+                    <div className={"chipContainer"}>
+                      <Chip
+                        label="Manage your account"
+                        component="a"
+                        href="/Auth0Profile"
+                        variant="outlined"
+                        clickable
+                      />
+                    </div>
                   </Container>
                 </ClickAwayListener>
               </Popover>
