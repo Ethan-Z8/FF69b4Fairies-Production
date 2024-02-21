@@ -16,6 +16,7 @@ import {
   TableRow,
   Typography,
 } from "@mui/material";
+import { PieChart } from "@mui/x-charts/PieChart";
 import RestartAltIcon from "@mui/icons-material/RestartAlt";
 import { ServiceRequestRow } from "../components/ServiceRequestRow.tsx";
 import { ServiceRequestType } from "common/src/interfaces/ServiceRequest.ts";
@@ -53,6 +54,24 @@ export function ViewServiceRequestPage() {
         console.log(e.message);
       });
   }, []);
+
+  interface TypeCounts {
+    [key: string]: number;
+  }
+
+  const calculateTypeCounts = () => {
+    const counts = serviceRequests.reduce((acc: TypeCounts, curr) => {
+      const typeService: string = curr.typeService; // Assuming typeService is of type string
+      acc[typeService] = (acc[typeService] || 0) + 1;
+      return acc;
+    }, {} as TypeCounts);
+
+    return Object.entries(counts).map(([label, value], index) => ({
+      id: index,
+      value,
+      label,
+    }));
+  };
 
   const inProgressCount = serviceRequests.filter(
     (request) => request.progress === "InProgress",
@@ -159,7 +178,18 @@ export function ViewServiceRequestPage() {
               </div>
             </div>
             <div className={"dashboardRight"}>
-              <h2>Service Request Chart</h2>
+              <PieChart
+                series={[
+                  {
+                    data: calculateTypeCounts(),
+                    innerRadius: 30,
+                    outerRadius: "90%", // Adjust outerRadius to be relative
+                    paddingAngle: 5,
+                    cornerRadius: 5,
+                  },
+                ]}
+                // style={{ width: 'auto', height: 'auto' }}
+              />
             </div>
           </div>
           <Typography variant="h4">Service Requests</Typography>

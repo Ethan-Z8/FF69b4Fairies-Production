@@ -25,6 +25,7 @@
 .dashboardRight {
   width: 65%;
   border-radius: 20px;
+  height: 20rem;
   text-align: center;
   border-color: green;
   border-style: groove;
