@@ -45,13 +45,7 @@ interface ImageSize {
 const mapPath: string[] = [LL2, LL1, F1, F2, F3];
 const mapPathNames: string[] = ["L2", "L1", "1", "2", "3"];
 
-const floorNames: string[] = [
-  "Lower Level 2",
-  "Lower Level 1",
-  "Level 1",
-  "Level 2",
-  "Level 3",
-];
+const floorNames: string[] = ["LL2", "LL1", "F1", "F2", "F3"];
 
 export function NavigationMode() {
   const [firstClickedNodeId, setFirstClickedNodeId] = useState<string>("");
@@ -164,7 +158,7 @@ export function NavigationMode() {
   useEffect(() => {
     let timeoutId: NodeJS.Timeout | undefined;
 
-    if (hoveredNode != null) {
+    if (hoveredNode != null && hoveredNode.floor != mapPathNames[mapIndex]) {
       timeoutId = setTimeout(() => {
         const hoveredFloorIndex = mapPathNames.findIndex(
           (floor) => floor.toLowerCase() === hoveredNode.floor.toLowerCase(),
@@ -172,7 +166,7 @@ export function NavigationMode() {
         if (hoveredFloorIndex !== -1) {
           setMapIndex(hoveredFloorIndex);
         }
-      }, 750);
+      }, 650);
     } else {
       if (timeoutId) {
         clearTimeout(timeoutId);
@@ -187,7 +181,7 @@ export function NavigationMode() {
         clearTimeout(timeoutId);
       }
     };
-  }, [hoveredNode]);
+  }, [hoveredNode, mapIndex]);
 
   const handleToggleNodes = () => {
     clearSearch();
@@ -293,6 +287,8 @@ export function NavigationMode() {
           mapIndex={mapIndex}
           onMapSelect={handleMapSelect}
           tabNames={floorNames}
+          start={firstClickedNodeId}
+          end={secondClickedNodeId}
         />
         <TransformContainer>
           <div

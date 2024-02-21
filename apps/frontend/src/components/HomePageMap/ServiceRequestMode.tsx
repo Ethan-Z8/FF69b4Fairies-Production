@@ -16,13 +16,7 @@ import { ServiceRequestType } from "common/src/interfaces/ServiceRequest.ts";
 import { ServiceRequestNode } from "./ServiceRequestNode.tsx";
 import { ServiceRequestsAtNode } from "./ServiceRequestsAtNode.tsx";
 
-const floorNames: string[] = [
-  "Lower Level 2",
-  "Lower Level 1",
-  "Level 1",
-  "Level 2",
-  "Level 3",
-];
+const floorNames: string[] = ["LL1", "LL2", "F1", "F2", "F3"];
 
 const mapPath: string[] = [LL2, LL1, F1, F2, F3];
 const mapPathNames: string[] = ["L2", "L1", "1", "2", "3"];
@@ -99,6 +93,8 @@ export function ServiceRequestMode() {
           mapIndex={mapIndex}
           onMapSelect={setMapIndex}
           tabNames={floorNames}
+          start={""}
+          end={""}
         />
         <TransformContainer>
           <div

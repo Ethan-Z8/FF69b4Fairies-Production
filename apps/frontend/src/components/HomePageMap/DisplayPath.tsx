@@ -493,6 +493,8 @@ export function DisplayPath() {
           mapIndex={mapIndex}
           onMapSelect={handleMapSelect}
           tabNames={floorNames}
+          start={""}
+          end={""}
         />
         <Select
           defaultValue={"AStarAlgo"}

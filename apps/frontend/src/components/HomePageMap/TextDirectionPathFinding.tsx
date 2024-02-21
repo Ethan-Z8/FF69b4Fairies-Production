@@ -28,14 +28,21 @@ const TextDirectionPathFinding: React.FC<TextDirectionPathProps> = ({
   }, [start, end]);
 
   return (
-    <>
-      <h1>Text Directions</h1>
+    <div
+      style={{
+        padding: "64px 0 0 0",
+        backgroundColor: "white",
+        boxShadow: "1px 2px 2px rgba(0, 0, 0, 0.2)",
+      }}
+    >
       <ul>
         {directions.map((direction, index) => (
-          <li key={index}>{direction}</li>
+          <li style={{ listStyleType: "none" }} key={index}>
+            {direction}
+          </li>
         ))}
       </ul>
-    </>
+    </div>
   );
 };
 
