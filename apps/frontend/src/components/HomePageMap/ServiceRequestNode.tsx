@@ -17,7 +17,7 @@ export function ServiceRequestNode({
   const style = {
     top: nodeInfo.ycoord,
     left: nodeInfo.xcoord,
-    backgroundColor: numRequests >= 5 ? "#ff69b4" : "#009ca6",
+    backgroundColor: numRequests > 0 ? "#ff69b4" : "#009ca6",
     height: 20,
     width: 20,
     transform: `scale(${hovered ? 1.3 : 1}) translate(-50%, -50%)`,

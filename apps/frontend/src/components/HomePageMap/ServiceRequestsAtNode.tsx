@@ -6,6 +6,7 @@ import {
   Collapse,
   Container,
   IconButton,
+  Button,
 } from "@mui/material";
 import { useState } from "react";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
@@ -28,13 +29,17 @@ export function ServiceRequestsAtNode({
   } else if (reqsAtLoc.length === 0) {
     contents = <div>No Service Requests at {nodeID}</div>;
   } else {
-    contents = reqsAtLoc.map((req) => <div>Request ID: {req.id}</div>);
+    contents = reqsAtLoc.map((req) => (
+      <div key={req.id} style={{ textAlign: "center" }}>
+        {req.typeService} request for {req.employee}
+      </div>
+    ));
   }
 
   return (
     <Card
       sx={{
-        maxHeight: "70%",
+        maxHeight: "20%",
         overflow: "scroll",
       }}
     >
@@ -52,7 +57,14 @@ export function ServiceRequestsAtNode({
         }
       ></CardHeader>
       <Collapse in={open} timeout="auto" unmountOnExit>
-        <CardContent>
+        <CardContent
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+          }}
+        >
+          {nodeID !== "" && <Button>Create Request Here</Button>}
           <Container>{contents}</Container>
         </CardContent>
       </Collapse>

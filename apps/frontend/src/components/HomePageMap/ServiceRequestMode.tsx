@@ -140,6 +140,8 @@ export function ServiceRequestMode() {
             top: 20,
             left: 20,
             flexDirection: "column",
+            maxHeight: "60%",
+            overflow: "hidden",
           }}
         >
           <Autocomplete
@@ -147,7 +149,7 @@ export function ServiceRequestMode() {
               (node) => node.nodeType !== "HALL",
             )}
             getOptionLabel={(node) => (node ? node.longName : "")}
-            value={nodes[selectedNode]}
+            value={nodes[selectedNode] || null}
             onChange={(_e, v) => setSelectedNode(v ? v.nodeID : "")}
             renderInput={(params) => <TextField {...params} />}
           />
