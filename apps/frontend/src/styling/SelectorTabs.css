@@ -1,11 +1,11 @@
 @keyframes moveArrow {
   0%,
   100% {
-    transform: translateX(-135%);
+    transform: translateX(-160%);
     animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
   }
   50% {
-    transform: translateX(-120%);
+    transform: translateX(-140%);
     animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
   }
 }

@@ -86,19 +86,22 @@ const SelectorTabs: React.FC<SelectorTabsProps> = ({
               className={`individual ${mapIndex === tabNames.length - 1 - index ? "active" : ""}`}
               onClick={() => handleTabClick(tabNames.length - 1 - index)}
               sx={{
-                padding: "10px 20px",
+                padding: "8px 24px",
                 "&.MuiButton-root": {
-                  border: "5px solid rgba(0, 0, 0, 0.1)",
+                  border: "6px solid rgba(0, 0, 0, 0.1)",
                   color: "rgba(255, 255, 255, 0.6)",
                   backgroundColor: "#091E37",
                   transition: "background-color 0.3s ease, color 0.3s ease",
                   boxShadow: 5,
                   fontSize: "20px",
-                  margin: "-5px",
+                  margin: "-3px",
+                  zIndex: 15,
                 },
                 "&.active": {
-                  border: "5px solid rgba(0, 0, 0, 0.1)",
-
+                  margin: "-3px -6px -3px -6px",
+                  borderRadius: "4px",
+                  border: "6px solid rgba(0, 0, 0, 0.1)",
+                  zIndex: 20,
                   backgroundColor: "#042c5c",
                   transform: "none",
                 },
