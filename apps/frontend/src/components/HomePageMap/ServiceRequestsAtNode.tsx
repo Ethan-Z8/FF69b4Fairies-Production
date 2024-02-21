@@ -40,7 +40,10 @@ export function ServiceRequestsAtNode({
     <Card
       sx={{
         maxHeight: "20%",
-        overflow: "scroll",
+        overflow: "hidden",
+        overflowY: "auto",
+        borderBottomRightRadius: "16px",
+        borderBottomLeftRadius: "16px",
       }}
     >
       <CardHeader

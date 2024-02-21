@@ -148,10 +148,39 @@ export function ServiceRequestMode() {
             options={Object.values(nodes).filter(
               (node) => node.nodeType !== "HALL",
             )}
+            sx={{
+              "& .MuiAutocomplete-inputRoot": {
+                border: "5px solid",
+                borderColor: "#ff69b4 important",
+              },
+              "&:hover .MuiAutocomplete-inputRoot": {
+                borderColor: "#ff69b4 important",
+              },
+              "&:focus-within .MuiAutocomplete-inputRoot": {
+                borderColor: "#ff69b4 important",
+              },
+            }}
             getOptionLabel={(node) => (node ? node.longName : "")}
             value={nodes[selectedNode] || null}
             onChange={(_e, v) => setSelectedNode(v ? v.nodeID : "")}
-            renderInput={(params) => <TextField {...params} />}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                InputProps={{
+                  sx: {
+                    borderTopLeftRadius: "16px",
+                    borderTopRightRadius: "16px",
+                    backgroundColor: "hsl(330, 80%, 80%, 40%)",
+                    "&:hover": {
+                      borderColor: "#ff69b4 !important",
+                    },
+                    "&:focus": {
+                      borderColor: "#ff69b4 !important",
+                    },
+                  },
+                }}
+              />
+            )}
           />
           <ServiceRequestsAtNode nodeID={selectedNode} requests={requests} />
         </div>

@@ -110,6 +110,12 @@ const StartEndSelect: React.FC<NodeSelectProps> = ({
     if (startID != "" && endID != "") {
       setForceClose(false);
     }
+    if (startID == "") {
+      setStartName("");
+    }
+    if (endID == "") {
+      setEndName("");
+    }
   }, [startID, endID]);
 
   const handleFocusStart = () => {
@@ -309,7 +315,10 @@ const StartEndSelect: React.FC<NodeSelectProps> = ({
       >
         <div>
           <div
-            onClick={() => setForceClose(true)}
+            onClick={() => {
+              setStartID("");
+              setEndID("");
+            }}
             className="HAHAHHA"
             style={{
               position: "absolute",
@@ -329,7 +338,7 @@ const StartEndSelect: React.FC<NodeSelectProps> = ({
             }}
           >
             {" "}
-            ALGO
+            CLEAR
           </div>
           <div
             onClick={() => setForceClose(true)}
