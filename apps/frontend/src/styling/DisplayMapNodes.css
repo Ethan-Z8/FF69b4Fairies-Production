@@ -152,14 +152,11 @@
   transition: all 75ms ease;
 }
 
-@keyframes flashAnimation {
+@keyframes moveArrows {
   0% {
-    background-color: #ff69b4;
-  }
-  50% {
-    background-color: white;
+    background-position: 0 0;
   }
   100% {
-    background-color: #ff69b4;
+    background-position: 20px 0;
   }
 }

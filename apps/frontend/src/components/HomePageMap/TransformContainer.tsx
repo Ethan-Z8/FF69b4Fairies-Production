@@ -1,5 +1,5 @@
 import React, { ReactNode, useRef, useEffect, useState } from "react";
-import "../styling/TransformContainer.css";
+import "../../styling/TransformContainer.css";
 
 interface TransformContainerProps {
   children: ReactNode;
@@ -15,7 +15,6 @@ const TransformContainer: React.FC<TransformContainerProps> = ({
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
-  const excludedContentRef = useRef<HTMLDivElement>(null);
   const [scale, setScale] = useState<number>(0.4);
   const [isDragging, setIsDragging] = useState<boolean>(false);
   const [dragStart, setDragStart] = useState<DragStart>({ x: 0, y: 0 });
@@ -70,7 +69,7 @@ const TransformContainer: React.FC<TransformContainerProps> = ({
     const handleWheel = (e: WheelEvent) => {
       e.preventDefault();
       let delta = 0;
-      const maxSpeed = 20;
+      const maxSpeed = 25;
       const minSpeed = 9;
 
       if (
@@ -78,6 +77,7 @@ const TransformContainer: React.FC<TransformContainerProps> = ({
         (e.deltaY < 0 && e.deltaY > -1 * minSpeed)
       ) {
         setScrolling(0);
+        console.log(scrolling);
         container.scrollLeft = locX * scale - e.clientX + rect.left;
         container.scrollTop = locY * scale - e.clientY + rect.top;
         return;
@@ -91,13 +91,18 @@ const TransformContainer: React.FC<TransformContainerProps> = ({
 
         return;
       }
-      if (e.deltaY > maxSpeed) delta = maxSpeed;
-      else if (e.deltaY < -1 * maxSpeed) delta = -1 * maxSpeed;
-      else delta = e.deltaY;
 
-      const zoomSpeed = 0.0005;
+      if (e.deltaY > maxSpeed) {
+        delta = maxSpeed;
+      } else if (e.deltaY < -1 * maxSpeed) {
+        delta = -1 * maxSpeed;
+      } else {
+        delta = e.deltaY;
+      }
+
+      const zoomSpeed = 0.001;
       if (delta < 0) {
-        setScale(Math.max(0.1, scale * (1 + delta * zoomSpeed)));
+        setScale(Math.max(0.45, scale * (1 + delta * zoomSpeed)));
       } else {
         setScale(Math.min(3, scale * (1 + delta * zoomSpeed)));
       }
@@ -120,36 +125,10 @@ const TransformContainer: React.FC<TransformContainerProps> = ({
     };
   }, [scrolling, locX, locY, scale, isDragging, dragStart]);
 
-  const [includedChildren, excludedChildren] = React.Children.toArray(
-    children,
-  ).reduce(
-    (acc: [ReactNode[], ReactNode[]], child: ReactNode) => {
-      if (
-        React.isValidElement(child) &&
-        child.props.className &&
-        child.props.className.includes("popup")
-      ) {
-        acc[1].push(
-          React.cloneElement(child, {
-            style: { transform: `scale(${1 / scale})` },
-          } as React.HTMLAttributes<HTMLElement>),
-        );
-      } else {
-        acc[0].push(child);
-      }
-      //console.log(acc[0]);
-      return acc;
-    },
-    [[], []],
-  );
-
   return (
     <div className="transform-container" ref={containerRef}>
       <div className="content-container" ref={contentRef}>
-        {includedChildren}
-      </div>
-      <div className="excluded-content-container" ref={excludedContentRef}>
-        {excludedChildren}
+        {children}
       </div>
     </div>
   );

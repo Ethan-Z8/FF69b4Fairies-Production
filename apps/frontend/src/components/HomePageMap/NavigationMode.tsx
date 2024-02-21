@@ -1,15 +1,19 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import NodeSelectDropdown from "./NodeSelectDropdown";
-import Button from "react-bootstrap/Button";
-import "../styling/DisplayMapNodes.css";
+import Box from "@mui/material/Box";
+import SpeedDial from "@mui/material/SpeedDial";
+import MyLocationIcon from "@mui/icons-material/MyLocation";
+import SpeedDialAction from "@mui/material/SpeedDialAction";
+import RouteIcon from "@mui/icons-material/Route";
+import AddLocationIcon from "@mui/icons-material/AddLocation";
+import "../../styling/DisplayMapNodes.css";
 import TransformContainer from "./TransformContainer.tsx";
 
-import LL1 from "../assets/hospitalmaps/00_thelowerlevel1-min.png";
-import LL2 from "../assets/hospitalmaps/00_thelowerlevel2-min.png";
-import F1 from "../assets/hospitalmaps/01_thefirstfloor-min.png";
-import F2 from "../assets/hospitalmaps/02_thesecondfloor-min.png";
-import F3 from "../assets/hospitalmaps/03_thethirdfloor-min.png";
+import LL1 from "../../assets/hospitalmaps/00_thelowerlevel1-min.png";
+import LL2 from "../../assets/hospitalmaps/00_thelowerlevel2-min.png";
+import F1 from "../../assets/hospitalmaps/01_thefirstfloor-min.png";
+import F2 from "../../assets/hospitalmaps/02_thesecondfloor-min.png";
+import F3 from "../../assets/hospitalmaps/03_thethirdfloor-min.png";
 
 /*
 import GRLR from "../assets/hospitalmaps/00_thegroundfloor-lowRes.png";
@@ -23,6 +27,8 @@ import F3LR from "../assets/hospitalmaps/03_thethirdfloor-lowRes.png";
 import SelectorTabs from "./SelectorTabs.tsx";
 import RenderCircles from "./RenderCircles.tsx";
 import RenderPath from "./RenderPath.tsx";
+import StartEndSelect from "./StartEndSelect.tsx";
+import HoveredNodeData from "./HoveredNodeData.tsx";
 
 interface Node {
   nodeID: string;
@@ -41,18 +47,12 @@ interface ImageSize {
   height: number;
 }
 
-const mapPath: string[] = [LL1, LL2, F1, F2, F3];
-const mapPathNames: string[] = ["L1", "L2", "1", "2", "3"];
+const mapPath: string[] = [LL2, LL1, F1, F2, F3];
+const mapPathNames: string[] = ["L2", "L1", "1", "2", "3"];
 
-const floorNames: string[] = [
-  "Lower Level 2",
-  "Lower Level 1",
-  "Level 1",
-  "Level 2",
-  "Level 3",
-];
+const floorNames: string[] = ["LL2", "LL1", "F1", "F2", "F3"];
 
-export function InteractiveMap() {
+export function NavigationMode() {
   const [firstClickedNodeId, setFirstClickedNodeId] = useState<string>("");
   const [secondClickedNodeId, setSecondClickedNodeId] = useState<string>("");
   const [nodes, setNodes] = useState<Node[]>([]);
@@ -70,11 +70,11 @@ export function InteractiveMap() {
     nodes: true,
     edges: false,
   });
-  const [menuOpen, setMenuOpen] = useState(false);
-  const [shortNames, setShortNames] = useState({ start: "", end: "" });
 
   const [toggleNodes, setToggleNodes] = useState(true);
   const [toggleEdges, setToggleEdges] = useState(false);
+  const [hoveredNode, setHoveredNode] = useState<Node | null>(null);
+  //const [defaultMap, setDefaultMap] = useState(0);
 
   useEffect(() => {
     const getAllNodes = async () => {
@@ -121,7 +121,6 @@ export function InteractiveMap() {
   }, []);
 
   useEffect(() => {
-    console.log(firstClickedNodeId, secondClickedNodeId);
     if (secondClickedNodeId !== "" && firstClickedNodeId !== "") {
       const getPathNodes = async () => {
         try {
@@ -132,8 +131,17 @@ export function InteractiveMap() {
             },
           });
           const nodesData: Node[] = Object.values(pathNodes.data);
-
           setNodes(nodesData);
+
+          if (hoveredNode != null) {
+            const hoveredFloorIndex = mapPathNames.findIndex(
+              (floor) =>
+                floor.toLowerCase() === hoveredNode.floor.toLowerCase(),
+            );
+            if (hoveredFloorIndex !== -1) {
+              setMapIndex(hoveredFloorIndex);
+            }
+          }
         } catch (error) {
           console.log("Error has not selected 2 nodes ");
         }
@@ -142,7 +150,34 @@ export function InteractiveMap() {
     } else {
       setNodes([]);
     }
-  }, [aNodes, secondClickedNodeId, firstClickedNodeId]);
+  }, [hoveredNode, aNodes, secondClickedNodeId, firstClickedNodeId]);
+
+  useEffect(() => {
+    let timeoutId: NodeJS.Timeout | undefined;
+
+    if (hoveredNode != null && hoveredNode.floor != mapPathNames[mapIndex]) {
+      const hoveredFloorIndex = mapPathNames.findIndex(
+        (floor) => floor.toLowerCase() === hoveredNode.floor.toLowerCase(),
+      );
+      timeoutId = setTimeout(() => {
+        if (hoveredFloorIndex !== -1) {
+          setMapIndex(hoveredFloorIndex);
+        }
+        return;
+      }, 650);
+    } else if (timeoutId) {
+      clearTimeout(timeoutId);
+    }
+    /*timeoutId = setTimeout(() => {
+      setMapIndex(defaultMap);
+    }, 100);*/
+
+    return () => {
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+      }
+    };
+  }, [hoveredNode, mapIndex]);
 
   const handleToggleNodes = () => {
     clearSearch();
@@ -153,10 +188,6 @@ export function InteractiveMap() {
     setToggleEdges(!toggleEdges);
   };
 
-  const toggleMenu = () => {
-    setMenuOpen(!menuOpen);
-  };
-
   const handleMapSelect = (index: number) => {
     setMapIndex(index);
   };
@@ -164,31 +195,16 @@ export function InteractiveMap() {
   const clearSearch = () => {
     setFirstClickedNodeId("");
     setSecondClickedNodeId("");
-    setShortNames({ start: "", end: "" });
   };
 
   const handleStartSelect = (value: string) => {
-    allNodes.forEach((node) => {
-      if (node.shortName === value) {
-        setFirstClickedNodeId(node.nodeID);
-        setShortNames((prevShortNames) => ({
-          ...prevShortNames,
-          start: node.shortName,
-        }));
-      }
-    });
+    setHoveredNode(null);
+    setFirstClickedNodeId(value);
   };
 
   const handleEndSelect = (value: string) => {
-    allNodes.forEach((node) => {
-      if (node.shortName === value) {
-        setSecondClickedNodeId(node.nodeID);
-        setShortNames((prevShortNames) => ({
-          ...prevShortNames,
-          end: node.shortName,
-        }));
-      }
-    });
+    setHoveredNode(null);
+    setSecondClickedNodeId(value);
   };
 
   const handleNodeClick = (node: Node) => {
@@ -197,40 +213,23 @@ export function InteractiveMap() {
         case firstClickedNodeId: {
           console.log("undo first");
           setFirstClickedNodeId("");
-          setShortNames((prevShortNames) => ({
-            ...prevShortNames,
-            start: "",
-          }));
           break;
         }
         case secondClickedNodeId: {
           console.log("undo second");
           setSecondClickedNodeId("");
-          setShortNames((prevShortNames) => ({
-            ...prevShortNames,
-            end: "",
-          }));
           break;
         }
         default: {
           if (firstClickedNodeId === "") {
             setFirstClickedNodeId(node.nodeID);
-            setShortNames((prevShortNames) => ({
-              ...prevShortNames,
-              start: node.shortName,
-            }));
           } else if (secondClickedNodeId === "") {
             setClear({ nodes: false, edges: false });
             setSecondClickedNodeId(node.nodeID);
-            setShortNames((prevShortNames) => ({
-              ...prevShortNames,
-              end: node.shortName,
-            }));
           } else {
             clearSearch();
             setFirstClickedNodeId(node.nodeID);
             setSecondClickedNodeId("");
-            setShortNames({ start: node.shortName, end: "" });
           }
         }
       }
@@ -239,60 +238,67 @@ export function InteractiveMap() {
 
   return (
     <div>
-      <div
-        className={`tab ${menuOpen ? "open" : ""}`}
-        onClick={toggleMenu}
-      ></div>
-      <div className={`map-control-panel ${menuOpen ? "open" : ""}`}>
-        <div className="menu-content">
-          <div
-            style={{
-              position: "absolute",
-              left: "10%",
-              top: "10%",
-              height: "10%",
-              width: "80%",
-              float: "right",
-              display: "flex",
-              flexDirection: "column",
-              gap: "20%",
-              zIndex: "2",
-            }}
-          >
-            <Button onClick={handleToggleNodes}>
-              Nodes: {toggleNodes ? "on" : "off"}
-            </Button>
-            <Button onClick={handleToggleEdges}>
-              Edges: {toggleEdges ? "on" : "off"}
-            </Button>
-          </div>
-        </div>
-      </div>
-      <div className="total">
-        <div
-          className="nodeSelectContainer"
-          style={{ display: "flex", flexDirection: "column" }}
+      <Box
+        sx={{
+          position: "absolute",
+          height: 320,
+          top: 10,
+          left: "21%",
+          zIndex: 4,
+          transform: "translateZ(0px)",
+          flexGrow: 1,
+        }}
+      >
+        <SpeedDial
+          ariaLabel="SpeedDial basic example"
+          sx={{
+            position: "fixed",
+            top: 0,
+            left: 5,
+            zIndex: 1,
+            backgroundColor: "transparent",
+            ".MuiSpeedDial-fab": {
+              backgroundColor: "#042c5c",
+            },
+            ".MuiSpeedDial-fab:hover": {
+              backgroundColor: "lightblue",
+            },
+          }}
+          icon={<MyLocationIcon />}
+          direction="down"
         >
-          <div style={{ display: "flex", alignItems: "center" }}>
-            <span style={{ width: "50px" }}>Start:</span>
-            <NodeSelectDropdown
-              label={shortNames.start}
-              onSelect={handleStartSelect}
-            />
-          </div>
-          <div style={{ display: "flex", alignItems: "center" }}>
-            <span style={{ width: "50px" }}>End:</span>
-            <NodeSelectDropdown
-              label={shortNames.end}
-              onSelect={handleEndSelect}
-            />
-          </div>
-          <Button onClick={clearSearch}>Clear</Button>
+          <SpeedDialAction
+            key={"Toggle Edge"}
+            icon={<RouteIcon />}
+            tooltipTitle={"Toggle Edge"}
+            onClick={handleToggleEdges}
+            tooltipPlacement={"right"}
+          />
+          <SpeedDialAction
+            key={"Toggle Node"}
+            icon={<AddLocationIcon />}
+            tooltipTitle={"Toggle Node"}
+            onClick={handleToggleNodes}
+            tooltipPlacement={"right"}
+          />
+        </SpeedDial>
+      </Box>
+      <div className="total">
+        <div className="nodeSelectContainer" style={{}}>
+          <StartEndSelect
+            start={firstClickedNodeId}
+            end={secondClickedNodeId}
+            onSelectStart={handleStartSelect}
+            onSelectEnd={handleEndSelect}
+            onHoverNode={setHoveredNode}
+          />
         </div>
         <SelectorTabs
           mapIndex={mapIndex}
           onMapSelect={handleMapSelect}
           tabNames={floorNames}
+          start={firstClickedNodeId}
+          end={secondClickedNodeId}
         />
         <TransformContainer>
           <div
@@ -324,6 +330,7 @@ export function InteractiveMap() {
               floor={mapPathNames[mapIndex]}
               toggleNodes={toggleNodes}
               handleNodeClick={handleNodeClick}
+              handleNodeHover={setHoveredNode}
             />
             <RenderPath
               allNodes={allNodes}
@@ -337,6 +344,7 @@ export function InteractiveMap() {
             />
           </div>
         </TransformContainer>
+        <HoveredNodeData node={hoveredNode} />
       </div>
     </div>
   );

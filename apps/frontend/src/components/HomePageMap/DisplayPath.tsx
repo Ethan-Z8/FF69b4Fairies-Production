@@ -3,14 +3,14 @@ import axios from "axios";
 import NodeSelectDropdown from "./NodeSelectDropdown";
 import Button from "react-bootstrap/Button";
 import NodeOnMap from "./NodeOnMap";
-import "../styling/DisplayMapNodes.css";
+import "../../styling/DisplayMapNodes.css";
 import TransformContainer from "./TransformContainer.tsx";
 
-import LL1 from "../assets/hospitalmaps/00_thelowerlevel1-min.png";
-import LL2 from "../assets/hospitalmaps/00_thelowerlevel2-min.png";
-import F1 from "../assets/hospitalmaps/01_thefirstfloor-min.png";
-import F2 from "../assets/hospitalmaps/02_thesecondfloor-min.png";
-import F3 from "../assets/hospitalmaps/03_thethirdfloor-min.png";
+import LL1 from "../../assets/hospitalmaps/00_thelowerlevel1-min.png";
+import LL2 from "../../assets/hospitalmaps/00_thelowerlevel2-min.png";
+import F1 from "../../assets/hospitalmaps/01_thefirstfloor-min.png";
+import F2 from "../../assets/hospitalmaps/02_thesecondfloor-min.png";
+import F3 from "../../assets/hospitalmaps/03_thethirdfloor-min.png";
 
 /*
 import GRLR from "../assets/hospitalmaps/00_thegroundfloor-lowRes.png";
@@ -22,6 +22,7 @@ import F3LR from "../assets/hospitalmaps/03_thethirdfloor-lowRes.png";
 */
 
 import SelectorTabs from "./SelectorTabs.tsx";
+import { MenuItem, Select } from "@mui/material";
 
 interface Node {
   nodeID: string;
@@ -56,6 +57,7 @@ export function DisplayPath() {
   const [secondClickedNodeId, setSecondClickedNodeId] = useState<string>("");
   const [nodes, setNodes] = useState<Node[]>([]);
   const [allNodes, setAllNodes] = useState<Node[]>([]);
+  const [ChosenAlgorithim, setChosenAlgorithim] = useState<string>("AStarAlgo");
   const [imageSize, setImageSize] = useState<ImageSize>({
     width: 5000,
     height: 3400,
@@ -80,7 +82,7 @@ export function DisplayPath() {
 
         setAllNodes(nodesData);
       } catch (error) {
-        console.error("Error fetching map nodes:", error);
+        console.error("Error fetching map nodess:", error);
       }
     };
 
@@ -116,6 +118,7 @@ export function DisplayPath() {
             params: {
               start: aNodes[firstClickedNodeId].shortName,
               end: aNodes[secondClickedNodeId].shortName,
+              algo: ChosenAlgorithim,
             },
           });
           const nodesData: Node[] = Object.values(pathNodes.data);
@@ -129,7 +132,7 @@ export function DisplayPath() {
     } else {
       setNodes([]);
     }
-  }, [aNodes, secondClickedNodeId, firstClickedNodeId]);
+  }, [aNodes, secondClickedNodeId, firstClickedNodeId, ChosenAlgorithim]);
 
   const handleToggleNodes = () => {
     clearSearch();
@@ -196,11 +199,6 @@ export function DisplayPath() {
             setClear({ nodes: false, edges: false });
             setSecondClickedNodeId(node.nodeID);
             setShortNames({ ...shortNames, end: node.shortName });
-          } else {
-            clearSearch();
-            setFirstClickedNodeId(node.nodeID);
-            setSecondClickedNodeId("");
-            setShortNames({ start: node.shortName, end: "" });
           }
         }
       }
@@ -297,7 +295,7 @@ export function DisplayPath() {
                             Math.pow(node.ycoord - prevNode.ycoord, 2),
                         )}px`,
                         height: "4px",
-                        backgroundColor: "black",
+                        backgroundColor: "red",
                         zIndex: 3,
                         transformOrigin: "left center",
                         transform: `translate(0, -2px) rotate(${Math.atan2(
@@ -336,7 +334,7 @@ export function DisplayPath() {
                     Math.pow(one.ycoord - prevNode.ycoord, 2),
                 )}px`,
                 height: "4px",
-                backgroundColor: "black",
+                backgroundColor: "red",
                 zIndex: 3,
                 transformOrigin: "left center",
                 transform: `rotate(${Math.atan2(
@@ -413,17 +411,12 @@ export function DisplayPath() {
   const renderCircles = () => {
     if (toggleNodes)
       return allNodes.map((node) => {
-        if (node.floor === mapPathNames[mapIndex] && node.nodeType != "HALL") {
-          const isStartNode = node.nodeID === firstClickedNodeId;
-          const isEndNode = node.nodeID === secondClickedNodeId;
+        if (node.floor === mapPathNames[mapIndex]) {
           return (
             <div key={node.nodeID}>
               <NodeOnMap
                 node={node}
                 onNodeClick={() => handleNodeClick(node)}
-                className={`${
-                  isStartNode ? "start-node" : isEndNode ? "end-node" : ""
-                }`}
               />
             </div>
           );
@@ -433,19 +426,11 @@ export function DisplayPath() {
       return nodes
         .filter((node) => node.floor === mapPathNames[mapIndex])
         .map((node) => {
-          const isStartNode = node.nodeID === firstClickedNodeId;
-          {
-            /*Finish Implementation of start/end node color*/
-          }
-          const isEndNode = node.nodeID === secondClickedNodeId;
           return (
             <div key={node.nodeID}>
               <NodeOnMap
                 node={node}
                 onNodeClick={() => handleNodeClick(node)}
-                className={`${
-                  isStartNode ? "start-node" : isEndNode ? "end-node" : ""
-                }`}
               />
             </div>
           );
@@ -508,7 +493,29 @@ export function DisplayPath() {
           mapIndex={mapIndex}
           onMapSelect={handleMapSelect}
           tabNames={floorNames}
+          start={""}
+          end={""}
         />
+        <Select
+          defaultValue={"AStarAlgo"}
+          inputProps={{
+            name: "age",
+            id: "uncontrolled-native",
+          }}
+          style={{
+            position: "absolute",
+            left: "93%",
+            top: "90%",
+            zIndex: "5",
+            backgroundColor: "white",
+            borderRadius: 25,
+          }}
+          onChange={(e) => setChosenAlgorithim(e.target.value)}
+        >
+          <MenuItem value={"AStarAlgo"}>AStar</MenuItem>
+          <MenuItem value={"BFS"}>BFS</MenuItem>
+          <MenuItem value={"DFS"}>DFS</MenuItem>
+        </Select>
         <TransformContainer>
           <div
             className="map-container"

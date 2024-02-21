@@ -32,7 +32,7 @@ x-db-loc: &db-loc
   POSTGRES_CONTAINER: database.cs.wpi.edu
   POSTGRES_PORT: &pg-port "5432"
   POSTGRES_SCHEMA: dev
-  POSTGRES_URL: jdbc:postgresql://database.cs.wpi.edu:5432/postgres?schema=dev
+  POSTGRES_URL: postgresql://database.cs.wpi.edu:5432/postgres?schema=dev
 
 # Running containers
 services:
@@ -45,7 +45,7 @@ services:
     # Use the standard Dockerfile
     build:
       # Taken from root
-      context: ../../Downloads/public configs
+      context: .
       # Use the dev-args (defined above)
       args: *dev-args
       # Use the dev-frontend stage
@@ -79,7 +79,7 @@ services:
     # Use the standard Dockerfile
     build:
       # Taken from root
-      context: ../../Downloads/public configs
+      context: .
       # Use the dev-args (defined above), along with the DB info, port, and URL
       args:
         <<: [*dev-args, *db-loc, *db-args]
