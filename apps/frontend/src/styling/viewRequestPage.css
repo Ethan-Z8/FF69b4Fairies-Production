@@ -22,24 +22,37 @@
   gap: 1rem;
 }
 
-.dashboardRight {
-  width: 65%;
+.dashboardMiddle {
+  width: 32.5%;
   border-radius: 20px;
+  height: 20rem;
   text-align: center;
-  border-color: green;
+  border-color: #012d5a;
   border-style: groove;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.dashboardRight {
+  width: 32.5%;
+  border-radius: 20px;
+  height: 20rem;
+  text-align: center;
+  border-color: #012d5a;
+  border-style: groove;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
 
 .topRow {
+  display: flex;
+  flex-direction: row;
   width: 100%;
   height: 50%;
   border-radius: 20px;
-  background-color: #b23434;
-  text-align: center;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-evenly;
-  border: 7px solid rgba(170, 45, 45, 0.75);
+  gap: 1rem;
 }
 
 .bottomRow {
@@ -51,18 +64,34 @@
   gap: 1rem;
 }
 
-.rowLeft {
-  background-color: #009ca6;
+.rowTopLeft {
+  background-color: rgb(76, 177, 174);
   border-radius: 20px;
   width: 49%;
   text-align: center;
-  border: 7px solid rgba(0, 145, 155, 0.75);
+  border: 7px solid rgb(66, 167, 164);
 }
 
-.rowRight {
-  background-color: #00b700;
+.rowTopRight {
+  background-color: rgb(83, 152, 252);
   border-radius: 20px;
   width: 49%;
   text-align: center;
-  border: 7px solid rgba(0, 170, 0, 0.75);
+  border: 7px solid rgb(73, 142, 242);
+}
+
+.rowBottomLeft {
+  background-color: rgb(173, 39, 214);
+  border-radius: 20px;
+  width: 49%;
+  text-align: center;
+  border: 7px solid rgb(163, 29, 204);
+}
+
+.rowBottomRight {
+  background-color: rgb(91, 22, 153);
+  border-radius: 20px;
+  width: 49%;
+  text-align: center;
+  border: 7px solid rgb(81, 12, 143);
 }

@@ -5,9 +5,9 @@ import Form from "react-bootstrap/Form";
 import "../styling/AddEmployeeForm.css";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import TextField from "@mui/material/TextField";
-import Box from "@mui/material/Box";
 import LockIcon from "@mui/icons-material/Lock";
 import BadgeIcon from "@mui/icons-material/Badge";
+import { Box } from "@mui/material";
 
 function AddEmployeeForm() {
   const [username, setUsername] = useState<string>("");

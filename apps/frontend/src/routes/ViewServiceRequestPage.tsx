@@ -16,6 +16,7 @@ import {
   TableRow,
   Typography,
 } from "@mui/material";
+import { PieChart } from "@mui/x-charts/PieChart";
 import RestartAltIcon from "@mui/icons-material/RestartAlt";
 import { ServiceRequestRow } from "../components/ServiceRequestRow.tsx";
 import { ServiceRequestType } from "common/src/interfaces/ServiceRequest.ts";
@@ -53,6 +54,43 @@ export function ViewServiceRequestPage() {
         console.log(e.message);
       });
   }, []);
+
+  interface TypeCounts {
+    [key: string]: number;
+  }
+
+  const calculateTypeCounts = () => {
+    const counts = serviceRequests.reduce((acc: TypeCounts, curr) => {
+      const typeService: string = curr.typeService;
+
+      if (curr.typeService == "InternalTransportation") {
+        curr.typeService = "Transport";
+      }
+
+      acc[typeService] = (acc[typeService] || 0) + 1;
+      return acc;
+    }, {} as TypeCounts);
+
+    return Object.entries(counts).map(([label, value], index) => ({
+      id: index,
+      value,
+      label,
+    }));
+  };
+
+  const calculateEmployeeCounts = () => {
+    const counts = serviceRequests.reduce((acc: TypeCounts, curr) => {
+      const employee: string = curr.employee || "Unassigned";
+      acc[employee] = (acc[employee] || 0) + 1;
+      return acc;
+    }, {} as TypeCounts);
+
+    return Object.entries(counts).map(([label, value], index) => ({
+      id: index,
+      value,
+      label: employees.find((e) => e.username === label)?.displayName || label, // Display name if found, else username
+    }));
+  };
 
   const inProgressCount = serviceRequests.filter(
     (request) => request.progress === "InProgress",
@@ -94,37 +132,41 @@ export function ViewServiceRequestPage() {
           <div className={"dashboard"}>
             <div className={"dashboardLeft"}>
               <div className={"topRow"}>
-                <div className={"text"}>
-                  <Typography
-                    variant="h6"
-                    onClick={() => setStatusFilter("Unassigned")}
-                    style={{
-                      color: "white",
-                      fontSize: "32px",
-                      textShadow: "2px 2px 4px rgba(0, 0, 0, 1)",
-                      cursor: "pointer",
-                    }}
-                  >
-                    Unassigned<p>{unassignedCount}</p>
-                  </Typography>
+                <div className={"rowTopLeft"}>
+                  <div className={"text"}>
+                    <Typography
+                      variant="h6"
+                      onClick={() => setStatusFilter("Unassigned")}
+                      style={{
+                        color: "white",
+                        fontSize: "32px",
+                        textShadow: "2px 2px 4px rgba(0, 0, 0, 1)",
+                        cursor: "pointer",
+                      }}
+                    >
+                      Unassigned<p>{unassignedCount}</p>
+                    </Typography>
+                  </div>
                 </div>
-                <div className={"text"}>
-                  <Typography
-                    variant="h6"
-                    onClick={() => setStatusFilter("Assigned")}
-                    style={{
-                      color: "white",
-                      fontSize: "32px",
-                      textShadow: "2px 2px 4px rgba(0, 0, 0, 1)",
-                      cursor: "pointer",
-                    }}
-                  >
-                    Assigned<p>{assignedCount}</p>
-                  </Typography>
+                <div className={"rowTopRight"}>
+                  <div className={"text"}>
+                    <Typography
+                      variant="h6"
+                      onClick={() => setStatusFilter("Assigned")}
+                      style={{
+                        color: "white",
+                        fontSize: "32px",
+                        textShadow: "2px 2px 4px rgba(0, 0, 0, 1)",
+                        cursor: "pointer",
+                      }}
+                    >
+                      Assigned<p>{assignedCount}</p>
+                    </Typography>
+                  </div>
                 </div>
               </div>
               <div className={"bottomRow"}>
-                <div className={"rowLeft"}>
+                <div className={"rowBottomLeft"}>
                   <div className={"text"}>
                     <Typography
                       variant="h6"
@@ -140,7 +182,7 @@ export function ViewServiceRequestPage() {
                     </Typography>
                   </div>
                 </div>
-                <div className={"rowRight"}>
+                <div className={"rowBottomRight"}>
                   <div className={"text"}>
                     <Typography
                       variant="h6"
@@ -158,8 +200,43 @@ export function ViewServiceRequestPage() {
                 </div>
               </div>
             </div>
+            <div className={"dashboardMiddle"}>
+              <Typography variant="h5" sx={{ mb: 1, textAlign: "center" }}>
+                Service Type Distribution
+              </Typography>
+              <div style={{ flexGrow: 1, minHeight: 0 }}>
+                <PieChart
+                  series={[
+                    {
+                      data: calculateTypeCounts(),
+                      innerRadius: 30,
+                      outerRadius: "90%", // Keep outerRadius relative
+                      paddingAngle: 5,
+                      cornerRadius: 5,
+                    },
+                  ]}
+                  style={{ width: "100%", height: "100%" }}
+                />
+              </div>
+            </div>
             <div className={"dashboardRight"}>
-              <h2>Service Request Chart</h2>
+              <Typography variant="h5" sx={{ mb: 1, textAlign: "center" }}>
+                Task Assignment Distribution
+              </Typography>
+              <div style={{ flexGrow: 1, minHeight: 0 }}>
+                <PieChart
+                  series={[
+                    {
+                      data: calculateEmployeeCounts(),
+                      innerRadius: 30,
+                      outerRadius: "90%",
+                      paddingAngle: 5,
+                      cornerRadius: 5,
+                    },
+                  ]}
+                  style={{ width: "100%", height: "100%" }}
+                />
+              </div>
             </div>
           </div>
           <Typography variant="h4">Service Requests</Typography>
