@@ -197,10 +197,30 @@ const StartEndSelect: React.FC<NodeSelectProps> = ({
             position: "absolute",
             right: "16px",
             top: "50%",
-            transform: "translateY(-50%)",
+            transform: "translateY(-55%)",
           }}
         >
-          <span style={{ color: "#fff", fontSize: "12px" }}>▼</span>
+          {startID != "" ? (
+            <span
+              style={{ color: "#fff", fontSize: "12px", cursor: "pointer" }}
+              onClick={() => {
+                setStartID("");
+                setStartName("");
+              }}
+            >
+              ✕
+            </span>
+          ) : (
+            <span
+              style={{ color: "#fff", fontSize: "12px", cursor: "pointer" }}
+              onClick={() => {
+                setIsStartFocused(true);
+                setShowSuggestions([true, false]);
+              }}
+            >
+              ▼
+            </span>
+          )}
         </div>
         {showSuggestions[0] && (
           <div
@@ -303,9 +323,10 @@ const StartEndSelect: React.FC<NodeSelectProps> = ({
             backgroundColor: "#8B2121",
             color: "white",
             marginTop: bothIDsSet ? "calc(100vh - 216px)" : 0,
-            transition: "margin-top 500m ease, border-bottom-left 200ms ease",
+            transition: "margin-top 500ms ease, border-bottom-left 200ms ease",
             boxShadow: "1px 2px 2px rgba(0, 0, 0, 0.2)",
             zIndex: isEndFocused ? 28 : 26,
+            caretColor: isStartFocused ? "white" : "transparent",
           }}
           placeholder="Enter Destination"
         />
@@ -317,18 +338,28 @@ const StartEndSelect: React.FC<NodeSelectProps> = ({
             transform: "translateY(-150%)",
           }}
         >
-          <span style={{ color: "#fff", fontSize: "12px" }}>▼</span>
+          {endID != "" ? (
+            <span
+              style={{ color: "#fff", fontSize: "12px", cursor: "pointer" }}
+              onClick={() => {
+                setEndID("");
+                setEndName("");
+              }}
+            >
+              ✕
+            </span>
+          ) : (
+            <span
+              style={{ color: "#fff", fontSize: "12px", cursor: "pointer" }}
+              onClick={() => {
+                setIsEndFocused(true);
+                setShowSuggestions([false, true]);
+              }}
+            >
+              ▼
+            </span>
+          )}
         </div>
-        {bothIDsSet && (
-          <div
-            style={{
-              position: "absolute",
-              top: "0px",
-            }}
-          >
-            <TextDirectionPathFinding start={startID} end={endID} />
-          </div>
-        )}
         {showSuggestions[1] && (
           <div
             className="scroll-container"
@@ -341,7 +372,8 @@ const StartEndSelect: React.FC<NodeSelectProps> = ({
               zIndex: -1,
               height: "30vh",
               borderRadius: "16px",
-              overflow: "auto",
+              overflow: "hidden",
+              overflowY: "scroll",
               boxShadow: "1px 2px 2px rgba(0, 0, 0, 0.2)",
             }}
           >
@@ -402,6 +434,24 @@ const StartEndSelect: React.FC<NodeSelectProps> = ({
           </div>
         )}
       </div>
+      {bothIDsSet && (
+        <div
+          style={{
+            position: "absolute",
+            top: "0px",
+            zIndex: -2,
+            minHeight: "80%",
+            maxHeight: "80%",
+
+            width: "75%",
+          }}
+        >
+          <div></div>
+          <div>
+            <TextDirectionPathFinding start={startID} end={endID} />
+          </div>
+        </div>
+      )}
     </div>
   );
 };
