@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import Button from "react-bootstrap/Button";
+import Box from "@mui/material/Box";
+import SpeedDial from "@mui/material/SpeedDial";
+import MyLocationIcon from "@mui/icons-material/MyLocation";
+import SpeedDialAction from "@mui/material/SpeedDialAction";
+import RouteIcon from "@mui/icons-material/Route";
+import AddLocationIcon from "@mui/icons-material/AddLocation";
 import "../../styling/DisplayMapNodes.css";
 import TransformContainer from "./TransformContainer.tsx";
 
@@ -65,7 +70,6 @@ export function NavigationMode() {
     nodes: true,
     edges: false,
   });
-  const [menuOpen, setMenuOpen] = useState(false);
 
   const [toggleNodes, setToggleNodes] = useState(true);
   const [toggleEdges, setToggleEdges] = useState(false);
@@ -192,10 +196,6 @@ export function NavigationMode() {
     setToggleEdges(!toggleEdges);
   };
 
-  const toggleMenu = () => {
-    setMenuOpen(!menuOpen);
-  };
-
   const handleMapSelect = (index: number) => {
     setMapIndex(index);
   };
@@ -244,35 +244,51 @@ export function NavigationMode() {
 
   return (
     <div>
-      <div
-        className={`tab ${menuOpen ? "open" : ""}`}
-        onClick={toggleMenu}
-      ></div>
-      <div className={`map-control-panel ${menuOpen ? "open" : ""}`}>
-        <div className="menu-content">
-          <div
-            style={{
-              position: "absolute",
-              left: "10%",
-              top: "10%",
-              height: "10%",
-              width: "80%",
-              float: "right",
-              display: "flex",
-              flexDirection: "column",
-              gap: "20%",
-              zIndex: "2",
-            }}
-          >
-            <Button onClick={handleToggleNodes}>
-              Nodes: {toggleNodes ? "on" : "off"}
-            </Button>
-            <Button onClick={handleToggleEdges}>
-              Edges: {toggleEdges ? "on" : "off"}
-            </Button>
-          </div>
-        </div>
-      </div>
+      <Box
+        sx={{
+          position: "absolute",
+          height: 320,
+          top: 10,
+          left: "21%",
+          zIndex: 4,
+          transform: "translateZ(0px)",
+          flexGrow: 1,
+        }}
+      >
+        <SpeedDial
+          ariaLabel="SpeedDial basic example"
+          sx={{
+            position: "fixed",
+            top: 0,
+            left: 5,
+            zIndex: 1,
+            backgroundColor: "transparent",
+            ".MuiSpeedDial-fab": {
+              backgroundColor: "#042c5c",
+            },
+            ".MuiSpeedDial-fab:hover": {
+              backgroundColor: "lightblue",
+            },
+          }}
+          icon={<MyLocationIcon />}
+          direction="down"
+        >
+          <SpeedDialAction
+            key={"Toggle Edge"}
+            icon={<RouteIcon />}
+            tooltipTitle={"Toggle Edge"}
+            onClick={handleToggleEdges}
+            tooltipPlacement={"right"}
+          />
+          <SpeedDialAction
+            key={"Toggle Node"}
+            icon={<AddLocationIcon />}
+            tooltipTitle={"Toggle Node"}
+            onClick={handleToggleNodes}
+            tooltipPlacement={"right"}
+          />
+        </SpeedDial>
+      </Box>
       <div className="total">
         <div className="nodeSelectContainer" style={{}}>
           <StartEndSelect
