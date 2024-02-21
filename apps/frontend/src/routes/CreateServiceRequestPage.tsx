@@ -20,8 +20,14 @@ import {
 } from "@mui/material";
 import TextField from "@mui/material/TextField";
 
+type CreateServiceRequestPageProps = {
+  node?: string;
+};
+
 //TODO: Make the location selectors autocomplete forms, not basic select forms
-export function CreateServiceRequestPage() {
+export function CreateServiceRequestPage({
+  node,
+}: CreateServiceRequestPageProps) {
   const [typeRequest, setTypeRequest] = useState<string>("Sanitation");
   const [nodes, setNodes] = useState<{ [key: string]: MapNodeInterface }>({});
   const [loaded, setLoaded] = useState<boolean>(false);
@@ -29,7 +35,7 @@ export function CreateServiceRequestPage() {
   const [error, setError] = useState<boolean>(false);
   const [employees, setEmployees] = useState<Employee[]>([]);
   // const [selectedNode, setSelectedNode] = useState('');
-  const [selectedNode, setSelectedNode] = useState("");
+  const [selectedNode, setSelectedNode] = useState(node || "");
   useEffect(() => {
     axios
       .get("/api/map")
@@ -144,7 +150,6 @@ export function CreateServiceRequestPage() {
           </Select>
         </FormControl>
         <FormControl>
-          <InputLabel id="locationLabel">Location</InputLabel>
           <Autocomplete
             options={Object.values(nodes).filter(
               (node) => node.nodeType !== "HALL",
