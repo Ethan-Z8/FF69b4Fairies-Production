@@ -13,6 +13,7 @@
   z-index: 1;
   border: 2px solid black;
   transition: all 0.1s ease;
+  animation: none;
 }
 
 .start-node {
@@ -149,4 +150,16 @@
 
 .popup {
   transition: all 75ms ease;
+}
+
+@keyframes flashAnimation {
+  0% {
+    background-color: #ff69b4;
+  }
+  50% {
+    background-color: white;
+  }
+  100% {
+    background-color: #ff69b4;
+  }
 }
