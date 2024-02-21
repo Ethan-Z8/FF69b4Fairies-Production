@@ -3,6 +3,7 @@ import "../../styling/TransformContainer.css";
 
 interface TransformContainerProps {
   children: ReactNode;
+  zoomToCoordinate?: { x: number; y: number };
 }
 
 interface DragStart {
@@ -12,6 +13,7 @@ interface DragStart {
 
 const TransformContainer: React.FC<TransformContainerProps> = ({
   children,
+  zoomToCoordinate,
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
@@ -21,14 +23,64 @@ const TransformContainer: React.FC<TransformContainerProps> = ({
   const [locX, setLocX] = useState<number>(0);
   const [locY, setLocY] = useState<number>(0);
   const [scrolling, setScrolling] = useState<number>(0);
+  const prevZoomToCoordinate =
+    useRef<TransformContainerProps["zoomToCoordinate"]>();
+
+  const handleGradualScroll = (
+    targetLeft: number,
+    targetTop: number,
+    duration: number,
+  ) => {
+    const startTime = performance.now();
+    const startLeft = containerRef.current!.scrollLeft;
+    const startTop = containerRef.current!.scrollTop;
+
+    const animateScroll = (timestamp: number) => {
+      const elapsed = timestamp - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      containerRef.current!.scrollLeft =
+        startLeft + (targetLeft - startLeft) * progress;
+      containerRef.current!.scrollTop =
+        startTop + (targetTop - startTop) * progress;
+      if (progress < 1) {
+        requestAnimationFrame(animateScroll);
+      }
+    };
+
+    requestAnimationFrame(animateScroll);
+  };
+  /*const handleGradualScale = (
+    targetScale: number,
+    duration: number
+  ) => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    const startTime = performance.now();
+    const startScale = scale;
+
+    const animateScale = (timestamp: number) => {
+      const elapsed = timestamp - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      const newScale = startScale + (targetScale - startScale) * progress;
+      setScale(newScale);
+      contentRef.current!.style.transform = `scale(${newScale})`;
+      if (progress < 1) {
+        requestAnimationFrame(animateScale);
+      }
+    };
+
+    requestAnimationFrame(animateScale);
+  };*/
 
   useEffect(() => {
     const container = containerRef.current;
     const content = contentRef.current;
-
     if (!container || !content) return;
-    content.style.transformOrigin = `${0}px ${0}px`;
 
+    const rect = container.getBoundingClientRect();
+
+    content.style.transformOrigin = `${0}px ${0}px`;
     content.style.transform = `scale(${scale})`;
 
     const handleMouseDown = (e: MouseEvent) => {
@@ -36,7 +88,6 @@ const TransformContainer: React.FC<TransformContainerProps> = ({
       setIsDragging(true);
       setDragStart({ x: e.clientX, y: e.clientY });
     };
-    const rect = container.getBoundingClientRect();
 
     const handleMouseMove = (e: MouseEvent) => {
       setLocX((container.scrollLeft + e.clientX - rect.left) / scale);
@@ -124,6 +175,46 @@ const TransformContainer: React.FC<TransformContainerProps> = ({
       container.removeEventListener("wheel", handleWheel);
     };
   }, [scrolling, locX, locY, scale, isDragging, dragStart]);
+
+  useEffect(() => {
+    if (zoomToCoordinate && prevZoomToCoordinate.current !== zoomToCoordinate) {
+      const container = containerRef.current;
+      const content = contentRef.current;
+
+      if (!container || !content) return;
+
+      const rect = container.getBoundingClientRect();
+      const newScale = 0.9;
+
+      setScale(newScale);
+      content.style.transform = `scale(${newScale})`;
+
+      const targetLeft =
+        zoomToCoordinate.x * newScale - rect.width / 2 + rect.left;
+      const targetTop =
+        zoomToCoordinate.y * newScale - rect.height / 2 + rect.top;
+
+      setLocX((container.scrollLeft + targetLeft - rect.left) / newScale);
+      setLocY((container.scrollTop + targetTop - rect.top) / newScale);
+
+      setTimeout(() => {
+        handleGradualScroll(targetLeft, targetTop, 280);
+        content.style.transform = `scale(${newScale})`;
+      }, 600);
+    } else if (!zoomToCoordinate && prevZoomToCoordinate.current) {
+      const container = containerRef.current;
+      const content = contentRef.current;
+
+      if (!container || !content) return;
+
+      setTimeout(() => {
+        handleGradualScroll(400, 400, 100);
+        setScale(0.45);
+      }, 600);
+    }
+
+    prevZoomToCoordinate.current = zoomToCoordinate;
+  }, [zoomToCoordinate]);
 
   return (
     <div className="transform-container" ref={containerRef}>

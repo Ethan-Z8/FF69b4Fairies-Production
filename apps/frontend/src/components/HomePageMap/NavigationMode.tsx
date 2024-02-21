@@ -163,21 +163,19 @@ export function NavigationMode() {
   ]);
 
   useEffect(() => {
-    let timeoutId: NodeJS.Timeout | undefined;
-
-    if (hoveredNode != null && hoveredNode.floor != mapPathNames[mapIndex]) {
-      const hoveredFloorIndex = mapPathNames.findIndex(
-        (floor) => floor.toLowerCase() === hoveredNode.floor.toLowerCase(),
-      );
-      timeoutId = setTimeout(() => {
+    const timeoutId = setTimeout(() => {
+      if (hoveredNode != null && hoveredNode.floor != mapPathNames[mapIndex]) {
+        const hoveredFloorIndex = mapPathNames.findIndex(
+          (floor) => floor.toLowerCase() === hoveredNode.floor.toLowerCase(),
+        );
         if (hoveredFloorIndex !== -1) {
           setMapIndex(hoveredFloorIndex);
         }
         return;
-      }, 650);
-    } else if (timeoutId) {
-      clearTimeout(timeoutId);
-    }
+      } else {
+        clearTimeout(timeoutId);
+      }
+    }, 650);
     /*timeoutId = setTimeout(() => {
       setMapIndex(defaultMap);
     }, 100);*/
@@ -343,7 +341,13 @@ export function NavigationMode() {
           start={firstClickedNodeId}
           end={secondClickedNodeId}
         />
-        <TransformContainer>
+        <TransformContainer
+          zoomToCoordinate={
+            hoveredNode
+              ? { x: hoveredNode.xcoord, y: hoveredNode.ycoord }
+              : undefined
+          }
+        >
           <div
             className="map-container"
             style={
