@@ -15,3 +15,13 @@
 .dropdown-toggle:active {
   color: white;
 }
+.profileContainer {
+  border-radius: 10rem;
+}
+.chipContainer {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 2rem;
+}

@@ -1,14 +1,55 @@
+import React from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useEffect } from "react";
-import Nav from "react-bootstrap/Nav";
-import Navbar from "react-bootstrap/Navbar";
-import NavDropdown from "react-bootstrap/NavDropdown";
-import logo from "../assets/image-1.png";
+// import MuiAppBar from "@mui/material/AppBar";
+// import MuiToolbar from "@mui/material/Toolbar";
+// import MuiButton from "@mui/material/Button";
+// import MuiTypography from "@mui/material/Typography";
+// import MuiLink from "@mui/material/Link";
+// import MuiGrid from "@mui/material/Grid";
+//import IconButton from "@mui/material";
 import "../styling/Navigation.css";
 
+import logo from "../assets/image-1.png";
+//import MuiMenu from "@mui/material/Menu";
+//import MuiMenuItem from "@mui/material/MenuItem";
+// import { Link } from "react-router-dom";
+import {
+  Avatar,
+  Popover,
+  // MenuItem,
+  // Paper,
+  ClickAwayListener,
+  Chip,
+  Container,
+  SvgIcon,
+  Typography,
+} from "@mui/material";
+
+import IconButton from "@mui/material/IconButton";
+//import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+//import { useNavigate } from "react-router-dom";
+import LogoutIcon from "@mui/icons-material/Logout";
+import { Nav, NavDropdown, Navbar } from "react-bootstrap";
+
+// interface NavLink {
+//   label: string;
+//   href: string;
+//   sublinks?: NavLink[];
+// }
+
 export function Navigation() {
-  const { loginWithRedirect, logout } = useAuth0();
+  const { loginWithRedirect } = useAuth0();
   const { isAuthenticated, isLoading, getAccessTokenSilently } = useAuth0();
+  const [profileMenuAnchor, setProfileMenuAnchor] =
+    React.useState<null | HTMLElement>(null);
+  // const [activeMenu, setActiveMenu] = React.useState<string | null>(null);
+  // const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  //const [serviceRequestsMenuOpen, setServiceRequestsMenuOpen] =
+  React.useState(false);
+  // const [mapDataMenuOpen, setMapDataMenuOpen] = React.useState(false);
+  // const [employeeDataMenuOpen, setEmployeeDataMenuOpen] = React.useState(false);
+  const { user, logout } = useAuth0();
 
   useEffect(() => {
     const fun = async () => {
@@ -41,6 +82,14 @@ export function Navigation() {
         returnTo: window.location.origin,
       },
     });
+  };
+
+  const handleProfileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
+    setProfileMenuAnchor(event.currentTarget);
+  };
+
+  const handleProfileMenuClose = () => {
+    setProfileMenuAnchor(null);
   };
 
   return (
@@ -106,13 +155,75 @@ export function Navigation() {
         </Nav.Link>
       )}
       {isAuthenticated && (
-        <Nav.Link
-          style={{ color: "white" }}
-          className="ml-4"
-          onClick={handleLogout}
+        <IconButton
+          color="inherit"
+          onClick={handleProfileMenuOpen}
+          style={{ fontSize: "0.9rem" }}
         >
-          Log Out
-        </Nav.Link>
+          <Avatar
+            alt={user?.name || "User"}
+            src={user?.picture}
+            sx={{ width: 50, height: 50 }}
+          />
+
+          <Popover
+            id="profile-menu"
+            anchorEl={profileMenuAnchor}
+            open={Boolean(profileMenuAnchor)}
+            onClose={handleProfileMenuClose}
+            anchorOrigin={{
+              vertical: "bottom",
+              horizontal: "center",
+            }}
+            transformOrigin={{
+              vertical: "top",
+              horizontal: "center",
+            }}
+          >
+            <ClickAwayListener onClickAway={handleProfileMenuClose}>
+              <Container className="profileContainer">
+                <button onClick={handleLogout}>
+                  <SvgIcon component={LogoutIcon} />
+                </button>
+                <Avatar
+                  alt={user?.name || "User"}
+                  src={user?.picture}
+                  sx={{ width: 50, height: 50, margin: "auto" }}
+                />
+                <Typography
+                  variant={"h6"}
+                  mt={3}
+                  // mb={1}
+                  textAlign={"center"}
+                  // style={{ marginTop: "10px" }}
+                >
+                  Hello,
+                </Typography>
+                <Typography
+                  variant={"h6"}
+                  gutterBottom
+                  // mt={1}
+                  mb={2}
+                  textAlign={"center"}
+                  // style={{ marginTop: "10px" }}
+                >
+                  {user?.name}
+                </Typography>
+
+                {/* <MenuItem onClick={handleLogout}>Logout</MenuItem> */}
+                <div className={"chipContainer"}>
+                  <Chip
+                    label="Manage your account"
+                    component="a"
+                    href="/Auth0Profile"
+                    variant="outlined"
+                    clickable
+                  />
+                </div>
+              </Container>
+            </ClickAwayListener>
+          </Popover>
+        </IconButton>
       )}
     </Navbar>
   );

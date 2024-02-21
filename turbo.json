@@ -16,12 +16,12 @@
     },
     "dev": {
       "dependsOn": ["^build:dev"],
-      "cache": false,
+      "cache": true,
       "persistent": true
     },
     "deploy": {
       "dependsOn": ["^build", "lint"],
-      "cache": false,
+      "cache": true,
       "persistent": true
     },
     "build": {
