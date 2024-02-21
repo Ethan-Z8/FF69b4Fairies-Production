@@ -1,5 +1,16 @@
 import { ServiceRequestType } from "common/src/interfaces/ServiceRequest.ts";
-import { Card } from "@mui/material";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  Collapse,
+  Container,
+  IconButton,
+  Button,
+} from "@mui/material";
+import { useState } from "react";
+import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 
 export interface ServiceRequestsAtNodeProps {
   nodeID: string;
@@ -11,29 +22,52 @@ export function ServiceRequestsAtNode({
   requests,
 }: ServiceRequestsAtNodeProps) {
   const reqsAtLoc = requests.filter((req) => req.location === nodeID);
-
+  const [open, setOpen] = useState(false);
   let contents;
   if (nodeID === "") {
     contents = <div>Select a node to see service request at that location</div>;
   } else if (reqsAtLoc.length === 0) {
-    contents = <div>No Service Requests at this node</div>;
+    contents = <div>No Service Requests at {nodeID}</div>;
   } else {
-    contents = reqsAtLoc.map((req) => <div>Request ID: {req.id}</div>);
+    contents = reqsAtLoc.map((req) => (
+      <div key={req.id} style={{ textAlign: "center" }}>
+        {req.typeService} request for {req.employee}
+      </div>
+    ));
   }
 
   return (
     <Card
       sx={{
-        position: "absolute",
-        top: 20,
-        left: 20,
         maxHeight: "20%",
         overflow: "scroll",
-        padding: "0.75rem",
-        textAlign: "center",
       }}
     >
-      {contents}
+      <CardHeader
+        title={"Service Requests"}
+        disableTypography
+        action={
+          <IconButton
+            onClick={() => setOpen(!open)}
+            aria-label="expand"
+            size="small"
+          >
+            {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+          </IconButton>
+        }
+      ></CardHeader>
+      <Collapse in={open} timeout="auto" unmountOnExit>
+        <CardContent
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+          }}
+        >
+          {nodeID !== "" && <Button>Create Request Here</Button>}
+          <Container>{contents}</Container>
+        </CardContent>
+      </Collapse>
     </Card>
   );
 }

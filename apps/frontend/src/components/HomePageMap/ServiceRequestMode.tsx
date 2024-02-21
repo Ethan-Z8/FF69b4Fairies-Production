@@ -10,11 +10,11 @@ import F2 from "../../assets/hospitalmaps/02_thesecondfloor-min.png";
 import F3 from "../../assets/hospitalmaps/03_thethirdfloor-min.png";
 
 import SelectorTabs from "./SelectorTabs.tsx";
-import HoveredNodeData from "./HoveredNodeData.tsx";
 import { MapNodeInterface } from "common/src/interfaces/MapNodeInterface.ts";
 import { ServiceRequestType } from "common/src/interfaces/ServiceRequest.ts";
 import { ServiceRequestNode } from "./ServiceRequestNode.tsx";
 import { ServiceRequestsAtNode } from "./ServiceRequestsAtNode.tsx";
+import { Autocomplete, TextField } from "@mui/material";
 
 const floorNames: string[] = ["LL1", "LL2", "F1", "F2", "F3"];
 
@@ -31,7 +31,6 @@ export function ServiceRequestMode() {
     {},
   );
   const [mapIndex, setMapIndex] = useState(1);
-  const [hoveredNode, setHoveredNode] = useState("");
   const [requestCounts, setRequestCounts] = useState<{
     [nodeID: string]: number;
   }>({});
@@ -79,9 +78,6 @@ export function ServiceRequestMode() {
     preloadImages();
   }, []);
 
-  const handleHoveredNode = useCallback((nodeID: string) => {
-    setHoveredNode(nodeID);
-  }, []);
   const handleSelectedNode = useCallback((nodeID: string) => {
     setSelectedNode(nodeID);
   }, []);
@@ -127,7 +123,6 @@ export function ServiceRequestMode() {
                 .map((node) => {
                   return (
                     <ServiceRequestNode
-                      setHoveredNode={handleHoveredNode}
                       nodeInfo={node}
                       numRequests={requestCounts[node.nodeID]}
                       setSelectedNode={handleSelectedNode}
@@ -137,8 +132,29 @@ export function ServiceRequestMode() {
                 })}
           </div>
         </TransformContainer>
-        <HoveredNodeData node={nodes[hoveredNode]} />
-        <ServiceRequestsAtNode nodeID={selectedNode} requests={requests} />
+        <div
+          style={{
+            display: "flex",
+            position: "absolute",
+            width: "25%",
+            top: 20,
+            left: 20,
+            flexDirection: "column",
+            maxHeight: "60%",
+            overflow: "hidden",
+          }}
+        >
+          <Autocomplete
+            options={Object.values(nodes).filter(
+              (node) => node.nodeType !== "HALL",
+            )}
+            getOptionLabel={(node) => (node ? node.longName : "")}
+            value={nodes[selectedNode] || null}
+            onChange={(_e, v) => setSelectedNode(v ? v.nodeID : "")}
+            renderInput={(params) => <TextField {...params} />}
+          />
+          <ServiceRequestsAtNode nodeID={selectedNode} requests={requests} />
+        </div>
       </div>
     </div>
   );
