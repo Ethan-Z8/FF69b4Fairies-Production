@@ -169,60 +169,6 @@ const RenderPath: React.FC<Props> = ({
     });
   }
 
-  // Change the first and last circles if toggleEdges is false
-  if (!toggleEdges && circles.length > 0) {
-    circles[0] = (
-      <div
-        key={pathNodes[0].nodeID}
-        className="node-wrapper"
-        style={{
-          position: "absolute",
-          left: `${pathNodes[0].xcoord - 12}px`,
-          top: `${pathNodes[0].ycoord - 12}px`,
-        }}
-      >
-        <div
-          className="circle"
-          style={{
-            width: "24px",
-            height: "24px",
-            backgroundColor: "green",
-            borderRadius: "50%",
-            boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.3)",
-            border: "2px solid black",
-            zIndex: 20,
-          }}
-        ></div>
-      </div>
-    );
-
-    const lastNodeIndex = circles.length - 1;
-    circles[lastNodeIndex] = (
-      <div
-        key={pathNodes[lastNodeIndex].nodeID}
-        className="node-wrapper"
-        style={{
-          position: "absolute",
-          left: `${pathNodes[lastNodeIndex].xcoord - 12}px`,
-          top: `${pathNodes[lastNodeIndex].ycoord - 12}px`,
-        }}
-      >
-        <div
-          className="circle"
-          style={{
-            width: "24px",
-            height: "24px",
-            backgroundColor: "red",
-            borderRadius: "50%",
-            boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.3)",
-            border: "2px solid black",
-            zIndex: 20,
-          }}
-        ></div>
-      </div>
-    );
-  }
-
   return <>{circles}</>;
 };
 
