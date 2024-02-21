@@ -9,6 +9,7 @@ import {
   Button,
 } from "@mui/material";
 import { useState } from "react";
+import { CreateRequestAtNodeModal } from "./CreateRequestAtNodeModal.tsx";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 
@@ -23,6 +24,7 @@ export function ServiceRequestsAtNode({
 }: ServiceRequestsAtNodeProps) {
   const reqsAtLoc = requests.filter((req) => req.location === nodeID);
   const [open, setOpen] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
   let contents;
   if (nodeID === "") {
     contents = <div>Select a node to see service request at that location</div>;
@@ -67,7 +69,18 @@ export function ServiceRequestsAtNode({
             justifyContent: "center",
           }}
         >
-          {nodeID !== "" && <Button>Create Request Here</Button>}
+          {nodeID !== "" && (
+            <>
+              <Button onClick={() => setModalOpen(true)}>
+                Create Request Here
+              </Button>
+              <CreateRequestAtNodeModal
+                nodeID={nodeID}
+                open={modalOpen}
+                setOpen={setModalOpen}
+              />
+            </>
+          )}
           <Container>{contents}</Container>
         </CardContent>
       </Collapse>
