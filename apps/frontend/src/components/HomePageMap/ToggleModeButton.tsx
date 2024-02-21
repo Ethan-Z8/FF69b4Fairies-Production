@@ -48,7 +48,7 @@ export function ToggleModeButton({
           borderTopRightRadius: "11px",
           borderBottomRightRadius: "11px",
           border: "5px solid rgba(0, 0, 0, 0.1)",
-          backgroundColor: "#ff69b4",
+          backgroundColor: "#012d5a",
           color: "white",
           opacity: currentMode == "Request" ? "100%" : "40%",
         }}
