@@ -88,17 +88,16 @@ const SelectorTabs: React.FC<SelectorTabsProps> = ({
               sx={{
                 padding: "10px 20px",
                 "&.MuiButton-root": {
-                  borderColor: isFloorActive(tab) ? "lightblue" : "#042c5c",
-                  backgroundColor: isFloorActive(tab) ? "lightblue" : "#042c5c",
+                  border: "5px",
+                  backgroundColor: "#042c5c",
                   transition: "background-color 0.3s ease, color 0.3s ease",
                   boxShadow: 5,
                   fontSize: "20px",
                 },
                 "&.active": {
                   color: "black",
-                  backgroundColor: "#f4bc3c",
+                  backgroundColor: "lightblue",
                   transform: "none",
-                  width: 100,
                 },
 
                 "&.individual:first-of-type": {
@@ -109,6 +108,15 @@ const SelectorTabs: React.FC<SelectorTabsProps> = ({
                 },
               }}
             >
+              {isFloorActive(tab) && (
+                <>
+                  <img
+                    className="arrowImage"
+                    src="https://static.thenounproject.com/png/634840-200.png"
+                    alt={"Arrow Image "}
+                  />
+                </>
+              )}
               {tab}
             </Button>
           ))}
