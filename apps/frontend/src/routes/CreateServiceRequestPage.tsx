@@ -18,15 +18,20 @@ import {
   Typography,
 } from "@mui/material";
 
+type CreateServiceRequestPageProps = {
+  node?: string;
+};
+
 //TODO: Make the location selectors autocomplete forms, not basic select forms
-export function CreateServiceRequestPage() {
+export function CreateServiceRequestPage({
+  node,
+}: CreateServiceRequestPageProps) {
   const [typeRequest, setTypeRequest] = useState<string>("Sanitation");
   const [nodes, setNodes] = useState<{ [key: string]: MapNodeInterface }>({});
   const [loaded, setLoaded] = useState<boolean>(false);
   const [success, setSuccess] = useState<boolean>(false);
   const [error, setError] = useState<boolean>(false);
   const [employees, setEmployees] = useState<Employee[]>([]);
-
   useEffect(() => {
     axios
       .get("/api/map")
@@ -147,7 +152,7 @@ export function CreateServiceRequestPage() {
             label="Location"
             id="location"
             name="location"
-            defaultValue=""
+            defaultValue={node || ""}
             required
           >
             {Object.values(nodes).map((node) => {
