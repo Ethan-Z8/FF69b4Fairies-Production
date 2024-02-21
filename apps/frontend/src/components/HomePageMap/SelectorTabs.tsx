@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import "../../styling/SelectorTabs.css";
 import Button from "@mui/material/Button";
 import ToggleButtonGroup from "@mui/material/ButtonGroup";
-import Box from "@mui/material/Box";
+import { Box } from "@mui/material";
 import axios from "axios";
 
 interface SelectorTabsProps {

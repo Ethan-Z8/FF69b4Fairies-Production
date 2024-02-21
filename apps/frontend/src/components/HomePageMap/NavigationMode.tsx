@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import Box from "@mui/material/Box";
+import { Box } from "@mui/material";
 import SpeedDial from "@mui/material/SpeedDial";
 import MyLocationIcon from "@mui/icons-material/MyLocation";
 import SpeedDialAction from "@mui/material/SpeedDialAction";
