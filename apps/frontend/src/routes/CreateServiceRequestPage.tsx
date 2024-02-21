@@ -9,7 +9,6 @@ import { MapNodeInterface } from "common/src/interfaces/MapNodeInterface.ts";
 import { Employee } from "common/src/interfaces/Employee.ts";
 import axios from "axios";
 import {
-  Autocomplete,
   Button,
   FormControl,
   InputLabel,
@@ -18,7 +17,6 @@ import {
   Select,
   Typography,
 } from "@mui/material";
-import TextField from "@mui/material/TextField";
 
 //TODO: Make the location selectors autocomplete forms, not basic select forms
 export function CreateServiceRequestPage() {
@@ -28,8 +26,7 @@ export function CreateServiceRequestPage() {
   const [success, setSuccess] = useState<boolean>(false);
   const [error, setError] = useState<boolean>(false);
   const [employees, setEmployees] = useState<Employee[]>([]);
-  // const [selectedNode, setSelectedNode] = useState('');
-  const [selectedNode, setSelectedNode] = useState("");
+
   useEffect(() => {
     axios
       .get("/api/map")
@@ -144,23 +141,23 @@ export function CreateServiceRequestPage() {
           </Select>
         </FormControl>
         <FormControl>
-          <InputLabel id="locationLabel"></InputLabel>
-          <Autocomplete
-            options={Object.values(nodes).filter(
-              (node) => node.nodeType !== "HALL",
-            )}
-            getOptionLabel={(node) => (node ? node.longName : "")}
-            value={nodes[selectedNode]}
-            onChange={(_e, v) => setSelectedNode(v ? v.nodeID : "")}
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                label="Location"
-                id="location"
-                name="location"
-              />
-            )}
-          />
+          <InputLabel>Location</InputLabel>
+          <Select
+            key="location"
+            label="Location"
+            id="location"
+            name="location"
+            defaultValue=""
+            required
+          >
+            {Object.values(nodes).map((node) => {
+              return (
+                <MenuItem key={node.nodeID} value={node.nodeID}>
+                  {node.longName}
+                </MenuItem>
+              );
+            })}
+          </Select>
         </FormControl>
         <FormControl>
           <InputLabel id="employeeLabel">Employee</InputLabel>
