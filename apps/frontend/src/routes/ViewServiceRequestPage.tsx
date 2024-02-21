@@ -61,7 +61,12 @@ export function ViewServiceRequestPage() {
 
   const calculateTypeCounts = () => {
     const counts = serviceRequests.reduce((acc: TypeCounts, curr) => {
-      const typeService: string = curr.typeService; // Assuming typeService is of type string
+      const typeService: string = curr.typeService;
+
+      if (curr.typeService == "InternalTransportation") {
+        curr.typeService = "Transport";
+      }
+
       acc[typeService] = (acc[typeService] || 0) + 1;
       return acc;
     }, {} as TypeCounts);
@@ -70,6 +75,20 @@ export function ViewServiceRequestPage() {
       id: index,
       value,
       label,
+    }));
+  };
+
+  const calculateEmployeeCounts = () => {
+    const counts = serviceRequests.reduce((acc: TypeCounts, curr) => {
+      const employee: string = curr.employee || "Unassigned";
+      acc[employee] = (acc[employee] || 0) + 1;
+      return acc;
+    }, {} as TypeCounts);
+
+    return Object.entries(counts).map(([label, value], index) => ({
+      id: index,
+      value,
+      label: employees.find((e) => e.username === label)?.displayName || label, // Display name if found, else username
     }));
   };
 
@@ -177,19 +196,43 @@ export function ViewServiceRequestPage() {
                 </div>
               </div>
             </div>
+            <div className={"dashboardMiddle"}>
+              <Typography variant="h5" sx={{ mb: 1, textAlign: "center" }}>
+                Service Type Distribution
+              </Typography>
+              <div style={{ flexGrow: 1, minHeight: 0 }}>
+                <PieChart
+                  series={[
+                    {
+                      data: calculateTypeCounts(),
+                      innerRadius: 30,
+                      outerRadius: "90%", // Keep outerRadius relative
+                      paddingAngle: 5,
+                      cornerRadius: 5,
+                    },
+                  ]}
+                  style={{ width: "100%", height: "100%" }}
+                />
+              </div>
+            </div>
             <div className={"dashboardRight"}>
-              <PieChart
-                series={[
-                  {
-                    data: calculateTypeCounts(),
-                    innerRadius: 30,
-                    outerRadius: "90%", // Adjust outerRadius to be relative
-                    paddingAngle: 5,
-                    cornerRadius: 5,
-                  },
-                ]}
-                // style={{ width: 'auto', height: 'auto' }}
-              />
+              <Typography variant="h5" sx={{ mb: 1, textAlign: "center" }}>
+                Task Assignment Distribution
+              </Typography>
+              <div style={{ flexGrow: 1, minHeight: 0 }}>
+                <PieChart
+                  series={[
+                    {
+                      data: calculateEmployeeCounts(),
+                      innerRadius: 30,
+                      outerRadius: "90%",
+                      paddingAngle: 5,
+                      cornerRadius: 5,
+                    },
+                  ]}
+                  style={{ width: "100%", height: "100%" }}
+                />
+              </div>
             </div>
           </div>
           <Typography variant="h4">Service Requests</Typography>
