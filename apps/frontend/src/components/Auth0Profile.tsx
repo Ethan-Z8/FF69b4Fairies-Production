@@ -1,60 +1,111 @@
-//Access via "/userProfile" from localhost:3000
-import React from "react";
+//Access via "/userProfile" from localhost:3000\
+import React, { useEffect, useState } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import {
   Button,
   Avatar,
   Typography,
   Container,
+  Table,
+  TableHead,
+  TableRow,
+  TableCell,
+  TableBody,
+  TableContainer,
   //TableContainer,
 } from "@mui/material";
+import { ServiceRequestType } from "common/src/interfaces/ServiceRequest.ts";
+import axios from "axios";
+import { ServiceRequestRow } from "./ServiceRequestRow.tsx";
 //import { Employee } from "common/src/interfaces/Employee.ts";
 //import { ViewServiceRequestPage } from "../routers/ViewServiceRequestPage.tsx";
 
-const Auth0Profile: React.FC = () => {
+const Auth0Profile = () => {
   const { user, logout } = useAuth0();
+  // console.log(user);
 
   const handleLogout = () => {
     logout();
     window.location.href = "/";
   };
-  /*
-import axios from 'axios';
 
-export async function getServiceRequestByEmployee(username: string) {
-    try {
-        const data = await axios.get("/api/serviceRequest/byEmployee", {username});
-        return await data.json();
-    } catch (e) {
-        console.log((e as Error).message);
-        return {error: `failed to get service requests for ${username}`};
-    }
-}
-
- */
+  const [employeeData, setEmployeeData] = useState<Array<ServiceRequestType>>(
+    [],
+  );
+  useEffect(() => {
+    axios
+      .get("/api/serviceRequest/byEmployee", {
+        params: { username: user?.nickname },
+      })
+      .then((res) => {
+        console.log("Request Made");
+        console.log(res.data);
+        setEmployeeData(res.data);
+      })
+      .catch((e: Error) => {
+        console.log(e.message);
+      });
+  }, [user?.nickname]);
 
   return (
-    <Container maxWidth="sm" style={{ textAlign: "center", marginTop: "50px" }}>
+    <Container
+      //maxWidth="2sm"
+      style={{ textAlign: "center", marginTop: "50px" }}
+    >
       <Avatar
         alt={user?.name || "User"}
         src={user?.picture}
         sx={{ width: 100, height: 100, margin: "auto" }}
       />
       <Typography variant={"h4"} gutterBottom style={{ marginTop: "25px" }}>
-        Hello, {user?.name}
+        Hello, {user?.nickname}
       </Typography>
-      <Typography variant={"h4"} gutterBottom style={{ marginTop: "10px" }}>
-        Your role is: {user?.role}
+      <Typography
+        variant={"h6"}
+        gutterBottom
+        style={{ marginTop: "25px", marginBottom: "10px" }}
+      >
+        Email: {user?.name}
       </Typography>
+      {/*  THIS STUFF NEEDS TO BE PUT IN LATER*/}
+      {/*<Typography variant={"h4"} gutterBottom style={{ marginTop: "10px" }}>*/}
+      {/*  Your role is: {user?.role}*/}
+      {/*</Typography>*/}
       <Typography
         variant={"h5"}
         fontSize={"15px"}
         color={"gray"}
         gutterBottom
-        style={{ marginTop: "100px", marginRight: "250px" }}
+        style={{ marginTop: "10px", textAlign: "left" }}
       >
         Your assigned service requests...
       </Typography>
+      <TableContainer
+        sx={{
+          border: 1,
+          borderColor: "#44444444",
+          borderRadius: 2,
+          width: "100%",
+        }}
+      >
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell> Date</TableCell>
+              <TableCell> Type of Service</TableCell>
+              <TableCell> Location</TableCell>
+              <TableCell> Progress</TableCell>
+              <TableCell> Priority</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {employeeData.map((req) => {
+              return <ServiceRequestRow {...req} />;
+            })}
+          </TableBody>
+        </Table>
+      </TableContainer>
+
       {/*<TableContainer>*/}
       {/*    <ViewServiceRequestPage />*/}
       {/*</TableContainer>*/}

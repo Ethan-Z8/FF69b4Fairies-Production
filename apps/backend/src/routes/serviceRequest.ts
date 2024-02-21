@@ -139,8 +139,12 @@ router.post("/updateProgress", async (req: Request, res: Response) => {
 });
 
 router.get("/byEmployee", async (req, res) => {
-  const { username } = req.body;
+  type params = {
+    username: string;
+  };
+  const { username } = req.params as params;
   try {
+    if (username) throw new Error("No username provided");
     const data = await prisma.serviceRequest.findMany({
       include: {
         flowerRequest: true,

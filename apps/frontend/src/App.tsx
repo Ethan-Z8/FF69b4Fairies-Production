@@ -61,7 +61,7 @@ function App() {
         },
         {
           path: "/Auth0Profile",
-          element: <Auth0Profile />,
+          element: <ProtectPage Page={Auth0Profile} />,
         },
       ],
     },
