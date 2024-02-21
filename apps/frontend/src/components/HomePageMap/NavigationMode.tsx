@@ -142,9 +142,6 @@ export function NavigationMode() {
           console.log("Error has not selected 2 nodes ");
         }
       };
-      if (firstClickedNodeId != "" && secondClickedNodeId != "") {
-        setHoveredNode(null);
-      }
       getPathNodes();
     } else {
       setNodes([]);
@@ -201,10 +198,12 @@ export function NavigationMode() {
   };
 
   const handleStartSelect = (value: string) => {
+    setHoveredNode(null);
     setFirstClickedNodeId(value);
   };
 
   const handleEndSelect = (value: string) => {
+    setHoveredNode(null);
     setSecondClickedNodeId(value);
   };
 

@@ -107,10 +107,10 @@ const SelectorTabs: React.FC<SelectorTabsProps> = ({
                 },
 
                 "&.individual:first-of-type": {
-                  borderRadius: "16px 16px 0px 0px",
+                  borderRadius: "16px 16px 4px 4px",
                 },
                 "&.individual:last-of-type": {
-                  borderRadius: "0px 0px 16px 16px",
+                  borderRadius: "4px 4px 16px 16px",
                 },
               }}
             >
