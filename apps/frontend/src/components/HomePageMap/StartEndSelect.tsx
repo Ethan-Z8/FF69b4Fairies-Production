@@ -49,7 +49,6 @@ const StartEndSelect: React.FC<NodeSelectProps> = ({
   const [isEndFocused, setIsEndFocused] = useState(false);
   const [showSuggestions, setShowSuggestions] = useState([false, false]);
   const inputRef = useRef<HTMLInputElement>(null);
-  const [hoveredItem, setHoveredItem] = useState<string | null>(null);
 
   useEffect(() => {
     const getAllNodes = async () => {
@@ -108,6 +107,9 @@ const StartEndSelect: React.FC<NodeSelectProps> = ({
 
   useEffect(() => {
     setShowSuggestions([false, false]);
+    if (startID != "" && endID != "") {
+      setForceClose(false);
+    }
   }, [startID, endID]);
 
   const handleFocusStart = () => {
@@ -121,7 +123,6 @@ const StartEndSelect: React.FC<NodeSelectProps> = ({
   const handleMouseLeave = () => {
     setIsStartFocused(false);
     setIsEndFocused(false);
-    setHoveredItem(null); // Clear hovered item when mouse leaves
   };
 
   const handleSearch = (
@@ -148,7 +149,7 @@ const StartEndSelect: React.FC<NodeSelectProps> = ({
       setTerm("");
     }
   };
-
+  const [forceClose, setForceClose] = useState(false);
   return (
     <div
       onMouseLeave={handleMouseLeave}
@@ -261,13 +262,9 @@ const StartEndSelect: React.FC<NodeSelectProps> = ({
                   <li
                     onMouseEnter={() => {
                       onHoverNode(node);
-                      setHoveredItem(node.nodeID);
-                      console.log(hoveredItem);
                     }}
                     onMouseLeave={() => {
                       onHoverNode(null);
-                      setHoveredItem(null);
-                      console.log(hoveredItem);
                     }}
                     key={node.nodeID}
                     onClick={() => {
@@ -307,14 +304,63 @@ const StartEndSelect: React.FC<NodeSelectProps> = ({
         style={{
           position: "relative",
           zIndex: -1,
-          width: "80%",
+          width: "100%",
         }}
       >
         <div>
-          <TextDirectionPathFinding start={startID} end={endID} />
+          <div
+            onClick={() => setForceClose(true)}
+            className="HAHAHHA"
+            style={{
+              position: "absolute",
+              top: 0,
+              right: 0,
+              height: "48px",
+              color: "purple",
+              width: "20%",
+              borderBottomRightRadius: "16px",
+              border: "5px solid purple",
+              backgroundColor: "rgba(210, 190, 210, 0.9)",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              cursor: "pointer",
+              fontWeight: "bold",
+            }}
+          >
+            {" "}
+            ALGO
+          </div>
+          <div
+            onClick={() => setForceClose(true)}
+            className="HAHAHHA"
+            style={{
+              position: "absolute",
+              bottom: 0,
+              right: 0,
+              height: "48px",
+              color: "#8B2121",
+              width: "20%",
+              borderTopRightRadius: "16px",
+              border: "5px solid #8B2121",
+              backgroundColor: "rgba(180, 140, 140, 0.7)",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              cursor: "pointer",
+              fontWeight: "bold",
+            }}
+          >
+            {" "}
+            HIDE
+          </div>
+          <TextDirectionPathFinding
+            start={startID}
+            end={endID}
+            forceClose={forceClose}
+          />
         </div>
       </div>
-
       <div>
         <input
           type="text"
@@ -323,9 +369,13 @@ const StartEndSelect: React.FC<NodeSelectProps> = ({
             handleSearch(e, onSelectEnd, setEndID, setEndName);
             if (isEndFocused) setShowSuggestions([false, true]);
             setShowSuggestions([false, true]);
+            setForceClose(false);
           }}
           onFocus={handleFocusEnd}
-          onClick={() => setShowSuggestions([false, true])}
+          onClick={() => {
+            if (forceClose) setForceClose(false);
+            else setShowSuggestions([false, true]);
+          }}
           style={{
             border: "5px solid rgba(0, 0, 0, 0.1)",
             borderBottomRightRadius: "16px",
@@ -340,7 +390,7 @@ const StartEndSelect: React.FC<NodeSelectProps> = ({
             transition: "border-bottom-left 200ms ease",
             boxShadow: "1px 2px 2px rgba(0, 0, 0, 0.2)",
             zIndex: isEndFocused ? 28 : 26,
-            caretColor: isStartFocused ? "white" : "transparent",
+            caretColor: isEndFocused ? "white" : "transparent",
           }}
           placeholder="Enter Destination"
         />
@@ -352,12 +402,15 @@ const StartEndSelect: React.FC<NodeSelectProps> = ({
             transform: "translateY(-150%)",
           }}
         >
-          {endID != "" ? (
+          {(endID != "" && !forceClose) || forceClose ? (
             <span
               style={{ color: "#fff", fontSize: "12px", cursor: "pointer" }}
               onClick={() => {
-                setEndID("");
-                setEndName("");
+                if (showSuggestions[1]) setShowSuggestions([false, false]);
+                else {
+                  setEndID("");
+                  setEndName("");
+                }
               }}
             >
               ✕
@@ -367,7 +420,9 @@ const StartEndSelect: React.FC<NodeSelectProps> = ({
               style={{ color: "#fff", fontSize: "12px", cursor: "pointer" }}
               onClick={() => {
                 setIsEndFocused(true);
-                setShowSuggestions([false, true]);
+                if (!forceClose)
+                  setShowSuggestions([false, !showSuggestions[1]]);
+                else setForceClose(false);
               }}
             >
               ▼
@@ -414,11 +469,9 @@ const StartEndSelect: React.FC<NodeSelectProps> = ({
                   <li
                     onMouseEnter={() => {
                       onHoverNode(node);
-                      setHoveredItem(node.nodeID);
                     }}
                     onMouseLeave={() => {
                       onHoverNode(null);
-                      setHoveredItem(null);
                     }}
                     onClick={() => {
                       onSelectEnd(

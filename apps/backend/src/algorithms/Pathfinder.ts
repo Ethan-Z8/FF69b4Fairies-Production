@@ -71,7 +71,7 @@ export default class Pathfinder {
     }
 
     let currentAngle = 0;
-    let forwardDistance = 0;
+    //const forwardDistance = 0;
 
     for (let i = 1; i < path.length; i++) {
       const currentNode = this.getNodeByID(path[i]);
@@ -105,12 +105,12 @@ export default class Pathfinder {
 
           if (Math.abs(turnAngle) > 1) {
             directions.push(
-              `Turn ${turnAngle > 0 ? "right" : "left"} by ${Math.abs(turnAngle)} degrees`,
+              `Turn ${turnAngle > 0 ? "right" : "left"} at ${currentNode.shortName}`,
             );
           }
 
-          forwardDistance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
-          directions.push(`Move forward by ${forwardDistance} units`);
+          // forwardDistance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+          directions.push(`Move forward to ${currentNode.shortName}`);
 
           currentAngle = angle;
         }

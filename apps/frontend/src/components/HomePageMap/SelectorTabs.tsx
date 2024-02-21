@@ -29,7 +29,6 @@ const SelectorTabs: React.FC<SelectorTabsProps> = ({
           params: { start, end },
         });
         setActiveFloor(res.data);
-        console.log(res);
       } catch (err) {
         console.error(err);
       }
