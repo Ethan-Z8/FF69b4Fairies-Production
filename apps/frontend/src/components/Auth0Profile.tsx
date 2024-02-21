@@ -9,7 +9,7 @@ import {
   //TableContainer,
 } from "@mui/material";
 //import { Employee } from "common/src/interfaces/Employee.ts";
-//import { ViewServiceRequestPage } from "./ViewServiceRequestPage.tsx";
+//import { ViewServiceRequestPage } from "../routers/ViewServiceRequestPage.tsx";
 
 const Auth0Profile: React.FC = () => {
   const { user, logout } = useAuth0();
@@ -18,6 +18,20 @@ const Auth0Profile: React.FC = () => {
     logout();
     window.location.href = "/";
   };
+  /*
+import axios from 'axios';
+
+export async function getServiceRequestByEmployee(username: string) {
+    try {
+        const data = await axios.get("/api/serviceRequest/byEmployee", {username});
+        return await data.json();
+    } catch (e) {
+        console.log((e as Error).message);
+        return {error: `failed to get service requests for ${username}`};
+    }
+}
+
+ */
 
   return (
     <Container maxWidth="sm" style={{ textAlign: "center", marginTop: "50px" }}>
@@ -29,6 +43,9 @@ const Auth0Profile: React.FC = () => {
       <Typography variant={"h4"} gutterBottom style={{ marginTop: "25px" }}>
         Hello, {user?.name}
       </Typography>
+      <Typography variant={"h4"} gutterBottom style={{ marginTop: "10px" }}>
+        Your role is: {user?.role}
+      </Typography>
       <Typography
         variant={"h5"}
         fontSize={"15px"}
@@ -38,6 +55,10 @@ const Auth0Profile: React.FC = () => {
       >
         Your assigned service requests...
       </Typography>
+      {/*<TableContainer>*/}
+      {/*    <ViewServiceRequestPage />*/}
+      {/*</TableContainer>*/}
+
       <Button
         variant="contained"
         onClick={handleLogout}

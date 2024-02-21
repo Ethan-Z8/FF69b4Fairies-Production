@@ -137,4 +137,26 @@ router.post("/updateProgress", async (req: Request, res: Response) => {
     res.sendStatus(400);
   }
 });
+
+router.get("/byEmployee", async (req, res) => {
+  const { username } = req.body;
+  try {
+    const data = await prisma.serviceRequest.findMany({
+      include: {
+        flowerRequest: true,
+        maintenanceRequest: true,
+        religionRequest: true,
+        sanitationRequest: true,
+        transportationRequest: true,
+      },
+      where: {
+        employee: username,
+      },
+    });
+    res.status(200).json(data);
+  } catch (e) {
+    console.log((e as Error).message);
+    res.sendStatus(400);
+  }
+});
 export default router;
