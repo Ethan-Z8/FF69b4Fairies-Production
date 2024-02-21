@@ -129,13 +129,6 @@ export function NavigationMode() {
           const nodesData: Node[] = Object.values(pathNodes.data);
           setNodes(nodesData);
 
-          const defaultMapIndex = mapPathNames.findIndex(
-            (floor) => floor.toLowerCase() == aNodes[firstClickedNodeId].floor,
-          );
-          if (defaultMapIndex !== -1) {
-            setMapIndex(defaultMapIndex);
-            //setDefaultMap(defaultMapIndex);
-          }
           if (hoveredNode != null) {
             const hoveredFloorIndex = mapPathNames.findIndex(
               (floor) =>
@@ -149,6 +142,9 @@ export function NavigationMode() {
           console.log("Error has not selected 2 nodes ");
         }
       };
+      if (firstClickedNodeId != "" && secondClickedNodeId != "") {
+        setHoveredNode(null);
+      }
       getPathNodes();
     } else {
       setNodes([]);
@@ -159,22 +155,21 @@ export function NavigationMode() {
     let timeoutId: NodeJS.Timeout | undefined;
 
     if (hoveredNode != null && hoveredNode.floor != mapPathNames[mapIndex]) {
+      const hoveredFloorIndex = mapPathNames.findIndex(
+        (floor) => floor.toLowerCase() === hoveredNode.floor.toLowerCase(),
+      );
       timeoutId = setTimeout(() => {
-        const hoveredFloorIndex = mapPathNames.findIndex(
-          (floor) => floor.toLowerCase() === hoveredNode.floor.toLowerCase(),
-        );
         if (hoveredFloorIndex !== -1) {
           setMapIndex(hoveredFloorIndex);
         }
+        return;
       }, 650);
-    } else {
-      if (timeoutId) {
-        clearTimeout(timeoutId);
-      }
-      /*timeoutId = setTimeout(() => {
-        setMapIndex(defaultMap);
-      }, 100);*/
+    } else if (timeoutId) {
+      clearTimeout(timeoutId);
     }
+    /*timeoutId = setTimeout(() => {
+      setMapIndex(defaultMap);
+    }, 100);*/
 
     return () => {
       if (timeoutId) {

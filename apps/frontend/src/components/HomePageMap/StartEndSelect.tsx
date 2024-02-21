@@ -230,7 +230,7 @@ const StartEndSelect: React.FC<NodeSelectProps> = ({
               left: 0,
               top: "24px",
               backgroundColor: "white",
-              width: "75%",
+              width: "80%",
               zIndex: -1,
               height: "30vh",
               borderRadius: "16px",
@@ -300,6 +300,21 @@ const StartEndSelect: React.FC<NodeSelectProps> = ({
           </div>
         )}
       </div>
+      {bothIDsSet && (
+        <div
+          style={{
+            position: "relative",
+            zIndex: -1,
+            height: bothIDsSet ? "75vh" : 0,
+            transition: "height 0.4s ease",
+            width: "80%",
+          }}
+        >
+          <div>
+            <TextDirectionPathFinding start={startID} end={endID} />
+          </div>
+        </div>
+      )}
       <div>
         <input
           type="text"
@@ -322,8 +337,7 @@ const StartEndSelect: React.FC<NodeSelectProps> = ({
             minHeight: "48px",
             backgroundColor: "#8B2121",
             color: "white",
-            marginTop: bothIDsSet ? "calc(100vh - 216px)" : 0,
-            transition: "margin-top 500ms ease, border-bottom-left 200ms ease",
+            transition: "border-bottom-left 200ms ease",
             boxShadow: "1px 2px 2px rgba(0, 0, 0, 0.2)",
             zIndex: isEndFocused ? 28 : 26,
             caretColor: isStartFocused ? "white" : "transparent",
@@ -367,7 +381,7 @@ const StartEndSelect: React.FC<NodeSelectProps> = ({
               position: "absolute",
               top: "80%",
               left: 0,
-              width: "75%",
+              width: "80%",
               backgroundColor: "white",
               zIndex: -1,
               height: "30vh",
@@ -434,24 +448,6 @@ const StartEndSelect: React.FC<NodeSelectProps> = ({
           </div>
         )}
       </div>
-      {bothIDsSet && (
-        <div
-          style={{
-            position: "absolute",
-            top: "0px",
-            zIndex: -2,
-            minHeight: "80%",
-            maxHeight: "80%",
-
-            width: "75%",
-          }}
-        >
-          <div></div>
-          <div>
-            <TextDirectionPathFinding start={startID} end={endID} />
-          </div>
-        </div>
-      )}
     </div>
   );
 };
