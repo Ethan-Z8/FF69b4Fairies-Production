@@ -90,7 +90,7 @@ router.post("/create", async (req: Request, res: Response) => {
   } catch (e) {
     const message = (e as Error).message;
     console.log(message);
-    res.sendStatus(400).json({ message });
+    res.status(400).json({ message });
   }
 });
 
@@ -157,6 +157,7 @@ router.get("/byEmployee", async (req, res) => {
         employee: username,
       },
     });
+    console.log(data);
     res.status(200).json(data);
   } catch (e) {
     console.log((e as Error).message);

@@ -12,6 +12,7 @@ import {
   TableCell,
   TableBody,
   TableContainer,
+  Paper,
   //TableContainer,
 } from "@mui/material";
 import { ServiceRequestType } from "common/src/interfaces/ServiceRequest.ts";
@@ -48,76 +49,92 @@ const Auth0Profile = () => {
   }, [user?.nickname]);
 
   return (
-    <Container
-      //maxWidth="2sm"
-      style={{ textAlign: "center", marginTop: "50px" }}
+    <Paper
+      elevation={24}
+      sx={{
+        my: 8,
+        mx: "auto",
+        display: "flex",
+        flexDirection: "column",
+        gap: "1rem",
+        width: "98%",
+        border: "8px solid #012D5A",
+        borderRadius: "8px",
+        padding: "1rem",
+        margin: "1rem",
+      }}
     >
-      <Avatar
-        alt={user?.name || "User"}
-        src={user?.picture}
-        sx={{ width: 100, height: 100, margin: "auto" }}
-      />
-      <Typography variant={"h4"} gutterBottom style={{ marginTop: "25px" }}>
-        Hello, {user?.nickname}
-      </Typography>
-      <Typography
-        variant={"h6"}
-        gutterBottom
-        style={{ marginTop: "25px", marginBottom: "10px" }}
+      <Container
+        //maxWidth="2sm"
+        style={{ textAlign: "center", marginTop: "50px" }}
       >
-        Email: {user?.name}
-      </Typography>
-      {/*  THIS STUFF NEEDS TO BE PUT IN LATER*/}
-      {/*<Typography variant={"h4"} gutterBottom style={{ marginTop: "10px" }}>*/}
-      {/*  Your role is: {user?.role}*/}
-      {/*</Typography>*/}
-      <Typography
-        variant={"h5"}
-        fontSize={"15px"}
-        color={"gray"}
-        gutterBottom
-        style={{ marginTop: "10px", textAlign: "left" }}
-      >
-        Your assigned service requests...
-      </Typography>
-      <TableContainer
-        sx={{
-          border: 1,
-          borderColor: "#44444444",
-          borderRadius: 2,
-          width: "100%",
-        }}
-      >
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell> Date</TableCell>
-              <TableCell> Type of Service</TableCell>
-              <TableCell> Location</TableCell>
-              <TableCell> Progress</TableCell>
-              <TableCell> Priority</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {employeeData.map((req) => {
-              return <ServiceRequestRow {...req} />;
-            })}
-          </TableBody>
-        </Table>
-      </TableContainer>
+        <Avatar
+          alt={user?.name || "User"}
+          src={user?.picture}
+          sx={{ width: 100, height: 100, margin: "auto" }}
+        />
+        <Typography variant={"h4"} gutterBottom style={{ marginTop: "25px" }}>
+          Hello, {user?.nickname}
+        </Typography>
+        <Typography
+          variant={"h6"}
+          gutterBottom
+          style={{ marginTop: "25px", marginBottom: "10px" }}
+        >
+          Email: {user?.name}
+        </Typography>
+        {/*  THIS STUFF NEEDS TO BE PUT IN LATER*/}
+        {/*<Typography variant={"h4"} gutterBottom style={{ marginTop: "10px" }}>*/}
+        {/*  Your role is: {user?.role}*/}
+        {/*</Typography>*/}
+        <Typography
+          variant={"h5"}
+          fontSize={"15px"}
+          color={"gray"}
+          gutterBottom
+          style={{ marginTop: "10px", textAlign: "left" }}
+        >
+          Your assigned service requests...
+        </Typography>
+        <TableContainer
+          sx={{
+            border: 1,
+            borderColor: "#44444444",
+            borderRadius: 2,
+            width: "100%",
+          }}
+        >
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell> Date</TableCell>
+                <TableCell> Type of Service</TableCell>
+                <TableCell> Location</TableCell>
+                <TableCell> Progress</TableCell>
+                <TableCell> Priority</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {employeeData.map((req) => {
+                return <ServiceRequestRow {...req} />;
+              })}
+            </TableBody>
+          </Table>
+        </TableContainer>
 
-      {/*<TableContainer>*/}
-      {/*    <ViewServiceRequestPage />*/}
-      {/*</TableContainer>*/}
+        {/*<TableContainer>*/}
+        {/*    <ViewServiceRequestPage />*/}
+        {/*</TableContainer>*/}
 
-      <Button
-        variant="contained"
-        onClick={handleLogout}
-        style={{ marginTop: "350px" }}
-      >
-        Sign Out
-      </Button>
-    </Container>
+        <Button
+          variant="contained"
+          onClick={handleLogout}
+          style={{ marginTop: "200px" }}
+        >
+          Sign Out
+        </Button>
+      </Container>
+    </Paper>
   );
 };
 

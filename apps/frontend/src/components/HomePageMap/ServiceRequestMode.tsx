@@ -136,7 +136,7 @@ export function ServiceRequestMode() {
           style={{
             display: "flex",
             position: "absolute",
-            width: "25%",
+            width: "23%",
             top: 20,
             left: 20,
             flexDirection: "column",
@@ -149,15 +149,14 @@ export function ServiceRequestMode() {
               (node) => node.nodeType !== "HALL",
             )}
             sx={{
-              "& .MuiAutocomplete-inputRoot": {
-                border: "5px solid",
-                borderColor: "#ff69b4 important",
-              },
               "&:hover .MuiAutocomplete-inputRoot": {
-                borderColor: "#ff69b4 important",
+                borderColor: "transparent",
               },
               "&:focus-within .MuiAutocomplete-inputRoot": {
                 borderColor: "#ff69b4 important",
+              },
+              ".MuiAutocomplete-inputRoot": {
+                color: "white",
               },
             }}
             getOptionLabel={(node) => (node ? node.longName : "")}
@@ -166,17 +165,15 @@ export function ServiceRequestMode() {
             renderInput={(params) => (
               <TextField
                 {...params}
-                InputProps={{
-                  sx: {
-                    borderTopLeftRadius: "16px",
-                    borderTopRightRadius: "16px",
-                    backgroundColor: "hsl(330, 80%, 80%, 40%)",
-                    "&:hover": {
-                      borderColor: "#ff69b4 !important",
-                    },
-                    "&:focus": {
-                      borderColor: "#ff69b4 !important",
-                    },
+                sx={{
+                  borderTopLeftRadius: "16px",
+                  borderTopRightRadius: "16px",
+                  backgroundColor: "#012d5a",
+                  "&:hover": {
+                    borderColor: "transparent !important",
+                  },
+                  "&:focus": {
+                    borderColor: "transparent !important",
                   },
                 }}
               />
