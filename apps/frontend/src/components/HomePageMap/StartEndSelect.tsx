@@ -47,7 +47,6 @@ const StartEndSelect: React.FC<NodeSelectProps> = ({
   const [items, setItems] = useState<Node[]>([]);
   const [isStartFocused, setIsStartFocused] = useState(false);
   const [isEndFocused, setIsEndFocused] = useState(false);
-  const [bothIDsSet, setBothIDsSet] = useState(false);
   const [showSuggestions, setShowSuggestions] = useState([false, false]);
   const inputRef = useRef<HTMLInputElement>(null);
   const [hoveredItem, setHoveredItem] = useState<string | null>(null);
@@ -108,11 +107,6 @@ const StartEndSelect: React.FC<NodeSelectProps> = ({
   }, [isEndFocused, isStartFocused]);
 
   useEffect(() => {
-    if (startID !== "" && endID !== "") {
-      setBothIDsSet(true);
-    } else {
-      setBothIDsSet(false);
-    }
     setShowSuggestions([false, false]);
   }, [startID, endID]);
 
@@ -308,20 +302,19 @@ const StartEndSelect: React.FC<NodeSelectProps> = ({
           </div>
         )}
       </div>
-      {bothIDsSet && (
-        <div
-          style={{
-            position: "relative",
-            zIndex: -1,
-            height: bothIDsSet ? "75vh" : 0,
-            width: "80%",
-          }}
-        >
-          <div>
-            <TextDirectionPathFinding start={startID} end={endID} />
-          </div>
+
+      <div
+        style={{
+          position: "relative",
+          zIndex: -1,
+          width: "80%",
+        }}
+      >
+        <div>
+          <TextDirectionPathFinding start={startID} end={endID} />
         </div>
-      )}
+      </div>
+
       <div>
         <input
           type="text"

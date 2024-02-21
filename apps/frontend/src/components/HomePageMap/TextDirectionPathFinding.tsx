@@ -33,9 +33,9 @@ const TextDirectionPathFinding: React.FC<TextDirectionPathProps> = ({
       style={{
         backgroundColor: "white",
         boxShadow: "1px 2px 2px rgba(0, 0, 0, 0.2)",
-        height: "75vh",
         overflow: "hidden",
         overflowY: "auto",
+        height: start != "" && end != "" ? "75vh" : 0,
       }}
     >
       <ul>
