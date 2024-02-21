@@ -29,6 +29,7 @@ import RenderCircles from "./RenderCircles.tsx";
 import RenderPath from "./RenderPath.tsx";
 import StartEndSelect from "./StartEndSelect.tsx";
 import HoveredNodeData from "./HoveredNodeData.tsx";
+import { MenuItem, Select } from "@mui/material";
 
 interface Node {
   nodeID: string;
@@ -74,6 +75,8 @@ export function NavigationMode() {
   const [toggleNodes, setToggleNodes] = useState(true);
   const [toggleEdges, setToggleEdges] = useState(false);
   const [hoveredNode, setHoveredNode] = useState<Node | null>(null);
+  const [ChosenAlgorithim, setChosenAlgorithim] = useState<string>("AStarAlgo");
+
   //const [defaultMap, setDefaultMap] = useState(0);
 
   useEffect(() => {
@@ -124,10 +127,11 @@ export function NavigationMode() {
     if (secondClickedNodeId !== "" && firstClickedNodeId !== "") {
       const getPathNodes = async () => {
         try {
-          const pathNodes = await axios.get(`/api/map/pathNodes`, {
+          const pathNodes = await axios.get(`/api/map/pathNodesShort`, {
             params: {
               start: firstClickedNodeId,
               end: secondClickedNodeId,
+              algo: ChosenAlgorithim,
             },
           });
           const nodesData: Node[] = Object.values(pathNodes.data);
@@ -150,7 +154,13 @@ export function NavigationMode() {
     } else {
       setNodes([]);
     }
-  }, [hoveredNode, aNodes, secondClickedNodeId, firstClickedNodeId]);
+  }, [
+    hoveredNode,
+    aNodes,
+    secondClickedNodeId,
+    firstClickedNodeId,
+    ChosenAlgorithim,
+  ]);
 
   useEffect(() => {
     let timeoutId: NodeJS.Timeout | undefined;
@@ -273,6 +283,11 @@ export function NavigationMode() {
             tooltipTitle={"Toggle Edge"}
             onClick={handleToggleEdges}
             tooltipPlacement={"right"}
+            sx={{
+              ".active": {
+                COLOR: "yellow",
+              },
+            }}
           />
           <SpeedDialAction
             key={"Toggle Node"}
@@ -282,6 +297,34 @@ export function NavigationMode() {
             tooltipPlacement={"right"}
           />
         </SpeedDial>
+        <Select
+          defaultValue={"AStarAlgo"}
+          inputProps={{
+            name: "age",
+            id: "uncontrolled-native",
+          }}
+          style={{
+            position: "absolute",
+            left: 70,
+            zIndex: "5",
+            backgroundColor: "#042c5c",
+            borderRadius: 20,
+            color: "white",
+          }}
+          sx={{
+            ".MuiSelect-icon": {
+              color: "white",
+            },
+            ".MuiSelect": {
+              color: "#042c5c",
+            },
+          }}
+          onChange={(e) => setChosenAlgorithim(e.target.value)}
+        >
+          <MenuItem value={"AStarAlgo"}>A*</MenuItem>
+          <MenuItem value={"BFS"}>BFS</MenuItem>
+          <MenuItem value={"DFS"}>DFS</MenuItem>
+        </Select>
       </Box>
       <div className="total">
         <div className="nodeSelectContainer" style={{}}>

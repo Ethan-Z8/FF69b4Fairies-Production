@@ -188,8 +188,8 @@ mapRouter.get("/pathNodesShort", async (req: Request, res: Response) => {
     const edges = await Prisma.mapEdge.findMany();
     const pathFindingGraph = new Pathfinder(nodes, edges, strategyPattern);
 
-    const startNodeId = pathFindingGraph.shortNameToID(endpoints.start!);
-    const endNodeId = pathFindingGraph.shortNameToID(endpoints.end!);
+    const startNodeId = endpoints.start!;
+    const endNodeId = endpoints.end!;
 
     if (!startNodeId || !endNodeId) {
       res.status(400).json({
