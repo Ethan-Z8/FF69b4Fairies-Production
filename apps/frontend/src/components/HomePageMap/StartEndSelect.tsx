@@ -47,7 +47,6 @@ const StartEndSelect: React.FC<NodeSelectProps> = ({
   const [items, setItems] = useState<Node[]>([]);
   const [isStartFocused, setIsStartFocused] = useState(false);
   const [isEndFocused, setIsEndFocused] = useState(false);
-  const [bothIDsSet, setBothIDsSet] = useState(false);
   const [showSuggestions, setShowSuggestions] = useState([false, false]);
   const inputRef = useRef<HTMLInputElement>(null);
   const [hoveredItem, setHoveredItem] = useState<string | null>(null);
@@ -72,7 +71,9 @@ const StartEndSelect: React.FC<NodeSelectProps> = ({
 
   useEffect(() => {
     if (start && nodes[start]) {
-      setStartName(nodes[start].shortName);
+      const node = nodes[start];
+      if (node.longName.length > 30) setStartName(node.shortName);
+      else setStartName(node.longName);
       setStartID(start);
     } else {
       setStartName("");
@@ -81,8 +82,10 @@ const StartEndSelect: React.FC<NodeSelectProps> = ({
   }, [start, nodes]);
 
   useEffect(() => {
+    const node = nodes[end];
     if (end && nodes[end]) {
-      setEndName(nodes[end].shortName);
+      if (node.longName.length > 30) setEndName(node.shortName);
+      else setEndName(node.longName);
       setEndID(end);
     } else {
       setEndName("");
@@ -104,11 +107,6 @@ const StartEndSelect: React.FC<NodeSelectProps> = ({
   }, [isEndFocused, isStartFocused]);
 
   useEffect(() => {
-    if (startID !== "" && endID !== "") {
-      setBothIDsSet(true);
-    } else {
-      setBothIDsSet(false);
-    }
     setShowSuggestions([false, false]);
   }, [startID, endID]);
 
@@ -230,7 +228,7 @@ const StartEndSelect: React.FC<NodeSelectProps> = ({
               left: 0,
               top: "24px",
               backgroundColor: "white",
-              width: "75%",
+              width: "80%",
               zIndex: -1,
               height: "30vh",
               borderRadius: "16px",
@@ -277,7 +275,11 @@ const StartEndSelect: React.FC<NodeSelectProps> = ({
                         node.nodeID,
                         {} as React.SyntheticEvent<HTMLElement>,
                       );
-                      setStartName(node.shortName);
+                      if (node.longName.length > 30)
+                        setStartName(node.shortName);
+                      else setStartName(node.longName);
+                      setStartID(node.nodeID);
+
                       setShowSuggestions([true, false]);
                     }}
                     style={{
@@ -300,6 +302,19 @@ const StartEndSelect: React.FC<NodeSelectProps> = ({
           </div>
         )}
       </div>
+
+      <div
+        style={{
+          position: "relative",
+          zIndex: -1,
+          width: "80%",
+        }}
+      >
+        <div>
+          <TextDirectionPathFinding start={startID} end={endID} />
+        </div>
+      </div>
+
       <div>
         <input
           type="text"
@@ -322,8 +337,7 @@ const StartEndSelect: React.FC<NodeSelectProps> = ({
             minHeight: "48px",
             backgroundColor: "#8B2121",
             color: "white",
-            marginTop: bothIDsSet ? "calc(100vh - 216px)" : 0,
-            transition: "margin-top 500ms ease, border-bottom-left 200ms ease",
+            transition: "border-bottom-left 200ms ease",
             boxShadow: "1px 2px 2px rgba(0, 0, 0, 0.2)",
             zIndex: isEndFocused ? 28 : 26,
             caretColor: isStartFocused ? "white" : "transparent",
@@ -367,7 +381,7 @@ const StartEndSelect: React.FC<NodeSelectProps> = ({
               position: "absolute",
               top: "80%",
               left: 0,
-              width: "75%",
+              width: "80%",
               backgroundColor: "white",
               zIndex: -1,
               height: "30vh",
@@ -411,7 +425,9 @@ const StartEndSelect: React.FC<NodeSelectProps> = ({
                         node.nodeID,
                         {} as React.SyntheticEvent<HTMLElement>,
                       );
-                      setEndName(node.shortName);
+                      setEndID(node.nodeID);
+                      if (node.longName.length > 30) setEndName(node.shortName);
+                      else setEndName(node.longName);
                       setShowSuggestions([false, true]);
                     }}
                     style={{
@@ -434,24 +450,6 @@ const StartEndSelect: React.FC<NodeSelectProps> = ({
           </div>
         )}
       </div>
-      {bothIDsSet && (
-        <div
-          style={{
-            position: "absolute",
-            top: "0px",
-            zIndex: -2,
-            minHeight: "80%",
-            maxHeight: "80%",
-
-            width: "75%",
-          }}
-        >
-          <div></div>
-          <div>
-            <TextDirectionPathFinding start={startID} end={endID} />
-          </div>
-        </div>
-      )}
     </div>
   );
 };

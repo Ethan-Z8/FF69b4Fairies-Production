@@ -29,10 +29,13 @@ const TextDirectionPathFinding: React.FC<TextDirectionPathProps> = ({
 
   return (
     <div
+      className="scroll-container"
       style={{
-        padding: "64px 0 0 0",
         backgroundColor: "white",
         boxShadow: "1px 2px 2px rgba(0, 0, 0, 0.2)",
+        overflow: "hidden",
+        overflowY: "auto",
+        height: start != "" && end != "" ? "75vh" : 0,
       }}
     >
       <ul>
