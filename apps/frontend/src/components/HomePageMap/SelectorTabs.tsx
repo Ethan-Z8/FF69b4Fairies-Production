@@ -88,15 +88,18 @@ const SelectorTabs: React.FC<SelectorTabsProps> = ({
               sx={{
                 padding: "10px 20px",
                 "&.MuiButton-root": {
-                  border: "5px",
-                  backgroundColor: "#042c5c",
+                  border: "5px solid rgba(0, 0, 0, 0.1)",
+                  color: "rgba(255, 255, 255, 0.6)",
+                  backgroundColor: "#091E37",
                   transition: "background-color 0.3s ease, color 0.3s ease",
                   boxShadow: 5,
                   fontSize: "20px",
+                  margin: "-5px",
                 },
                 "&.active": {
-                  color: "black",
-                  backgroundColor: "lightblue",
+                  border: "5px solid rgba(0, 0, 0, 0.1)",
+
+                  backgroundColor: "#042c5c",
                   transform: "none",
                 },
 

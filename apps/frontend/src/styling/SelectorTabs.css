@@ -1,17 +1,19 @@
 @keyframes moveArrow {
   0%,
   100% {
-    transform: translateX(-150%);
+    transform: translateX(-135%);
     animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
   }
   50% {
-    transform: translateX(-110%);
+    transform: translateX(-120%);
     animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
   }
 }
 
 .arrowImage {
-  height: 20px;
+  height: 16px;
   position: absolute;
   animation: moveArrow 0.9s ease-out infinite;
+  filter: invert(100%);
+  opacity: 0.4;
 }
