@@ -4,11 +4,13 @@ import React, { useEffect, useState } from "react";
 interface TextDirectionPathProps {
   start: string;
   end: string;
+  forceClose: boolean;
 }
 
 const TextDirectionPathFinding: React.FC<TextDirectionPathProps> = ({
   start,
   end,
+  forceClose,
 }) => {
   const [directions, setDirections] = useState<string[]>([]);
 
@@ -18,7 +20,6 @@ const TextDirectionPathFinding: React.FC<TextDirectionPathProps> = ({
         const res = await axios.get("/api/map/getTextDirections", {
           params: { start, end },
         });
-        console.log(res);
         setDirections(res.data);
       } catch (err) {
         console.error("Directions:", err);
@@ -35,7 +36,8 @@ const TextDirectionPathFinding: React.FC<TextDirectionPathProps> = ({
         boxShadow: "1px 2px 2px rgba(0, 0, 0, 0.2)",
         overflow: "hidden",
         overflowY: "auto",
-        height: start != "" && end != "" ? "75vh" : 0,
+        width: "80%",
+        height: start != "" && end != "" && !forceClose ? "75vh" : 0,
       }}
     >
       <ul>
