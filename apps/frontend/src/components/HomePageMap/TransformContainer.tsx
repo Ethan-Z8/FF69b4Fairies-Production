@@ -1,8 +1,9 @@
 import React, { ReactNode, useRef, useEffect, useState } from "react";
-import "../styling/TransformContainer.css";
+import "../../styling/TransformContainer.css";
 
 interface TransformContainerProps {
   children: ReactNode;
+  zoomToCoordinate?: { x: number; y: number };
 }
 
 interface DragStart {
@@ -12,24 +13,28 @@ interface DragStart {
 
 const TransformContainer: React.FC<TransformContainerProps> = ({
   children,
+  zoomToCoordinate,
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
-  const excludedContentRef = useRef<HTMLDivElement>(null);
   const [scale, setScale] = useState<number>(0.4);
   const [isDragging, setIsDragging] = useState<boolean>(false);
   const [dragStart, setDragStart] = useState<DragStart>({ x: 0, y: 0 });
   const [locX, setLocX] = useState<number>(0);
   const [locY, setLocY] = useState<number>(0);
   const [scrolling, setScrolling] = useState<number>(0);
+  const prevZoomToCoordinate =
+    useRef<TransformContainerProps["zoomToCoordinate"]>();
+  const debounceTimeout = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
     const container = containerRef.current;
     const content = contentRef.current;
-
     if (!container || !content) return;
-    content.style.transformOrigin = `${0}px ${0}px`;
 
+    const rect = container.getBoundingClientRect();
+
+    content.style.transformOrigin = `${0}px ${0}px`;
     content.style.transform = `scale(${scale})`;
 
     const handleMouseDown = (e: MouseEvent) => {
@@ -37,7 +42,6 @@ const TransformContainer: React.FC<TransformContainerProps> = ({
       setIsDragging(true);
       setDragStart({ x: e.clientX, y: e.clientY });
     };
-    const rect = container.getBoundingClientRect();
 
     const handleMouseMove = (e: MouseEvent) => {
       setLocX((container.scrollLeft + e.clientX - rect.left) / scale);
@@ -70,7 +74,7 @@ const TransformContainer: React.FC<TransformContainerProps> = ({
     const handleWheel = (e: WheelEvent) => {
       e.preventDefault();
       let delta = 0;
-      const maxSpeed = 20;
+      const maxSpeed = 25;
       const minSpeed = 9;
 
       if (
@@ -78,6 +82,7 @@ const TransformContainer: React.FC<TransformContainerProps> = ({
         (e.deltaY < 0 && e.deltaY > -1 * minSpeed)
       ) {
         setScrolling(0);
+        console.log(scrolling);
         container.scrollLeft = locX * scale - e.clientX + rect.left;
         container.scrollTop = locY * scale - e.clientY + rect.top;
         return;
@@ -91,13 +96,18 @@ const TransformContainer: React.FC<TransformContainerProps> = ({
 
         return;
       }
-      if (e.deltaY > maxSpeed) delta = maxSpeed;
-      else if (e.deltaY < -1 * maxSpeed) delta = -1 * maxSpeed;
-      else delta = e.deltaY;
 
-      const zoomSpeed = 0.0005;
+      if (e.deltaY > maxSpeed) {
+        delta = maxSpeed;
+      } else if (e.deltaY < -1 * maxSpeed) {
+        delta = -1 * maxSpeed;
+      } else {
+        delta = e.deltaY;
+      }
+
+      const zoomSpeed = 0.001;
       if (delta < 0) {
-        setScale(Math.max(0.1, scale * (1 + delta * zoomSpeed)));
+        setScale(Math.max(0.45, scale * (1 + delta * zoomSpeed)));
       } else {
         setScale(Math.min(3, scale * (1 + delta * zoomSpeed)));
       }
@@ -120,36 +130,47 @@ const TransformContainer: React.FC<TransformContainerProps> = ({
     };
   }, [scrolling, locX, locY, scale, isDragging, dragStart]);
 
-  const [includedChildren, excludedChildren] = React.Children.toArray(
-    children,
-  ).reduce(
-    (acc: [ReactNode[], ReactNode[]], child: ReactNode) => {
-      if (
-        React.isValidElement(child) &&
-        child.props.className &&
-        child.props.className.includes("popup")
-      ) {
-        acc[1].push(
-          React.cloneElement(child, {
-            style: { transform: `scale(${1 / scale})` },
-          } as React.HTMLAttributes<HTMLElement>),
-        );
-      } else {
-        acc[0].push(child);
+  useEffect(() => {
+    if (zoomToCoordinate && prevZoomToCoordinate.current !== zoomToCoordinate) {
+      if (debounceTimeout.current) {
+        clearTimeout(debounceTimeout.current);
       }
-      //console.log(acc[0]);
-      return acc;
-    },
-    [[], []],
-  );
+
+      debounceTimeout.current = setTimeout(() => {
+        const container = containerRef.current;
+        const content = contentRef.current;
+
+        if (!container || !content) return;
+
+        const rect = container.getBoundingClientRect();
+        const newScale = 0.9;
+
+        setScale(newScale);
+        content.style.transform = `scale(${newScale})`;
+
+        const targetLeft =
+          zoomToCoordinate.x * newScale - rect.width / 2 + rect.left;
+        const targetTop =
+          zoomToCoordinate.y * newScale - rect.height / 2 + rect.top;
+
+        setLocX((container.scrollLeft + targetLeft - rect.left) / newScale);
+        setLocY((container.scrollTop + targetTop - rect.top) / newScale);
+
+        setTimeout(() => {
+          container.scrollLeft = targetLeft;
+          container.scrollTop = targetTop;
+          content.style.transform = `scale(${newScale})`;
+        }, 600);
+      }, 500);
+    }
+
+    prevZoomToCoordinate.current = zoomToCoordinate;
+  }, [zoomToCoordinate]);
 
   return (
     <div className="transform-container" ref={containerRef}>
       <div className="content-container" ref={contentRef}>
-        {includedChildren}
-      </div>
-      <div className="excluded-content-container" ref={excludedContentRef}>
-        {excludedChildren}
+        {children}
       </div>
     </div>
   );

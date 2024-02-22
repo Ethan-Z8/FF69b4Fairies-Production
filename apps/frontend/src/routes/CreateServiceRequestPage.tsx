@@ -13,20 +13,25 @@ import {
   FormControl,
   InputLabel,
   MenuItem,
+  Paper, // Import Paper from MUI
   Select,
   Typography,
-  Paper,
 } from "@mui/material";
 
+type CreateServiceRequestPageProps = {
+  node?: string;
+};
+
 //TODO: Make the location selectors autocomplete forms, not basic select forms
-export function CreateServiceRequestPage() {
+export function CreateServiceRequestPage({
+  node,
+}: CreateServiceRequestPageProps) {
   const [typeRequest, setTypeRequest] = useState<string>("Sanitation");
   const [nodes, setNodes] = useState<{ [key: string]: MapNodeInterface }>({});
   const [loaded, setLoaded] = useState<boolean>(false);
   const [success, setSuccess] = useState<boolean>(false);
   const [error, setError] = useState<boolean>(false);
   const [employees, setEmployees] = useState<Employee[]>([]);
-
   useEffect(() => {
     axios
       .get("/api/map")
@@ -41,7 +46,10 @@ export function CreateServiceRequestPage() {
 
     axios
       .get("api/employee")
-      .then((res) => setEmployees(res.data))
+      .then((res) => {
+        console.log("Received data:", res.data);
+        setEmployees(res.data);
+      })
       .catch((e) => {
         console.log(e.message);
       });
@@ -77,7 +85,7 @@ export function CreateServiceRequestPage() {
       case "Sanitation":
         // When a checkbox is checked, it will have the value 'on'
         // When not checked, it will not be present in the form submission
-        // This lie will convert the field to a boolean.
+        // This line will convert the field to a boolean.
         payload.hazardous = !!payload.hazardous;
         break;
       default:
@@ -103,19 +111,19 @@ export function CreateServiceRequestPage() {
     loaded && (
       <Paper
         elevation={24}
-        component="form"
         sx={{
           my: 8,
           mx: "auto",
           display: "flex",
           flexDirection: "column",
           gap: "1rem",
-          width: "80%",
-          border: "8px solid #012D5A", // Add border styling here
-          borderRadius: "8px", // Add border-radius for rounded corners
+          width: "98%",
+          border: "8px solid #012D5A",
+          borderRadius: "8px",
           padding: "1rem",
           margin: "1rem",
         }}
+        component="form" // Added component="form" to use form semantics
         onSubmit={handleSubmit}
       >
         <Typography variant="h4">Create a service request</Typography>
@@ -137,7 +145,6 @@ export function CreateServiceRequestPage() {
             <MenuItem value="Religious">Religious</MenuItem>
           </Select>
         </FormControl>
-        {/*<TextField label="Location" id="location" name="location" required />*/}
         <FormControl>
           <InputLabel>Location</InputLabel>
           <Select
@@ -145,16 +152,18 @@ export function CreateServiceRequestPage() {
             label="Location"
             id="location"
             name="location"
-            defaultValue=""
+            defaultValue={node || ""}
             required
           >
-            {Object.values(nodes).map((node) => {
-              return (
-                <MenuItem key={node.nodeID} value={node.nodeID}>
-                  {node.longName}
-                </MenuItem>
-              );
-            })}
+            {Object.values(nodes)
+              .filter((node) => node.nodeType !== "HALL")
+              .map((node) => {
+                return (
+                  <MenuItem key={node.nodeID} value={node.nodeID}>
+                    {node.longName}
+                  </MenuItem>
+                );
+              })}
           </Select>
         </FormControl>
         <FormControl>

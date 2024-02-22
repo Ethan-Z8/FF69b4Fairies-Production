@@ -1,5 +1,5 @@
 import React, { useState, useRef } from "react";
-import "../styling/DisplayMapNodes.css";
+import "../../styling/DisplayMapNodes.css";
 
 interface Node {
   nodeID: string;
@@ -25,8 +25,6 @@ const NodeOnMap: React.FC<NodeOnMapProps> = ({ node, onNodeClick }) => {
   const nodeRef = useRef<HTMLDivElement>(null);
   const [hoverShift, setHoverShift] = useState(true);
   let clickTimer: ReturnType<typeof setTimeout>;
-  let hoverTimer: ReturnType<typeof setTimeout>;
-  const [hoverWait, setHoverWait] = useState(false);
 
   const [reachedTimeout, setReachedTimeout] = useState(false);
 
@@ -62,16 +60,11 @@ const NodeOnMap: React.FC<NodeOnMapProps> = ({ node, onNodeClick }) => {
 
   const handleMouseEnterNode = () => {
     setIsHovered(true);
-    hoverTimer = setTimeout(() => {
-      setHoverWait(true);
-    }, 500);
     //setIsHoveredPopup(true);
   };
 
   const handleMouseLeaveNode = () => {
     setIsHovered(false);
-    clearTimeout(hoverTimer);
-    setHoverWait(false);
     //setIsHoveredPopup(false);
   };
 
@@ -96,31 +89,7 @@ const NodeOnMap: React.FC<NodeOnMapProps> = ({ node, onNodeClick }) => {
         ref={nodeRef}
       >
         <div className="node-circle" />
-        {hoverWait && (
-          <div
-            className="popup"
-            style={{
-              width: `${15}vw`,
-              position: "absolute",
-              zIndex: 23,
-              backgroundColor: "#fff",
-              bottom: "-120%",
-              left: "50%",
-              transform: "translate(-50%, -5%)",
-              padding: "10px",
-              border: "1px solid #ccc",
-              borderRadius: "5px",
-              fontSize: 30,
-            }}
-          >
-            <p>{longName}</p>
-            <p>ID: {node.nodeID}</p>
-            <p>Short Name: {node.shortName}</p>
-            <p>Floor: {node.floor}</p>
-            <p>Building: {node.building}</p>
-            <p>Node Type: {node.nodeType}</p>
-          </div>
-        )}
+
         {isHovered && (
           <div className="long-name-display">
             <div

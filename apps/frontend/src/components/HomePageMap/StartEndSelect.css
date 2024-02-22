@@ -1,0 +1,64 @@
+.scroll-container {
+  overflow: auto;
+  transition: height 0.4s ease;
+
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 0, 0, 0.1) transparent;
+}
+
+.scroll-container::-webkit-scrollbar {
+  width: 8px;
+  border-radius: 4px;
+}
+
+.scroll-container::-webkit-scrollbar-thumb {
+  background-color: #888;
+  border-radius: 4px;
+}
+
+.scroll-container::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+.scroll-container::-webkit-scrollbar-button {
+  display: none;
+}
+
+input::-webkit-input-placeholder {
+  color: #ffffff88;
+}
+
+ul {
+  list-style-type: none;
+  padding: 8px;
+}
+
+li {
+  display: inline-block;
+  padding: 5px;
+  margin: 12px;
+  position: relative;
+  width: 100%;
+}
+
+li::before {
+  content: "";
+  border-radius: 8px;
+
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 100%;
+  background-color: rgba(30, 150, 60, 0.1);
+  z-index: -1;
+  transition: width 1.2s ease;
+}
+
+li:hover::before {
+  width: 95%;
+}
+
+li:hover::before {
+  transform: scaleX(1);
+}
