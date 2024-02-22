@@ -142,7 +142,7 @@ export function Navigation() {
               <Nav.Link href="/addEmployee">Add Employee</Nav.Link>
               <Nav.Link href="/viewEmployeeData">View Employees</Nav.Link>
               <Nav.Link href="/importAndExportEmployee">
-                Import & Export Employee Data
+                Import and Export Employee Data
               </Nav.Link>
             </NavDropdown>
           </>

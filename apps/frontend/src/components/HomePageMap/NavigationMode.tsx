@@ -139,29 +139,19 @@ export function NavigationMode() {
           });
           const nodesData: Node[] = Object.values(pathNodes.data);
           setNodes(nodesData);
-
-          if (hoveredNode != null) {
-            const hoveredFloorIndex = mapPathNames.findIndex(
-              (floor) =>
-                floor.toLowerCase() === hoveredNode.floor.toLowerCase(),
-            );
-            if (hoveredFloorIndex !== -1) {
-              setMapIndex(hoveredFloorIndex);
-            }
-          }
         } catch (error) {
           console.log("Error has not selected 2 nodes ");
         }
       };
       getPathNodes();
-      const hoveredFloorIndex = mapPathNames.findIndex(
+      /*      const hoveredFloorIndex = mapPathNames.findIndex(
         (floor) =>
           floor.toLowerCase() ===
           aNodes[firstClickedNodeId].floor.toLowerCase(),
       );
       if (hoveredFloorIndex !== -1) {
         setMapIndex(hoveredFloorIndex);
-      }
+      }*/
     } else {
       setNodes([]);
     }
@@ -186,7 +176,7 @@ export function NavigationMode() {
       } else {
         clearTimeout(timeoutId);
       }
-    }, 650);
+    }, 1000);
     /*timeoutId = setTimeout(() => {
       setMapIndex(defaultMap);
     }, 100);*/
@@ -344,6 +334,7 @@ export function NavigationMode() {
             onSelectEnd={handleEndSelect}
             onHoverNode={(node) => {
               setHoveredNode(node);
+              console.log(zoomToCoords);
               if (node) {
                 setZoomToCoords({ x: node.xcoord, y: node.ycoord });
               } else {
