@@ -25,53 +25,7 @@ const TransformContainer: React.FC<TransformContainerProps> = ({
   const [scrolling, setScrolling] = useState<number>(0);
   const prevZoomToCoordinate =
     useRef<TransformContainerProps["zoomToCoordinate"]>();
-
-  const handleGradualScroll = (
-    targetLeft: number,
-    targetTop: number,
-    duration: number,
-  ) => {
-    const startTime = performance.now();
-    const startLeft = containerRef.current!.scrollLeft;
-    const startTop = containerRef.current!.scrollTop;
-
-    const animateScroll = (timestamp: number) => {
-      const elapsed = timestamp - startTime;
-      const progress = Math.min(elapsed / duration, 1);
-      containerRef.current!.scrollLeft =
-        startLeft + (targetLeft - startLeft) * progress;
-      containerRef.current!.scrollTop =
-        startTop + (targetTop - startTop) * progress;
-      if (progress < 1) {
-        requestAnimationFrame(animateScroll);
-      }
-    };
-
-    requestAnimationFrame(animateScroll);
-  };
-  /*const handleGradualScale = (
-    targetScale: number,
-    duration: number
-  ) => {
-    const container = containerRef.current;
-    if (!container) return;
-
-    const startTime = performance.now();
-    const startScale = scale;
-
-    const animateScale = (timestamp: number) => {
-      const elapsed = timestamp - startTime;
-      const progress = Math.min(elapsed / duration, 1);
-      const newScale = startScale + (targetScale - startScale) * progress;
-      setScale(newScale);
-      contentRef.current!.style.transform = `scale(${newScale})`;
-      if (progress < 1) {
-        requestAnimationFrame(animateScale);
-      }
-    };
-
-    requestAnimationFrame(animateScale);
-  };*/
+  const debounceTimeout = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
     const container = containerRef.current;
@@ -178,40 +132,36 @@ const TransformContainer: React.FC<TransformContainerProps> = ({
 
   useEffect(() => {
     if (zoomToCoordinate && prevZoomToCoordinate.current !== zoomToCoordinate) {
-      const container = containerRef.current;
-      const content = contentRef.current;
+      if (debounceTimeout.current) {
+        clearTimeout(debounceTimeout.current);
+      }
 
-      if (!container || !content) return;
+      debounceTimeout.current = setTimeout(() => {
+        const container = containerRef.current;
+        const content = contentRef.current;
 
-      const rect = container.getBoundingClientRect();
-      const newScale = 0.9;
+        if (!container || !content) return;
 
-      setScale(newScale);
-      content.style.transform = `scale(${newScale})`;
+        const rect = container.getBoundingClientRect();
+        const newScale = 0.9;
 
-      const targetLeft =
-        zoomToCoordinate.x * newScale - rect.width / 2 + rect.left;
-      const targetTop =
-        zoomToCoordinate.y * newScale - rect.height / 2 + rect.top;
-
-      setLocX((container.scrollLeft + targetLeft - rect.left) / newScale);
-      setLocY((container.scrollTop + targetTop - rect.top) / newScale);
-
-      setTimeout(() => {
-        console.log("zoomedto");
-        handleGradualScroll(targetLeft, targetTop, 280);
+        setScale(newScale);
         content.style.transform = `scale(${newScale})`;
-      }, 600);
-    } else if (!zoomToCoordinate && prevZoomToCoordinate.current) {
-      const container = containerRef.current;
-      const content = contentRef.current;
 
-      if (!container || !content) return;
+        const targetLeft =
+          zoomToCoordinate.x * newScale - rect.width / 2 + rect.left;
+        const targetTop =
+          zoomToCoordinate.y * newScale - rect.height / 2 + rect.top;
 
-      setTimeout(() => {
-        handleGradualScroll(400, 400, 100);
-        setScale(0.45);
-      }, 600);
+        setLocX((container.scrollLeft + targetLeft - rect.left) / newScale);
+        setLocY((container.scrollTop + targetTop - rect.top) / newScale);
+
+        setTimeout(() => {
+          container.scrollLeft = targetLeft;
+          container.scrollTop = targetTop;
+          content.style.transform = `scale(${newScale})`;
+        }, 600);
+      }, 500);
     }
 
     prevZoomToCoordinate.current = zoomToCoordinate;
