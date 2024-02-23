@@ -77,6 +77,57 @@ class AStarAlgo implements AlgoStrategyPattern {
     return [];
   }
 
+  public findNearestNodeType(
+    startNodeId: string,
+    nodeType: string,
+  ): string | null {
+    if (!this.nodes.has(startNodeId)) {
+      return null;
+    }
+
+    const openSet: Map<string, number> = new Map();
+    const cameFrom: Map<string, string | null> = new Map();
+    const gScore: Map<string, number> = new Map();
+    const fScore: Map<string, number> = new Map();
+    openSet.set(startNodeId, 0);
+    gScore.set(startNodeId, 0);
+    fScore.set(startNodeId, this.heuristic(startNodeId, nodeType));
+
+    while (openSet.size > 0) {
+      const currentId = this.getMinFScoreNode(openSet);
+      openSet.delete(currentId);
+
+      const currentNode = this.nodes.get(currentId)!;
+
+      if (currentNode.nodeType === nodeType) {
+        return currentId;
+      }
+
+      for (const neighborId of currentNode.neighbors) {
+        const tentativeGScore =
+          gScore.get(currentId)! + this.distanceBetween(currentId, neighborId);
+
+        if (
+          !gScore.has(neighborId) ||
+          tentativeGScore < gScore.get(neighborId)!
+        ) {
+          cameFrom.set(neighborId, currentId);
+          gScore.set(neighborId, tentativeGScore);
+          fScore.set(
+            neighborId,
+            gScore.get(neighborId)! + this.heuristic(neighborId, nodeType),
+          );
+
+          if (!openSet.has(neighborId)) {
+            openSet.set(neighborId, fScore.get(neighborId)!);
+          }
+        }
+      }
+    }
+
+    return null;
+  }
+
   /**
    * the heuristic weight between two nodes
    * @param node1Id the first node
