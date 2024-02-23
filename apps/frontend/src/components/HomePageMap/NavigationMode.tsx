@@ -323,6 +323,7 @@ export function NavigationMode() {
           <MenuItem value={"AStarAlgo"}>A*</MenuItem>
           <MenuItem value={"BFS"}>BFS</MenuItem>
           <MenuItem value={"DFS"}>DFS</MenuItem>
+          <MenuItem value={"DijkstraAlgo"}>Dijkstras</MenuItem>
         </Select>
       </Box>
       <div className="total">
