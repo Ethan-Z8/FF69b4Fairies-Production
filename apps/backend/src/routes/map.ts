@@ -216,19 +216,13 @@ mapRouter.get("/pathNodesShort", async (req: Request, res: Response) => {
 
 mapRouter.get("/nearestType", async (req: Request, res: Response) => {
   try {
-    type StartAndEndNodes = {
+    interface nearestTypeParams {
       start?: string;
       type?: string;
       algo?: string;
-    };
-    let strategyPattern: AlgoStrategyPattern = new AStarAlgo();
-    const endpoints = req.query as StartAndEndNodes;
-    console.log(endpoints.algo);
-    if (endpoints.algo === "BFS") {
-      strategyPattern = new BFSAlgo();
-    } else if (endpoints.algo == "DFS") {
-      strategyPattern = new DFSAlgo();
     }
+    const strategyPattern: AlgoStrategyPattern = new AStarAlgo();
+    const endpoints = req.query as nearestTypeParams;
 
     const nodes = await Prisma.mapNode.findMany();
     const edges = await Prisma.mapEdge.findMany();
