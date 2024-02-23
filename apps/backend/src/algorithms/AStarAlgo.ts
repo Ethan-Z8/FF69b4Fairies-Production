@@ -77,12 +77,9 @@ class AStarAlgo implements AlgoStrategyPattern {
     return [];
   }
 
-  public findNearestNodeType(
-    startNodeId: string,
-    nodeType: string,
-  ): string | null {
+  public findNearestNodeType(startNodeId: string, nodeType: string): string {
     if (!this.nodes.has(startNodeId)) {
-      return null;
+      return "";
     }
 
     const openSet: Map<string, number> = new Map();
@@ -93,6 +90,9 @@ class AStarAlgo implements AlgoStrategyPattern {
     gScore.set(startNodeId, 0);
     fScore.set(startNodeId, this.heuristic(startNodeId, nodeType));
 
+    let closestNodeId: string = "";
+    let closestDistance: number = Number.POSITIVE_INFINITY;
+
     while (openSet.size > 0) {
       const currentId = this.getMinFScoreNode(openSet);
       openSet.delete(currentId);
@@ -100,7 +100,11 @@ class AStarAlgo implements AlgoStrategyPattern {
       const currentNode = this.nodes.get(currentId)!;
 
       if (currentNode.nodeType === nodeType) {
-        return currentId;
+        const distance = this.distanceBetween(startNodeId, currentId);
+        if (distance < closestDistance) {
+          closestDistance = distance;
+          closestNodeId = currentId;
+        }
       }
 
       for (const neighborId of currentNode.neighbors) {
@@ -124,8 +128,7 @@ class AStarAlgo implements AlgoStrategyPattern {
         }
       }
     }
-
-    return null;
+    return closestNodeId;
   }
 
   /**
