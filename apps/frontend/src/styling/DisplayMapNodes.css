@@ -160,3 +160,15 @@
     background-position: 20px 0;
   }
 }
+
+@keyframes flashAnimation {
+  0% {
+    background-color: #ff69b4;
+  }
+  50% {
+    background-color: white;
+  }
+  100% {
+    background-color: #ff69b4;
+  }
+}
