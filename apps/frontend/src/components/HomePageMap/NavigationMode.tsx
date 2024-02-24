@@ -30,6 +30,7 @@ import RenderPath from "./RenderPath.tsx";
 import StartEndSelect from "./StartEndSelect.tsx";
 import HoveredNodeData from "./HoveredNodeData.tsx";
 import { MenuItem, Select } from "@mui/material";
+import MouseClickMenu from "./MouseClickMenu.tsx";
 
 interface Node {
   nodeID: string;
@@ -71,6 +72,10 @@ export function NavigationMode() {
     nodes: true,
     edges: false,
   });
+  const [localPosition, setLocalPosition] = useState<{
+    x: number | null;
+    y: number | null;
+  }>({ x: null, y: null });
 
   const [toggleNodes, setToggleNodes] = useState(true);
   const [toggleEdges, setToggleEdges] = useState(false);
@@ -390,6 +395,7 @@ export function NavigationMode() {
               />
             ))}
             <RenderCircles
+              setPosition={setLocalPosition}
               allNodes={allNodes}
               pathNodes={nodes}
               floor={mapPathNames[mapIndex]}
@@ -410,6 +416,7 @@ export function NavigationMode() {
           </div>
         </TransformContainer>
         <HoveredNodeData node={hoveredNode} />
+        <MouseClickMenu node={hoveredNode} localPosition={localPosition} />
       </div>
     </div>
   );

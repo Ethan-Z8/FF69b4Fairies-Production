@@ -449,7 +449,7 @@ const StartEndSelect: React.FC<NodeSelectProps> = ({
                   else {
                     setEndID("");
                     setEndName("");
-                    setTargetType("EXIT");
+                    setTargetType("");
                   }
                 }}
               >
