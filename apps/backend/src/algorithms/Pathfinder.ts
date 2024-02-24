@@ -44,6 +44,12 @@ export default class Pathfinder {
     return this.pattern.findShortestPathNodes(startNodeId, endNodeId);
   }
 
+  public findNearestType(startNodeID: string, type: string): string | null {
+    const aStar = new AStarAlgo();
+    aStar.nodes = this.#nodes;
+    return aStar.findNearestNodeType(startNodeID, type);
+  }
+
   /**
    * @return the nodes that have been initilized
    */
