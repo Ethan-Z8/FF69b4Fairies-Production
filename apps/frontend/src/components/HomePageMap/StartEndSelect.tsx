@@ -434,7 +434,7 @@ const StartEndSelect: React.FC<NodeSelectProps> = ({
               position: "relative",
               left: "92%",
               zIndex: 20,
-              marginTop: "-38px",
+              marginTop: "-40px",
               paddingBottom: "10px",
             }}
           >
