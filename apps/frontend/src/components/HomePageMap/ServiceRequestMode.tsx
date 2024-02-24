@@ -34,6 +34,15 @@ export function ServiceRequestMode() {
   const [requestCounts, setRequestCounts] = useState<{
     [nodeID: string]: number;
   }>({});
+  const [emergencyCounts, setEmergencyCounts] = useState<{
+    [nodeID: string]: number;
+  }>({});
+  const [completedCounts, setCompletedCounts] = useState<{
+    [nodeID: string]: number;
+  }>({});
+  const [completedEmergencyCounts, setCompletedEmergencyCounts] = useState<{
+    [nodeID: string]: number;
+  }>({});
   const [selectedNode, setSelectedNode] = useState("");
   const [requests, setRequests] = useState<ServiceRequestType[]>([]);
   const [imageSizes, setImageSizes] = useState<{ [key: string]: ImageSize }>({
@@ -57,6 +66,37 @@ export function ServiceRequestMode() {
         {} as { [nodeID: string]: number },
       );
       setRequestCounts(counts);
+      const eCount = payload.reduce(
+        (acc, curr) => {
+          if (curr.priority === "Emergency") {
+            acc[curr.location] = ++acc[curr.location] || 1;
+          }
+          return acc;
+        },
+        {} as { [nodeID: string]: number },
+      );
+      setEmergencyCounts(eCount);
+
+      const completedCounts = payload.reduce(
+        (acc, curr) => {
+          if (curr.progress === "Completed") {
+            acc[curr.location] = ++acc[curr.location] || 1;
+          }
+          return acc;
+        },
+        {} as { [nodeID: string]: number },
+      );
+      setCompletedCounts(completedCounts);
+      const completedEmergencyCounts = payload.reduce(
+        (acc, curr) => {
+          if (curr.priority === "Emergency" && curr.progress === "Completed") {
+            acc[curr.location] = ++acc[curr.location] || 1;
+          }
+          return acc;
+        },
+        {} as { [nodeID: string]: number },
+      );
+      setCompletedEmergencyCounts(completedEmergencyCounts);
     });
 
     const preloadImages = () => {
@@ -125,6 +165,9 @@ export function ServiceRequestMode() {
                     <ServiceRequestNode
                       nodeInfo={node}
                       numRequests={requestCounts[node.nodeID]}
+                      emergency={emergencyCounts[node.nodeID]}
+                      completed={completedCounts[node.nodeID]}
+                      emergencyCompleted={completedEmergencyCounts[node.nodeID]}
                       setSelectedNode={handleSelectedNode}
                       key={node.nodeID}
                     />

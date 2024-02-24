@@ -13,6 +13,7 @@ import {
   TableBody,
   TableContainer,
   Paper,
+  Box,
   //TableContainer,
 } from "@mui/material";
 import { ServiceRequestType } from "common/src/interfaces/ServiceRequest.ts";
@@ -25,22 +26,78 @@ const Auth0Profile = () => {
   const { user, logout } = useAuth0();
   // console.log(user);
 
+  const [employeeData, setEmployeeData] = useState<Array<ServiceRequestType>>(
+    [],
+  );
+
   const handleLogout = () => {
     logout();
     window.location.href = "/";
   };
 
-  const [employeeData, setEmployeeData] = useState<Array<ServiceRequestType>>(
-    [],
-  );
+  const handleImportData = async () => {
+    try {
+      // Import map data
+      await axios.post("/api/map/import", {
+        username: user?.nickname,
+      });
+
+      // Import edge nodes
+      await axios.post("/api/edgeNodes/import", {
+        username: user?.nickname,
+      });
+    } catch (e) {
+      const errorMessage =
+        e instanceof Error ? e.message : "An unknown error has occurred";
+      console.error(errorMessage);
+      // Handle import error
+    }
+  };
+
+  const handleExportData = () => {
+    axios
+      .get("/api/serviceRequest/exportAll", {
+        responseType: "blob",
+      })
+      .then((res) => {
+        const url = window.URL.createObjectURL(new Blob([res.data]));
+        const link = document.createElement("a");
+        link.href = url;
+        link.setAttribute("download", "all_service_requests.zip");
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      })
+      .catch((e: Error) => {
+        console.log(e.message);
+      });
+  };
+
+  useEffect(() => {
+    const fetchEmployeeData = () => {
+      axios
+        .get("/api/serviceRequest/byEmployee", {
+          params: { username: user?.nickname },
+        })
+        .then((res) => {
+          console.log("Employee Requests Fetched");
+          setEmployeeData(res.data);
+        })
+        .catch((e: Error) => {
+          console.log(e.message);
+        });
+    };
+
+    fetchEmployeeData();
+  }, [user?.nickname]);
+
   useEffect(() => {
     axios
       .get("/api/serviceRequest/byEmployee", {
         params: { username: user?.nickname },
       })
       .then((res) => {
-        console.log("Request Made");
-        console.log(res.data);
+        console.log("Employee Requests Fetched");
         setEmployeeData(res.data);
       })
       .catch((e: Error) => {
@@ -64,10 +121,7 @@ const Auth0Profile = () => {
         margin: "1rem",
       }}
     >
-      <Container
-        //maxWidth="2sm"
-        style={{ textAlign: "center", marginTop: "50px" }}
-      >
+      <Container style={{ textAlign: "center", marginTop: "50px" }}>
         <Avatar
           alt={user?.name || "User"}
           src={user?.picture}
@@ -83,10 +137,6 @@ const Auth0Profile = () => {
         >
           Email: {user?.name}
         </Typography>
-        {/*  THIS STUFF NEEDS TO BE PUT IN LATER*/}
-        {/*<Typography variant={"h4"} gutterBottom style={{ marginTop: "10px" }}>*/}
-        {/*  Your role is: {user?.role}*/}
-        {/*</Typography>*/}
         <Typography
           variant={"h5"}
           fontSize={"15px"}
@@ -121,15 +171,28 @@ const Auth0Profile = () => {
             </TableBody>
           </Table>
         </TableContainer>
+        <Box mt={2}>
+          <Button
+            variant="contained"
+            onClick={handleImportData}
+            sx={{ mr: 2, marginTop: "25px" }}
+          >
+            Import All Data
+          </Button>
 
-        {/*<TableContainer>*/}
-        {/*    <ViewServiceRequestPage />*/}
-        {/*</TableContainer>*/}
+          <Button
+            variant="contained"
+            onClick={handleExportData}
+            sx={{ mr: 2, marginTop: "25px" }}
+          >
+            Export All Data
+          </Button>
+        </Box>
 
         <Button
           variant="contained"
           onClick={handleLogout}
-          style={{ marginTop: "200px" }}
+          style={{ marginTop: "150px" }}
         >
           Sign Out
         </Button>
