@@ -10,6 +10,7 @@ import AlgoStrategyPattern from "../algorithms/AlgoStrategyPattern.ts";
 import AStarAlgo from "../algorithms/AStarAlgo.ts";
 import BFSAlgo from "../algorithms/BFSAlgo.ts";
 import DFSAlgo from "../algorithms/DFSAlgo.ts";
+import DijkstraAlgo from "../algorithms/DijkstraAlgo.ts";
 
 export const mapRouter: Router = express.Router();
 const upload = multer();
@@ -175,6 +176,7 @@ mapRouter.get("/pathNodesShort", async (req: Request, res: Response) => {
       end?: string;
       algo?: string;
     };
+    console.log("im here");
     let strategyPattern: AlgoStrategyPattern = new AStarAlgo();
     const endpoints = req.query as StartAndEndNodes;
     console.log(endpoints.algo);
@@ -182,6 +184,9 @@ mapRouter.get("/pathNodesShort", async (req: Request, res: Response) => {
       strategyPattern = new BFSAlgo();
     } else if (endpoints.algo == "DFS") {
       strategyPattern = new DFSAlgo();
+    } else if (endpoints.algo == "DijkstraAlgo") {
+      console.log("Dijkstra");
+      strategyPattern = new DijkstraAlgo();
     }
 
     const nodes = await Prisma.mapNode.findMany();
