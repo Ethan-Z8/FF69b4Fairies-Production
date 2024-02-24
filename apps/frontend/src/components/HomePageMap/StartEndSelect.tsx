@@ -220,15 +220,17 @@ const StartEndSelect: React.FC<NodeSelectProps> = ({
               color: "white",
               boxShadow: "1px -1px 2px rgba(0, 0, 0, 0.2)",
               caretColor: isStartFocused ? "white" : "transparent",
+              zIndex: 20,
             }}
             placeholder="Start Location"
           />
           <div
             style={{
               position: "relative",
-              left: "92%",
               zIndex: 20,
               marginTop: "-38px",
+              float: "right",
+              right: "16px",
             }}
           >
             {startID != "" ? (
@@ -335,7 +337,7 @@ const StartEndSelect: React.FC<NodeSelectProps> = ({
         <div
           style={{
             position: "relative",
-            zIndex: -1,
+            zIndex: -10,
             width: "100%",
           }}
         >
@@ -396,7 +398,7 @@ const StartEndSelect: React.FC<NodeSelectProps> = ({
             />
           </div>
         </div>
-        <div style={{ position: "relative" }}>
+        <div style={{ position: "relative", zIndex: -10 }}>
           <input
             type="text"
             value={endName}
@@ -424,7 +426,7 @@ const StartEndSelect: React.FC<NodeSelectProps> = ({
               color: "white",
               transition: "border-bottom-left 200ms ease",
               boxShadow: "1px 2px 2px rgba(0, 0, 0, 0.2)",
-              zIndex: isEndFocused ? 28 : 26,
+              zIndex: isEndFocused ? 28 : -2,
               caretColor: isEndFocused ? "white" : "transparent",
             }}
             placeholder="Enter Destination"
@@ -432,10 +434,11 @@ const StartEndSelect: React.FC<NodeSelectProps> = ({
           <div
             style={{
               position: "relative",
-              left: "92%",
               zIndex: 20,
               marginTop: "-40px",
               paddingBottom: "10px",
+              float: "right",
+              right: "16px",
             }}
           >
             {(endID != "" && !forceClose) || forceClose ? (
@@ -549,7 +552,7 @@ const StartEndSelect: React.FC<NodeSelectProps> = ({
           <div
             style={{
               position: "relative",
-              zIndex: -10,
+              zIndex: -12,
               display: "flex",
               gap: "8px",
             }}

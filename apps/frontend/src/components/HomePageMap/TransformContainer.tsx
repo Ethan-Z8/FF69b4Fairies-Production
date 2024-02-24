@@ -159,8 +159,8 @@ const TransformContainer: React.FC<TransformContainerProps> = ({
           container.scrollLeft = targetLeft;
           container.scrollTop = targetTop;
           content.style.transform = `scale(${newScale})`;
-        }, 600);
-      }, 500);
+        }, 10);
+      }, 10);
     }
 
     prevZoomToCoordinate.current = zoomToCoordinate;
