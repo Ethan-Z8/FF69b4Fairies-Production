@@ -80,6 +80,23 @@ export function NavigationMode() {
     { x: number; y: number } | undefined
   >(undefined);
 
+  const [debouncedZoomToCoords, setDebouncedZoomToCoords] = useState<
+    | {
+        x: number;
+        y: number;
+      }
+    | undefined
+  >(undefined);
+
+  // Debounce effect for zoomToCoords
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedZoomToCoords(zoomToCoords);
+    }, 800);
+
+    return () => clearTimeout(timer);
+  }, [zoomToCoords]);
+
   //const [defaultMap, setDefaultMap] = useState(0);
 
   useEffect(() => {
@@ -176,7 +193,7 @@ export function NavigationMode() {
       } else {
         clearTimeout(timeoutId);
       }
-    }, 1000);
+    }, 780);
     /*timeoutId = setTimeout(() => {
       setMapIndex(defaultMap);
     }, 100);*/
@@ -220,12 +237,10 @@ export function NavigationMode() {
     if (node) {
       switch (node.nodeID) {
         case firstClickedNodeId: {
-          console.log("undo first");
           setFirstClickedNodeId("");
           break;
         }
         case secondClickedNodeId: {
-          console.log("undo second");
           setSecondClickedNodeId("");
           break;
         }
@@ -246,7 +261,7 @@ export function NavigationMode() {
   };
 
   return (
-    <div>
+    <div style={{ overflow: "hidden" }}>
       <Box
         sx={{
           position: "absolute",
@@ -323,6 +338,7 @@ export function NavigationMode() {
           <MenuItem value={"AStarAlgo"}>A*</MenuItem>
           <MenuItem value={"BFS"}>BFS</MenuItem>
           <MenuItem value={"DFS"}>DFS</MenuItem>
+          <MenuItem value={"DijkstraAlgo"}>Dijkstras</MenuItem>
         </Select>
       </Box>
       <div className="total">
@@ -334,7 +350,6 @@ export function NavigationMode() {
             onSelectEnd={handleEndSelect}
             onHoverNode={(node) => {
               setHoveredNode(node);
-              console.log(zoomToCoords);
               if (node) {
                 setZoomToCoords({ x: node.xcoord, y: node.ycoord });
               } else {
@@ -350,7 +365,7 @@ export function NavigationMode() {
           start={firstClickedNodeId}
           end={secondClickedNodeId}
         />
-        <TransformContainer zoomToCoordinate={zoomToCoords}>
+        <TransformContainer zoomToCoordinate={debouncedZoomToCoords}>
           <div
             className="map-container"
             style={

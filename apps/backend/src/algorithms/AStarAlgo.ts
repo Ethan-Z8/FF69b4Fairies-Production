@@ -1,10 +1,13 @@
 import MapNode from "./MapNode.ts";
 import AlgoStrategyPattern from "./AlgoStrategyPattern.ts";
+
 class AStarAlgo implements AlgoStrategyPattern {
   nodes: Map<string, MapNode> = new Map();
+
   findShortestPath(startNodeId: string, endNodeId: string): Array<string> {
     return this.Astar(startNodeId, endNodeId);
   }
+
   findShortestPathNodes(
     startNodeId: string,
     endNodeId: string,
@@ -22,6 +25,7 @@ class AStarAlgo implements AlgoStrategyPattern {
 
     return map;
   }
+
   /**
    * A* Algorithm
    * returns the path it recommends to destination
@@ -75,6 +79,68 @@ class AStarAlgo implements AlgoStrategyPattern {
 
     // If no path is found, return an empty array
     return [];
+  }
+
+  public findNearestNodeType(
+    startNodeId: string,
+    nodeType: string,
+  ): string | null {
+    if (!this.nodes.has(startNodeId)) {
+      return null;
+    }
+
+    const openSet: Set<string> = new Set();
+    const cameFrom: Map<string, string | null> = new Map();
+    const gScore: Map<string, number> = new Map();
+    const fScore: Map<string, number> = new Map();
+    openSet.add(startNodeId);
+    gScore.set(startNodeId, 0);
+    fScore.set(startNodeId, 0);
+
+    let closestNodeId: string | null = null;
+    let closestDistance: number = Number.POSITIVE_INFINITY;
+
+    while (openSet.size > 0) {
+      let currentId: string | null = null;
+      let minFScore: number = Number.POSITIVE_INFINITY;
+      for (const nodeId of openSet) {
+        const f = gScore.get(nodeId)!;
+        if (f < minFScore) {
+          minFScore = f;
+          currentId = nodeId;
+        }
+      }
+      if (!currentId) break;
+
+      openSet.delete(currentId);
+
+      const currentNode = this.nodes.get(currentId)!;
+
+      if (currentNode.nodeType === nodeType) {
+        const distance = this.distanceBetween(startNodeId, currentId);
+        if (distance < closestDistance) {
+          closestDistance = distance;
+          closestNodeId = currentId;
+        }
+      }
+
+      for (const neighborId of currentNode.neighbors) {
+        if (!this.nodes.has(neighborId)) continue;
+        const tentativeGScore =
+          gScore.get(currentId)! + this.distanceBetween(currentId, neighborId);
+
+        if (
+          !gScore.has(neighborId) ||
+          tentativeGScore < gScore.get(neighborId)!
+        ) {
+          cameFrom.set(neighborId, currentId);
+          gScore.set(neighborId, tentativeGScore);
+          openSet.add(neighborId);
+        }
+      }
+    }
+
+    return closestNodeId;
   }
 
   /**
@@ -163,4 +229,5 @@ class AStarAlgo implements AlgoStrategyPattern {
     return path;
   }
 }
+
 export default AStarAlgo;
