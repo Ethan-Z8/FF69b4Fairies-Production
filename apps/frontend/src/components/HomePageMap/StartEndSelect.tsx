@@ -26,6 +26,9 @@ interface NodeSelectProps {
   onHoverNode: (node: Node | null) => void;
 }
 
+//const findablePlaces = ["Exit", "Restroom", "Info Desk", "Elevator", "Shop"];
+//const findableTypes = ["EXIT", "INFO", "REST", "ELEV", "RETL", "BATH", "SERV"];
+
 const StartEndSelect: React.FC<NodeSelectProps> = ({
   start,
   end,
@@ -43,6 +46,7 @@ const StartEndSelect: React.FC<NodeSelectProps> = ({
   const [isEndFocused, setIsEndFocused] = useState(false);
   const [showSuggestions, setShowSuggestions] = useState([false, false]);
   const inputRef = useRef<HTMLInputElement>(null);
+  const [targetType, setTargetType] = useState("");
 
   useEffect(() => {
     const getAllNodes = async () => {
@@ -73,6 +77,29 @@ const StartEndSelect: React.FC<NodeSelectProps> = ({
       setStartID("");
     }
   }, [start, nodes]);
+
+  useEffect(() => {
+    const getNearestType = async () => {
+      try {
+        const targetNode = await axios.get(`/api/map/nearestType`, {
+          params: {
+            start: startID,
+            type: targetType,
+          },
+        });
+        const target: string = targetNode.data;
+        if (target != "") {
+          onSelectEnd(target, {} as React.SyntheticEvent<HTMLElement>);
+        }
+      } catch (error) {
+        console.error("Error fetching map nodes:", error);
+      }
+    };
+
+    if (startID != "" && targetType != "") {
+      getNearestType();
+    }
+  }, [onSelectEnd, startID, targetType]);
 
   useEffect(() => {
     const node = nodes[end];
@@ -152,357 +179,465 @@ const StartEndSelect: React.FC<NodeSelectProps> = ({
   const [forceClose, setForceClose] = useState(false);
   return (
     <div
-      onMouseLeave={handleMouseLeave}
       style={{
-        position: "fixed",
-        borderRadius: "16px",
-        left: "8px",
-        top: "112px",
-        zIndex: 20,
-        width: "20%",
-        backgroundColor: "transparent",
+        display: "flex",
+        flexDirection: "column",
       }}
     >
-      <div style={{ position: "relative", zIndex: 21 }}>
-        <input
-          ref={inputRef}
-          type="text"
-          value={startName}
-          onChange={(e) => {
-            handleSearch(e, onSelectStart, setStartID, setStartName);
-            if (isStartFocused) setShowSuggestions([true, false]);
-            setShowSuggestions([true, false]);
-          }}
-          onFocus={handleFocusStart}
-          onClick={() => setShowSuggestions([true, false])}
-          style={{
-            border: "5px solid rgba(0, 0, 0, 0.1)",
-            borderTopRightRadius: "16px",
-            borderTopLeftRadius: "16px",
-            paddingLeft: "16px",
-            fontSize: "18px",
-            outline: "none",
-            width: "100%",
-            minHeight: "48px",
-            backgroundColor: "#0E6244",
-            color: "white",
-            boxShadow: "1px -1px 2px rgba(0, 0, 0, 0.2)",
-            caretColor: isStartFocused ? "white" : "transparent",
-          }}
-          placeholder="Start Location"
-        />
-        <div
-          style={{
-            position: "absolute",
-            right: "16px",
-            top: "50%",
-            transform: "translateY(-55%)",
-          }}
-        >
-          {startID != "" ? (
-            <span
-              style={{ color: "#fff", fontSize: "12px", cursor: "pointer" }}
-              onClick={() => {
-                setStartID("");
-                setStartName("");
-              }}
-            >
-              ✕
-            </span>
-          ) : (
-            <span
-              style={{ color: "#fff", fontSize: "12px", cursor: "pointer" }}
-              onClick={() => {
-                setIsStartFocused(true);
-                setShowSuggestions([true, false]);
-              }}
-            >
-              ▼
-            </span>
-          )}
-        </div>
-        {showSuggestions[0] && (
-          <div
-            className="scroll-container"
-            style={{
-              position: "absolute",
-              left: 0,
-              top: "24px",
-              backgroundColor: "white",
-              width: "80%",
-              zIndex: -1,
-              height: "30vh",
-              borderRadius: "16px",
-              overflow: "hidden",
-              overflowY: "scroll",
-              boxShadow: "1px 2px 2px rgba(0, 0, 0, 0.2)",
-            }}
-          >
-            <ul
-              style={{ listStyleType: "none", padding: "32px 0 0 0" }}
-              onMouseEnter={() => setIsStartFocused(true)}
-            >
-              {items
-                .filter(
-                  (node) =>
-                    node.shortName
-                      .toLowerCase()
-                      .includes(startName.toLowerCase()) ||
-                    node.longName
-                      .toLowerCase()
-                      .includes(startName.toLowerCase()) ||
-                    node.nodeID
-                      .toLowerCase()
-                      .includes(startName.toLowerCase()) ||
-                    node.nodeType
-                      .toLowerCase()
-                      .includes(startName.toLowerCase()),
-                )
-                .map((node) => (
-                  <li
-                    onMouseEnter={() => {
-                      onHoverNode(node);
-                    }}
-                    onMouseLeave={() => {
-                      onHoverNode(null);
-                    }}
-                    key={node.nodeID}
-                    onClick={() => {
-                      onSelectStart(
-                        node.nodeID,
-                        {} as React.SyntheticEvent<HTMLElement>,
-                      );
-                      if (node.longName.length > 30)
-                        setStartName(node.shortName);
-                      else setStartName(node.longName);
-                      setStartID(node.nodeID);
-
-                      setShowSuggestions([true, false]);
-                    }}
-                    style={{
-                      /*                      backgroundColor:
-                                              hoveredItem == node.nodeID
-                                                ? "rgba(255, 255, 255, 0.1)"
-                                                : "white",*/
-                      padding: "8px",
-                      cursor: "pointer",
-                      marginBottom: "2px",
-                      marginTop: "2px",
-
-                      transition: "background-color 0.1s",
-                    }}
-                  >
-                    {node.longName}
-                  </li>
-                ))}
-            </ul>
-          </div>
-        )}
-      </div>
-
       <div
+        onMouseLeave={handleMouseLeave}
         style={{
-          position: "relative",
-          zIndex: -1,
+          borderRadius: "16px",
           width: "100%",
+          zIndex: 30,
+          backgroundColor: "transparent",
+          position: "relative",
+          height: "48px",
         }}
       >
-        <div>
-          <div
-            onClick={() => {
-              onSelectStart("", {} as React.SyntheticEvent<HTMLElement>);
-              onSelectEnd("", {} as React.SyntheticEvent<HTMLElement>);
+        <div style={{ height: "100%" }}>
+          <input
+            ref={inputRef}
+            type="text"
+            value={startName}
+            onChange={(e) => {
+              handleSearch(e, onSelectStart, setStartID, setStartName);
+              if (isStartFocused) setShowSuggestions([true, false]);
+              setShowSuggestions([true, false]);
             }}
-            className="HAHAHHA"
+            onFocus={handleFocusStart}
+            onClick={() => setShowSuggestions([true, false])}
             style={{
-              position: "absolute",
-              top: 0,
-              right: 0,
-              height: "48px",
-              color: "purple",
-              width: "20%",
-              borderBottomRightRadius: "16px",
-              border: "5px solid purple",
-              backgroundColor: "rgba(210, 190, 210, 0.9)",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              cursor: "pointer",
-              fontWeight: "bold",
-            }}
-          >
-            {" "}
-            CLEAR
-          </div>
-          <div
-            onClick={() => setForceClose(true)}
-            className="HAHAHHA"
-            style={{
-              position: "absolute",
-              bottom: 0,
-              right: 0,
-              height: "48px",
-              color: "#8B2121",
-              width: "20%",
+              border: "5px solid rgba(0, 0, 0, 0.1)",
               borderTopRightRadius: "16px",
-              border: "5px solid #8B2121",
-              backgroundColor: "rgba(180, 140, 140, 0.7)",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              cursor: "pointer",
-              fontWeight: "bold",
+              borderTopLeftRadius: "16px",
+              paddingLeft: "16px",
+              fontSize: "18px",
+              outline: "none",
+              width: "100%",
+              minHeight: "48px",
+              backgroundColor: "#0E6244",
+              color: "white",
+              boxShadow: "1px -1px 2px rgba(0, 0, 0, 0.2)",
+              caretColor: isStartFocused ? "white" : "transparent",
             }}
-          >
-            {" "}
-            HIDE
-          </div>
-          <TextDirectionPathFinding
-            start={startID}
-            end={endID}
-            forceClose={forceClose}
+            placeholder="Start Location"
           />
-        </div>
-      </div>
-      <div>
-        <input
-          type="text"
-          value={endName}
-          onChange={(e) => {
-            handleSearch(e, onSelectEnd, setEndID, setEndName);
-            if (isEndFocused) setShowSuggestions([false, true]);
-            setShowSuggestions([false, true]);
-            setForceClose(false);
-          }}
-          onFocus={handleFocusEnd}
-          onClick={() => {
-            if (forceClose) setForceClose(false);
-            else setShowSuggestions([false, true]);
-          }}
-          style={{
-            border: "5px solid rgba(0, 0, 0, 0.1)",
-            borderBottomRightRadius: "16px",
-            borderBottomLeftRadius: showSuggestions[1] ? "4px" : "16px",
-            paddingLeft: "16px",
-            fontSize: "18px",
-            outline: "none",
-            width: "100%",
-            minHeight: "48px",
-            backgroundColor: "#8B2121",
-            color: "white",
-            transition: "border-bottom-left 200ms ease",
-            boxShadow: "1px 2px 2px rgba(0, 0, 0, 0.2)",
-            zIndex: isEndFocused ? 28 : 26,
-            caretColor: isEndFocused ? "white" : "transparent",
-          }}
-          placeholder="Enter Destination"
-        />
-        <div
-          style={{
-            position: "absolute",
-            right: "16px",
-            top: "100%",
-            transform: "translateY(-150%)",
-          }}
-        >
-          {(endID != "" && !forceClose) || forceClose ? (
-            <span
-              style={{ color: "#fff", fontSize: "12px", cursor: "pointer" }}
-              onClick={() => {
-                if (showSuggestions[1]) setShowSuggestions([false, false]);
-                else {
-                  setEndID("");
-                  setEndName("");
-                }
-              }}
-            >
-              ✕
-            </span>
-          ) : (
-            <span
-              style={{ color: "#fff", fontSize: "12px", cursor: "pointer" }}
-              onClick={() => {
-                setIsEndFocused(true);
-                if (!forceClose)
-                  setShowSuggestions([false, !showSuggestions[1]]);
-                else setForceClose(false);
-              }}
-            >
-              ▼
-            </span>
-          )}
-        </div>
-        {showSuggestions[1] && (
           <div
-            className="scroll-container"
             style={{
-              position: "absolute",
-              top: "80%",
-              left: 0,
-              width: "80%",
-              backgroundColor: "white",
-              zIndex: -1,
-              height: "30vh",
-              borderRadius: "16px",
-              overflow: "hidden",
-              overflowY: "scroll",
-              boxShadow: "1px 2px 2px rgba(0, 0, 0, 0.2)",
+              position: "relative",
+              left: "92%",
+              zIndex: 20,
+              marginTop: "-38px",
             }}
           >
-            <ul
+            {startID != "" ? (
+              <span
+                style={{ color: "#fff", fontSize: "12px", cursor: "pointer" }}
+                onClick={() => {
+                  setStartID("");
+                  setStartName("");
+                }}
+              >
+                ✕
+              </span>
+            ) : (
+              <span
+                style={{ color: "#fff", fontSize: "12px", cursor: "pointer" }}
+                onClick={() => {
+                  setIsStartFocused(true);
+                  setShowSuggestions([true, false]);
+                }}
+              >
+                ▼
+              </span>
+            )}
+          </div>
+          {showSuggestions[0] && (
+            <div
+              className="scroll-container"
               style={{
-                listStyleType: "none",
-                padding: "32px 0 0 0",
+                position: "absolute",
+                left: 0,
+                top: "24px",
+                backgroundColor: "white",
+                width: "80%",
+                zIndex: -1,
+                height: "30vh",
+                borderRadius: "16px",
+                overflow: "hidden",
+                overflowY: "scroll",
+                boxShadow: "1px 2px 2px rgba(0, 0, 0, 0.2)",
               }}
-              onMouseEnter={() => setIsEndFocused(true)}
             >
-              {items
-                .filter(
-                  (node) =>
-                    node.shortName
-                      .toLowerCase()
-                      .includes(endName.toLowerCase()) ||
-                    node.longName
-                      .toLowerCase()
-                      .includes(endName.toLowerCase()) ||
-                    node.nodeID.toLowerCase().includes(endName.toLowerCase()) ||
-                    node.nodeType.toLowerCase().includes(endName.toLowerCase()),
-                )
-                .map((node) => (
-                  <li
-                    onMouseEnter={() => {
-                      onHoverNode(node);
-                    }}
-                    onMouseLeave={() => {
-                      onHoverNode(null);
-                    }}
-                    onClick={() => {
-                      onSelectEnd(
-                        node.nodeID,
-                        {} as React.SyntheticEvent<HTMLElement>,
-                      );
-                      setEndID(node.nodeID);
-                      if (node.longName.length > 30) setEndName(node.shortName);
-                      else setEndName(node.longName);
-                      setShowSuggestions([false, true]);
-                    }}
-                    style={{
-                      /*                      backgroundColor:
+              <ul
+                style={{ listStyleType: "none", padding: "32px 0 0 0" }}
+                onMouseEnter={() => setIsStartFocused(true)}
+              >
+                {items
+                  .filter(
+                    (node) =>
+                      node.shortName
+                        .toLowerCase()
+                        .includes(startName.toLowerCase()) ||
+                      node.longName
+                        .toLowerCase()
+                        .includes(startName.toLowerCase()) ||
+                      node.nodeID
+                        .toLowerCase()
+                        .includes(startName.toLowerCase()) ||
+                      node.nodeType
+                        .toLowerCase()
+                        .includes(startName.toLowerCase()),
+                  )
+                  .map((node) => (
+                    <li
+                      onMouseEnter={() => {
+                        onHoverNode(node);
+                      }}
+                      onMouseLeave={() => {
+                        onHoverNode(null);
+                      }}
+                      key={node.nodeID}
+                      onClick={() => {
+                        onSelectStart(
+                          node.nodeID,
+                          {} as React.SyntheticEvent<HTMLElement>,
+                        );
+                        if (node.longName.length > 30)
+                          setStartName(node.shortName);
+                        else setStartName(node.longName);
+                        setStartID(node.nodeID);
+
+                        setShowSuggestions([true, false]);
+                      }}
+                      style={{
+                        /*                      backgroundColor:
                                                 hoveredItem == node.nodeID
                                                   ? "rgba(255, 255, 255, 0.1)"
                                                   : "white",*/
-                      padding: "8px",
-                      cursor: "pointer",
-                      marginBottom: "2px",
-                      marginTop: "2px",
+                        padding: "8px",
+                        cursor: "pointer",
+                        marginBottom: "2px",
+                        marginTop: "2px",
 
-                      transition: "background-color 0.1s",
-                    }}
-                  >
-                    {node.longName}
-                  </li>
-                ))}
-            </ul>
+                        transition: "background-color 0.1s",
+                      }}
+                    >
+                      {node.longName}
+                    </li>
+                  ))}
+              </ul>
+            </div>
+          )}
+        </div>
+
+        <div
+          style={{
+            position: "relative",
+            zIndex: -1,
+            width: "100%",
+          }}
+        >
+          <div>
+            <div
+              onClick={() => {
+                onSelectStart("", {} as React.SyntheticEvent<HTMLElement>);
+                onSelectEnd("", {} as React.SyntheticEvent<HTMLElement>);
+              }}
+              className="HAHAHHA"
+              style={{
+                position: "absolute",
+                top: 0,
+                right: 0,
+                height: "48px",
+                color: "purple",
+                width: "20%",
+                borderBottomRightRadius: "16px",
+                border: "5px solid purple",
+                backgroundColor: "rgba(210, 190, 210, 0.9)",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                cursor: "pointer",
+                fontWeight: "bold",
+              }}
+            >
+              {" "}
+              CLEAR
+            </div>
+            <div
+              onClick={() => setForceClose(true)}
+              className="HAHAHHA"
+              style={{
+                position: "absolute",
+                bottom: 0,
+                right: 0,
+                height: "48px",
+                color: "#8B2121",
+                width: "20%",
+                borderTopRightRadius: "16px",
+                border: "5px solid #8B2121",
+                backgroundColor: "rgba(180, 140, 140, 0.7)",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                cursor: "pointer",
+                fontWeight: "bold",
+              }}
+            >
+              {" "}
+              HIDE
+            </div>
+            <TextDirectionPathFinding
+              start={startID}
+              end={endID}
+              forceClose={forceClose}
+            />
+          </div>
+        </div>
+        <div style={{ position: "relative" }}>
+          <input
+            type="text"
+            value={endName}
+            onChange={(e) => {
+              handleSearch(e, onSelectEnd, setEndID, setEndName);
+              if (isEndFocused) setShowSuggestions([false, true]);
+              setShowSuggestions([false, true]);
+              setForceClose(false);
+            }}
+            onFocus={handleFocusEnd}
+            onClick={() => {
+              if (forceClose) setForceClose(false);
+              else setShowSuggestions([false, true]);
+            }}
+            style={{
+              border: "5px solid rgba(0, 0, 0, 0.1)",
+              borderBottomRightRadius: "16px",
+              borderBottomLeftRadius: showSuggestions[1] ? "4px" : "16px",
+              paddingLeft: "16px",
+              fontSize: "18px",
+              outline: "none",
+              width: "100%",
+              minHeight: "48px",
+              backgroundColor: "#8B2121",
+              color: "white",
+              transition: "border-bottom-left 200ms ease",
+              boxShadow: "1px 2px 2px rgba(0, 0, 0, 0.2)",
+              zIndex: isEndFocused ? 28 : 26,
+              caretColor: isEndFocused ? "white" : "transparent",
+            }}
+            placeholder="Enter Destination"
+          />
+          <div
+            style={{
+              position: "relative",
+              left: "92%",
+              zIndex: 20,
+              marginTop: "-38px",
+              paddingBottom: "10px",
+            }}
+          >
+            {(endID != "" && !forceClose) || forceClose ? (
+              <span
+                style={{ color: "#fff", fontSize: "12px", cursor: "pointer" }}
+                onClick={() => {
+                  if (showSuggestions[1]) setShowSuggestions([false, false]);
+                  else {
+                    setEndID("");
+                    setEndName("");
+                    setTargetType("EXIT");
+                  }
+                }}
+              >
+                ✕
+              </span>
+            ) : (
+              <span
+                style={{ color: "#fff", fontSize: "12px", cursor: "pointer" }}
+                onClick={() => {
+                  setIsEndFocused(true);
+                  if (!forceClose)
+                    setShowSuggestions([false, !showSuggestions[1]]);
+                  else setForceClose(false);
+                }}
+              >
+                ▼
+              </span>
+            )}
+          </div>
+          {showSuggestions[1] && (
+            <div
+              className="scroll-container"
+              style={{
+                position: "absolute",
+                marginTop: "-10%",
+                left: 0,
+                width: "80%",
+                backgroundColor: "white",
+                zIndex: -1,
+                height: "30vh",
+                borderRadius: "16px",
+                overflow: "hidden",
+                overflowY: "scroll",
+                boxShadow: "1px 2px 2px rgba(0, 0, 0, 0.2)",
+              }}
+            >
+              <ul
+                style={{
+                  listStyleType: "none",
+                  padding: "32px 0 0 0",
+                }}
+                onMouseEnter={() => setIsEndFocused(true)}
+              >
+                {items
+                  .filter(
+                    (node) =>
+                      node.shortName
+                        .toLowerCase()
+                        .includes(endName.toLowerCase()) ||
+                      node.longName
+                        .toLowerCase()
+                        .includes(endName.toLowerCase()) ||
+                      node.nodeID
+                        .toLowerCase()
+                        .includes(endName.toLowerCase()) ||
+                      node.nodeType
+                        .toLowerCase()
+                        .includes(endName.toLowerCase()),
+                  )
+                  .map((node) => (
+                    <li
+                      onMouseEnter={() => {
+                        onHoverNode(node);
+                      }}
+                      onMouseLeave={() => {
+                        onHoverNode(null);
+                      }}
+                      onClick={() => {
+                        onSelectEnd(
+                          node.nodeID,
+                          {} as React.SyntheticEvent<HTMLElement>,
+                        );
+                        setEndID(node.nodeID);
+                        if (node.longName.length > 30)
+                          setEndName(node.shortName);
+                        else setEndName(node.longName);
+                        setShowSuggestions([false, true]);
+                      }}
+                      style={{
+                        /*                      backgroundColor:
+                                                  hoveredItem == node.nodeID
+                                                    ? "rgba(255, 255, 255, 0.1)"
+                                                    : "white",*/
+                        padding: "8px",
+                        cursor: "pointer",
+                        marginBottom: "2px",
+                        marginTop: "2px",
+
+                        transition: "background-color 0.1s",
+                      }}
+                    >
+                      {node.longName}
+                    </li>
+                  ))}
+              </ul>
+            </div>
+          )}
+        </div>
+        {startID != "" && endName === "" && (
+          <div
+            style={{
+              position: "relative",
+              zIndex: -10,
+              display: "flex",
+              gap: "8px",
+            }}
+          >
+            <span
+              style={{
+                border: "5px solid rgba(0, 0, 0, 0.1)",
+                borderRadius: "16px",
+                marginTop: "8px",
+                paddingLeft: "8px",
+                paddingRight: "8px",
+
+                fontSize: "15px",
+                outline: "none",
+                width: "60%",
+                backgroundColor: "#8B2121",
+                color: "white",
+                transition: "border-bottom-left 200ms ease",
+                boxShadow: "1px 2px 2px rgba(0, 0, 0, 0.2)",
+                cursor: "pointer",
+              }}
+              onClick={() => setTargetType("REST")}
+            >
+              Restroom
+            </span>
+            <span
+              style={{
+                border: "5px solid rgba(0, 0, 0, 0.1)",
+                borderRadius: "16px",
+                marginTop: "8px",
+                paddingLeft: "8px",
+                paddingRight: "8px",
+
+                fontSize: "15px",
+                outline: "none",
+                width: "60%",
+                backgroundColor: "#8B2121",
+                color: "white",
+                transition: "border-bottom-left 200ms ease",
+                boxShadow: "1px 2px 2px rgba(0, 0, 0, 0.2)",
+                cursor: "pointer",
+              }}
+              onClick={() => setTargetType("EXIT")}
+            >
+              Entrance
+            </span>
+            <span
+              style={{
+                border: "5px solid rgba(0, 0, 0, 0.1)",
+                borderRadius: "16px",
+                marginTop: "8px",
+                paddingLeft: "8px",
+                paddingRight: "8px",
+
+                fontSize: "15px",
+                outline: "none",
+                width: "60%",
+                backgroundColor: "#8B2121",
+                color: "white",
+                transition: "border-bottom-left 200ms ease",
+                boxShadow: "1px 2px 2px rgba(0, 0, 0, 0.2)",
+                cursor: "pointer",
+              }}
+              onClick={() => setTargetType("ELEV")}
+            >
+              Elevator
+            </span>
+            <span
+              style={{
+                border: "5px solid rgba(0, 0, 0, 0.1)",
+                borderRadius: "16px",
+                marginTop: "8px",
+                paddingLeft: "8px",
+                paddingRight: "8px",
+
+                fontSize: "15px",
+                outline: "none",
+                width: "60%",
+                backgroundColor: "#8B2121",
+                color: "white",
+                transition: "border-bottom-left 200ms ease",
+                boxShadow: "1px 2px 2px rgba(0, 0, 0, 0.2)",
+                cursor: "pointer",
+              }}
+              onClick={() => setTargetType("INFO")}
+            >
+              Info Desk
+            </span>
           </div>
         )}
       </div>

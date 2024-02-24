@@ -215,12 +215,13 @@ mapRouter.get("/pathNodesShort", async (req: Request, res: Response) => {
 });
 
 mapRouter.get("/nearestType", async (req: Request, res: Response) => {
+  console.log("endpoints");
+
   try {
-    interface nearestTypeParams {
-      start?: string;
-      type?: string;
-      algo?: string;
-    }
+    type nearestTypeParams = {
+      start: string;
+      type: string;
+    };
     const strategyPattern: AlgoStrategyPattern = new AStarAlgo();
     const endpoints = req.query as nearestTypeParams;
 
@@ -238,12 +239,13 @@ mapRouter.get("/nearestType", async (req: Request, res: Response) => {
       return;
     }
 
-    const nearestTypeID: string = pathFindingGraph.findNearestType(
+    const nearestTypeID: string | null = pathFindingGraph.findNearestType(
       startNodeId,
       targetType,
     );
+    console.log(nearestTypeID);
 
-    if (nearestTypeID == "") {
+    if (nearestTypeID == null) {
       res.status(400).json({
         error: "couldnt find that :(",
       });
@@ -252,7 +254,7 @@ mapRouter.get("/nearestType", async (req: Request, res: Response) => {
     }
   } catch (e) {
     console.error(e);
-    res.status(500).send("Internal server error");
+    res.status(500).send("Internal  error");
   }
 });
 

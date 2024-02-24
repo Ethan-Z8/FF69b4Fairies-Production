@@ -82,7 +82,6 @@ const TransformContainer: React.FC<TransformContainerProps> = ({
         (e.deltaY < 0 && e.deltaY > -1 * minSpeed)
       ) {
         setScrolling(0);
-        console.log(scrolling);
         container.scrollLeft = locX * scale - e.clientX + rect.left;
         container.scrollTop = locY * scale - e.clientY + rect.top;
         return;

@@ -220,12 +220,10 @@ export function NavigationMode() {
     if (node) {
       switch (node.nodeID) {
         case firstClickedNodeId: {
-          console.log("undo first");
           setFirstClickedNodeId("");
           break;
         }
         case secondClickedNodeId: {
-          console.log("undo second");
           setSecondClickedNodeId("");
           break;
         }
@@ -246,7 +244,7 @@ export function NavigationMode() {
   };
 
   return (
-    <div>
+    <div style={{ overflow: "hidden" }}>
       <Box
         sx={{
           position: "absolute",
@@ -334,7 +332,6 @@ export function NavigationMode() {
             onSelectEnd={handleEndSelect}
             onHoverNode={(node) => {
               setHoveredNode(node);
-              console.log(zoomToCoords);
               if (node) {
                 setZoomToCoords({ x: node.xcoord, y: node.ycoord });
               } else {
