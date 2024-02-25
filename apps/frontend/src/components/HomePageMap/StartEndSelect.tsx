@@ -670,14 +670,15 @@ const StartEndSelect: React.FC<NodeSelectProps> = ({
               icon={<ExitToAppIcon />}
               label="Exit"
               onClick={() => setTargetType("EXIT")}
+              color="primary"
               sx={{ color: "text.primary" }}
               clickable
             />
-
             <Chip
               icon={<ElevatorIcon />}
               label="Elevator"
               onClick={() => setTargetType("ELEV")}
+              color={"primary"}
               clickable
             />
 
@@ -685,6 +686,7 @@ const StartEndSelect: React.FC<NodeSelectProps> = ({
               icon={<InfoIcon />}
               label="Info"
               onClick={() => setTargetType("INFO")}
+              color={"primary"}
               clickable
             />
           </div>
