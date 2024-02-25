@@ -1,6 +1,7 @@
 import React from "react";
 import { Paper, Typography, Container, Link, Divider } from "@mui/material";
 import ReactLogo from "../assets/softwareicons/React-icon.png";
+import BootstrapLogo from "../assets/softwareicons/React-Bootstrap-Logo.png";
 import MUILogo from "../assets/softwareicons/material-ui-icon.png";
 import NodeJSIcon from "../assets/softwareicons/node-js-icon.png";
 import AWSIcon from "../assets/softwareicons/Amazon_Web_Services_Logo.png";
@@ -51,12 +52,12 @@ const CreditsPage: React.FC = () => {
                   src={ReactLogo}
                   alt="Logo"
                   style={{
-                    maxHeight: "4rem",
+                    maxHeight: "6rem",
                     margin: 0,
-                    padding: 0,
+                    padding: "0.5rem",
                   }}
                 />
-                React.js & Bootstrap
+                <p style={{ marginTop: "0.5rem" }}>React.js & Bootstrap</p>
               </Link>
             </li>
             <li>
@@ -65,12 +66,12 @@ const CreditsPage: React.FC = () => {
                   src={NodeJSIcon}
                   alt="Logo"
                   style={{
-                    maxHeight: "4rem",
+                    maxHeight: "6rem",
                     margin: 0,
-                    padding: 0,
+                    padding: "0.5rem",
                   }}
                 />
-                Express
+                <p style={{ marginTop: "0.5rem" }}>Express</p>
               </Link>
             </li>
             <li>
@@ -79,12 +80,12 @@ const CreditsPage: React.FC = () => {
                   src={AWSIcon}
                   alt="Logo"
                   style={{
-                    maxHeight: "4rem",
+                    maxHeight: "5rem",
                     margin: 0,
-                    padding: 0,
+                    padding: "0.5rem",
                   }}
                 />
-                AWS
+                <p style={{ marginTop: "0.5rem" }}>AWS</p>
               </Link>
             </li>
           </ul>
@@ -101,26 +102,26 @@ const CreditsPage: React.FC = () => {
                   src={MUILogo}
                   alt="Logo"
                   style={{
-                    maxHeight: "4rem",
+                    maxHeight: "5rem",
                     margin: 0,
-                    padding: 0,
+                    padding: "0.5rem",
                   }}
                 />
-                Material-UI
+                <p style={{ marginTop: "0.5rem" }}>Material-UI</p>
               </Link>
             </li>
             <li>
-              <Link href="https://reactjs.org/" target="_blank">
+              <Link href="https://react-bootstrap.netlify.app/" target="_blank">
                 <img
-                  src={ReactLogo}
+                  src={BootstrapLogo}
                   alt="Logo"
                   style={{
-                    maxHeight: "4rem",
+                    maxHeight: "7rem",
                     margin: 0,
-                    padding: 0,
+                    padding: "0.5rem",
                   }}
                 />
-                React Bootstrap
+                <p style={{ marginTop: "0.5rem" }}>React Bootstrap</p>
               </Link>
             </li>
           </ul>
