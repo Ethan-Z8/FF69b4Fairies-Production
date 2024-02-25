@@ -1,5 +1,9 @@
 import React from "react";
 import { Paper, Typography, Container, Link, Divider } from "@mui/material";
+import ReactLogo from "../assets/softwareicons/React-icon.png";
+import MUILogo from "../assets/softwareicons/material-ui-icon.png";
+import NodeJSIcon from "../assets/softwareicons/node-js-icon.png";
+import AWSIcon from "../assets/softwareicons/Amazon_Web_Services_Logo.png";
 
 const CreditsPage: React.FC = () => {
   return (
@@ -43,16 +47,43 @@ const CreditsPage: React.FC = () => {
           <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
             <li>
               <Link href="https://react.dev/" target="_blank">
+                <img
+                  src={ReactLogo}
+                  alt="Logo"
+                  style={{
+                    maxHeight: "4rem",
+                    margin: 0,
+                    padding: 0,
+                  }}
+                />
                 React.js & Bootstrap
               </Link>
             </li>
             <li>
               <Link href="https://expressjs.com/" target="_blank">
+                <img
+                  src={NodeJSIcon}
+                  alt="Logo"
+                  style={{
+                    maxHeight: "4rem",
+                    margin: 0,
+                    padding: 0,
+                  }}
+                />
                 Express
               </Link>
             </li>
             <li>
               <Link href="https://aws.amazon.com/" target="_blank">
+                <img
+                  src={AWSIcon}
+                  alt="Logo"
+                  style={{
+                    maxHeight: "4rem",
+                    margin: 0,
+                    padding: 0,
+                  }}
+                />
                 AWS
               </Link>
             </li>
@@ -66,12 +97,30 @@ const CreditsPage: React.FC = () => {
           <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
             <li>
               <Link href="https://mui.com/" target="_blank">
+                <img
+                  src={MUILogo}
+                  alt="Logo"
+                  style={{
+                    maxHeight: "4rem",
+                    margin: 0,
+                    padding: 0,
+                  }}
+                />
                 Material-UI
               </Link>
             </li>
             <li>
               <Link href="https://reactjs.org/" target="_blank">
-                React
+                <img
+                  src={ReactLogo}
+                  alt="Logo"
+                  style={{
+                    maxHeight: "4rem",
+                    margin: 0,
+                    padding: 0,
+                  }}
+                />
+                React Bootstrap
               </Link>
             </li>
           </ul>
