@@ -2,6 +2,12 @@ import axios from "axios";
 import React, { useEffect, useState, useRef } from "react";
 import "./StartEndSelect.css";
 import TextDirectionPathFinding from "./TextDirectionPathFinding.tsx";
+import Chip from "@mui/material/Chip";
+import WcIcon from "@mui/icons-material/Wc";
+import ExitToAppIcon from "@mui/icons-material/ExitToApp";
+import ElevatorIcon from "@mui/icons-material/Elevator";
+import InfoIcon from "@mui/icons-material/Info";
+import { createTheme, ThemeProvider } from "@mui/system";
 
 interface Node {
   nodeID: string;
@@ -28,6 +34,14 @@ interface NodeSelectProps {
 
 //const findablePlaces = ["Exit", "Restroom", "Info Desk", "Elevator", "Shop"];
 //const findableTypes = ["EXIT", "INFO", "REST", "ELEV", "RETL", "BATH", "SERV"];
+
+const theme = createTheme({
+  palette: {
+    text: {
+      primary: "0f2c57",
+    },
+  },
+});
 
 const StartEndSelect: React.FC<NodeSelectProps> = ({
   start,
@@ -557,90 +571,122 @@ const StartEndSelect: React.FC<NodeSelectProps> = ({
               gap: "8px",
             }}
           >
-            <span
-              style={{
-                border: "5px solid rgba(0, 0, 0, 0.1)",
-                borderRadius: "16px",
-                marginTop: "8px",
-                paddingLeft: "8px",
-                paddingRight: "8px",
+            {/*<span*/}
+            {/*    style={{*/}
+            {/*        border: "5px solid rgba(0, 0, 0, 0.1)",*/}
+            {/*        borderRadius: "16px",*/}
+            {/*        marginTop: "8px",*/}
+            {/*        paddingLeft: "8px",*/}
+            {/*        paddingRight: "8px",*/}
 
-                fontSize: "15px",
-                outline: "none",
-                width: "60%",
-                backgroundColor: "#8B2121",
-                color: "white",
-                transition: "border-bottom-left 200ms ease",
-                boxShadow: "1px 2px 2px rgba(0, 0, 0, 0.2)",
-                cursor: "pointer",
-              }}
+            {/*        fontSize: "15px",*/}
+            {/*        outline: "none",*/}
+            {/*        width: "60%",*/}
+            {/*        backgroundColor: "#8B2121",*/}
+            {/*        color: "white",*/}
+            {/*        transition: "border-bottom-left 200ms ease",*/}
+            {/*        boxShadow: "1px 2px 2px rgba(0, 0, 0, 0.2)",*/}
+            {/*        cursor: "pointer",*/}
+            {/*    }}*/}
+            {/*    onClick={() => setTargetType("REST")}*/}
+            {/*>*/}
+            {/*  Restroom*/}
+            {/*</span>*/}
+            {/*  <span*/}
+            {/*      style={{*/}
+            {/*    border: "5px solid rgba(0, 0, 0, 0.1)",*/}
+            {/*    borderRadius: "16px",*/}
+            {/*    marginTop: "8px",*/}
+            {/*    paddingLeft: "8px",*/}
+            {/*    paddingRight: "8px",*/}
+
+            {/*    fontSize: "15px",*/}
+            {/*    outline: "none",*/}
+            {/*    width: "60%",*/}
+            {/*    backgroundColor: "#8B2121",*/}
+            {/*    color: "white",*/}
+            {/*    transition: "border-bottom-left 200ms ease",*/}
+            {/*    boxShadow: "1px 2px 2px rgba(0, 0, 0, 0.2)",*/}
+            {/*    cursor: "pointer",*/}
+            {/*  }}*/}
+            {/*  onClick={() => setTargetType("EXIT")}*/}
+            {/*>*/}
+            {/*      <svg ></svg>*/}
+            {/*  Exit*/}
+            {/*</span>*/}
+            {/*<span*/}
+            {/*  style={{*/}
+            {/*    border: "5px solid rgba(0, 0, 0, 0.1)",*/}
+            {/*    borderRadius: "16px",*/}
+            {/*    marginTop: "8px",*/}
+            {/*    paddingLeft: "8px",*/}
+            {/*    paddingRight: "8px",*/}
+
+            {/*    fontSize: "15px",*/}
+            {/*    outline: "none",*/}
+            {/*    width: "60%",*/}
+            {/*    backgroundColor: "#8B2121",*/}
+            {/*    color: "white",*/}
+            {/*    transition: "border-bottom-left 200ms ease",*/}
+            {/*    boxShadow: "1px 2px 2px rgba(0, 0, 0, 0.2)",*/}
+            {/*    cursor: "pointer",*/}
+            {/*  }}*/}
+            {/*  onClick={() => setTargetType("ELEV")}*/}
+            {/*>*/}
+            {/*  Elevator*/}
+            {/*</span>*/}
+            {/*<span*/}
+            {/*  style={{*/}
+            {/*    border: "5px solid rgba(0, 0, 0, 0.1)",*/}
+            {/*    borderRadius: "16px",*/}
+            {/*    marginTop: "8px",*/}
+            {/*    paddingLeft: "8px",*/}
+            {/*    paddingRight: "8px",*/}
+
+            {/*    fontSize: "15px",*/}
+            {/*    outline: "none",*/}
+            {/*    width: "60%",*/}
+            {/*    backgroundColor: "#8B2121",*/}
+            {/*    color: "white",*/}
+            {/*    transition: "border-bottom-left 200ms ease",*/}
+            {/*    boxShadow: "1px 2px 2px rgba(0, 0, 0, 0.2)",*/}
+            {/*    cursor: "pointer",*/}
+            {/*  }}*/}
+            {/*  onClick={() => setTargetType("INFO")}*/}
+            {/*>*/}
+            {/*  Info Desk*/}
+            {/*</span>*/}
+            <ThemeProvider theme={theme}></ThemeProvider>
+            <Chip
+              icon={<WcIcon />}
+              label="Restroom"
+              variant="outlined"
               onClick={() => setTargetType("REST")}
-            >
-              Restroom
-            </span>
-            <span
-              style={{
-                border: "5px solid rgba(0, 0, 0, 0.1)",
-                borderRadius: "16px",
-                marginTop: "8px",
-                paddingLeft: "8px",
-                paddingRight: "8px",
+              color="primary"
+              clickable
+            />
 
-                fontSize: "15px",
-                outline: "none",
-                width: "60%",
-                backgroundColor: "#8B2121",
-                color: "white",
-                transition: "border-bottom-left 200ms ease",
-                boxShadow: "1px 2px 2px rgba(0, 0, 0, 0.2)",
-                cursor: "pointer",
-              }}
+            <Chip
+              icon={<ExitToAppIcon />}
+              label="Exit"
               onClick={() => setTargetType("EXIT")}
-            >
-              Entrance
-            </span>
-            <span
-              style={{
-                border: "5px solid rgba(0, 0, 0, 0.1)",
-                borderRadius: "16px",
-                marginTop: "8px",
-                paddingLeft: "8px",
-                paddingRight: "8px",
+              sx={{ color: "text.primary" }}
+              clickable
+            />
 
-                fontSize: "15px",
-                outline: "none",
-                width: "60%",
-                backgroundColor: "#8B2121",
-                color: "white",
-                transition: "border-bottom-left 200ms ease",
-                boxShadow: "1px 2px 2px rgba(0, 0, 0, 0.2)",
-                cursor: "pointer",
-              }}
+            <Chip
+              icon={<ElevatorIcon />}
+              label="Elevator"
               onClick={() => setTargetType("ELEV")}
-            >
-              Elevator
-            </span>
-            <span
-              style={{
-                border: "5px solid rgba(0, 0, 0, 0.1)",
-                borderRadius: "16px",
-                marginTop: "8px",
-                paddingLeft: "8px",
-                paddingRight: "8px",
+              clickable
+            />
 
-                fontSize: "15px",
-                outline: "none",
-                width: "60%",
-                backgroundColor: "#8B2121",
-                color: "white",
-                transition: "border-bottom-left 200ms ease",
-                boxShadow: "1px 2px 2px rgba(0, 0, 0, 0.2)",
-                cursor: "pointer",
-              }}
+            <Chip
+              icon={<InfoIcon />}
+              label="Info"
               onClick={() => setTargetType("INFO")}
-            >
-              Info Desk
-            </span>
+              clickable
+            />
           </div>
         )}
       </div>
