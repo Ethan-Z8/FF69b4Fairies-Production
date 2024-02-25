@@ -15,7 +15,7 @@ import AddEmployeePage from "./routes/AddEmployeePage.tsx";
 import ProtectPage from "./components/ProtectPage.tsx";
 import { ImportAndExportEmployeePage } from "./routes/ImportAndExportEmployeePage.tsx";
 import Auth0Profile from "./components/Auth0Profile.tsx";
-import PhoneDirections from "./routes/PhoneDirections"; // Adjust the import path as needed
+import PhoneDirections from "./routes/PhoneDirections";
 
 function App() {
   const router = createBrowserRouter([
