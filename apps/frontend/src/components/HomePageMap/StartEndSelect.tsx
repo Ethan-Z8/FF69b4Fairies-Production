@@ -660,7 +660,6 @@ const StartEndSelect: React.FC<NodeSelectProps> = ({
             <Chip
               icon={<WcIcon />}
               label="Restroom"
-              variant="outlined"
               onClick={() => setTargetType("REST")}
               color="primary"
               clickable
