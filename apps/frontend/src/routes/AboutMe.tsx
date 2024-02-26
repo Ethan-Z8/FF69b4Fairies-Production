@@ -1,28 +1,39 @@
 //import React, { useEffect, useState } from "react";
 
+import AboutCard from "../components/AboutCard.tsx";
+
 const AboutMe = () => {
   return (
-    <div className="about-the-team">
-      <h2>Our Team</h2>
+    <div className="about-the-team" style={{ width: "75%" }}>
+      <h2 style={{ textAlign: "center" }}>Our Team</h2>
+
       <div className="team-members-flex">
-        <div className="row">
-          <div className="team-member">
-            <h3>mem1</h3>
-            <p>Softeng</p>
-            <p>biotest</p>
-          </div>
-          <div className="team-member">
+        <div
+          style={{ display: "flex", flexDirection: "row", paddingTop: "20px" }}
+        >
+          <AboutCard
+            Name={"Ajay"}
+            role={"Team Lead"}
+            devrole={"FullStack Engineer"}
+            ClassYear={"Sophmore"}
+            Major={"Computer Science"}
+            Email={"asdf@wpi.edu"}
+            Github={"google.com"}
+            Linkdin={"asdf.com"}
+            Imagepath={"NULL"}
+          />
+
+          <div className="team-member" style={{ flexGrow: "1" }}>
             <h3>mem2</h3>
             <p>Softeng</p>
             <p>biotest</p>
           </div>
-
-          <div className="team-member">
+          <div className="team-member" style={{ flexGrow: "1" }}>
             <h3>mem3</h3>
             <p>Softeng</p>
             <p>biotest</p>
           </div>
-          <div className="team-member">
+          <div className="team-member" style={{ flexGrow: "1" }}>
             <h3> mem4</h3>
             <p>Softeng</p>
             <p>biotest</p>
