@@ -139,13 +139,17 @@ const RenderPath: React.FC<Props> = ({
                   left: `${one.xcoord}px`,
                   top: `${one.ycoord}px`,
                   zIndex: 4,
+                  color: "white",
+                  textAlign: "center",
                 }}
                 onClick={() =>
                   setMapIndex(
                     mapPathNames.findIndex((item) => item === swapNode!.floor),
                   )
                 }
-              ></div>
+              >
+                {swapNode!.floor}
+              </div>
             )}
             {showChangeFloorButton2 && (
               <div
@@ -155,13 +159,17 @@ const RenderPath: React.FC<Props> = ({
                   left: `${one.xcoord}px`,
                   top: `${one.ycoord}px`,
                   zIndex: 4,
+                  color: "white",
+                  textAlign: "center",
                 }}
                 onClick={() =>
                   setMapIndex(
                     mapPathNames.findIndex((item) => item === swapNode!.floor),
                   )
                 }
-              ></div>
+              >
+                {swapNode!.floor}
+              </div>
             )}
           </div>
         </div>
