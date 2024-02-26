@@ -3,7 +3,7 @@ import { Paper, Typography, Container, Link, Divider } from "@mui/material";
 import ReactLogo from "../assets/softwareicons/React-icon.png";
 import BootstrapLogo from "../assets/softwareicons/React-Bootstrap-Logo.png";
 import MUILogo from "../assets/softwareicons/material-ui-icon.png";
-import NodeJSIcon from "../assets/softwareicons/node-js-icon.png";
+import ExpressIcon from "../assets/softwareicons/expressjs_logo_icon.png";
 import AWSIcon from "../assets/softwareicons/Amazon_Web_Services_Logo.png";
 
 const CreditsPage: React.FC = () => {
@@ -63,7 +63,7 @@ const CreditsPage: React.FC = () => {
             <li>
               <Link href="https://expressjs.com/" target="_blank">
                 <img
-                  src={NodeJSIcon}
+                  src={ExpressIcon}
                   alt="Logo"
                   style={{
                     maxHeight: "6.8rem",
