@@ -6554,6 +6554,7 @@ const RAW_RUNTIME_STATE =
           ["react", "npm:18.2.0"],\
           ["react-bootstrap", "virtual:d3996bc66f5a97675d735c6457b44af0f25df32a5e5981f61ff7f22e93004839ccc5d56298eff651f971a908820429de35800a3f2669be95e1c0f6bb82e8a700#npm:2.10.0"],\
           ["react-dom", "virtual:d3996bc66f5a97675d735c6457b44af0f25df32a5e5981f61ff7f22e93004839ccc5d56298eff651f971a908820429de35800a3f2669be95e1c0f6bb82e8a700#npm:18.2.0"],\
+          ["react-qr-code", "virtual:d3996bc66f5a97675d735c6457b44af0f25df32a5e5981f61ff7f22e93004839ccc5d56298eff651f971a908820429de35800a3f2669be95e1c0f6bb82e8a700#npm:2.0.12"],\
           ["react-router-bootstrap", "virtual:d3996bc66f5a97675d735c6457b44af0f25df32a5e5981f61ff7f22e93004839ccc5d56298eff651f971a908820429de35800a3f2669be95e1c0f6bb82e8a700#npm:0.26.2"],\
           ["react-router-dom", "virtual:d3996bc66f5a97675d735c6457b44af0f25df32a5e5981f61ff7f22e93004839ccc5d56298eff651f971a908820429de35800a3f2669be95e1c0f6bb82e8a700#npm:6.21.3"],\
           ["sass", "npm:1.70.0"],\
@@ -9951,6 +9952,15 @@ const RAW_RUNTIME_STATE =
         "linkType": "HARD"\
       }]\
     ]],\
+    ["qr.js", [\
+      ["npm:0.0.0", {\
+        "packageLocation": "./.yarn/cache/qr.js-npm-0.0.0-eea89f459b-a05943d13c.zip/node_modules/qr.js/",\
+        "packageDependencies": [\
+          ["qr.js", "npm:0.0.0"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
     ["qs", [\
       ["npm:6.11.0", {\
         "packageLocation": "./.yarn/cache/qs-npm-6.11.0-caf1bc9dea-5a3bfea3e2.zip/node_modules/qs/",\
@@ -10221,6 +10231,34 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./.yarn/cache/react-lifecycles-compat-npm-3.0.4-d5e285a39e-c66b9c98c1.zip/node_modules/react-lifecycles-compat/",\
         "packageDependencies": [\
           ["react-lifecycles-compat", "npm:3.0.4"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
+    ["react-qr-code", [\
+      ["npm:2.0.12", {\
+        "packageLocation": "./.yarn/cache/react-qr-code-npm-2.0.12-7a94d03748-b7bad40d7d.zip/node_modules/react-qr-code/",\
+        "packageDependencies": [\
+          ["react-qr-code", "npm:2.0.12"]\
+        ],\
+        "linkType": "SOFT"\
+      }],\
+      ["virtual:d3996bc66f5a97675d735c6457b44af0f25df32a5e5981f61ff7f22e93004839ccc5d56298eff651f971a908820429de35800a3f2669be95e1c0f6bb82e8a700#npm:2.0.12", {\
+        "packageLocation": "./.yarn/__virtual__/react-qr-code-virtual-410d866e42/0/cache/react-qr-code-npm-2.0.12-7a94d03748-b7bad40d7d.zip/node_modules/react-qr-code/",\
+        "packageDependencies": [\
+          ["react-qr-code", "virtual:d3996bc66f5a97675d735c6457b44af0f25df32a5e5981f61ff7f22e93004839ccc5d56298eff651f971a908820429de35800a3f2669be95e1c0f6bb82e8a700#npm:2.0.12"],\
+          ["@types/react", "npm:18.2.55"],\
+          ["@types/react-native-svg", null],\
+          ["prop-types", "npm:15.8.1"],\
+          ["qr.js", "npm:0.0.0"],\
+          ["react", "npm:18.2.0"],\
+          ["react-native-svg", null]\
+        ],\
+        "packagePeers": [\
+          "@types/react-native-svg",\
+          "@types/react",\
+          "react-native-svg",\
+          "react"\
         ],\
         "linkType": "HARD"\
       }]\
