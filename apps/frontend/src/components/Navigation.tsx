@@ -182,13 +182,24 @@ export function Navigation() {
           >
             <ClickAwayListener onClickAway={handleProfileMenuClose}>
               <Container className="profileContainer">
-                <button onClick={handleLogout}>
+                <IconButton
+                  color="inherit"
+                  onClick={handleLogout}
+                  style={{ position: "absolute", top: 0, left: 0 }}
+                >
                   <SvgIcon component={LogoutIcon} />
-                </button>
+                </IconButton>
                 <Avatar
                   alt={user?.name || "User"}
                   src={user?.picture}
-                  sx={{ width: 50, height: 50, margin: "auto" }}
+                  sx={{
+                    position: "center",
+                    top: 15,
+                    left: -4,
+                    width: 50,
+                    height: 50,
+                    margin: "auto",
+                  }}
                 />
                 <Typography
                   variant={"h6"}
