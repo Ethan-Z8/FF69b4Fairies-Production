@@ -4,13 +4,13 @@ import axios from "axios";
 
 const TextDirectionRoute = () => {
   const [directions, setDirections] = useState<string[]>([]);
-  const { startLocation, endLocation } = useParams<{
-    startLocation: string;
-    endLocation: string;
-  }>();
+  // Adjusted to use the combined startAndStop parameter
+  const { startAndStop } = useParams<{ startAndStop: string }>();
 
   useEffect(() => {
-    if (startLocation && endLocation) {
+    if (startAndStop) {
+      // Splitting the startAndStop parameter into startLocation and endLocation
+      const [startLocation, endLocation] = startAndStop.split("-");
       const getDirections = async () => {
         try {
           const res = await axios.get("/api/map/getTextDirections", {
@@ -23,7 +23,7 @@ const TextDirectionRoute = () => {
       };
       getDirections();
     }
-  }, [startLocation, endLocation]);
+  }, [startAndStop]);
 
   return (
     <div

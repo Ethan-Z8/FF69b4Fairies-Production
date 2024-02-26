@@ -65,7 +65,7 @@ function App() {
           element: <ProtectPage Page={Auth0Profile} />,
         },
         {
-          path: "/directions/:startLocation-:endLocation",
+          path: "/directions/:startAndStop",
           element: <PhoneDirections />,
         },
       ],
