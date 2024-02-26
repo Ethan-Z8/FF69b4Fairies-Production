@@ -23,13 +23,12 @@ import F1LR from "../assets/hospitalmaps/01_thefirstfloor-lowRes.png";
 import F2LR from "../assets/hospitalmaps/02_thesecondfloor-lowRes.png";
 import F3LR from "../assets/hospitalmaps/03_thethirdfloor-lowRes.png";
 */
-
 import SelectorTabs from "./SelectorTabs.tsx";
 import RenderCircles from "./RenderCircles.tsx";
 import RenderPath from "./RenderPath.tsx";
 import StartEndSelect from "./StartEndSelect.tsx";
 import HoveredNodeData from "./HoveredNodeData.tsx";
-import { MenuItem, Select } from "@mui/material";
+import { MenuItem, Select, Switch } from "@mui/material";
 import MouseClickMenu from "./MouseClickMenu.tsx";
 
 interface Node {
@@ -55,6 +54,10 @@ const mapPathNames: string[] = ["L2", "L1", "1", "2", "3"];
 const floorNames: string[] = ["LL2", "LL1", "F1", "F2", "F3"];
 
 export function NavigationMode() {
+  const [checked, setChecked] = React.useState(true);
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setChecked(event.target.checked);
+  };
   const [firstClickedNodeId, setFirstClickedNodeId] = useState<string>("");
   const [secondClickedNodeId, setSecondClickedNodeId] = useState<string>("");
   const [nodes, setNodes] = useState<Node[]>([]);
@@ -150,6 +153,10 @@ export function NavigationMode() {
 
   useEffect(() => {
     if (secondClickedNodeId !== "" && firstClickedNodeId !== "") {
+      let bool = "false";
+      if (checked) {
+        bool = "true";
+      }
       const getPathNodes = async () => {
         try {
           const pathNodes = await axios.get(`/api/map/pathNodesShort`, {
@@ -157,6 +164,7 @@ export function NavigationMode() {
               start: firstClickedNodeId,
               end: secondClickedNodeId,
               algo: ChosenAlgorithim,
+              noStair: bool,
             },
           });
           const nodesData: Node[] = Object.values(pathNodes.data);
@@ -183,6 +191,7 @@ export function NavigationMode() {
     secondClickedNodeId,
     firstClickedNodeId,
     ChosenAlgorithim,
+    checked,
   ]);
 
   useEffect(() => {
@@ -346,6 +355,11 @@ export function NavigationMode() {
           <MenuItem value={"DijkstraAlgo"}>Dijkstras</MenuItem>
         </Select>
       </Box>
+      <Switch
+        checked={checked}
+        onChange={handleChange}
+        inputProps={{ "aria-label": "controlled" }}
+      />
       <div className="total">
         <div className="nodeSelectContainer" style={{}}>
           <StartEndSelect
