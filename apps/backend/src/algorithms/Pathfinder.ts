@@ -9,6 +9,8 @@ export default class Pathfinder {
    * Constructor
    * @param nodes Takes in an array of MapNodes with no neighbors
    * @param edges Takes in an array of MapEdge with neighbors
+   * @param strategyPattern
+   * @param noStair
    */
   public constructor(
     nodes: MapNodeNoNeighbors[],
