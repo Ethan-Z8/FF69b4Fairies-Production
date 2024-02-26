@@ -23,6 +23,7 @@ import { ServiceRequestRow } from "../components/ServiceRequestRow.tsx";
 import { ServiceRequestType } from "common/src/interfaces/ServiceRequest.ts";
 import Carousel from "react-bootstrap/Carousel";
 import "../styling/viewRequestPage.css";
+import { BarChart } from "@mui/x-charts";
 
 export function ViewServiceRequestPage() {
   const [loaded, setLoaded] = useState<boolean>(false);
@@ -106,6 +107,42 @@ export function ViewServiceRequestPage() {
   const assignedCount = serviceRequests.filter(
     (request) => request.progress === "Assigned",
   ).length;
+
+  function progressTypeFilter(progress: string) {
+    const progressRequests = serviceRequests.filter(
+      (request) => request.progress === progress,
+    );
+    const sanitationRequests = progressRequests.filter(
+      (request) => request.typeService === "Sanitation",
+    ).length;
+    const maintenanceRequests = progressRequests.filter(
+      (request) => request.typeService === "Maintenance",
+    ).length;
+    const religiousRequests = progressRequests.filter(
+      (request) => request.typeService === "Religious",
+    ).length;
+    const transportationRequests = progressRequests.filter(
+      (request) => request.typeService === "Transport",
+    ).length;
+    const flowerRequests = progressRequests.filter(
+      (request) => request.typeService === "Flowers",
+    ).length;
+    return {
+      Sanitation: sanitationRequests,
+      Maintenance: maintenanceRequests,
+      Religious: religiousRequests,
+      Transportation: transportationRequests,
+      Flowers: flowerRequests,
+      Progress: progress,
+    };
+  }
+
+  const dataSetFormer = [
+    progressTypeFilter("Unassigned"),
+    progressTypeFilter("Assigned"),
+    progressTypeFilter("InProgress"),
+    progressTypeFilter("Completed"),
+  ];
 
   const resetFilters = () => {
     setStatusFilter("");
@@ -303,8 +340,41 @@ export function ViewServiceRequestPage() {
                     className="h-100 justify-content-center align-items-center"
                     gap={3}
                   >
-                    <h1>Bar Chart 1</h1>
-                    <h1>Bar Chart 2</h1>
+                    <Stack
+                      direction="column"
+                      className="h-100 justify-content-center align-items-center"
+                      gap={3}
+                    >
+                      <Typography variant="h5" sx={{ textAlign: "left" }}>
+                        Status By Request Type
+                      </Typography>
+                      <BarChart
+                        dataset={dataSetFormer}
+                        series={[
+                          { dataKey: "Sanitation", label: "Sanitation" },
+                          { dataKey: "Maintenance", label: "Maintenance" },
+                          {
+                            dataKey: "Transportation",
+                            label: "Transportation",
+                          },
+                          { dataKey: "Flowers", label: "Flowers" },
+                          { dataKey: "Religious", label: "Religious" },
+                        ]}
+                        xAxis={[{ scaleType: "band", dataKey: "Progress" }]}
+                        slotProps={{
+                          legend: {
+                            direction: "row",
+                            position: { vertical: "top", horizontal: "middle" },
+                            padding: 0,
+                            labelStyle: {
+                              fontSize: 14,
+                            },
+                          },
+                        }}
+                        width={800}
+                        height={300}
+                      ></BarChart>
+                    </Stack>
                   </Stack>
                 </Carousel.Item>
               </Carousel>
@@ -340,9 +410,7 @@ export function ViewServiceRequestPage() {
                 <MenuItem value="Religious">Religious</MenuItem>
                 <MenuItem value="Sanitation">Sanitation</MenuItem>
                 <MenuItem value="Flowers">Flowers</MenuItem>
-                <MenuItem value="InternalTransportation">
-                  Internal Transportation
-                </MenuItem>
+                <MenuItem value="Transport">Internal Transportation</MenuItem>
               </Select>
             </FormControl>
             <FormControl sx={{ flex: 1 }}>
