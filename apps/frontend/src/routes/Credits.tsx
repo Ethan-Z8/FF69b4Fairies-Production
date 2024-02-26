@@ -41,7 +41,7 @@ const CreditsPage: React.FC = () => {
           justifyContent: "center",
         }}
       >
-        <div style={{ textAlign: "center", flex: 1 }}>
+        <div style={{ textAlign: "center", flex: 1, padding: 20, margin: 0 }}>
           <Typography variant="h5" gutterBottom>
             Software Frameworks
           </Typography>
@@ -66,7 +66,7 @@ const CreditsPage: React.FC = () => {
                   src={NodeJSIcon}
                   alt="Logo"
                   style={{
-                    maxHeight: "6rem",
+                    maxHeight: "6.8rem",
                     margin: 0,
                     padding: "0.5rem",
                   }}
@@ -91,7 +91,7 @@ const CreditsPage: React.FC = () => {
           </ul>
         </div>
         <Divider orientation="vertical" sx={{ height: "100%" }} />
-        <div style={{ textAlign: "center", flex: 1 }}>
+        <div style={{ textAlign: "center", flex: 1, padding: 20, margin: 0 }}>
           <Typography variant="h5" gutterBottom>
             Software Libraries
           </Typography>
@@ -102,7 +102,7 @@ const CreditsPage: React.FC = () => {
                   src={MUILogo}
                   alt="Logo"
                   style={{
-                    maxHeight: "5rem",
+                    maxHeight: "6rem",
                     margin: 0,
                     padding: "0.5rem",
                   }}
