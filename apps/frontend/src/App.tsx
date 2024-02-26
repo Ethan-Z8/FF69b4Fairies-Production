@@ -14,6 +14,8 @@ import { Auth0Provider } from "@auth0/auth0-react";
 import AddEmployeePage from "./routes/AddEmployeePage.tsx";
 import ProtectPage from "./components/ProtectPage.tsx";
 import { ImportAndExportEmployeePage } from "./routes/ImportAndExportEmployeePage.tsx";
+import CreditsPage from "./routes/Credits.tsx";
+//import AboutUs from "./routes/AboutUs.tsx";
 import Auth0Profile from "./components/Auth0Profile.tsx";
 import PhoneDirections from "./routes/PhoneDirections";
 
@@ -64,6 +66,14 @@ function App() {
           path: "/Auth0Profile",
           element: <ProtectPage Page={Auth0Profile} />,
         },
+        {
+          path: "/Credits",
+          element: <CreditsPage />,
+        },
+        /*    {
+          path: "/About",
+          element: <AboutUs />,
+        }, */
         {
           path: "/directions/:startAndStop",
           element: <PhoneDirections />,
