@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useEffect, useState, useRef } from "react";
 import "./StartEndSelect.css";
 import TextDirectionPathFinding from "./TextDirectionPathFinding.tsx";
+import QRCode from "react-qr-code";
 
 interface Node {
   nodeID: string;
@@ -391,6 +392,15 @@ const StartEndSelect: React.FC<NodeSelectProps> = ({
               {" "}
               HIDE
             </div>
+
+            {startID && endID && (
+              <div>
+                <QRCode
+                  value={`${window.location.href}directions/${startID}-${endID}`}
+                />
+              </div>
+            )}
+
             <TextDirectionPathFinding
               start={startID}
               end={endID}
