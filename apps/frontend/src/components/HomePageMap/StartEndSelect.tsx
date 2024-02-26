@@ -27,9 +27,6 @@ interface NodeSelectProps {
   onHoverNode: (node: Node | null) => void;
 }
 
-//const findablePlaces = ["Exit", "Restroom", "Info Desk", "Elevator", "Shop"];
-//const findableTypes = ["EXIT", "INFO", "REST", "ELEV", "RETL", "BATH", "SERV"];
-
 const StartEndSelect: React.FC<NodeSelectProps> = ({
   start,
   end,
@@ -48,6 +45,7 @@ const StartEndSelect: React.FC<NodeSelectProps> = ({
   const [showSuggestions, setShowSuggestions] = useState([false, false]);
   const inputRef = useRef<HTMLInputElement>(null);
   const [targetType, setTargetType] = useState("");
+  const [resetPath, setResetPath] = useState(false);
 
   useEffect(() => {
     const getAllNodes = async () => {
@@ -131,6 +129,7 @@ const StartEndSelect: React.FC<NodeSelectProps> = ({
     setShowSuggestions([false, false]);
     if (startID != "" && endID != "") {
       setForceClose(false);
+      setResetPath((prev) => !prev);
     }
     if (startID == "") {
       setStartName("");
@@ -395,7 +394,22 @@ const StartEndSelect: React.FC<NodeSelectProps> = ({
 
             {startID && endID && (
               <div>
+                <h1
+                  style={{
+                    width: "80%",
+                    height: "100%",
+                    fontSize: "30px",
+                    backgroundColor: "white",
+                    padding: "10px",
+                  }}
+                >
+                  QR Code for mobile
+                </h1>
                 <QRCode
+                  style={{
+                    width: "80%",
+                    height: "100%",
+                  }}
                   value={`${window.location.href}directions/${startID}-${endID}`}
                 />
               </div>
@@ -405,6 +419,7 @@ const StartEndSelect: React.FC<NodeSelectProps> = ({
               start={startID}
               end={endID}
               forceClose={forceClose}
+              resetPath={resetPath}
             />
           </div>
         </div>
