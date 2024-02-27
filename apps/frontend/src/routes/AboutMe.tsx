@@ -10,6 +10,7 @@ const AboutMe = () => {
         width: "75%",
         paddingTop: "20px",
         paddingBottom: "10px",
+        gap: "10px",
       }}
     >
       <h1 style={{ textAlign: "center" }}>Our Team</h1>
@@ -28,18 +29,20 @@ const AboutMe = () => {
             Github={"google.com"}
             Linkdin={"asdf.com"}
             Imagepath={"NULL"}
+            Favorite_quote={""}
           />
 
           <AboutCard
-            Name={"Leo "}
-            role={"Team Lead"}
+            Name={"Leo Hirano"}
+            role={"Frontend Lead"}
             devrole={"FullStack Engineer"}
-            ClassYear={"2026"}
+            ClassYear={"2025"}
             Major={"Computer Science"}
-            Email={"asdf@wpi.edu"}
-            Github={"google.com"}
+            Email={"lkhirano@wpi.edu"}
+            Github={"https://github.com/notLeoHirano"}
             Linkdin={"asdf.com"}
             Imagepath={"NULL"}
+            Favorite_quote={""}
           />
           <AboutCard
             Name={"Vaansh Mansharamani"}
@@ -53,6 +56,7 @@ const AboutMe = () => {
               "https://www.linkedin.com/in/vaansh-mansharamani-30a6b7227/"
             }
             Imagepath={"NULL"}
+            Favorite_quote={""}
           />
           <AboutCard
             Name={"Ethan Zhong"}
@@ -64,6 +68,7 @@ const AboutMe = () => {
             Github={"https://github.com/Ethan-Z8"}
             Linkdin={"https://www.linkedin.com/in/ethan-zhong-76886a21a/"}
             Imagepath={"NULL"}
+            Favorite_quote={""}
           />
           <AboutCard
             Name={"Zane Altheimer"}
@@ -75,6 +80,7 @@ const AboutMe = () => {
             Github={"google.com"}
             Linkdin={"asdf.com"}
             Imagepath={"NULL"}
+            Favorite_quote={""}
           />
         </div>
         <div
@@ -95,17 +101,19 @@ const AboutMe = () => {
             Github={"google.com"}
             Linkdin={"asdf.com"}
             Imagepath={"NULL"}
+            Favorite_quote={""}
           />
           <AboutCard
             Name={"Maxwell Friedman"}
-            role={""}
+            role={"Scrum Master"}
             devrole={"Frontend Engineer"}
             ClassYear={"2025"}
             Major={"Robotics Engineering"}
-            Email={"asdf@wpi.edu"}
-            Github={"google.com"}
-            Linkdin={"asdf.com"}
+            Email={"mlfriedman@wpi.edu"}
+            Github={" https://github.com/Steelplate"}
+            Linkdin={" https://www.linkedin.com/in/friedman-maxwell/"}
             Imagepath={"NULL"}
+            Favorite_quote={""}
           />
           <AboutCard
             Name={"Shawn Patel"}
@@ -113,10 +121,11 @@ const AboutMe = () => {
             devrole={"Backend Engineer"}
             ClassYear={"2026"}
             Major={"Computer Science"}
-            Email={"asdf@wpi.edu"}
-            Github={"google.com"}
-            Linkdin={"asdf.com"}
+            Email={"snpatel@wpi.edu"}
+            Github={"https://github.com/shawnp221"}
+            Linkdin={"https://www.linkedin.com/in/shawn-patel-359a562a7/"}
             Imagepath={"NULL"}
+            Favorite_quote={""}
           />
 
           <AboutCard
@@ -124,11 +133,12 @@ const AboutMe = () => {
             role={""}
             devrole={"Backend Engineer"}
             ClassYear={"2026"}
-            Major={"Computer Science"}
-            Email={"asdf@wpi.edu"}
-            Github={"google.com"}
-            Linkdin={"asdf.com"}
+            Major={"Computer Science and Data Science"}
+            Email={"mverma@wpi.edu"}
+            Github={"https://github.com/MaVeryo"}
+            Linkdin={"https://www.linkedin.com/in/mahit-verma/"}
             Imagepath={"NULL"}
+            Favorite_quote={""}
           />
 
           <AboutCard
@@ -141,6 +151,7 @@ const AboutMe = () => {
             Github={"google.com"}
             Linkdin={"asdf.com"}
             Imagepath={"NULL"}
+            Favorite_quote={""}
           />
         </div>
       </div>

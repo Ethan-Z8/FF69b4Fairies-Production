@@ -17,6 +17,7 @@ interface AboutInfo {
   Github: string;
   Linkdin: string;
   Imagepath: string;
+  Favorite_quote: string;
 }
 const AboutCard = ({
   Name,
@@ -28,12 +29,21 @@ const AboutCard = ({
   Github,
   Linkdin,
   Imagepath,
+  Favorite_quote,
 }: AboutInfo) => {
   return (
-    <Card sx={{ maxWidth: 700 }}>
+    <Card
+      sx={{ maxWidth: 700 }}
+      style={{
+        paddingTop: "10px",
+        paddingRight: "10px",
+        paddingLeft: "10px",
+        maxWidth: "18%",
+      }}
+    >
       <CardMedia sx={{ height: 200 }} image={Imagepath} title={Name} />
       <CardContent>
-        <Typography gutterBottom variant="h5" component="div">
+        <Typography gutterBottom variant="h5" component="div" maxWidth={"50%"}>
           {Name}
         </Typography>
         <Typography variant="body2" color="text.secondary">
@@ -50,6 +60,9 @@ const AboutCard = ({
         </Typography>
         <Typography variant="body2" color="text.secondary">
           Email: {Email}
+        </Typography>
+        <Typography variant="body2" color="text.secondary">
+          Favorite quote: {Favorite_quote}
         </Typography>
       </CardContent>
       <CardActions>
