@@ -126,6 +126,7 @@ const StartEndSelect: React.FC<NodeSelectProps> = ({
       setter(ID);
       if (nodes[ID].longName.length > 30) setterName(nodes[ID].shortName);
       else setterName(nodes[ID].longName);
+      onSelectStart(ID, {} as React.SyntheticEvent<HTMLElement>);
     }
   };
 
