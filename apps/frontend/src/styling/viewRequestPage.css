@@ -35,7 +35,7 @@
 }
 
 .dashboardRight {
-  width: 32.5%;
+  width: 65%;
   border-radius: 20px;
   height: 20rem;
   text-align: center;
@@ -44,6 +44,7 @@
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  align-content: space-around;
 }
 
 .topRow {
@@ -94,4 +95,11 @@
   width: 49%;
   text-align: center;
   border: 7px solid rgb(81, 12, 143);
+}
+
+.chart {
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+  height: 70%;
 }

@@ -9,10 +9,10 @@ interface StartEndSelectProps {
 function StartEndSelect({ node }: StartEndSelectProps) {
   const [locCollapse, setLocCollapse] = useState(false);
 
-  /*  useEffect(() => {
-    if (!node)
-      setLocCollapse(false);
-  },[node]);*/
+  // useEffect(() => {
+  //   if (!node)
+  //     setLocCollapse(false);
+  // },[node]);
 
   const handleCollapse = () => {
     setLocCollapse(!locCollapse);

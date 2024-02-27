@@ -90,10 +90,12 @@ export default class Pathfinder {
         ) {
           if (prevNode.nodeType === "STAI" || prevNode.nodeType === "ELEV") {
             if (currentNode.nodeType === "STAI") {
-              directions.push("USE the stairs to get to " + currentNode.floor);
+              directions.push(
+                "USE the stairs to get to floor " + currentNode.floor,
+              );
             } else {
               directions.push(
-                "USE the elevator to get to " + currentNode.floor,
+                "USE the elevator to get to floor " + currentNode.floor,
               );
             }
           }
@@ -111,12 +113,14 @@ export default class Pathfinder {
 
           if (Math.abs(turnAngle) > 1) {
             directions.push(
-              `Turn ${turnAngle > 0 ? "right" : "left"} at ${currentNode.shortName}`,
+              `Turn ${turnAngle > 0 ? "right" : "left"} at ${currentNode.shortName} ${currentNode.nodeID}`,
             );
           }
 
           // forwardDistance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
-          directions.push(`Move forward to ${currentNode.shortName}`);
+          directions.push(
+            `Move forward to ${currentNode.shortName} ${currentNode.nodeID}`,
+          );
 
           currentAngle = angle;
         }

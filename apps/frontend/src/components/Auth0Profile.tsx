@@ -1,5 +1,6 @@
 //Access via "/userProfile" from localhost:3000\
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, FormEvent } from "react";
+import axios, { AxiosResponse } from "axios";
 import { useAuth0 } from "@auth0/auth0-react";
 import {
   Button,
@@ -14,15 +15,23 @@ import {
   TableContainer,
   Paper,
   Box,
+  Stack,
   //TableContainer,
 } from "@mui/material";
+import Col from "react-bootstrap/Col";
+import Form from "react-bootstrap/Form";
+import Row from "react-bootstrap/Row";
 import { ServiceRequestType } from "common/src/interfaces/ServiceRequest.ts";
-import axios from "axios";
 import { ServiceRequestRow } from "./ServiceRequestRow.tsx";
+import FileUploadOutlinedIcon from "@mui/icons-material/FileUploadOutlined";
+import FileDownloadIcon from "@mui/icons-material/FileDownload";
 //import { Employee } from "common/src/interfaces/Employee.ts";
 //import { ViewServiceRequestPage } from "../routers/ViewServiceRequestPage.tsx";
 
 const Auth0Profile = () => {
+  const [importErr] = useState<boolean>(false);
+  const [exportErr, setExportErr] = useState<boolean>(false);
+
   const { user, logout } = useAuth0();
   // console.log(user);
 
@@ -35,43 +44,109 @@ const Auth0Profile = () => {
     window.location.href = "/";
   };
 
-  const handleImportData = async () => {
-    try {
-      // Import map data
-      await axios.post("/api/map/import", {
-        username: user?.nickname,
-      });
+  async function handleImport(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    setExportErr(false); // Reset the import error state
 
-      // Import edge nodes
-      await axios.post("/api/edgeNodes/import", {
-        username: user?.nickname,
-      });
-    } catch (e) {
-      const errorMessage =
-        e instanceof Error ? e.message : "An unknown error has occurred";
-      console.error(errorMessage);
-      // Handle import error
+    const target = e.target as HTMLFormElement;
+    const edgesInput = target.querySelector("#edgesInput") as HTMLInputElement;
+    const nodesInput = target.querySelector("#nodesInput") as HTMLInputElement;
+    const employeesInput = target.querySelector(
+      "#employeesInput",
+    ) as HTMLInputElement;
+
+    const formData = new FormData();
+
+    if (edgesInput.files) {
+      formData.append("edges", edgesInput.files[0]);
     }
-  };
 
-  const handleExportData = () => {
+    if (nodesInput.files) {
+      formData.append("nodes", nodesInput.files[0]);
+    }
+
+    if (employeesInput.files) {
+      formData.append("employees", employeesInput.files[0]);
+    }
+
     axios
-      .get("/api/serviceRequest/exportAll", {
-        responseType: "blob",
+      .post("/api/map/import", formData, {
+        headers: {
+          "Content-Type": "multipart/form",
+        },
       })
       .then((res) => {
-        const url = window.URL.createObjectURL(new Blob([res.data]));
-        const link = document.createElement("a");
-        link.href = url;
-        link.setAttribute("download", "all_service_requests.zip");
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
+        console.log("Map import response:", res);
       })
-      .catch((e: Error) => {
-        console.log(e.message);
+      .catch((error: Error) => {
+        console.error("Map import error:", error.message);
+        setExportErr(true);
       });
-  };
+
+    axios
+      .post("/api/employee/import", formData, {
+        headers: {
+          "Content-Type": "multipart/form",
+        },
+      })
+      .then((res) => {
+        console.log("Employee import response:", res);
+      })
+      .catch((error: Error) => {
+        console.error("Employee import error:", error.message);
+        setExportErr(true);
+      });
+  }
+
+  async function handleExport(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+
+    try {
+      const mapExport: AxiosResponse = await axios.get("/api/map/export", {
+        responseType: "blob",
+      });
+
+      if (mapExport.headers["content-type"] !== "application/zip") {
+        throw new Error("Did not receive valid map data");
+      }
+
+      const mapUrl: string = window.URL.createObjectURL(
+        new Blob([mapExport.data]),
+      );
+      const mapLink: HTMLAnchorElement = document.createElement("a");
+      mapLink.href = mapUrl;
+      mapLink.setAttribute("download", "map_data.zip");
+      document.body.appendChild(mapLink);
+      mapLink.click();
+      document.body.removeChild(mapLink);
+
+      const employeeExport: AxiosResponse = await axios.get(
+        "/api/employee/export",
+        {
+          responseType: "blob",
+        },
+      );
+
+      if (employeeExport.headers["content-type"] !== "application/zip") {
+        throw new Error("Did not receive valid employee data");
+      }
+
+      const employeeUrl: string = window.URL.createObjectURL(
+        new Blob([employeeExport.data]),
+      );
+      const employeeLink: HTMLAnchorElement = document.createElement("a");
+      employeeLink.href = employeeUrl;
+      employeeLink.setAttribute("download", "employee_data.zip");
+      document.body.appendChild(employeeLink);
+      employeeLink.click();
+      document.body.removeChild(employeeLink);
+
+      setExportErr(false);
+    } catch (error) {
+      console.log((error as Error).message);
+      setExportErr(true);
+    }
+  }
 
   useEffect(() => {
     const fetchEmployeeData = () => {
@@ -172,21 +247,71 @@ const Auth0Profile = () => {
           </Table>
         </TableContainer>
         <Box mt={2}>
-          <Button
-            variant="contained"
-            onClick={handleImportData}
-            sx={{ mr: 2, marginTop: "25px" }}
-          >
-            Import All Data
-          </Button>
+          <Form.Group as={Row}>
+            <h4>Import All Data as CSV</h4>
+            <Form.Label column sm={2} className="mb-3">
+              Edges CSV
+            </Form.Label>
+            <Col sm={10}>
+              <Form.Control type="file" id="edgesInput" accept=".csv" />
+            </Col>
+            <Form.Label column sm={2}>
+              Nodes CSV
+            </Form.Label>
+            <Col sm={10}>
+              <Form.Control type="file" id="nodesInput" accept=".csv" />
+            </Col>
+            <Form.Label column sm={2}>
+              Employee CSV
+            </Form.Label>
+            <Col sm={10}>
+              <Form.Control type="file" id="employeesInput" accept=".csv" />
+            </Col>
+            <Col>
+              <Button
+                type="submit"
+                className="mt-3 w-100"
+                variant="outlined"
+                endIcon={<FileUploadOutlinedIcon />}
+              >
+                Import
+              </Button>
+            </Col>
+            <Form.Text
+              className="text-danger"
+              style={{ visibility: importErr ? "visible" : "hidden" }}
+            >
+              Error Importing Data
+            </Form.Text>
+          </Form.Group>
+          <Form className="m-auto w-75 mt-5" onSubmit={handleImport}>
+            <Form.Text
+              className="text-danger"
+              style={{ visibility: exportErr ? "visible" : "hidden" }}
+            >
+              Error Importing Data
+            </Form.Text>
+          </Form>
 
-          <Button
-            variant="contained"
-            onClick={handleExportData}
-            sx={{ mr: 2, marginTop: "25px" }}
-          >
-            Export All Data
-          </Button>
+          <Form className="m-auto w-75 mt-5" onSubmit={handleExport}>
+            <Form.Group controlId="exportCsv" as={Stack}>
+              <h4>Export All Data as CSV</h4>
+              <Button
+                type="submit"
+                variant="outlined"
+                endIcon={<FileDownloadIcon />}
+              >
+                {" "}
+                Download All Data{" "}
+              </Button>
+            </Form.Group>
+            <Form.Text
+              className="text-danger"
+              style={{ visibility: exportErr ? "visible" : "hidden" }}
+            >
+              Error Exporting Data
+            </Form.Text>
+          </Form>
         </Box>
 
         <Button
