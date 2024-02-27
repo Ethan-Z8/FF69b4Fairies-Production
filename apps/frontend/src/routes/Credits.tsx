@@ -4,7 +4,13 @@ import ReactLogo from "../assets/softwareicons/React-icon.png";
 import BootstrapLogo from "../assets/softwareicons/React-Bootstrap-Logo.png";
 import MUILogo from "../assets/softwareicons/material-ui-icon.png";
 import ExpressIcon from "../assets/softwareicons/expressjs_logo_icon.png";
+import NodeJSIcon from "../assets/softwareicons/node-js-icon.png";
 import AWSIcon from "../assets/softwareicons/Amazon_Web_Services_Logo.png";
+import AxiosIcon from "../assets/softwareicons/axios-icon.png";
+import PrismaIcon from "../assets/softwareicons/prisma-icon.png";
+import PostgresIcon from "../assets/softwareicons/PostgreSQL-Logo.png";
+import DockerIcon from "../assets/softwareicons/docker-icon.png";
+import Auth0Icon from "../assets/softwareicons/auth0-icon.png";
 
 const CreditsPage: React.FC = () => {
   return (
@@ -70,9 +76,9 @@ const CreditsPage: React.FC = () => {
               </p>
             </li>
             <li>
-              <Link href="https://expressjs.com/" target="_blank">
+              <Link href="https://www.docker.com/" target="_blank">
                 <img
-                  src={ExpressIcon}
+                  src={DockerIcon}
                   alt="Logo"
                   style={{
                     maxHeight: "6.8rem",
@@ -80,7 +86,7 @@ const CreditsPage: React.FC = () => {
                     padding: "0.5rem",
                   }}
                 />
-                <p style={{ marginTop: "0.5rem" }}>Express</p>
+                <p style={{ marginTop: "0.5rem" }}>Docker</p>
               </Link>
               <p
                 style={{
@@ -90,6 +96,29 @@ const CreditsPage: React.FC = () => {
                 }}
               >
                 Backend
+              </p>
+            </li>
+            <li>
+              <Link href="https://auth0.com/" target="_blank">
+                <img
+                  src={Auth0Icon}
+                  alt="Logo"
+                  style={{
+                    maxHeight: "6.8rem",
+                    margin: 0,
+                    padding: "0.5rem",
+                  }}
+                />
+                <p style={{ marginTop: "0.5rem" }}>Auth0</p>
+              </Link>
+              <p
+                style={{
+                  marginTop: "-1rem",
+                  color: "gray",
+                  fontSize: "0.8rem",
+                }}
+              >
+                Hosting
               </p>
             </li>
             <li>
@@ -113,6 +142,106 @@ const CreditsPage: React.FC = () => {
                 }}
               >
                 Hosting
+              </p>
+            </li>
+          </ul>
+        </div>
+        <Divider orientation="vertical" sx={{ height: "100%" }} />
+        <div style={{ textAlign: "center", flex: 1, padding: 20, margin: 0 }}>
+          <Typography variant="h5" gutterBottom>
+            Software Frameworks II
+          </Typography>
+          <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
+            <li>
+              <Link href="https://nodejs.org/en" target="_blank">
+                <img
+                  src={NodeJSIcon}
+                  alt="Logo"
+                  style={{
+                    maxHeight: "6.8rem",
+                    margin: 0,
+                    padding: "0.5rem",
+                  }}
+                />
+                <p style={{ marginTop: "0.5rem" }}>NodeJs</p>
+              </Link>
+              <p
+                style={{
+                  marginTop: "-1rem",
+                  color: "gray",
+                  fontSize: "0.8rem",
+                }}
+              >
+                Backend
+              </p>
+            </li>
+            <li>
+              <Link href="https://expressjs.com/" target="_blank">
+                <img
+                  src={ExpressIcon}
+                  alt="Logo"
+                  style={{
+                    maxHeight: "6.8rem",
+                    margin: 0,
+                    padding: "0.5rem",
+                  }}
+                />
+                <p style={{ marginTop: "0.5rem" }}>Express</p>
+              </Link>
+              <p
+                style={{
+                  marginTop: "-1rem",
+                  color: "gray",
+                  fontSize: "0.8rem",
+                }}
+              >
+                Backend
+              </p>
+            </li>
+            <li>
+              <Link href="https://www.prisma.io/" target="_blank">
+                <img
+                  src={PrismaIcon}
+                  alt="Logo"
+                  style={{
+                    maxHeight: "6.8rem",
+                    margin: 0,
+                    padding: "0.5rem",
+                  }}
+                />
+                <p style={{ marginTop: "0.5rem" }}>PrismaORM</p>
+              </Link>
+              <p
+                style={{
+                  marginTop: "-1rem",
+                  color: "gray",
+                  fontSize: "0.8rem",
+                }}
+              >
+                Backend
+              </p>
+            </li>
+            <li>
+              <Link href="https://www.postgresql.org/" target="_blank">
+                <img
+                  src={PostgresIcon}
+                  alt="Logo"
+                  style={{
+                    maxHeight: "6.8rem",
+                    margin: 0,
+                    padding: "0.5rem",
+                  }}
+                />
+                <p style={{ marginTop: "0.5rem" }}>Express</p>
+              </Link>
+              <p
+                style={{
+                  marginTop: "-1rem",
+                  color: "gray",
+                  fontSize: "0.8rem",
+                }}
+              >
+                Backend
               </p>
             </li>
           </ul>
@@ -158,6 +287,29 @@ const CreditsPage: React.FC = () => {
                   }}
                 />
                 <p style={{ marginTop: "0.5rem" }}>React Bootstrap</p>
+              </Link>
+              <p
+                style={{
+                  marginTop: "-1rem",
+                  color: "gray",
+                  fontSize: "0.8rem",
+                }}
+              >
+                Frontend
+              </p>
+            </li>
+            <li>
+              <Link href="https://axios-http.com/" target="_blank">
+                <img
+                  src={AxiosIcon}
+                  alt="Logo"
+                  style={{
+                    maxHeight: "6.8rem",
+                    margin: 0,
+                    padding: "0.5rem",
+                  }}
+                />
+                <p style={{ marginTop: "0.5rem" }}>Axios</p>
               </Link>
               <p
                 style={{
