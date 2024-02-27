@@ -117,6 +117,7 @@ export function Navigation() {
         <NavDropdown
           title={<span style={{ color: "white" }}>Service Requests </span>}
           className="navbar-item"
+          id={"fa"}
         >
           <NavDropdown.Item href="/createServiceRequest">
             Create Service Request
@@ -141,6 +142,15 @@ export function Navigation() {
             >
               <Nav.Link href="/addEmployee">Add Employee</Nav.Link>
               <Nav.Link href="/viewEmployeeData">View Employees</Nav.Link>
+            </NavDropdown>
+            <NavDropdown
+              title={<span style={{ color: "white" }}>Info Page </span>}
+              className="navbar-item"
+            >
+              <NavDropdown.Item href="/Credits">Credits Page</NavDropdown.Item>
+              <NavDropdown.Item href="/viewServiceRequest">
+                About Us Page
+              </NavDropdown.Item>
             </NavDropdown>
           </>
         )}

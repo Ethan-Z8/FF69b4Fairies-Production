@@ -183,7 +183,6 @@ const RenderPath: React.FC<Props> = ({
       );
     });
   }
-
   return <>{circles}</>;
 };
 

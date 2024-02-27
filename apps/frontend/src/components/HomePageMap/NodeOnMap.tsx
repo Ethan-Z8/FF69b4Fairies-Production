@@ -15,40 +15,12 @@ interface Node {
 
 interface NodeOnMapProps {
   node: Node;
-  onNodeClick?: (node: Node) => void;
 }
 
-const NodeOnMap: React.FC<NodeOnMapProps> = ({ node, onNodeClick }) => {
-  const { xcoord, ycoord, longName } = node;
+const NodeOnMap: React.FC<NodeOnMapProps> = ({ node }) => {
+  const { xcoord, ycoord } = node;
   const [isHovered, setIsHovered] = useState(false);
-  const [isClicked, setIsClicked] = useState(false);
   const nodeRef = useRef<HTMLDivElement>(null);
-  const [hoverShift, setHoverShift] = useState(true);
-  let clickTimer: ReturnType<typeof setTimeout>;
-
-  const [reachedTimeout, setReachedTimeout] = useState(false);
-
-  const handleClick = () => {
-    if (onNodeClick) {
-      clearTimeout(clickTimer);
-      if (!reachedTimeout) {
-        onNodeClick(node);
-      }
-    } else {
-      console.log("");
-    }
-  };
-
-  const handleMouseDown = () => {
-    clickTimer = setTimeout(() => {
-      setIsClicked(!isClicked);
-      setReachedTimeout(true);
-    }, 500);
-  };
-
-  const handleMouseUp = () => {
-    clearTimeout(clickTimer);
-  };
 
   const handleMouseEnter = () => {
     setIsHovered(true);
@@ -68,10 +40,6 @@ const NodeOnMap: React.FC<NodeOnMapProps> = ({ node, onNodeClick }) => {
     //setIsHoveredPopup(false);
   };
 
-  const handleMouseEnterPopup = () => {
-    setHoverShift(!hoverShift);
-  };
-
   return (
     <div>
       <div
@@ -81,11 +49,8 @@ const NodeOnMap: React.FC<NodeOnMapProps> = ({ node, onNodeClick }) => {
           left: `${xcoord}px`,
           top: `${ycoord}px`,
         }}
-        onClick={handleClick}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
-        onMouseDown={handleMouseDown}
-        onMouseUp={handleMouseUp}
         ref={nodeRef}
       >
         <div className="node-circle" />
@@ -116,30 +81,7 @@ const NodeOnMap: React.FC<NodeOnMapProps> = ({ node, onNodeClick }) => {
           left: `${xcoord}px`,
           top: `${ycoord}px`,
         }}
-      >
-        {isClicked && (
-          <div onMouseEnter={handleMouseEnterPopup}>
-            <div
-              className="popup"
-              style={{
-                width: `${15}vw`,
-                position: "absolute",
-                zIndex: `${isHovered ? 22 : 20}`,
-                backgroundColor: "#fff",
-                bottom: "-128%",
-                left: "50%",
-                transform: `translate(-50%, ${hoverShift ? 130 : -30}%)`,
-                padding: "10px",
-                border: "1px solid #ccc",
-                borderRadius: "5px",
-                fontSize: 30,
-              }}
-            >
-              <p>{longName}</p>
-            </div>
-          </div>
-        )}
-      </div>
+      ></div>
     </div>
   );
 };

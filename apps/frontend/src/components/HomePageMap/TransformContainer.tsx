@@ -115,17 +115,22 @@ const TransformContainer: React.FC<TransformContainerProps> = ({
       container.scrollLeft = locX * scale - e.clientX + rect.left;
       container.scrollTop = locY * scale - e.clientY + rect.top;
     };
+    const handleTouchStart = (e: TouchEvent) => {
+      e.preventDefault();
+    };
 
     container.addEventListener("mousedown", handleMouseDown);
     document.addEventListener("mousemove", handleMouseMove);
     document.addEventListener("mouseup", handleMouseUp);
     container.addEventListener("wheel", handleWheel);
+    container.addEventListener("touchstart", handleTouchStart);
 
     return () => {
       container.removeEventListener("mousedown", handleMouseDown);
       document.removeEventListener("mousemove", handleMouseMove);
       document.removeEventListener("mouseup", handleMouseUp);
       container.removeEventListener("wheel", handleWheel);
+      container.removeEventListener("touchstart", handleTouchStart);
     };
   }, [scrolling, locX, locY, scale, isDragging, dragStart]);
 
