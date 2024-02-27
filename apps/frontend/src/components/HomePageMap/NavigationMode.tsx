@@ -363,6 +363,7 @@ export function NavigationMode() {
             }}
           />
         </div>
+
         <SelectorTabs
           mapIndex={mapIndex}
           onMapSelect={handleMapSelect}
@@ -370,6 +371,7 @@ export function NavigationMode() {
           start={firstClickedNodeId}
           end={secondClickedNodeId}
         />
+
         <TransformContainer zoomToCoordinate={debouncedZoomToCoords}>
           <div
             className="map-container"

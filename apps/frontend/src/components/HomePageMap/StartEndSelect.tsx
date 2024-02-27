@@ -127,6 +127,25 @@ const StartEndSelect: React.FC<NodeSelectProps> = ({
     }
   }, [end, nodes]);
 
+  /*  useEffect(() => {
+    if (nodes[endID]) {
+      const node = nodes[endID];
+      if (node.longName.length > 30) setEndName(node.shortName);
+      else setEndName(node.longName);
+    } else if (endID == '') {
+      setEndName("");
+    }
+  }, [endID, nodes]);
+  useEffect(() => {
+    if (nodes[startID]) {
+      const node = nodes[startID];
+      if (node.longName.length > 30) setStartName(node.shortName);
+      else setStartName(node.longName);
+    } else if (startID == '') {
+      setStartName("");
+    }
+  }, [startID, nodes]);*/
+
   useEffect(() => {
     const handleMouseDown = () => {
       if (!isStartFocused && !isEndFocused) {
@@ -164,6 +183,20 @@ const StartEndSelect: React.FC<NodeSelectProps> = ({
   const handleMouseLeave = () => {
     setIsStartFocused(false);
     setIsEndFocused(false);
+  };
+
+  const handleKeyDown = (
+    setter: (value: string) => void,
+    setterName: (value: string) => void,
+    event: React.KeyboardEvent<HTMLInputElement>,
+    filteredItems: Node[],
+  ) => {
+    if (event.key === "Enter" && filteredItems.length > 0) {
+      const ID = filteredItems[0].nodeID;
+      setter(ID);
+      if (nodes[ID].longName.length > 30) setterName(nodes[ID].shortName);
+      else setterName(nodes[ID].longName);
+    }
   };
 
   const handleSearch = (
@@ -213,6 +246,28 @@ const StartEndSelect: React.FC<NodeSelectProps> = ({
           <input
             ref={inputRef}
             type="text"
+            onKeyDown={(event) =>
+              handleKeyDown(
+                setStartID,
+                setStartName,
+                event,
+                items.filter(
+                  (node) =>
+                    node.shortName
+                      .toLowerCase()
+                      .includes(startName.toLowerCase()) ||
+                    node.longName
+                      .toLowerCase()
+                      .includes(startName.toLowerCase()) ||
+                    node.nodeID
+                      .toLowerCase()
+                      .includes(startName.toLowerCase()) ||
+                    node.nodeType
+                      .toLowerCase()
+                      .includes(startName.toLowerCase()),
+                ),
+              )
+            }
             value={startName}
             onChange={(e) => {
               handleSearch(e, onSelectStart, setStartID, setStartName);
@@ -360,6 +415,7 @@ const StartEndSelect: React.FC<NodeSelectProps> = ({
               onClick={() => {
                 onSelectStart("", {} as React.SyntheticEvent<HTMLElement>);
                 onSelectEnd("", {} as React.SyntheticEvent<HTMLElement>);
+                setTargetType("");
               }}
               className="HAHAHHA"
               style={{
@@ -416,6 +472,24 @@ const StartEndSelect: React.FC<NodeSelectProps> = ({
           <input
             type="text"
             value={endName}
+            onKeyDown={(event) =>
+              handleKeyDown(
+                setEndID,
+                setEndName,
+                event,
+                items.filter(
+                  (node) =>
+                    node.shortName
+                      .toLowerCase()
+                      .includes(endName.toLowerCase()) ||
+                    node.longName
+                      .toLowerCase()
+                      .includes(endName.toLowerCase()) ||
+                    node.nodeID.toLowerCase().includes(endName.toLowerCase()) ||
+                    node.nodeType.toLowerCase().includes(endName.toLowerCase()),
+                ),
+              )
+            }
             onChange={(e) => {
               handleSearch(e, onSelectEnd, setEndID, setEndName);
               if (isEndFocused) setShowSuggestions([false, true]);

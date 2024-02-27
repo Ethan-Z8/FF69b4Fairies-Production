@@ -14,7 +14,7 @@ import { MapNodeInterface } from "common/src/interfaces/MapNodeInterface.ts";
 import { ServiceRequestType } from "common/src/interfaces/ServiceRequest.ts";
 import { ServiceRequestNode } from "./ServiceRequestNode.tsx";
 import { ServiceRequestsAtNode } from "./ServiceRequestsAtNode.tsx";
-import { Autocomplete, TextField } from "@mui/material";
+import ServiceAutocomplete from "./ServiceAutocomplete.tsx";
 
 const floorNames: string[] = ["LL1", "LL2", "F1", "F2", "F3"];
 
@@ -179,15 +179,14 @@ export function ServiceRequestMode() {
           style={{
             display: "flex",
             position: "absolute",
-            width: "23%",
+            width: "20%",
             top: 20,
             left: 20,
             flexDirection: "column",
             maxHeight: "60%",
-            overflow: "hidden",
           }}
         >
-          <Autocomplete
+          {/*<Autocomplete
             options={Object.values(nodes).filter(
               (node) => node.nodeType !== "HALL",
             )}
@@ -221,7 +220,8 @@ export function ServiceRequestMode() {
                 }}
               />
             )}
-          />
+          />*/}
+          <ServiceAutocomplete onSelectStart={setSelectedNode} />
           <ServiceRequestsAtNode nodeID={selectedNode} requests={requests} />
         </div>
       </div>
