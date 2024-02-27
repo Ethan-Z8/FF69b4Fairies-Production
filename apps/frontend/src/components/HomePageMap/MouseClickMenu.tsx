@@ -14,7 +14,7 @@ function MouseClickMenu({ node, localPosition }: StartEndSelectProps) {
   }, [localPosition, node]);
 
   return (
-    <div>
+    <div style={{ position: "absolute" }}>
       {localPosition && (
         <div>
           {node != null ? (
