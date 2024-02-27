@@ -59,6 +59,15 @@ const CreditsPage: React.FC = () => {
                 />
                 <p style={{ marginTop: "0.5rem" }}>React.js & Bootstrap</p>
               </Link>
+              <p
+                style={{
+                  marginTop: "-1rem",
+                  color: "gray",
+                  fontSize: "0.8rem",
+                }}
+              >
+                Frontend
+              </p>
             </li>
             <li>
               <Link href="https://expressjs.com/" target="_blank">
@@ -73,6 +82,15 @@ const CreditsPage: React.FC = () => {
                 />
                 <p style={{ marginTop: "0.5rem" }}>Express</p>
               </Link>
+              <p
+                style={{
+                  marginTop: "-1rem",
+                  color: "gray",
+                  fontSize: "0.8rem",
+                }}
+              >
+                Backend
+              </p>
             </li>
             <li>
               <Link href="https://aws.amazon.com/" target="_blank">
@@ -87,6 +105,15 @@ const CreditsPage: React.FC = () => {
                 />
                 <p style={{ marginTop: "0.5rem" }}>AWS</p>
               </Link>
+              <p
+                style={{
+                  marginTop: "-1rem",
+                  color: "gray",
+                  fontSize: "0.8rem",
+                }}
+              >
+                Hosting
+              </p>
             </li>
           </ul>
         </div>
@@ -109,6 +136,15 @@ const CreditsPage: React.FC = () => {
                 />
                 <p style={{ marginTop: "0.5rem" }}>Material-UI</p>
               </Link>
+              <p
+                style={{
+                  marginTop: "-1rem",
+                  color: "gray",
+                  fontSize: "0.8rem",
+                }}
+              >
+                Frontend
+              </p>
             </li>
             <li>
               <Link href="https://react-bootstrap.netlify.app/" target="_blank">
@@ -123,6 +159,15 @@ const CreditsPage: React.FC = () => {
                 />
                 <p style={{ marginTop: "0.5rem" }}>React Bootstrap</p>
               </Link>
+              <p
+                style={{
+                  marginTop: "-1rem",
+                  color: "gray",
+                  fontSize: "0.8rem",
+                }}
+              >
+                Frontend
+              </p>
             </li>
           </ul>
         </div>
