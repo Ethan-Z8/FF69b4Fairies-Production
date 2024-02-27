@@ -31,6 +31,7 @@ import StartEndSelect from "./StartEndSelect.tsx";
 import HoveredNodeData from "./HoveredNodeData.tsx";
 import { MenuItem, Select } from "@mui/material";
 import MouseClickMenu from "./MouseClickMenu.tsx";
+//import {ServiceRequestType} from "common/src/interfaces/ServiceRequest.ts";
 
 interface Node {
   nodeID: string;
@@ -54,9 +55,14 @@ const mapPathNames: string[] = ["L2", "L1", "1", "2", "3"];
 
 const floorNames: string[] = ["LL2", "LL1", "F1", "F2", "F3"];
 
-export function NavigationMode() {
+export interface NavigationModeProps {
+  destinationID?: string;
+}
+export function NavigationMode({ destinationID }: NavigationModeProps) {
   const [firstClickedNodeId, setFirstClickedNodeId] = useState<string>("");
-  const [secondClickedNodeId, setSecondClickedNodeId] = useState<string>("");
+  const [secondClickedNodeId, setSecondClickedNodeId] = useState<string>(
+    destinationID ? destinationID : "",
+  );
   const [nodes, setNodes] = useState<Node[]>([]);
   const [allNodes, setAllNodes] = useState<Node[]>([]);
   const [imageSizes, setImageSizes] = useState<{ [key: string]: ImageSize }>({
@@ -271,8 +277,8 @@ export function NavigationMode() {
         sx={{
           position: "absolute",
           height: 320,
-          top: 10,
-          left: "21%",
+          top: 20,
+          left: "23%",
           zIndex: 4,
           transform: "translateZ(0px)",
           flexGrow: 1,
@@ -303,9 +309,7 @@ export function NavigationMode() {
             onClick={handleToggleEdges}
             tooltipPlacement={"right"}
             sx={{
-              ".active": {
-                COLOR: "yellow",
-              },
+              backgroundColor: toggleEdges ? "lightblue" : "inherit",
             }}
           />
           <SpeedDialAction
@@ -314,6 +318,9 @@ export function NavigationMode() {
             tooltipTitle={"Toggle Node"}
             onClick={handleToggleNodes}
             tooltipPlacement={"right"}
+            sx={{
+              backgroundColor: toggleNodes ? "lightblue" : "inherit",
+            }}
           />
         </SpeedDial>
         <Select
@@ -417,7 +424,7 @@ export function NavigationMode() {
             />
           </div>
         </TransformContainer>
-        <HoveredNodeData node={hoveredNode} />
+        <HoveredNodeData node={hoveredNode} handleNodeHover={setHoveredNode} />
         <MouseClickMenu node={hoveredNode} localPosition={localPosition} />
       </div>
     </div>

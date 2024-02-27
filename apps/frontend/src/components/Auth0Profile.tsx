@@ -18,15 +18,18 @@ import {
   Stack,
   //TableContainer,
 } from "@mui/material";
+import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
+import Row from "react-bootstrap/Row";
 import { ServiceRequestType } from "common/src/interfaces/ServiceRequest.ts";
 import { ServiceRequestRow } from "./ServiceRequestRow.tsx";
-//import FileUploadOutlinedIcon from "@mui/icons-material/FileUploadOutlined";
+import FileUploadOutlinedIcon from "@mui/icons-material/FileUploadOutlined";
 import FileDownloadIcon from "@mui/icons-material/FileDownload";
 //import { Employee } from "common/src/interfaces/Employee.ts";
 //import { ViewServiceRequestPage } from "../routers/ViewServiceRequestPage.tsx";
 
 const Auth0Profile = () => {
+  const [importErr] = useState<boolean>(false);
   const [exportErr, setExportErr] = useState<boolean>(false);
 
   const { user, logout } = useAuth0();
@@ -244,23 +247,49 @@ const Auth0Profile = () => {
           </Table>
         </TableContainer>
         <Box mt={2}>
-          <Form className="m-auto w-75 mt-5" onSubmit={handleImport}>
-            <Form.Group controlId="exportCsv" as={Stack}>
-              <h4>Import All Data as CSV</h4>
+          <Form.Group as={Row}>
+            <h4>Import All Data as CSV</h4>
+            <Form.Label column sm={2} className="mb-3">
+              Edges CSV
+            </Form.Label>
+            <Col sm={10}>
+              <Form.Control type="file" id="edgesInput" accept=".csv" />
+            </Col>
+            <Form.Label column sm={2}>
+              Nodes CSV
+            </Form.Label>
+            <Col sm={10}>
+              <Form.Control type="file" id="nodesInput" accept=".csv" />
+            </Col>
+            <Form.Label column sm={2}>
+              Employee CSV
+            </Form.Label>
+            <Col sm={10}>
+              <Form.Control type="file" id="employeesInput" accept=".csv" />
+            </Col>
+            <Col>
               <Button
                 type="submit"
+                className="mt-3 w-100"
                 variant="outlined"
-                endIcon={<FileDownloadIcon />}
+                endIcon={<FileUploadOutlinedIcon />}
               >
-                {" "}
-                Upload Data{" "}
+                Import
               </Button>
-            </Form.Group>
+            </Col>
+            <Form.Text
+              className="text-danger"
+              style={{ visibility: importErr ? "visible" : "hidden" }}
+            >
+              Error Importing Data
+            </Form.Text>
+          </Form.Group>
+          <Form className="m-auto w-75 mt-5" onSubmit={handleImport}>
             <Form.Text
               className="text-danger"
               style={{ visibility: exportErr ? "visible" : "hidden" }}
             >
-              Error Exporting Data
+              Error Importing Data
             </Form.Text>
           </Form>
 

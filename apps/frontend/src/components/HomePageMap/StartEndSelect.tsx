@@ -9,6 +9,8 @@ import ElevatorIcon from "@mui/icons-material/Elevator";
 import InfoIcon from "@mui/icons-material/Info";
 import { createTheme, ThemeProvider } from "@mui/system";
 
+/*import HelpCenterIcon from "@mui/icons-material/HelpCenter";
+import MeetingRoomIcon from "@mui/icons-material/MeetingRoom";*/
 interface Node {
   nodeID: string;
   xcoord: number;
@@ -61,6 +63,7 @@ const StartEndSelect: React.FC<NodeSelectProps> = ({
   const [showSuggestions, setShowSuggestions] = useState([false, false]);
   const inputRef = useRef<HTMLInputElement>(null);
   const [targetType, setTargetType] = useState("");
+  const [resetPath, setResetPath] = useState(false);
 
   useEffect(() => {
     const getAllNodes = async () => {
@@ -163,6 +166,7 @@ const StartEndSelect: React.FC<NodeSelectProps> = ({
     setShowSuggestions([false, false]);
     if (startID != "" && endID != "") {
       setForceClose(false);
+      setResetPath((prev) => !prev);
     }
     if (startID == "") {
       setStartName("");
@@ -190,12 +194,14 @@ const StartEndSelect: React.FC<NodeSelectProps> = ({
     setterName: (value: string) => void,
     event: React.KeyboardEvent<HTMLInputElement>,
     filteredItems: Node[],
+    onSelect: (item: string, event: React.SyntheticEvent<HTMLElement>) => void,
   ) => {
     if (event.key === "Enter" && filteredItems.length > 0) {
       const ID = filteredItems[0].nodeID;
       setter(ID);
       if (nodes[ID].longName.length > 30) setterName(nodes[ID].shortName);
       else setterName(nodes[ID].longName);
+      onSelect(ID, {} as React.SyntheticEvent<HTMLElement>);
     }
   };
 
@@ -266,6 +272,7 @@ const StartEndSelect: React.FC<NodeSelectProps> = ({
                       .toLowerCase()
                       .includes(startName.toLowerCase()),
                 ),
+                onSelectStart,
               )
             }
             value={startName}
@@ -463,10 +470,12 @@ const StartEndSelect: React.FC<NodeSelectProps> = ({
               {" "}
               HIDE
             </div>
+
             <TextDirectionPathFinding
               start={startID}
               end={endID}
               forceClose={forceClose}
+              resetPath={resetPath}
             />
           </div>
         </div>
@@ -490,6 +499,7 @@ const StartEndSelect: React.FC<NodeSelectProps> = ({
                     node.nodeID.toLowerCase().includes(endName.toLowerCase()) ||
                     node.nodeType.toLowerCase().includes(endName.toLowerCase()),
                 ),
+                onSelectEnd,
               )
             }
             onChange={(e) => {

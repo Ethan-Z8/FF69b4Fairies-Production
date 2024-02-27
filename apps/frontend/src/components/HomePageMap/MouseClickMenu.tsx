@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { MapNodeInterface } from "common/src/interfaces/MapNodeInterface.ts";
 
 type Node = MapNodeInterface;
@@ -9,12 +9,8 @@ interface StartEndSelectProps {
 }
 
 function MouseClickMenu({ node, localPosition }: StartEndSelectProps) {
-  useEffect(() => {
-    console.log(localPosition);
-  }, [localPosition, node]);
-
   return (
-    <div style={{ position: "absolute" }}>
+    <div style={{ position: "absolute", zIndex: -600 }}>
       {localPosition && (
         <div>
           {node != null ? (

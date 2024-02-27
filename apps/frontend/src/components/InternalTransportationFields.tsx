@@ -22,7 +22,7 @@ export function InternalTransportationFields(
     <>
       <Typography variant="h5">Internal Transportation Request</Typography>
       <Typography variant="h6" style={{ fontSize: "16px", color: "gray" }}>
-        Created by: Zane Allister
+        Created by: Zane Altheimer
       </Typography>
       <FormControl>
         <InputLabel id="endloc">End Location</InputLabel>

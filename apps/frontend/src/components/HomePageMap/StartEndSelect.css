@@ -1,7 +1,6 @@
 .scroll-container {
   overflow: auto;
   transition: height 0.4s ease;
-
   scrollbar-width: thin;
   scrollbar-color: rgba(0, 0, 0, 0.1) transparent;
 }
