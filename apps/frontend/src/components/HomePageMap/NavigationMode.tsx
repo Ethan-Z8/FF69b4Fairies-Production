@@ -31,6 +31,7 @@ import StartEndSelect from "./StartEndSelect.tsx";
 import HoveredNodeData from "./HoveredNodeData.tsx";
 import { MenuItem, Select } from "@mui/material";
 import MouseClickMenu from "./MouseClickMenu.tsx";
+//import {ServiceRequestType} from "common/src/interfaces/ServiceRequest.ts";
 
 interface Node {
   nodeID: string;
@@ -54,9 +55,14 @@ const mapPathNames: string[] = ["L2", "L1", "1", "2", "3"];
 
 const floorNames: string[] = ["LL2", "LL1", "F1", "F2", "F3"];
 
-export function NavigationMode() {
+export interface NavigationModeProps {
+  destinationID?: string;
+}
+export function NavigationMode({ destinationID }: NavigationModeProps) {
   const [firstClickedNodeId, setFirstClickedNodeId] = useState<string>("");
-  const [secondClickedNodeId, setSecondClickedNodeId] = useState<string>("");
+  const [secondClickedNodeId, setSecondClickedNodeId] = useState<string>(
+    destinationID ? destinationID : "",
+  );
   const [nodes, setNodes] = useState<Node[]>([]);
   const [allNodes, setAllNodes] = useState<Node[]>([]);
   const [imageSizes, setImageSizes] = useState<{ [key: string]: ImageSize }>({
