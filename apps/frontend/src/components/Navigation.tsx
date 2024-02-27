@@ -117,6 +117,7 @@ export function Navigation() {
         <NavDropdown
           title={<span style={{ color: "white" }}>Service Requests </span>}
           className="navbar-item"
+          id={"fa"}
         >
           <NavDropdown.Item href="/createServiceRequest">
             Create Service Request

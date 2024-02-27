@@ -38,29 +38,16 @@ export function ServiceRequestsAtNode({
   }
 
   return (
-    <Card
-      sx={{
-        maxHeight: "25%",
-        overflow: "hidden",
-        overflowY: "auto",
-        borderBottomRightRadius: "16px",
-        borderBottomLeftRadius: "16px",
-      }}
-    >
-      <CardHeader
-        title={"Service Requests"}
-        disableTypography
-        action={
-          <IconButton
-            onClick={() => setOpen(!open)}
-            aria-label="expand"
-            size="small"
-          >
-            {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-          </IconButton>
-        }
-      ></CardHeader>
-      <Collapse in={open} timeout="auto" unmountOnExit>
+    <div>
+      <Card
+        sx={{
+          maxHeight: "25%",
+          overflow: "hidden",
+          overflowY: "auto",
+          borderBottomRightRadius: "16px",
+          borderBottomLeftRadius: "16px",
+        }}
+      >
         <CardContent
           style={{
             display: "flex",
@@ -80,9 +67,24 @@ export function ServiceRequestsAtNode({
               />
             </>
           )}
-          <Container>{contents}</Container>
+          <CardHeader
+            title={"Service Requests"}
+            disableTypography
+            action={
+              <IconButton
+                onClick={() => setOpen(!open)}
+                aria-label="expand"
+                size="small"
+              >
+                {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+              </IconButton>
+            }
+          ></CardHeader>
+          <Collapse in={open} timeout="auto" unmountOnExit>
+            <Container>{contents}</Container>
+          </Collapse>
         </CardContent>
-      </Collapse>
-    </Card>
+      </Card>
+    </div>
   );
 }

@@ -2,10 +2,15 @@ import axios from "axios";
 import React, { useEffect, useState, useRef } from "react";
 import "./StartEndSelect.css";
 import TextDirectionPathFinding from "./TextDirectionPathFinding.tsx";
+import Chip from "@mui/material/Chip";
 import WcIcon from "@mui/icons-material/Wc";
+import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import ElevatorIcon from "@mui/icons-material/Elevator";
-import HelpCenterIcon from "@mui/icons-material/HelpCenter";
-import MeetingRoomIcon from "@mui/icons-material/MeetingRoom";
+import InfoIcon from "@mui/icons-material/Info";
+import { createTheme, ThemeProvider } from "@mui/system";
+
+/*import HelpCenterIcon from "@mui/icons-material/HelpCenter";
+import MeetingRoomIcon from "@mui/icons-material/MeetingRoom";*/
 interface Node {
   nodeID: string;
   xcoord: number;
@@ -28,6 +33,17 @@ interface NodeSelectProps {
   onSelectEnd: (item: string, event: React.SyntheticEvent<HTMLElement>) => void;
   onHoverNode: (node: Node | null) => void;
 }
+
+//const findablePlaces = ["Exit", "Restroom", "Info Desk", "Elevator", "Shop"];
+//const findableTypes = ["EXIT", "INFO", "REST", "ELEV", "RETL", "BATH", "SERV"];
+
+const theme = createTheme({
+  palette: {
+    text: {
+      primary: "0f2c57",
+    },
+  },
+});
 
 const StartEndSelect: React.FC<NodeSelectProps> = ({
   start,
@@ -114,6 +130,25 @@ const StartEndSelect: React.FC<NodeSelectProps> = ({
     }
   }, [end, nodes]);
 
+  /*  useEffect(() => {
+    if (nodes[endID]) {
+      const node = nodes[endID];
+      if (node.longName.length > 30) setEndName(node.shortName);
+      else setEndName(node.longName);
+    } else if (endID == '') {
+      setEndName("");
+    }
+  }, [endID, nodes]);
+  useEffect(() => {
+    if (nodes[startID]) {
+      const node = nodes[startID];
+      if (node.longName.length > 30) setStartName(node.shortName);
+      else setStartName(node.longName);
+    } else if (startID == '') {
+      setStartName("");
+    }
+  }, [startID, nodes]);*/
+
   useEffect(() => {
     const handleMouseDown = () => {
       if (!isStartFocused && !isEndFocused) {
@@ -152,6 +187,20 @@ const StartEndSelect: React.FC<NodeSelectProps> = ({
   const handleMouseLeave = () => {
     setIsStartFocused(false);
     setIsEndFocused(false);
+  };
+
+  const handleKeyDown = (
+    setter: (value: string) => void,
+    setterName: (value: string) => void,
+    event: React.KeyboardEvent<HTMLInputElement>,
+    filteredItems: Node[],
+  ) => {
+    if (event.key === "Enter" && filteredItems.length > 0) {
+      const ID = filteredItems[0].nodeID;
+      setter(ID);
+      if (nodes[ID].longName.length > 30) setterName(nodes[ID].shortName);
+      else setterName(nodes[ID].longName);
+    }
   };
 
   const handleSearch = (
@@ -201,6 +250,28 @@ const StartEndSelect: React.FC<NodeSelectProps> = ({
           <input
             ref={inputRef}
             type="text"
+            onKeyDown={(event) =>
+              handleKeyDown(
+                setStartID,
+                setStartName,
+                event,
+                items.filter(
+                  (node) =>
+                    node.shortName
+                      .toLowerCase()
+                      .includes(startName.toLowerCase()) ||
+                    node.longName
+                      .toLowerCase()
+                      .includes(startName.toLowerCase()) ||
+                    node.nodeID
+                      .toLowerCase()
+                      .includes(startName.toLowerCase()) ||
+                    node.nodeType
+                      .toLowerCase()
+                      .includes(startName.toLowerCase()),
+                ),
+              )
+            }
             value={startName}
             onChange={(e) => {
               handleSearch(e, onSelectStart, setStartID, setStartName);
@@ -348,6 +419,9 @@ const StartEndSelect: React.FC<NodeSelectProps> = ({
               onClick={() => {
                 onSelectStart("", {} as React.SyntheticEvent<HTMLElement>);
                 onSelectEnd("", {} as React.SyntheticEvent<HTMLElement>);
+                setTargetType("");
+                setStartID("");
+                setEndID("");
               }}
               className="HAHAHHA"
               style={{
@@ -406,6 +480,24 @@ const StartEndSelect: React.FC<NodeSelectProps> = ({
           <input
             type="text"
             value={endName}
+            onKeyDown={(event) =>
+              handleKeyDown(
+                setEndID,
+                setEndName,
+                event,
+                items.filter(
+                  (node) =>
+                    node.shortName
+                      .toLowerCase()
+                      .includes(endName.toLowerCase()) ||
+                    node.longName
+                      .toLowerCase()
+                      .includes(endName.toLowerCase()) ||
+                    node.nodeID.toLowerCase().includes(endName.toLowerCase()) ||
+                    node.nodeType.toLowerCase().includes(endName.toLowerCase()),
+                ),
+              )
+            }
             onChange={(e) => {
               handleSearch(e, onSelectEnd, setEndID, setEndName);
               if (isEndFocused) setShowSuggestions([false, true]);
@@ -453,7 +545,7 @@ const StartEndSelect: React.FC<NodeSelectProps> = ({
                   else {
                     setEndID("");
                     setEndName("");
-                    setTargetType("EXIT");
+                    setTargetType("");
                   }
                 }}
               >
@@ -561,93 +653,123 @@ const StartEndSelect: React.FC<NodeSelectProps> = ({
               gap: "8px",
             }}
           >
-            <span
-              style={{
-                border: "5px solid rgba(0, 0, 0, 0.1)",
-                borderRadius: "16px",
-                marginTop: "8px",
-                paddingLeft: "8px",
-                display: "ruby",
-                paddingRight: "8px",
-                fontSize: "15px",
-                outline: "none",
-                width: "60%",
-                backgroundColor: "#8B2121",
-                color: "white",
-                transition: "border-bottom-left 200ms ease",
-                boxShadow: "1px 2px 2px rgba(0, 0, 0, 0.2)",
-                cursor: "pointer",
-              }}
+            {/*<span*/}
+            {/*    style={{*/}
+            {/*        border: "5px solid rgba(0, 0, 0, 0.1)",*/}
+            {/*        borderRadius: "16px",*/}
+            {/*        marginTop: "8px",*/}
+            {/*        paddingLeft: "8px",*/}
+            {/*        paddingRight: "8px",*/}
+
+            {/*        fontSize: "15px",*/}
+            {/*        outline: "none",*/}
+            {/*        width: "60%",*/}
+            {/*        backgroundColor: "#8B2121",*/}
+            {/*        color: "white",*/}
+            {/*        transition: "border-bottom-left 200ms ease",*/}
+            {/*        boxShadow: "1px 2px 2px rgba(0, 0, 0, 0.2)",*/}
+            {/*        cursor: "pointer",*/}
+            {/*    }}*/}
+            {/*    onClick={() => setTargetType("REST")}*/}
+            {/*>*/}
+            {/*  Restroom*/}
+            {/*</span>*/}
+            {/*  <span*/}
+            {/*      style={{*/}
+            {/*    border: "5px solid rgba(0, 0, 0, 0.1)",*/}
+            {/*    borderRadius: "16px",*/}
+            {/*    marginTop: "8px",*/}
+            {/*    paddingLeft: "8px",*/}
+            {/*    paddingRight: "8px",*/}
+
+            {/*    fontSize: "15px",*/}
+            {/*    outline: "none",*/}
+            {/*    width: "60%",*/}
+            {/*    backgroundColor: "#8B2121",*/}
+            {/*    color: "white",*/}
+            {/*    transition: "border-bottom-left 200ms ease",*/}
+            {/*    boxShadow: "1px 2px 2px rgba(0, 0, 0, 0.2)",*/}
+            {/*    cursor: "pointer",*/}
+            {/*  }}*/}
+            {/*  onClick={() => setTargetType("EXIT")}*/}
+            {/*>*/}
+            {/*      <svg ></svg>*/}
+            {/*  Exit*/}
+            {/*</span>*/}
+            {/*<span*/}
+            {/*  style={{*/}
+            {/*    border: "5px solid rgba(0, 0, 0, 0.1)",*/}
+            {/*    borderRadius: "16px",*/}
+            {/*    marginTop: "8px",*/}
+            {/*    paddingLeft: "8px",*/}
+            {/*    paddingRight: "8px",*/}
+
+            {/*    fontSize: "15px",*/}
+            {/*    outline: "none",*/}
+            {/*    width: "60%",*/}
+            {/*    backgroundColor: "#8B2121",*/}
+            {/*    color: "white",*/}
+            {/*    transition: "border-bottom-left 200ms ease",*/}
+            {/*    boxShadow: "1px 2px 2px rgba(0, 0, 0, 0.2)",*/}
+            {/*    cursor: "pointer",*/}
+            {/*  }}*/}
+            {/*  onClick={() => setTargetType("ELEV")}*/}
+            {/*>*/}
+            {/*  Elevator*/}
+            {/*</span>*/}
+            {/*<span*/}
+            {/*  style={{*/}
+            {/*    border: "5px solid rgba(0, 0, 0, 0.1)",*/}
+            {/*    borderRadius: "16px",*/}
+            {/*    marginTop: "8px",*/}
+            {/*    paddingLeft: "8px",*/}
+            {/*    paddingRight: "8px",*/}
+
+            {/*    fontSize: "15px",*/}
+            {/*    outline: "none",*/}
+            {/*    width: "60%",*/}
+            {/*    backgroundColor: "#8B2121",*/}
+            {/*    color: "white",*/}
+            {/*    transition: "border-bottom-left 200ms ease",*/}
+            {/*    boxShadow: "1px 2px 2px rgba(0, 0, 0, 0.2)",*/}
+            {/*    cursor: "pointer",*/}
+            {/*  }}*/}
+            {/*  onClick={() => setTargetType("INFO")}*/}
+            {/*>*/}
+            {/*  Info Desk*/}
+            {/*</span>*/}
+            <ThemeProvider theme={theme}></ThemeProvider>
+            <Chip
+              icon={<WcIcon />}
+              label="Restroom"
               onClick={() => setTargetType("REST")}
-            >
-              <WcIcon />
-              Restroom
-            </span>
-            <span
-              style={{
-                border: "5px solid rgba(0, 0, 0, 0.1)",
-                borderRadius: "16px",
-                marginTop: "8px",
-                paddingLeft: "8px",
-                paddingRight: "8px",
-                display: "ruby",
-                fontSize: "15px",
-                outline: "none",
-                width: "60%",
-                backgroundColor: "#8B2121",
-                color: "white",
-                transition: "border-bottom-left 200ms ease",
-                boxShadow: "1px 2px 2px rgba(0, 0, 0, 0.2)",
-                cursor: "pointer",
-              }}
+              color="primary"
+              clickable
+            />
+
+            <Chip
+              icon={<ExitToAppIcon />}
+              label="Exit"
               onClick={() => setTargetType("EXIT")}
-            >
-              <MeetingRoomIcon /> Entrance
-            </span>
-            <span
-              style={{
-                border: "5px solid rgba(0, 0, 0, 0.1)",
-                borderRadius: "16px",
-                marginTop: "8px",
-                paddingLeft: "8px",
-                paddingRight: "8px",
-                display: "ruby",
-                fontSize: "15px",
-                outline: "none",
-                width: "60%",
-                backgroundColor: "#8B2121",
-                color: "white",
-                transition: "border-bottom-left 200ms ease",
-                boxShadow: "1px 2px 2px rgba(0, 0, 0, 0.2)",
-                cursor: "pointer",
-              }}
+              color="primary"
+              sx={{ color: "text.primary" }}
+              clickable
+            />
+            <Chip
+              icon={<ElevatorIcon />}
+              label="Elevator"
               onClick={() => setTargetType("ELEV")}
-            >
-              <ElevatorIcon /> Elevator
-            </span>
-            <span
-              style={{
-                border: "5px solid rgba(0, 0, 0, 0.1)",
-                borderRadius: "16px",
-                marginTop: "8px",
-                paddingLeft: "8px",
-                paddingRight: "8px",
-                display: "ruby",
-                fontSize: "15px",
-                outline: "none",
-                width: "60%",
-                backgroundColor: "#8B2121",
-                color: "white",
-                transition: "border-bottom-left 200ms ease",
-                boxShadow: "1px 2px 2px rgba(0, 0, 0, 0.2)",
-                cursor: "pointer",
-              }}
+              color={"primary"}
+              clickable
+            />
+
+            <Chip
+              icon={<InfoIcon />}
+              label="Info"
               onClick={() => setTargetType("INFO")}
-            >
-              <HelpCenterIcon />
-              <br />
-              Info Desk
-            </span>
+              color={"primary"}
+              clickable
+            />
           </div>
         )}
       </div>
