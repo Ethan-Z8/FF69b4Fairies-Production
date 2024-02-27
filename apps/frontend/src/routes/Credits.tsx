@@ -181,7 +181,7 @@ const CreditsPage: React.FC = () => {
                   src={ExpressIcon}
                   alt="Logo"
                   style={{
-                    maxHeight: "6.8rem",
+                    maxHeight: "6.5rem",
                     margin: 0,
                     padding: "0.5rem",
                   }}
@@ -204,7 +204,7 @@ const CreditsPage: React.FC = () => {
                   src={PrismaIcon}
                   alt="Logo"
                   style={{
-                    maxHeight: "6.8rem",
+                    maxHeight: "6.5rem",
                     margin: 0,
                     padding: "0.5rem",
                   }}
@@ -227,12 +227,12 @@ const CreditsPage: React.FC = () => {
                   src={PostgresIcon}
                   alt="Logo"
                   style={{
-                    maxHeight: "6.8rem",
+                    maxHeight: "6.5rem",
                     margin: 0,
                     padding: "0.5rem",
                   }}
                 />
-                <p style={{ marginTop: "0.5rem" }}>Express</p>
+                <p style={{ marginTop: "0.5rem" }}>PostreSQL</p>
               </Link>
               <p
                 style={{
