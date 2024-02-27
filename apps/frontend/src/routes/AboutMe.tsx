@@ -1,6 +1,16 @@
 //import React, { useEffect, useState } from "react";
 
 import AboutCard from "../components/AboutCard.tsx";
+import Aish from "../../src/assets/Aishwarya.png";
+import Ajay from "../../src/assets/Ajay.png";
+import Ethan from "../../src/assets/Ethan.png";
+import Justin from "../../src/assets/Justin.png";
+import Leo from "../../src/assets/Leo.png";
+import Mahit from "../../src/assets/Mahit.png";
+import Max from "../../src/assets/Max.png";
+import Shawn from "../../src/assets/Shawnpng.png";
+import Zane from "../../src/assets/Zane.png";
+import Vaanch from "../../src/assets/Vannch.png";
 
 const AboutMe = () => {
   return (
@@ -28,7 +38,7 @@ const AboutMe = () => {
             Email={"asdf@wpi.edu"}
             Github={"google.com"}
             Linkdin={"asdf.com"}
-            Imagepath={"NULL"}
+            Imagepath={Ajay}
             Favorite_quote={""}
           />
 
@@ -41,7 +51,7 @@ const AboutMe = () => {
             Email={"lkhirano@wpi.edu"}
             Github={"https://github.com/notLeoHirano"}
             Linkdin={"asdf.com"}
-            Imagepath={"NULL"}
+            Imagepath={Leo}
             Favorite_quote={""}
           />
           <AboutCard
@@ -55,7 +65,7 @@ const AboutMe = () => {
             Linkdin={
               "https://www.linkedin.com/in/vaansh-mansharamani-30a6b7227/"
             }
-            Imagepath={"NULL"}
+            Imagepath={Vaanch}
             Favorite_quote={""}
           />
           <AboutCard
@@ -67,7 +77,7 @@ const AboutMe = () => {
             Email={"ezhong@wpi.edu"}
             Github={"https://github.com/Ethan-Z8"}
             Linkdin={"https://www.linkedin.com/in/ethan-zhong-76886a21a/"}
-            Imagepath={"NULL"}
+            Imagepath={Ethan}
             Favorite_quote={""}
           />
           <AboutCard
@@ -79,7 +89,7 @@ const AboutMe = () => {
             Email={"asdf@wpi.edu"}
             Github={"google.com"}
             Linkdin={"asdf.com"}
-            Imagepath={"NULL"}
+            Imagepath={Zane}
             Favorite_quote={""}
           />
         </div>
@@ -100,7 +110,7 @@ const AboutMe = () => {
             Email={"asdf@wpi.edu"}
             Github={"google.com"}
             Linkdin={"asdf.com"}
-            Imagepath={"NULL"}
+            Imagepath={Justin}
             Favorite_quote={""}
           />
           <AboutCard
@@ -112,7 +122,7 @@ const AboutMe = () => {
             Email={"mlfriedman@wpi.edu"}
             Github={" https://github.com/Steelplate"}
             Linkdin={" https://www.linkedin.com/in/friedman-maxwell/"}
-            Imagepath={"NULL"}
+            Imagepath={Max}
             Favorite_quote={""}
           />
           <AboutCard
@@ -124,7 +134,7 @@ const AboutMe = () => {
             Email={"snpatel@wpi.edu"}
             Github={"https://github.com/shawnp221"}
             Linkdin={"https://www.linkedin.com/in/shawn-patel-359a562a7/"}
-            Imagepath={"NULL"}
+            Imagepath={Shawn}
             Favorite_quote={""}
           />
 
@@ -137,7 +147,7 @@ const AboutMe = () => {
             Email={"mverma@wpi.edu"}
             Github={"https://github.com/MaVeryo"}
             Linkdin={"https://www.linkedin.com/in/mahit-verma/"}
-            Imagepath={"NULL"}
+            Imagepath={Mahit}
             Favorite_quote={""}
           />
 
@@ -150,7 +160,7 @@ const AboutMe = () => {
             Email={"asdf@wpi.edu"}
             Github={"google.com"}
             Linkdin={"asdf.com"}
-            Imagepath={"NULL"}
+            Imagepath={Aish}
             Favorite_quote={""}
           />
         </div>

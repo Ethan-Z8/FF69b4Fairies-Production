@@ -41,7 +41,7 @@ const AboutCard = ({
         maxWidth: "18%",
       }}
     >
-      <CardMedia sx={{ height: 200 }} image={Imagepath} title={Name} />
+      <CardMedia sx={{ height: 250 }} image={Imagepath} title={Name} />
       <CardContent>
         <Typography gutterBottom variant="h5" component="div" maxWidth={"50%"}>
           {Name}
