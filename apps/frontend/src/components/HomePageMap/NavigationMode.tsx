@@ -277,8 +277,8 @@ export function NavigationMode({ destinationID }: NavigationModeProps) {
         sx={{
           position: "absolute",
           height: 320,
-          top: 10,
-          left: "21%",
+          top: 20,
+          left: "23%",
           zIndex: 4,
           transform: "translateZ(0px)",
           flexGrow: 1,
@@ -309,9 +309,7 @@ export function NavigationMode({ destinationID }: NavigationModeProps) {
             onClick={handleToggleEdges}
             tooltipPlacement={"right"}
             sx={{
-              ".active": {
-                COLOR: "yellow",
-              },
+              backgroundColor: toggleEdges ? "lightblue" : "inherit",
             }}
           />
           <SpeedDialAction
@@ -320,6 +318,9 @@ export function NavigationMode({ destinationID }: NavigationModeProps) {
             tooltipTitle={"Toggle Node"}
             onClick={handleToggleNodes}
             tooltipPlacement={"right"}
+            sx={{
+              backgroundColor: toggleNodes ? "lightblue" : "inherit",
+            }}
           />
         </SpeedDial>
         <Select

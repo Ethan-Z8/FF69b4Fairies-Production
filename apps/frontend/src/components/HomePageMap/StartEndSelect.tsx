@@ -2,7 +2,6 @@ import axios from "axios";
 import React, { useEffect, useState, useRef } from "react";
 import "./StartEndSelect.css";
 import TextDirectionPathFinding from "./TextDirectionPathFinding.tsx";
-import QRCode from "react-qr-code";
 import Chip from "@mui/material/Chip";
 import WcIcon from "@mui/icons-material/Wc";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
@@ -10,6 +9,8 @@ import ElevatorIcon from "@mui/icons-material/Elevator";
 import InfoIcon from "@mui/icons-material/Info";
 import { createTheme, ThemeProvider } from "@mui/system";
 
+/*import HelpCenterIcon from "@mui/icons-material/HelpCenter";
+import MeetingRoomIcon from "@mui/icons-material/MeetingRoom";*/
 interface Node {
   nodeID: string;
   xcoord: number;
@@ -466,29 +467,6 @@ const StartEndSelect: React.FC<NodeSelectProps> = ({
               {" "}
               HIDE
             </div>
-
-            {startID && endID && (
-              <div>
-                <h1
-                  style={{
-                    width: "80%",
-                    height: "100%",
-                    fontSize: "30px",
-                    backgroundColor: "white",
-                    padding: "10px",
-                  }}
-                >
-                  QR Code for mobile
-                </h1>
-                <QRCode
-                  style={{
-                    width: "80%",
-                    height: "100%",
-                  }}
-                  value={`${window.location.href}directions/${startID}-${endID}`}
-                />
-              </div>
-            )}
 
             <TextDirectionPathFinding
               start={startID}
