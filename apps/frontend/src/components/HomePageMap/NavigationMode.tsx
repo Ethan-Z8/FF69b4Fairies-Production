@@ -424,7 +424,7 @@ export function NavigationMode({ destinationID }: NavigationModeProps) {
             />
           </div>
         </TransformContainer>
-        <HoveredNodeData node={hoveredNode} />
+        <HoveredNodeData node={hoveredNode} handleNodeHover={setHoveredNode} />
         <MouseClickMenu node={hoveredNode} localPosition={localPosition} />
       </div>
     </div>

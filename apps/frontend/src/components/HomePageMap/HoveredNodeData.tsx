@@ -1,12 +1,22 @@
 import React, { useState } from "react";
-import { MapNodeInterface } from "common/src/interfaces/MapNodeInterface.ts";
 
-type Node = MapNodeInterface;
+interface Node {
+  nodeID: string;
+  xcoord: number;
+  ycoord: number;
+  floor: string;
+  building: string;
+  nodeType: string;
+  longName: string;
+  shortName: string;
+  neighbors: string[];
+}
 interface StartEndSelectProps {
-  node: MapNodeInterface | Node | null;
+  node: Node | null;
+  handleNodeHover: (node: Node | null) => void;
 }
 
-function StartEndSelect({ node }: StartEndSelectProps) {
+function StartEndSelect({ node, handleNodeHover }: StartEndSelectProps) {
   const [locCollapse, setLocCollapse] = useState(false);
 
   // useEffect(() => {
@@ -32,6 +42,8 @@ function StartEndSelect({ node }: StartEndSelectProps) {
         boxShadow: "1px -1px 2px rgba(0, 0, 0, 0.2)",
         padding: "16px",
       }}
+      onMouseEnter={() => handleNodeHover(node)}
+      onMouseLeave={() => handleNodeHover(null)}
     >
       {!locCollapse && node != null && (
         <div>
