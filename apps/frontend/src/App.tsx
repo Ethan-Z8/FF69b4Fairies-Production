@@ -15,7 +15,6 @@ import AddEmployeePage from "./routes/AddEmployeePage.tsx";
 import ProtectPage from "./components/ProtectPage.tsx";
 import { ImportAndExportEmployeePage } from "./routes/ImportAndExportEmployeePage.tsx";
 import CreditsPage from "./routes/Credits.tsx";
-//import AboutUs from "./routes/AboutUs.tsx";
 import Auth0Profile from "./components/Auth0Profile.tsx";
 import AboutMe from "./routes/AboutMe.tsx";
 import PhoneDirections from "./routes/PhoneDirections";
@@ -71,10 +70,6 @@ function App() {
           path: "/AboutUs",
           element: <AboutMe />,
         },
-        {
-          path: "/Credits",
-          element: <CreditsPage />,
-        },
         /*    {
           path: "/About",
           element: <AboutUs />,
@@ -82,6 +77,10 @@ function App() {
         {
           path: "/directions/:startAndStop",
           element: <PhoneDirections />,
+        },
+        {
+          path: "/Credits",
+          element: <CreditsPage />,
         },
       ],
     },
@@ -95,6 +94,7 @@ function App() {
 
   function Root() {
     const navigate = useNavigate();
+    const showNavigation = !location.pathname.startsWith("/directions");
 
     return (
       <Auth0Provider
@@ -111,7 +111,7 @@ function App() {
           scope: "openid profile email offline_access",
         }}
       >
-        <Navigation />
+        {showNavigation && <Navigation />}
         <div className="pageAlignment">
           <Outlet />
         </div>

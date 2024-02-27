@@ -143,6 +143,13 @@ export function Navigation() {
               <Nav.Link href="/addEmployee">Add Employee</Nav.Link>
               <Nav.Link href="/viewEmployeeData">View Employees</Nav.Link>
             </NavDropdown>
+            <NavDropdown
+              title={<span style={{ color: "white" }}>Information </span>}
+              className="navbar-item"
+            >
+              <NavDropdown.Item href="/Credits">Credits Page</NavDropdown.Item>
+              <NavDropdown.Item href="/AboutUs">About Us Page</NavDropdown.Item>
+            </NavDropdown>
           </>
         )}
       </Nav>
