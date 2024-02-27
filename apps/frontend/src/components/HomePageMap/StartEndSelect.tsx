@@ -416,6 +416,8 @@ const StartEndSelect: React.FC<NodeSelectProps> = ({
                 onSelectStart("", {} as React.SyntheticEvent<HTMLElement>);
                 onSelectEnd("", {} as React.SyntheticEvent<HTMLElement>);
                 setTargetType("");
+                setStartID("");
+                setEndID("");
               }}
               className="HAHAHHA"
               style={{

@@ -208,6 +208,8 @@ const StartEndSelect: React.FC<NodeSelectProps> = ({
               border: "5px solid rgba(0, 0, 0, 0.1)",
               borderTopRightRadius: "16px",
               borderTopLeftRadius: "16px",
+              borderBottomRightRadius: startName == "" ? "16px" : "4px",
+              borderBottomLeftRadius: startName == "" ? "16px" : "4px",
               paddingLeft: "16px",
               fontSize: "18px",
               outline: "none",
@@ -219,7 +221,7 @@ const StartEndSelect: React.FC<NodeSelectProps> = ({
               caretColor: isStartFocused ? "white" : "transparent",
               zIndex: 20,
             }}
-            placeholder="Start Location"
+            placeholder="Pick a location to view Services"
           />
           <div
             style={{
@@ -236,6 +238,7 @@ const StartEndSelect: React.FC<NodeSelectProps> = ({
                 onClick={() => {
                   setStartID("");
                   setStartName("");
+                  onSelectStart("", {} as React.SyntheticEvent<HTMLElement>);
                 }}
               >
                 ✕

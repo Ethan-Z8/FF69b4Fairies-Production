@@ -48,42 +48,42 @@ export function ServiceRequestsAtNode({
           borderBottomLeftRadius: "16px",
         }}
       >
-        <CardHeader
-          title={"Service Requests"}
-          disableTypography
-          action={
-            <IconButton
-              onClick={() => setOpen(!open)}
-              aria-label="expand"
-              size="small"
-            >
-              {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-            </IconButton>
-          }
-        ></CardHeader>
-        <Collapse in={open} timeout="auto" unmountOnExit>
-          <CardContent
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "center",
-            }}
-          >
-            {nodeID !== "" && (
-              <>
-                <Button onClick={() => setModalOpen(true)}>
-                  Create Request Here
-                </Button>
-                <CreateRequestAtNodeModal
-                  nodeID={nodeID}
-                  open={modalOpen}
-                  setOpen={setModalOpen}
-                />
-              </>
-            )}
+        <CardContent
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+          }}
+        >
+          {nodeID !== "" && (
+            <>
+              <Button onClick={() => setModalOpen(true)}>
+                Create Request Here
+              </Button>
+              <CreateRequestAtNodeModal
+                nodeID={nodeID}
+                open={modalOpen}
+                setOpen={setModalOpen}
+              />
+            </>
+          )}
+          <CardHeader
+            title={"Service Requests"}
+            disableTypography
+            action={
+              <IconButton
+                onClick={() => setOpen(!open)}
+                aria-label="expand"
+                size="small"
+              >
+                {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+              </IconButton>
+            }
+          ></CardHeader>
+          <Collapse in={open} timeout="auto" unmountOnExit>
             <Container>{contents}</Container>
-          </CardContent>
-        </Collapse>
+          </Collapse>
+        </CardContent>
       </Card>
     </div>
   );

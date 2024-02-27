@@ -221,8 +221,13 @@ export function ServiceRequestMode() {
               />
             )}
           />*/}
-          <ServiceAutocomplete onSelectStart={setSelectedNode} />
-          <ServiceRequestsAtNode nodeID={selectedNode} requests={requests} />
+          <ServiceAutocomplete
+            start={selectedNode}
+            onSelectStart={setSelectedNode}
+          />
+          {selectedNode && (
+            <ServiceRequestsAtNode nodeID={selectedNode} requests={requests} />
+          )}
         </div>
       </div>
     </div>
