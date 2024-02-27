@@ -94,6 +94,7 @@ function App() {
 
   function Root() {
     const navigate = useNavigate();
+    const showNavigation = !location.pathname.startsWith("/directions");
 
     return (
       <Auth0Provider
@@ -110,7 +111,7 @@ function App() {
           scope: "openid profile email offline_access",
         }}
       >
-        <Navigation />
+        {showNavigation && <Navigation />}
         <div className="pageAlignment">
           <Outlet />
         </div>

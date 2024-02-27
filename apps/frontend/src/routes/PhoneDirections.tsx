@@ -4,19 +4,38 @@ import axios from "axios";
 
 const TextDirectionRoute = () => {
   const [directions, setDirections] = useState<string[]>([]);
-  // Adjusted to use the combined startAndStop parameter
   const { startAndStop } = useParams<{ startAndStop: string }>();
 
   useEffect(() => {
     if (startAndStop) {
-      // Splitting the startAndStop parameter into startLocation and endLocation
       const [startLocation, endLocation] = startAndStop.split("-");
       const getDirections = async () => {
         try {
           const res = await axios.get("/api/map/getTextDirections", {
             params: { start: startLocation, end: endLocation },
           });
-          setDirections(res.data);
+          const processedDirections = res.data.map((direction: string) => {
+            // Remove the last word from each direction
+            let modifiedDirection = direction.replace(/\b\w*\d\w*\b/g, "");
+
+            // Identify keywords and append symbols
+            if (/right/i.test(modifiedDirection)) {
+              modifiedDirection += " ➡️";
+            } else if (/left/i.test(modifiedDirection)) {
+              modifiedDirection += " ⬅️";
+            } else if (/forward/i.test(modifiedDirection)) {
+              modifiedDirection += " ⬆️";
+            }
+
+            if (/stairs/i.test(modifiedDirection)) {
+              modifiedDirection += " 🚶‍♂️";
+            } else if (/elevator/i.test(modifiedDirection)) {
+              modifiedDirection += " 🚶";
+            }
+
+            return modifiedDirection;
+          });
+          setDirections(processedDirections);
         } catch (err) {
           console.error("Error fetching directions:", err);
         }
@@ -26,20 +45,29 @@ const TextDirectionRoute = () => {
   }, [startAndStop]);
 
   return (
-    <div
-      className="scroll-container"
-      style={{
-        backgroundColor: "white",
-        boxShadow: "1px 2px 2px rgba(0, 0, 0, 0.2)",
-        overflow: "hidden",
-        overflowY: "auto",
-        width: "80%",
-        height: "75vh",
-      }}
-    >
-      <ul>
+    <div style={{ width: "100vw", padding: "0", boxSizing: "border-box" }}>
+      <ul
+        style={{
+          padding: 0,
+          margin: 0,
+          width: "100vw",
+          maxWidth: "100%",
+          boxSizing: "border-box",
+        }}
+      >
         {directions.map((direction, index) => (
-          <li style={{ listStyleType: "none" }} key={index}>
+          <li
+            style={{
+              listStyleType: "none",
+              backgroundColor: index % 2 === 0 ? "#f0f0f0" : "#ffffff",
+              padding: "20px",
+              margin: "0 auto", // Centers the list items
+              textAlign: "center",
+              fontSize: "2rem",
+              boxSizing: "border-box", // Ensures padding is included in the width
+            }}
+            key={index}
+          >
             {direction}
           </li>
         ))}
