@@ -95,7 +95,7 @@ const CreditsPage: React.FC = () => {
                   fontSize: "0.8rem",
                 }}
               >
-                Backend
+                Hosting
               </p>
             </li>
             <li>
@@ -149,7 +149,7 @@ const CreditsPage: React.FC = () => {
         <Divider orientation="vertical" sx={{ height: "100%" }} />
         <div style={{ textAlign: "center", flex: 1, padding: 20, margin: 0 }}>
           <Typography variant="h5" gutterBottom>
-            Software Frameworks II
+            Software Frameworks
           </Typography>
           <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
             <li>
@@ -304,7 +304,7 @@ const CreditsPage: React.FC = () => {
                   src={AxiosIcon}
                   alt="Logo"
                   style={{
-                    maxHeight: "6.8rem",
+                    maxHeight: "7rem",
                     margin: 0,
                     padding: "0.5rem",
                   }}
