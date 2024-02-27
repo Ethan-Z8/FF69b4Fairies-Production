@@ -30,8 +30,8 @@ const AboutCard = ({
   Imagepath,
 }: AboutInfo) => {
   return (
-    <Card sx={{ maxWidth: 345 }}>
-      <CardMedia sx={{ height: 140 }} image={Imagepath} title={Name} />
+    <Card sx={{ maxWidth: 700 }}>
+      <CardMedia sx={{ height: 200 }} image={Imagepath} title={Name} />
       <CardContent>
         <Typography gutterBottom variant="h5" component="div">
           {Name}
