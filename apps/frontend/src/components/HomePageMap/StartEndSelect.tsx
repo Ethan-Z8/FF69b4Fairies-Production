@@ -2,8 +2,10 @@ import axios from "axios";
 import React, { useEffect, useState, useRef } from "react";
 import "./StartEndSelect.css";
 import TextDirectionPathFinding from "./TextDirectionPathFinding.tsx";
-import QRCode from "react-qr-code";
-
+import WcIcon from "@mui/icons-material/Wc";
+import ElevatorIcon from "@mui/icons-material/Elevator";
+import HelpCenterIcon from "@mui/icons-material/HelpCenter";
+import MeetingRoomIcon from "@mui/icons-material/MeetingRoom";
 interface Node {
   nodeID: string;
   xcoord: number;
@@ -392,29 +394,6 @@ const StartEndSelect: React.FC<NodeSelectProps> = ({
               HIDE
             </div>
 
-            {startID && endID && (
-              <div>
-                <h1
-                  style={{
-                    width: "80%",
-                    height: "100%",
-                    fontSize: "30px",
-                    backgroundColor: "white",
-                    padding: "10px",
-                  }}
-                >
-                  QR Code for mobile
-                </h1>
-                <QRCode
-                  style={{
-                    width: "80%",
-                    height: "100%",
-                  }}
-                  value={`${window.location.href}directions/${startID}-${endID}`}
-                />
-              </div>
-            )}
-
             <TextDirectionPathFinding
               start={startID}
               end={endID}
@@ -588,8 +567,8 @@ const StartEndSelect: React.FC<NodeSelectProps> = ({
                 borderRadius: "16px",
                 marginTop: "8px",
                 paddingLeft: "8px",
+                display: "ruby",
                 paddingRight: "8px",
-
                 fontSize: "15px",
                 outline: "none",
                 width: "60%",
@@ -601,6 +580,7 @@ const StartEndSelect: React.FC<NodeSelectProps> = ({
               }}
               onClick={() => setTargetType("REST")}
             >
+              <WcIcon />
               Restroom
             </span>
             <span
@@ -610,7 +590,7 @@ const StartEndSelect: React.FC<NodeSelectProps> = ({
                 marginTop: "8px",
                 paddingLeft: "8px",
                 paddingRight: "8px",
-
+                display: "ruby",
                 fontSize: "15px",
                 outline: "none",
                 width: "60%",
@@ -622,7 +602,7 @@ const StartEndSelect: React.FC<NodeSelectProps> = ({
               }}
               onClick={() => setTargetType("EXIT")}
             >
-              Entrance
+              <MeetingRoomIcon /> Entrance
             </span>
             <span
               style={{
@@ -631,7 +611,7 @@ const StartEndSelect: React.FC<NodeSelectProps> = ({
                 marginTop: "8px",
                 paddingLeft: "8px",
                 paddingRight: "8px",
-
+                display: "ruby",
                 fontSize: "15px",
                 outline: "none",
                 width: "60%",
@@ -643,7 +623,7 @@ const StartEndSelect: React.FC<NodeSelectProps> = ({
               }}
               onClick={() => setTargetType("ELEV")}
             >
-              Elevator
+              <ElevatorIcon /> Elevator
             </span>
             <span
               style={{
@@ -652,7 +632,7 @@ const StartEndSelect: React.FC<NodeSelectProps> = ({
                 marginTop: "8px",
                 paddingLeft: "8px",
                 paddingRight: "8px",
-
+                display: "ruby",
                 fontSize: "15px",
                 outline: "none",
                 width: "60%",
@@ -664,6 +644,8 @@ const StartEndSelect: React.FC<NodeSelectProps> = ({
               }}
               onClick={() => setTargetType("INFO")}
             >
+              <HelpCenterIcon />
+              <br />
               Info Desk
             </span>
           </div>
