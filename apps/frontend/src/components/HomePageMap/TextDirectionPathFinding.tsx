@@ -5,6 +5,7 @@ import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import Typography from "@mui/material/Typography";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+import QRCode from "react-qr-code";
 
 interface TextDirectionPathProps {
   start: string;
@@ -25,10 +26,8 @@ const TextDirectionPathFinding: React.FC<TextDirectionPathProps> = ({
 
   useEffect(() => {
     if (resetPath) {
-      // Reset directions if resetPath is true
       setFloorDirections({});
     } else {
-      // Fetch and update directions if resetPath is false
       const getDirections = async () => {
         try {
           const res = await axios.get("/api/map/getTextDirections", {
@@ -78,14 +77,47 @@ const TextDirectionPathFinding: React.FC<TextDirectionPathProps> = ({
         overflow: "hidden",
         overflowY: "auto",
         width: "80%",
-        height: start !== "" && end !== "" && !forceClose ? "75vh" : 0,
+        height: start !== "" && end !== "" && !forceClose ? "65vh" : 0,
       }}
     >
-      {Object.entries(floorDirections).map(([floor, directions], index) => (
-        <>
+      {start && end && (
+        <div
+          className={"qrCodeContainer"}
+          style={{
+            backgroundColor: "white",
+            display: "grid",
+            justifyItems: "center",
+            paddingBottom: "15px",
+          }}
+        >
+          <h4
+            style={{
+              fontSize: "20px",
+              padding: "20px",
+              textAlign: "center",
+              fontFamily: "inherit",
+              margin: "0px",
+            }}
+          >
+            Scan QR Code for directions
+          </h4>
+          <QRCode
+            style={{
+              display: "absolute",
+              justifyContent: "center",
+              width: "60%",
+              height: "100%",
+              paddingBottom: "10px",
+            }}
+            value={`${window.location.href}directions/${start}-${end}`}
+          />
+        </div>
+      )}
+
+      {Object.entries(floorDirections).map(([floor, directions]) => (
+        <React.Fragment key={floor}>
           {floor.includes(" ") ? (
             <Typography
-              key={index}
               sx={{
                 backgroundColor: "#f4f4f4",
                 padding: "16px",
@@ -93,7 +125,7 @@ const TextDirectionPathFinding: React.FC<TextDirectionPathProps> = ({
               }}
             >{`Elevator to floor ${floor}`}</Typography>
           ) : (
-            <Accordion key={index}>
+            <Accordion>
               <AccordionSummary
                 expandIcon={<ArrowDropDownIcon />}
                 sx={{ backgroundColor: "#f4f4f4" }}
@@ -103,7 +135,10 @@ const TextDirectionPathFinding: React.FC<TextDirectionPathProps> = ({
               <AccordionDetails>
                 <ul>
                   {directions.map((direction, index) => (
-                    <li style={{ listStyleType: "none" }} key={index}>
+                    <li
+                      style={{ listStyleType: "none" }}
+                      key={`${floor}-${index}`}
+                    >
                       {direction}
                     </li>
                   ))}
@@ -111,7 +146,7 @@ const TextDirectionPathFinding: React.FC<TextDirectionPathProps> = ({
               </AccordionDetails>
             </Accordion>
           )}
-        </>
+        </React.Fragment>
       ))}
     </div>
   );
