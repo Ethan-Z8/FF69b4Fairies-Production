@@ -15,6 +15,7 @@ import AddEmployeePage from "./routes/AddEmployeePage.tsx";
 import ProtectPage from "./components/ProtectPage.tsx";
 import { ImportAndExportEmployeePage } from "./routes/ImportAndExportEmployeePage.tsx";
 import Auth0Profile from "./components/Auth0Profile.tsx";
+import AboutMe from "./routes/AboutMe.tsx";
 
 function App() {
   const router = createBrowserRouter([
@@ -62,6 +63,10 @@ function App() {
         {
           path: "/Auth0Profile",
           element: <ProtectPage Page={Auth0Profile} />,
+        },
+        {
+          path: "/AboutUs",
+          element: <AboutMe />,
         },
       ],
     },
