@@ -14,6 +14,7 @@ import Max from "../../src/assets/Max.png";
 import Shawn from "../../src/assets/Shawnpng.png";
 import Zane from "../../src/assets/Zane.png";
 import Vaanch from "../../src/assets/Vannch.png";
+import WPI_Logo from "../../src/assets/WPI_Logo.jpg";
 
 const AboutMe = () => {
   return (
@@ -67,9 +68,9 @@ const AboutMe = () => {
               devrole={"FullStack Engineer"}
               ClassYear={"2026"}
               Major={"Computer Science"}
-              Email={"asdf@wpi.edu"}
-              Github={"google.com"}
-              Linkdin={"asdf.com"}
+              Email={"abhagavatula@wpi.edu"}
+              Github={"https://github.com/ajay-bhagava"}
+              Linkdin={"https://www.linkedin.com/in/ajaywpi/"}
               Imagepath={Ajay}
               Favorite_quote={""}
             />
@@ -124,7 +125,9 @@ const AboutMe = () => {
               Github={"https://github.com/MaVeryo"}
               Linkdin={"https://www.linkedin.com/in/mahit-verma/"}
               Imagepath={Mahit}
-              Favorite_quote={""}
+              Favorite_quote={
+                "'Now, water can flow or it can crash. Be water, my friend.' ~Bruce Lee"
+              }
             />
           </div>
           <div
@@ -204,10 +207,16 @@ const AboutMe = () => {
           </div>
         </div>
         <h6 style={{ textAlign: "center", marginTop: "20px" }}>
+          WPI Computer Science Department, CS3733-C24 Software Engineering
+        </h6>
+        <h6 style={{ textAlign: "center", marginTop: "20px" }}>
           ©The Brigham & Women’s Hospital maps and data used in this
           application are copyrighted and provided for the sole use of
           educational purposes.
         </h6>
+        <div style={{ textAlign: "center" }}>
+          <img src={WPI_Logo} alt="WPI Logo" style={{ maxWidth: "150px" }} />
+        </div>
       </div>
     </div>
   );

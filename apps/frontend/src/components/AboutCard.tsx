@@ -60,7 +60,6 @@ const AboutCard = ({
         "&:hover": {
           cursor: "pointer",
           backgroundColor: "#e9e8e9",
-          // backgroundColor:"green",
         },
       }}
       style={{
@@ -85,7 +84,7 @@ const AboutCard = ({
       >
         <Box sx={style}>
           <Typography id="modal-modal-title" variant="h6" component="h2">
-            {Name}'s Favorite Quote:
+            Favorite Quote:
           </Typography>
           <Typography id="modal-modal-description" sx={{ mt: 2 }}>
             {Favorite_quote}

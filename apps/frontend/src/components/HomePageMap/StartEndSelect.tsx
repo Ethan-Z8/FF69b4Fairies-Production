@@ -747,6 +747,7 @@ const StartEndSelect: React.FC<NodeSelectProps> = ({
             {/*</span>*/}
             <ThemeProvider theme={theme}></ThemeProvider>
             <Chip
+              sx={{ marginTop: "10px" }}
               icon={<WcIcon />}
               label="Restroom"
               onClick={() => setTargetType("REST")}
@@ -759,10 +760,11 @@ const StartEndSelect: React.FC<NodeSelectProps> = ({
               label="Exit"
               onClick={() => setTargetType("EXIT")}
               color="primary"
-              sx={{ color: "white" }}
+              sx={{ color: "white", marginTop: "10px" }}
               clickable
             />
             <Chip
+              sx={{ marginTop: "10px" }}
               icon={<ElevatorIcon />}
               label="Elevator"
               onClick={() => setTargetType("ELEV")}
@@ -771,6 +773,7 @@ const StartEndSelect: React.FC<NodeSelectProps> = ({
             />
 
             <Chip
+              sx={{ marginTop: "10px" }}
               icon={<InfoIcon />}
               label="Info"
               onClick={() => setTargetType("INFO")}
