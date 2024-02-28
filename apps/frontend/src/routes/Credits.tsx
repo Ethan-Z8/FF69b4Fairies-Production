@@ -181,7 +181,7 @@ const CreditsPage: React.FC = () => {
                   src={ExpressIcon}
                   alt="Logo"
                   style={{
-                    maxHeight: "6rem",
+                    maxHeight: "6.1rem",
                     margin: 0,
                     padding: "0.5rem",
                   }}
@@ -204,7 +204,7 @@ const CreditsPage: React.FC = () => {
                   src={PrismaIcon}
                   alt="Logo"
                   style={{
-                    maxHeight: "7rem",
+                    maxHeight: "6.8rem",
                     margin: 0,
                     padding: "0.5rem",
                   }}
