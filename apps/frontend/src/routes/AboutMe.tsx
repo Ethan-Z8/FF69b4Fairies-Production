@@ -83,12 +83,12 @@ const AboutMe = () => {
           <AboutCard
             Name={"Zane Altheimer"}
             role={"Document Analyst"}
-            devrole={"Frotend Engineer"}
+            devrole={"Frontend Engineer"}
             ClassYear={"2024"}
             Major={"Robotics Engineering"}
-            Email={"asdf@wpi.edu"}
-            Github={"google.com"}
-            Linkdin={"asdf.com"}
+            Email={"zaaltheimer@wpi.edu"}
+            Github={"https://github.com/z-altheimer"}
+            Linkdin={"https://www.linkedin.com/in/zaltheimer/"}
             Imagepath={Zane}
             Favorite_quote={""}
           />
