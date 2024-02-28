@@ -8,7 +8,7 @@ import NodeJSIcon from "../assets/softwareicons/node-js-icon.png";
 import AWSIcon from "../assets/softwareicons/Amazon_Web_Services_Logo.png";
 import AxiosIcon from "../assets/softwareicons/axios-icon.png";
 import PrismaIcon from "../assets/softwareicons/prisma-icon.png";
-import PostgresIcon from "../assets/softwareicons/PostgreSQL-Logo.png";
+import PostgresIcon from "../assets/softwareicons/postgres-icon.png";
 import DockerIcon from "../assets/softwareicons/docker-icon.png";
 import Auth0Icon from "../assets/softwareicons/auth0-icon.png";
 
@@ -158,7 +158,7 @@ const CreditsPage: React.FC = () => {
                   src={NodeJSIcon}
                   alt="Logo"
                   style={{
-                    maxHeight: "6.8rem",
+                    maxHeight: "6rem",
                     margin: 0,
                     padding: "0.5rem",
                   }}
@@ -181,7 +181,7 @@ const CreditsPage: React.FC = () => {
                   src={ExpressIcon}
                   alt="Logo"
                   style={{
-                    maxHeight: "6.5rem",
+                    maxHeight: "6rem",
                     margin: 0,
                     padding: "0.5rem",
                   }}
@@ -204,7 +204,7 @@ const CreditsPage: React.FC = () => {
                   src={PrismaIcon}
                   alt="Logo"
                   style={{
-                    maxHeight: "6.5rem",
+                    maxHeight: "7rem",
                     margin: 0,
                     padding: "0.5rem",
                   }}
@@ -227,12 +227,12 @@ const CreditsPage: React.FC = () => {
                   src={PostgresIcon}
                   alt="Logo"
                   style={{
-                    maxHeight: "6.5rem",
+                    maxHeight: "5.8rem",
                     margin: 0,
                     padding: "0.5rem",
                   }}
                 />
-                <p style={{ marginTop: "0.5rem" }}>PostreSQL</p>
+                <p style={{ marginTop: "0.5rem" }}>PostgreSQL</p>
               </Link>
               <p
                 style={{
