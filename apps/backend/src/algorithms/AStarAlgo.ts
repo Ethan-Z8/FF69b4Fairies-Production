@@ -117,7 +117,7 @@ class AStarAlgo implements AlgoStrategyPattern {
       const currentNode = this.nodes.get(currentId)!;
 
       if (currentNode.nodeType === nodeType) {
-        const distance = this.distanceBetween(startNodeId, currentId);
+        const distance = this.distanceBetweenElevWeight(startNodeId, currentId);
         if (distance < closestDistance) {
           closestDistance = distance;
           closestNodeId = currentId;
@@ -127,7 +127,8 @@ class AStarAlgo implements AlgoStrategyPattern {
       for (const neighborId of currentNode.neighbors) {
         if (!this.nodes.has(neighborId)) continue;
         const tentativeGScore =
-          gScore.get(currentId)! + this.distanceBetween(currentId, neighborId);
+          gScore.get(currentId)! +
+          this.distanceBetweenElevWeight(currentId, neighborId);
 
         if (
           !gScore.has(neighborId) ||
@@ -180,6 +181,21 @@ class AStarAlgo implements AlgoStrategyPattern {
       node2.nodeType == "ELEV"
     ) {
       return 0;
+    }
+    const dx = node1.xcoord - node2.xcoord;
+    const dy = node1.ycoord - node2.ycoord;
+    return Math.sqrt(dx * dx + dy * dy);
+  }
+
+  private distanceBetweenElevWeight(node1Id: string, node2Id: string): number {
+    const node1 = this.nodes.get(node1Id)!;
+    const node2 = this.nodes.get(node2Id)!;
+    if (
+      node1.floor !== node2.floor &&
+      node1.nodeType == "ELEV" &&
+      node2.nodeType == "ELEV"
+    ) {
+      return 1000;
     }
     const dx = node1.xcoord - node2.xcoord;
     const dy = node1.ycoord - node2.ycoord;

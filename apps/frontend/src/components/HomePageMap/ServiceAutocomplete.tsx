@@ -29,6 +29,7 @@ interface NodeSelectProps {
 const StartEndSelect: React.FC<NodeSelectProps> = ({
   start,
   onSelectStart,
+  onHoverNode,
 }) => {
   const [startID, setStartID] = useState(start ? start : "");
   const [startName, setStartName] = useState("");
@@ -126,6 +127,7 @@ const StartEndSelect: React.FC<NodeSelectProps> = ({
       setter(ID);
       if (nodes[ID].longName.length > 30) setterName(nodes[ID].shortName);
       else setterName(nodes[ID].longName);
+      onSelectStart(ID, {} as React.SyntheticEvent<HTMLElement>);
     }
   };
 
@@ -297,6 +299,16 @@ const StartEndSelect: React.FC<NodeSelectProps> = ({
                   .map((node) => (
                     <li
                       key={node.nodeID}
+                      onMouseEnter={() => {
+                        if (onHoverNode) {
+                          onHoverNode(node);
+                        }
+                      }}
+                      onMouseLeave={() => {
+                        if (onHoverNode) {
+                          onHoverNode(null);
+                        }
+                      }}
                       onClick={() => {
                         onSelectStart(
                           node.nodeID,

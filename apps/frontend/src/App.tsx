@@ -70,10 +70,6 @@ function App() {
           path: "/AboutUs",
           element: <AboutMe />,
         },
-        {
-          path: "/Credits",
-          element: <CreditsPage />,
-        },
         /*    {
           path: "/About",
           element: <AboutUs />,
@@ -81,6 +77,10 @@ function App() {
         {
           path: "/directions/:startAndStop",
           element: <PhoneDirections />,
+        },
+        {
+          path: "/Credits",
+          element: <CreditsPage />,
         },
       ],
     },

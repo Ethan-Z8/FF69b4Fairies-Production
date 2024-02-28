@@ -194,12 +194,14 @@ const StartEndSelect: React.FC<NodeSelectProps> = ({
     setterName: (value: string) => void,
     event: React.KeyboardEvent<HTMLInputElement>,
     filteredItems: Node[],
+    onSelect: (item: string, event: React.SyntheticEvent<HTMLElement>) => void,
   ) => {
     if (event.key === "Enter" && filteredItems.length > 0) {
       const ID = filteredItems[0].nodeID;
       setter(ID);
       if (nodes[ID].longName.length > 30) setterName(nodes[ID].shortName);
       else setterName(nodes[ID].longName);
+      onSelect(ID, {} as React.SyntheticEvent<HTMLElement>);
     }
   };
 
@@ -270,6 +272,7 @@ const StartEndSelect: React.FC<NodeSelectProps> = ({
                       .toLowerCase()
                       .includes(startName.toLowerCase()),
                 ),
+                onSelectStart,
               )
             }
             value={startName}
@@ -496,6 +499,7 @@ const StartEndSelect: React.FC<NodeSelectProps> = ({
                     node.nodeID.toLowerCase().includes(endName.toLowerCase()) ||
                     node.nodeType.toLowerCase().includes(endName.toLowerCase()),
                 ),
+                onSelectEnd,
               )
             }
             onChange={(e) => {

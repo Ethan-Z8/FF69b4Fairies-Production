@@ -53,6 +53,30 @@ export function ServiceRequestMode() {
     "3": { width: 0, height: 0 },
   });
 
+  const [zoomToCoords, setZoomToCoords] = useState<
+    { x: number; y: number } | undefined
+  >(undefined);
+
+  const [zoomToIndex, setZoomToIndex] = useState<number | undefined>(undefined);
+
+  const [debouncedZoomToCoords, setDebouncedZoomToCoords] = useState<
+    | {
+        x: number;
+        y: number;
+      }
+    | undefined
+  >(undefined);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      console.log(zoomToCoords);
+      setDebouncedZoomToCoords(zoomToCoords);
+      if (zoomToIndex) setMapIndex(zoomToIndex);
+    }, 800);
+
+    return () => clearTimeout(timer);
+  }, [zoomToCoords, zoomToIndex]);
+
   useEffect(() => {
     axios.get("/api/map").then((res) => setNodes(res.data));
     axios.get("/api/serviceRequest").then((res) => {
@@ -132,7 +156,7 @@ export function ServiceRequestMode() {
           start={""}
           end={""}
         />
-        <TransformContainer>
+        <TransformContainer zoomToCoordinate={debouncedZoomToCoords}>
           <div
             className="map-container"
             style={
@@ -224,6 +248,19 @@ export function ServiceRequestMode() {
           <ServiceAutocomplete
             start={selectedNode}
             onSelectStart={setSelectedNode}
+            onHoverNode={(node) => {
+              if (node) {
+                setZoomToCoords({ x: node.xcoord, y: node.ycoord });
+                setZoomToIndex(
+                  mapPathNames.findIndex(
+                    (floor) => floor.toLowerCase() === node.floor.toLowerCase(),
+                  ),
+                );
+              } else {
+                setZoomToCoords(undefined);
+                setZoomToIndex(undefined);
+              }
+            }}
           />
           {selectedNode && (
             <ServiceRequestsAtNode nodeID={selectedNode} requests={requests} />
