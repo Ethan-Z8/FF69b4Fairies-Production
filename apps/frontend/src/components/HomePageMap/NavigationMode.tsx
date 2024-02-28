@@ -8,6 +8,7 @@ import RouteIcon from "@mui/icons-material/Route";
 import AddLocationIcon from "@mui/icons-material/AddLocation";
 import "../../styling/DisplayMapNodes.css";
 import TransformContainer from "./TransformContainer.tsx";
+import InfoOffCanvas from "../InfoOffCanvas.tsx";
 
 import LL1 from "../../assets/hospitalmaps/00_thelowerlevel1-min.png";
 import LL2 from "../../assets/hospitalmaps/00_thelowerlevel2-min.png";
@@ -278,7 +279,7 @@ export function NavigationMode({ destinationID }: NavigationModeProps) {
           height: 320,
           top: 20,
           left: "23%",
-          zIndex: 4,
+          zIndex: 100,
           transform: "translateZ(0px)",
           flexGrow: 1,
         }}
@@ -352,6 +353,7 @@ export function NavigationMode({ destinationID }: NavigationModeProps) {
           <MenuItem value={"DijkstraAlgo"}>Dijkstras</MenuItem>
         </Select>
       </Box>
+      <InfoOffCanvas />
       <div className="total">
         <div className="nodeSelectContainer" style={{}}>
           <StartEndSelect

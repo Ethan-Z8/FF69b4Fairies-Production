@@ -17,7 +17,7 @@ const AboutMe = () => {
     <div
       className="about-the-team"
       style={{
-        width: "75%",
+        width: "85%",
         paddingTop: "20px",
         paddingBottom: "10px",
         gap: "10px",
@@ -27,10 +27,15 @@ const AboutMe = () => {
 
       <div className="team-members-flex">
         <div
-          style={{ display: "flex", flexDirection: "row", paddingTop: "20px" }}
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            paddingTop: "20px",
+            justifyContent: "space-between",
+          }}
         >
           <AboutCard
-            Name={"Ajay"}
+            Name={"Ajay Bhagavatula"}
             role={"Team Lead"}
             devrole={"FullStack Engineer"}
             ClassYear={"2026"}
@@ -57,7 +62,7 @@ const AboutMe = () => {
           <AboutCard
             Name={"Vaansh Mansharamani"}
             role={"Assistant Lead"}
-            devrole={"Algorithims Engineer"}
+            devrole={"Algorithm Engineer"}
             ClassYear={"2026"}
             Major={"Computer Science"}
             Email={" vmansharamani@wpi.edu"}
@@ -78,8 +83,32 @@ const AboutMe = () => {
             Github={"https://github.com/Ethan-Z8"}
             Linkdin={"https://www.linkedin.com/in/ethan-zhong-76886a21a/"}
             Imagepath={Ethan}
+            Favorite_quote={
+              "Success is not final, failure is not fatal: it is the courage to continue that counts. - Winston Churchill"
+            }
+          />
+          <AboutCard
+            Name={"Mahit Verma"}
+            role={"Product Owner"}
+            devrole={"Full Stack Engineer"}
+            ClassYear={"2026"}
+            Major={"Computer Science and Data Science"}
+            Email={"mverma@wpi.edu"}
+            Github={"https://github.com/MaVeryo"}
+            Linkdin={"https://www.linkedin.com/in/mahit-verma/"}
+            Imagepath={Mahit}
             Favorite_quote={""}
           />
+        </div>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            paddingTop: "20px",
+            paddingBottom: "10px",
+            justifyContent: "space-between",
+          }}
+        >
           <AboutCard
             Name={"Zane Altheimer"}
             role={"Document Analyst"}
@@ -94,15 +123,6 @@ const AboutMe = () => {
               "'The machine does not isolate man from the great problems of nature but plunges him more deeply into them.' - Antoine de Saint-Exupéry, The Little Prince"
             }
           />
-        </div>
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            paddingTop: "20px",
-            paddingBottom: "10px",
-          }}
-        >
           <AboutCard
             Name={"Justin Smith"}
             role={"Full-time Developer"}
@@ -137,26 +157,13 @@ const AboutMe = () => {
             Github={"https://github.com/shawnp221"}
             Linkdin={"https://www.linkedin.com/in/shawn-patel-359a562a7/"}
             Imagepath={Shawn}
-            Favorite_quote={"'I Have a Dream' - Martin Luther King Jr"}
-          />
-
-          <AboutCard
-            Name={"Mahit Verma"}
-            role={""}
-            devrole={"Backend Engineer"}
-            ClassYear={"2026"}
-            Major={"Computer Science and Data Science"}
-            Email={"mverma@wpi.edu"}
-            Github={"https://github.com/MaVeryo"}
-            Linkdin={"https://www.linkedin.com/in/mahit-verma/"}
-            Imagepath={Mahit}
             Favorite_quote={""}
           />
 
           <AboutCard
             Name={"Aishwarya Silam"}
-            role={"Team Lead"}
-            devrole={"FullStack Engineer"}
+            role={""}
+            devrole={"Backend Engineer"}
             ClassYear={"2026"}
             Major={"Computer Science"}
             Email={"asdf@wpi.edu"}
