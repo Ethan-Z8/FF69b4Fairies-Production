@@ -17,7 +17,7 @@ const AboutMe = () => {
     <div
       className="about-the-team"
       style={{
-        width: "75%",
+        width: "85%",
         paddingTop: "20px",
         paddingBottom: "10px",
         gap: "10px",
@@ -27,10 +27,15 @@ const AboutMe = () => {
 
       <div className="team-members-flex">
         <div
-          style={{ display: "flex", flexDirection: "row", paddingTop: "20px" }}
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            paddingTop: "20px",
+            justifyContent: "space-between",
+          }}
         >
           <AboutCard
-            Name={"Ajay"}
+            Name={"Ajay Bhagavatula"}
             role={"Team Lead"}
             devrole={"FullStack Engineer"}
             ClassYear={"2026"}
@@ -57,7 +62,7 @@ const AboutMe = () => {
           <AboutCard
             Name={"Vaansh Mansharamani"}
             role={"Assistant Lead"}
-            devrole={"Algorithims Engineer"}
+            devrole={"Algorithm Engineer"}
             ClassYear={"2026"}
             Major={"Computer Science"}
             Email={" vmansharamani@wpi.edu"}
@@ -78,7 +83,9 @@ const AboutMe = () => {
             Github={"https://github.com/Ethan-Z8"}
             Linkdin={"https://www.linkedin.com/in/ethan-zhong-76886a21a/"}
             Imagepath={Ethan}
-            Favorite_quote={""}
+            Favorite_quote={
+              "Success is not final, failure is not fatal: it is the courage to continue that counts. - Winston Churchill"
+            }
           />
           <AboutCard
             Name={"Zane Altheimer"}
@@ -99,6 +106,7 @@ const AboutMe = () => {
             flexDirection: "row",
             paddingTop: "20px",
             paddingBottom: "10px",
+            justifyContent: "space-between",
           }}
         >
           <AboutCard
