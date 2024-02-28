@@ -31,14 +31,16 @@ const AboutMe = () => {
         Our sincerest gratitude towards Brigham and Women’s Hospital and their
         representative, Mr. Andrew Shinn.
       </h3>
-      <h1 style={{ textAlign: "center", paddingTop: "50px" }}>Faculty</h1>
-      <div className="faculty-flex" style={{ justifyContent: "center" }}>
+      <h1 style={{ textAlign: "center", paddingTop: "75px" }}>Faculty</h1>
+      <div className="faculty-flex">
         <div
           style={{
             display: "flex",
             flexDirection: "row",
             paddingTop: "20px",
-            justifyContent: "space-between",
+            justifyContent: "space-evenly",
+            alignItems: "center",
+            margin: "auto",
           }}
         >
           <AboutCardFaculty
@@ -206,7 +208,7 @@ const AboutMe = () => {
             />
           </div>
         </div>
-        <h6 style={{ textAlign: "center", marginTop: "20px" }}>
+        <h6 style={{ textAlign: "center", marginTop: "75px" }}>
           WPI Computer Science Department, CS3733-C24 Software Engineering
         </h6>
         <h6 style={{ textAlign: "center", marginTop: "20px" }}>
