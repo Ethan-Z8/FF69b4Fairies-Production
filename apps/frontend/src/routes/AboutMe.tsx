@@ -75,7 +75,7 @@ const AboutMe = () => {
               Linkdin={"https://www.linkedin.com/in/ajaywpi/"}
               Imagepath={Ajay}
               Favorite_quote={
-                "''You miss 100% of the shots you don't take.' - Wayne Gretzky' - Michael Scott"
+                "'You miss 100% of the shots you don't take.' - Wayne Gretzky' - Michael Scott"
               }
             />
 
@@ -89,7 +89,7 @@ const AboutMe = () => {
               Github={"https://github.com/notLeoHirano"}
               Linkdin={"asdf.com"}
               Imagepath={Leo}
-              Favorite_quote={"One million billion marbles"}
+              Favorite_quote={"'One million billion marbles' - Leo"}
             />
             <AboutCard
               Name={"Vaansh Mansharamani"}
@@ -116,7 +116,7 @@ const AboutMe = () => {
               Linkdin={"https://www.linkedin.com/in/ethan-zhong-76886a21a/"}
               Imagepath={Ethan}
               Favorite_quote={
-                "Success is not final, failure is not fatal: it is the courage to continue that counts. - Winston Churchill"
+                "'Success is not final, failure is not fatal: it is the courage to continue that counts.' - Winston Churchill"
               }
             />
             <AboutCard
@@ -130,7 +130,7 @@ const AboutMe = () => {
               Linkdin={"https://www.linkedin.com/in/mahit-verma/"}
               Imagepath={Mahit}
               Favorite_quote={
-                "'Now, water can flow or it can crash. Be water, my friend.' ~Bruce Lee"
+                "'Now, water can flow or it can crash. Be water, my friend.' - Bruce Lee"
               }
             />
           </div>
@@ -181,7 +181,9 @@ const AboutMe = () => {
               Github={" https://github.com/Steelplate"}
               Linkdin={" https://www.linkedin.com/in/friedman-maxwell/"}
               Imagepath={Max}
-              Favorite_quote={""}
+              Favorite_quote={
+                "'You must be the change you wish to see in the world.' -Mahatma Gandhi"
+              }
             />
             <AboutCard
               Name={"Shawn Patel"}
@@ -208,7 +210,9 @@ const AboutMe = () => {
               Github={"google.com"}
               Linkdin={"asdf.com"}
               Imagepath={Aish}
-              Favorite_quote={""}
+              Favorite_quote={
+                "'Spread love everywhere you go. Let no one ever come to you without leaving happier.' -Mother Teresa"
+              }
             />
           </div>
         </div>
