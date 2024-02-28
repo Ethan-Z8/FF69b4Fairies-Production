@@ -367,6 +367,7 @@ export function NavigationMode({ destinationID }: NavigationModeProps) {
                 setZoomToCoords(undefined);
               }
             }}
+            algo={ChosenAlgorithim}
           />
         </div>
 

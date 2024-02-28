@@ -12,6 +12,7 @@ interface TextDirectionPathProps {
   end: string;
   forceClose: boolean;
   resetPath: boolean;
+  algo?: string;
 }
 
 const TextDirectionPathFinding: React.FC<TextDirectionPathProps> = ({
@@ -19,6 +20,7 @@ const TextDirectionPathFinding: React.FC<TextDirectionPathProps> = ({
   end,
   forceClose,
   resetPath,
+  algo,
 }) => {
   const [floorDirections, setFloorDirections] = useState<{
     [floor: string]: string[];
@@ -31,7 +33,7 @@ const TextDirectionPathFinding: React.FC<TextDirectionPathProps> = ({
       const getDirections = async () => {
         try {
           const res = await axios.get("/api/map/getTextDirections", {
-            params: { start, end },
+            params: { start, end, algo },
           });
           preprocessDirections(res.data);
         } catch (err) {
@@ -40,7 +42,7 @@ const TextDirectionPathFinding: React.FC<TextDirectionPathProps> = ({
       };
       getDirections();
     }
-  }, [start, end, resetPath]);
+  }, [start, end, resetPath, algo]);
 
   const preprocessDirections = (directions: string[]) => {
     const floorDirectionMap: { [floor: string]: string[] } = {};
