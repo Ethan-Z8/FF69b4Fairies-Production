@@ -58,7 +58,7 @@ const AboutCard = ({
       sx={{
         maxWidth: 700,
         "&:hover": {
-          //width: "100%",
+          cursor: "pointer",
           backgroundColor: "#e9e8e9",
           // backgroundColor:"green",
         },
