@@ -17,13 +17,22 @@ export default class EmployeeData implements Employee {
 
   static csvStringToEmp(input: string): EmployeeData[] {
     // Split by lines. The first line is the headers, the last line is a blank
-    const lines = input.split(/\r?\n/).slice(0, -1);
+    const lines = input.split(/\r?\n/);
     const top = lines.shift();
     if (top !== "username,password,displayName") {
       throw new Error(
         `This csv does not have the right headers they should be: ${top}`,
       );
     }
-    return lines.map((line) => new EmployeeData(line.split(",")));
+    return lines
+      .filter((line) => line !== "")
+      .map((line) => {
+        const props = line.split(",");
+        return {
+          username: props[0],
+          password: props[1],
+          displayName: props[2],
+        };
+      });
   }
 }

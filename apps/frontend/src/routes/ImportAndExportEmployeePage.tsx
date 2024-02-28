@@ -31,7 +31,7 @@ export function ImportAndExportEmployeePage() {
     //     formData.append("nodes", nodesInput.files![0]);
     // }
     if (employeesInput.files) {
-      formData.append("employees", employeesInput.files![0]);
+      formData.append("employee", employeesInput.files![0]);
     }
 
     axios
