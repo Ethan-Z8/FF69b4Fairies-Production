@@ -147,8 +147,10 @@ export function Navigation() {
               title={<span style={{ color: "white" }}>Information </span>}
               className="navbar-item"
             >
-              <NavDropdown.Item href="/Credits">Credits Page</NavDropdown.Item>
-              <NavDropdown.Item href="/AboutUs">About Us Page</NavDropdown.Item>
+              <NavDropdown.Item href="/AboutUs">About Us</NavDropdown.Item>
+              <NavDropdown.Item href="/Credits">
+                Credited Software
+              </NavDropdown.Item>
             </NavDropdown>
           </>
         )}

@@ -88,15 +88,15 @@ const AboutMe = () => {
             }
           />
           <AboutCard
-            Name={"Zane Altheimer"}
-            role={"Document Analyst"}
-            devrole={"Frotend Engineer"}
-            ClassYear={"2024"}
-            Major={"Robotics Engineering"}
-            Email={"asdf@wpi.edu"}
-            Github={"google.com"}
-            Linkdin={"asdf.com"}
-            Imagepath={Zane}
+            Name={"Mahit Verma"}
+            role={"Product Owner"}
+            devrole={"Full Stack Engineer"}
+            ClassYear={"2026"}
+            Major={"Computer Science and Data Science"}
+            Email={"mverma@wpi.edu"}
+            Github={"https://github.com/MaVeryo"}
+            Linkdin={"https://www.linkedin.com/in/mahit-verma/"}
+            Imagepath={Mahit}
             Favorite_quote={""}
           />
         </div>
@@ -109,6 +109,20 @@ const AboutMe = () => {
             justifyContent: "space-between",
           }}
         >
+          <AboutCard
+            Name={"Zane Altheimer"}
+            role={"Document Analyst"}
+            devrole={"Frontend Engineer"}
+            ClassYear={"2024"}
+            Major={"Robotics Engineering"}
+            Email={"zaaltheimer@wpi.edu"}
+            Github={"https://github.com/z-altheimer"}
+            Linkdin={"https://www.linkedin.com/in/zaltheimer/"}
+            Imagepath={Zane}
+            Favorite_quote={
+              "'The machine does not isolate man from the great problems of nature but plunges him more deeply into them.' - Antoine de Saint-Exupéry, The Little Prince"
+            }
+          />
           <AboutCard
             Name={"Justin Smith"}
             role={"Full-time Developer"}
@@ -147,22 +161,9 @@ const AboutMe = () => {
           />
 
           <AboutCard
-            Name={"Mahit Verma"}
+            Name={"Aishwarya Silam"}
             role={""}
             devrole={"Backend Engineer"}
-            ClassYear={"2026"}
-            Major={"Computer Science and Data Science"}
-            Email={"mverma@wpi.edu"}
-            Github={"https://github.com/MaVeryo"}
-            Linkdin={"https://www.linkedin.com/in/mahit-verma/"}
-            Imagepath={Mahit}
-            Favorite_quote={""}
-          />
-
-          <AboutCard
-            Name={"Aishwarya Silam"}
-            role={"Team Lead"}
-            devrole={"FullStack Engineer"}
             ClassYear={"2026"}
             Major={"Computer Science"}
             Email={"asdf@wpi.edu"}

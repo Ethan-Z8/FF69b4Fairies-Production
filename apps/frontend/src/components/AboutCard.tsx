@@ -1,6 +1,6 @@
 import {
   Box,
-  Button,
+  IconButton,
   Card,
   CardActions,
   CardContent,
@@ -22,6 +22,8 @@ const style = {
   p: 4,
 };
 
+import GitHubIcon from "@mui/icons-material/GitHub";
+import LinkedInIcon from "@mui/icons-material/LinkedIn";
 interface AboutInfo {
   Name: string;
   role: string;
@@ -112,18 +114,14 @@ const AboutCard = ({
         </Typography>
       </CardContent>
       <CardActions>
-        <Button size="small" variant="outlined" href={Github}>
-          Github
-        </Button>
-        <Button size="small" href={Linkdin}>
-          Linkdin{" "}
-        </Button>
+        <IconButton href={Github} target="_blank">
+          <GitHubIcon sx={{ fontSize: "larger" }} />
+        </IconButton>
+        <IconButton href={Linkdin} target="_blank">
+          <LinkedInIcon sx={{ fontSize: "larger" }} />
+        </IconButton>
       </CardActions>
     </Card>
-
-    // <div style={{backgroundColor = "yellow"}}>
-    // </div>
-    // <Paper/>
   );
 };
 export default AboutCard;
