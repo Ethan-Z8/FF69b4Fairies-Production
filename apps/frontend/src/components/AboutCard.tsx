@@ -15,7 +15,7 @@ const style = {
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: 400,
+  width: 600,
   bgcolor: "background.paper",
   border: "0px solid #000 !important",
   boxShadow: 24,
@@ -71,7 +71,7 @@ const AboutCard = ({
       }}
     >
       <CardMedia
-        sx={{ height: 250 }}
+        sx={{ height: 250, width: 250 }}
         image={Imagepath}
         title={Name}
         onClick={handleOpen}
@@ -92,35 +92,53 @@ const AboutCard = ({
           </Typography>
         </Box>
       </Modal>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "space-between",
+          height: "340px",
+        }}
+      >
+        <div>
+          <CardContent onClick={handleOpen} sx={{ width: 250 }}>
+            <Typography
+              gutterBottom
+              variant="h5"
+              component="div"
+              maxWidth={"50%"}
+            >
+              {Name}
+            </Typography>
+            <Typography variant="body2" color="text.secondary">
+              Role: {role}
+            </Typography>
+            <Typography variant="body2" color="text.secondary">
+              Software Role: {devrole}
+            </Typography>
+            <Typography variant="body2" color="text.secondary">
+              Class Year: {ClassYear}
+            </Typography>
+            <Typography variant="body2" color="text.secondary">
+              Major: {Major}
+            </Typography>
+            <Typography variant="body2" color="text.secondary">
+              Email: {Email}
+            </Typography>
+          </CardContent>
+        </div>
 
-      <CardContent onClick={handleOpen}>
-        <Typography gutterBottom variant="h5" component="div" maxWidth={"50%"}>
-          {Name}
-        </Typography>
-        <Typography variant="body2" color="text.secondary">
-          Role: {role}
-        </Typography>
-        <Typography variant="body2" color="text.secondary">
-          Software Role: {devrole}
-        </Typography>
-        <Typography variant="body2" color="text.secondary">
-          Class Year: {ClassYear}
-        </Typography>
-        <Typography variant="body2" color="text.secondary">
-          Major: {Major}
-        </Typography>
-        <Typography variant="body2" color="text.secondary">
-          Email: {Email}
-        </Typography>
-      </CardContent>
-      <CardActions>
-        <IconButton href={Github} target="_blank">
-          <GitHubIcon sx={{ fontSize: "larger" }} />
-        </IconButton>
-        <IconButton href={Linkdin} target="_blank">
-          <LinkedInIcon sx={{ fontSize: "larger" }} />
-        </IconButton>
-      </CardActions>
+        <div>
+          <CardActions sx={{ alignItems: "end" }}>
+            <IconButton href={Github} target="_blank">
+              <GitHubIcon sx={{ fontSize: "larger" }} />
+            </IconButton>
+            <IconButton href={Linkdin} target="_blank">
+              <LinkedInIcon sx={{ fontSize: "larger" }} />
+            </IconButton>
+          </CardActions>
+        </div>
+      </div>
     </Card>
   );
 };
