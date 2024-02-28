@@ -85,7 +85,7 @@ const AboutCard = ({
       >
         <Box sx={style}>
           <Typography id="modal-modal-title" variant="h6" component="h2">
-            Favorite Quote:
+            {Name}'s Favorite Quote:
           </Typography>
           <Typography id="modal-modal-description" sx={{ mt: 2 }}>
             {Favorite_quote}
