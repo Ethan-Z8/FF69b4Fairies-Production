@@ -27,11 +27,11 @@ const AboutMe = () => {
         gap: "10px",
       }}
     >
-      <h3 style={{ textAlign: "center" }}>
+      <h4 style={{ textAlign: "center" }}>
         Our sincerest gratitude towards Brigham and Women’s Hospital and their
         representative, Mr. Andrew Shinn.
-      </h3>
-      <h1 style={{ textAlign: "center", paddingTop: "75px" }}>Faculty</h1>
+      </h4>
+      <h1 style={{ textAlign: "center", paddingTop: "70px" }}>Faculty</h1>
       <div className="faculty-flex">
         <div
           style={{
@@ -165,7 +165,9 @@ const AboutMe = () => {
               Github={"https://github.com/JustinS-23"}
               Linkdin={"https://www.linkedin.com/in/justin-smith-b61647215/"}
               Imagepath={Justin}
-              Favorite_quote={"'Float like a butterfly, sting like a bee.'"}
+              Favorite_quote={
+                "'Float like a butterfly, sting like a bee.' - Muhammad Ali"
+              }
             />
             <AboutCard
               Name={"Maxwell Friedman"}
