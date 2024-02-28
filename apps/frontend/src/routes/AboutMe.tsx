@@ -74,7 +74,9 @@ const AboutMe = () => {
               Github={"https://github.com/ajay-bhagava"}
               Linkdin={"https://www.linkedin.com/in/ajaywpi/"}
               Imagepath={Ajay}
-              Favorite_quote={""}
+              Favorite_quote={
+                "''You miss 100% of the shots you don't take.' - Wayne Gretzky' - Michael Scott"
+              }
             />
 
             <AboutCard
@@ -101,7 +103,7 @@ const AboutMe = () => {
                 "https://www.linkedin.com/in/vaansh-mansharamani-30a6b7227/"
               }
               Imagepath={Vaanch}
-              Favorite_quote={""}
+              Favorite_quote={"Cool Beans ~ Vaansh"}
             />
             <AboutCard
               Name={"Ethan Zhong"}
