@@ -13,6 +13,7 @@ import Max from "../../src/assets/Max.png";
 import Shawn from "../../src/assets/Shawnpng.png";
 import Zane from "../../src/assets/Zane.png";
 import Vaanch from "../../src/assets/Vannch.png";
+import WPI_Logo from "../../src/assets/WPI_Logo.jpg";
 
 const AboutMe = () => {
   return (
@@ -217,10 +218,16 @@ const AboutMe = () => {
           </div>
         </div>
         <h6 style={{ textAlign: "center", marginTop: "20px" }}>
+          WPI Computer Science Department, CS3733-C24 Software Engineering
+        </h6>
+        <h6 style={{ textAlign: "center", marginTop: "20px" }}>
           ©The Brigham & Women’s Hospital maps and data used in this
           application are copyrighted and provided for the sole use of
           educational purposes.
         </h6>
+        <div style={{ textAlign: "center" }}>
+          <img src={WPI_Logo} alt="WPI Logo" style={{ maxWidth: "150px" }} />
+        </div>
       </div>
     </div>
   );
