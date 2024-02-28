@@ -111,15 +111,15 @@ const AboutMe = () => {
         >
           <AboutCard
             Name={"Justin Smith"}
-            role={""}
+            role={"Full-time Developer"}
             devrole={"Frontend Engineer"}
             ClassYear={"2025"}
             Major={"Computer Science and Game Development"}
-            Email={"asdf@wpi.edu"}
-            Github={"google.com"}
-            Linkdin={"asdf.com"}
+            Email={"jmsmith2@wpi.edu"}
+            Github={"https://github.com/JustinS-23"}
+            Linkdin={"https://www.linkedin.com/in/justin-smith-b61647215/"}
             Imagepath={Justin}
-            Favorite_quote={""}
+            Favorite_quote={"'Float like a butterfly, sting like a bee.'"}
           />
           <AboutCard
             Name={"Maxwell Friedman"}

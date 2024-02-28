@@ -99,7 +99,6 @@ export function NavigationMode({ destinationID }: NavigationModeProps) {
     | undefined
   >(undefined);
 
-  // Debounce effect for zoomToCoords
   useEffect(() => {
     const timer = setTimeout(() => {
       setDebouncedZoomToCoords(zoomToCoords);
