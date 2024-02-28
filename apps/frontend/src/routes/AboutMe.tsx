@@ -27,18 +27,20 @@ const AboutMe = () => {
         gap: "10px",
       }}
     >
-      <h3 style={{ textAlign: "center" }}>
+      <h4 style={{ textAlign: "center" }}>
         Our sincerest gratitude towards Brigham and Women’s Hospital and their
         representative, Mr. Andrew Shinn.
-      </h3>
-      <h1 style={{ textAlign: "center", paddingTop: "50px" }}>Faculty</h1>
-      <div className="faculty-flex" style={{ justifyContent: "center" }}>
+      </h4>
+      <h1 style={{ textAlign: "center", paddingTop: "70px" }}>Faculty</h1>
+      <div className="faculty-flex">
         <div
           style={{
             display: "flex",
             flexDirection: "row",
             paddingTop: "20px",
-            justifyContent: "space-between",
+            justifyContent: "space-evenly",
+            alignItems: "center",
+            margin: "auto",
           }}
         >
           <AboutCardFaculty
@@ -163,7 +165,9 @@ const AboutMe = () => {
               Github={"https://github.com/JustinS-23"}
               Linkdin={"https://www.linkedin.com/in/justin-smith-b61647215/"}
               Imagepath={Justin}
-              Favorite_quote={"'Float like a butterfly, sting like a bee.'"}
+              Favorite_quote={
+                "'Float like a butterfly, sting like a bee.' - Muhammad Ali"
+              }
             />
             <AboutCard
               Name={"Maxwell Friedman"}
@@ -206,7 +210,7 @@ const AboutMe = () => {
             />
           </div>
         </div>
-        <h6 style={{ textAlign: "center", marginTop: "20px" }}>
+        <h6 style={{ textAlign: "center", marginTop: "75px" }}>
           WPI Computer Science Department, CS3733-C24 Software Engineering
         </h6>
         <h6 style={{ textAlign: "center", marginTop: "20px" }}>
