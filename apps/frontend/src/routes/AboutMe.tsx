@@ -1,6 +1,7 @@
 //import React, { useEffect, useState } from "react";
 
 import AboutCard from "../components/AboutCard.tsx";
+import AboutCardFaculty from "../components/AboutCardFaculty.tsx";
 import Wong from "../assets/Wong.png";
 import Joe from "../assets/Joseph-SA.png";
 import Aish from "../../src/assets/Aishwarya.png";
@@ -25,12 +26,12 @@ const AboutMe = () => {
         gap: "10px",
       }}
     >
-      <h2 style={{ textAlign: "center" }}>
+      <h3 style={{ textAlign: "center" }}>
         Our sincerest gratitude towards Brigham and Women’s Hospital and their
         representative, Mr. Andrew Shinn.
-      </h2>
+      </h3>
       <h1 style={{ textAlign: "center", paddingTop: "50px" }}>Faculty</h1>
-      <div className="faculty-flex">
+      <div className="faculty-flex" style={{ justifyContent: "center" }}>
         <div
           style={{
             display: "flex",
@@ -39,29 +40,15 @@ const AboutMe = () => {
             justifyContent: "space-between",
           }}
         >
-          <AboutCard
+          <AboutCardFaculty
             Name={"Wilson Wong"}
-            role={"Team Lead"}
-            devrole={"FullStack Engineer"}
-            ClassYear={"2026"}
-            Major={"Computer Science"}
-            Email={"asdf@wpi.edu"}
-            Github={"google.com"}
-            Linkdin={"asdf.com"}
+            role={"Professor"}
             Imagepath={Wong}
-            Favorite_quote={""}
           />
-          <AboutCard
+          <AboutCardFaculty
             Name={"Joseph Cardarelli"}
             role={"Team Coach"}
-            devrole={"N/A"}
-            ClassYear={"2024"}
-            Major={"Computer Science"}
-            Email={"asdf@wpi.edu"}
-            Github={"google.com"}
-            Linkdin={"https://www.linkedin.com/in/joseph-cardarelli-3a12a1254/"}
             Imagepath={Joe}
-            Favorite_quote={""}
           />
         </div>
         <h1 style={{ textAlign: "center", paddingTop: "100px" }}>Our Team</h1>
