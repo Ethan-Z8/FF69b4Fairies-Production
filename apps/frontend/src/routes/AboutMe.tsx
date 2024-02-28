@@ -60,7 +60,7 @@ const AboutMe = () => {
             Github={"https://github.com/notLeoHirano"}
             Linkdin={"asdf.com"}
             Imagepath={Leo}
-            Favorite_quote={""}
+            Favorite_quote={"One million billion marbles"}
           />
           <AboutCard
             Name={"Vaansh Mansharamani"}
