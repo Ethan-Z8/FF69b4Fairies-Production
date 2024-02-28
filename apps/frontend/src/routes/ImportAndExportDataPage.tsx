@@ -14,7 +14,7 @@ import FileDownloadIcon from "@mui/icons-material/FileDownload";
 export function ImportAndExportDataPage() {
   const [importErr, setImportErr] = useState<boolean>(false);
   const [exportErr, setExportErr] = useState<boolean>(false);
-
+  const [importSuccess, setImportSuccess] = useState(false);
   function handleImport(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const target = e.target as HTMLFormElement;
@@ -34,12 +34,13 @@ export function ImportAndExportDataPage() {
           "Content-Type": "multipart/form",
         },
       })
-      .then((res) => {
-        console.log("res", res);
+      .then(() => {
+        setImportSuccess(true);
+        setImportErr(false);
       })
-      .catch((e: Error) => {
-        console.log(e.message);
+      .catch(() => {
         setImportErr(true);
+        setImportSuccess(false);
       });
   }
 
@@ -82,13 +83,12 @@ export function ImportAndExportDataPage() {
         width: "50%",
         border: "8px solid #012D5A", // Add border styling here
         borderRadius: "9px", // Add border-radius for rounded corners
-        padding: "1rem",
         margin: "1rem",
       }}
     >
       <Stack gap={3}>
         <Form
-          className="m-auto w-50 mt-5"
+          className="m-auto w-75 mt-5"
           onSubmit={handleImport}
           encType="multipart/form-data"
         >
@@ -122,10 +122,16 @@ export function ImportAndExportDataPage() {
             >
               Error Importing Data
             </Form.Text>
+            <Form.Text
+              className="text-success"
+              style={{ visibility: importSuccess ? "visible" : "hidden" }}
+            >
+              Successfully imported Data!
+            </Form.Text>
           </Form.Group>
         </Form>
 
-        <Form className="m-auto w-50 mt-5" onSubmit={handleExport}>
+        <Form className="m-auto w-75 mt-5" onSubmit={handleExport}>
           <Form.Group controlId="exportCsv" as={Stack}>
             <h4>Export Map Data as CSV</h4>
             <Button
@@ -133,8 +139,7 @@ export function ImportAndExportDataPage() {
               variant="outlined"
               endIcon={<FileDownloadIcon />}
             >
-              {" "}
-              Download edges and nodes{" "}
+              Download edges and nodes
             </Button>
           </Form.Group>
           <Form.Text
