@@ -32,6 +32,7 @@ interface NodeSelectProps {
   ) => void;
   onSelectEnd: (item: string, event: React.SyntheticEvent<HTMLElement>) => void;
   onHoverNode: (node: Node | null) => void;
+  algo: string;
 }
 
 //const findablePlaces = ["Exit", "Restroom", "Info Desk", "Elevator", "Shop"];
@@ -51,6 +52,7 @@ const StartEndSelect: React.FC<NodeSelectProps> = ({
   onSelectStart,
   onSelectEnd,
   onHoverNode,
+  algo,
 }) => {
   const [startID, setStartID] = useState(start);
   const [endID, setEndID] = useState(end);
@@ -476,6 +478,7 @@ const StartEndSelect: React.FC<NodeSelectProps> = ({
               end={endID}
               forceClose={forceClose}
               resetPath={resetPath}
+              algo={algo}
             />
           </div>
         </div>
