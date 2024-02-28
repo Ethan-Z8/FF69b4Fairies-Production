@@ -67,7 +67,7 @@ const Auth0Profile = () => {
     }
 
     if (employeesInput.files) {
-      employeeData.append("employees", employeesInput.files[0]);
+      employeeData.append("employee", employeesInput.files[0]);
     }
 
     axios
@@ -254,65 +254,59 @@ const Auth0Profile = () => {
           </Table>
         </TableContainer>
         <Box mt={2}>
-          <Form.Group
-            as={Row}
-            className="mb-3"
-            style={{
-              width: "77.3x%",
-              display: "inline-flex",
-              paddingTop: "5%",
-            }}
-          >
-            <Col sm={12}>
-              <h4>Import All Data as CSV</h4>
-            </Col>
-
-            <Form.Label column sm={2} className="mb-3">
-              Edges CSV
-            </Form.Label>
-            <Col sm={10} className="mb-3">
-              <Form.Control type="file" id="edgesInput" accept=".csv" />
-            </Col>
-
-            <Form.Label column sm={2} className="mb-3">
-              Nodes CSV
-            </Form.Label>
-            <Col sm={10} className="mb-3">
-              <Form.Control type="file" id="nodesInput" accept=".csv" />
-            </Col>
-
-            <Form.Label column sm={2} className="mb-3">
-              Employee CSV
-            </Form.Label>
-            <Col sm={10} className="mb-3">
-              <Form.Control type="file" id="employeesInput" accept=".csv" />
-            </Col>
-
-            <Col sm={12} className="mb-3">
-              <Button
-                type="submit"
-                className="mt-3 w-100"
-                variant="outlined"
-                endIcon={<FileUploadOutlinedIcon />}
-              >
-                Import
-              </Button>
-              <Form.Text
-                className="text-danger"
-                style={{ visibility: importErr ? "visible" : "hidden" }}
-              >
-                Error Importing Data
-              </Form.Text>
-            </Col>
-          </Form.Group>
-
           <Form className="m-auto w-75 mt-5" onSubmit={handleImport}>
-            <Form.Text
-              className="text-danger"
-              style={{ visibility: exportErr ? "visible" : "hidden" }}
+            <Form.Group
+              as={Row}
+              className="mb-3"
+              style={{
+                width: "77.3x%",
+                display: "inline-flex",
+                paddingTop: "5%",
+              }}
+              onSubmit={handleImport}
             >
-              Error Importing Data
-            </Form.Text>
+              <Col sm={12}>
+                <h4>Import All Data as CSV</h4>
+              </Col>
+
+              <Form.Label column sm={2} className="mb-3">
+                Edges CSV
+              </Form.Label>
+              <Col sm={10} className="mb-3">
+                <Form.Control type="file" id="edgesInput" accept=".csv" />
+              </Col>
+
+              <Form.Label column sm={2} className="mb-3">
+                Nodes CSV
+              </Form.Label>
+              <Col sm={10} className="mb-3">
+                <Form.Control type="file" id="nodesInput" accept=".csv" />
+              </Col>
+
+              <Form.Label column sm={2} className="mb-3">
+                Employee CSV
+              </Form.Label>
+              <Col sm={10} className="mb-3">
+                <Form.Control type="file" id="employeesInput" accept=".csv" />
+              </Col>
+
+              <Col sm={12} className="mb-3">
+                <Button
+                  type="submit"
+                  className="mt-3 w-100"
+                  variant="outlined"
+                  endIcon={<FileUploadOutlinedIcon />}
+                >
+                  Import
+                </Button>
+                <Form.Text
+                  className="text-danger"
+                  style={{ visibility: importErr ? "visible" : "hidden" }}
+                >
+                  Error Importing Data
+                </Form.Text>
+              </Col>
+            </Form.Group>
           </Form>
 
           <Form className="m-auto w-75 mt-5" onSubmit={handleExport}>
