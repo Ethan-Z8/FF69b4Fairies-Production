@@ -756,7 +756,7 @@ const StartEndSelect: React.FC<NodeSelectProps> = ({
               label="Exit"
               onClick={() => setTargetType("EXIT")}
               color="primary"
-              sx={{ color: "text.primary" }}
+              sx={{ color: "white" }}
               clickable
             />
             <Chip

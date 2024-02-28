@@ -70,10 +70,6 @@ function App() {
           path: "/AboutUs",
           element: <AboutMe />,
         },
-        /*    {
-          path: "/About",
-          element: <AboutUs />,
-        }, */
         {
           path: "/directions/:startAndStop",
           element: <PhoneDirections />,

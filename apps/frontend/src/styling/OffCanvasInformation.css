@@ -1,0 +1,17 @@
+.infoIconForInfo {
+  width: 55px;
+  height: 55px;
+}
+
+.ListItemForOffCanvas {
+  display: flex;
+  margin-left: -5%;
+}
+
+.ListItemForOffCanvas:before {
+  color: white;
+}
+
+li:hover::before {
+  width: 0%;
+}
