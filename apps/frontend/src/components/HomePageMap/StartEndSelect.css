@@ -1,7 +1,6 @@
 .scroll-container {
   overflow: auto;
   transition: height 0.4s ease;
-
   scrollbar-width: thin;
   scrollbar-color: rgba(0, 0, 0, 0.1) transparent;
 }
@@ -61,4 +60,35 @@ li:hover::before {
 
 li:hover::before {
   transform: scaleX(1);
+}
+
+.findable-words-container {
+  display: flex;
+  align-items: center;
+  z-index: -100;
+}
+
+.find-nearest {
+  margin-right: 5px;
+}
+
+.findable-words {
+  overflow: hidden;
+  height: 20px;
+}
+
+.findable-words span {
+  transition:
+    transform 0.5s ease,
+    opacity 0.5s ease;
+}
+
+.swipe-up span {
+  transform: translateY(-100%);
+  opacity: 0;
+}
+
+.findable-words.swipe-down span {
+  transform: translateY(0);
+  opacity: 1;
 }

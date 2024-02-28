@@ -91,17 +91,13 @@ router.get("/export", async (_: Request, res: Response) => {
   try {
     // Read from the database and convert data to streams
     const employees: EmployeeData[] = await prisma.employee.findMany();
-    // const nodes: MapNodeNoNeighbors[] = await Prisma.mapNode.findMany();
-    // const edges: MapEdge[] = await Prisma.mapEdge.findMany();
     const employeesCSV: Readable = dataToCSVStream(employees);
-    // const edgesCSV: Readable = dataToCSVStream(edges);
 
     // Create an archive of the streams(basically a zip file) and pipe it into the response
     const archive = archiver("zip", {
       zlib: { level: 9 },
     });
     archive.append(employeesCSV, { name: "employees.csv" });
-    // archive.append(edgesCSV, { name: "edges.csv" });
 
     // Tell the client that the response is a file named map_data.zip
     res.set({
@@ -126,38 +122,23 @@ router.get("/export", async (_: Request, res: Response) => {
  */
 router.post(
   "/import",
-  upload.fields([
-    { name: "employee", maxCount: 1 },
-    // { name: "edges", maxCount: 1 },
-  ]),
+  upload.single("employee"),
   async (req: Request, res: Response) => {
     // Use Multer to get the files
     // Bro what is this typecasting
-    const files = req.files as { [key: string]: Express.Multer.File[] };
-    const employeesFile = files["employees"] as Express.Multer.File[];
-    // const edgesFile: Express.Multer.File[] = files["edges"];
-
+    const employeesFile = req.file as Express.Multer.File | undefined;
     try {
-      // Parse the input files into Map Nodes and Map Edges
       const employees = EmployeeData.csvStringToEmp(
-        employeesFile[0].buffer.toString(),
+        employeesFile!.buffer.toString(),
       );
-      // const nodes: MapNodeNoNeighbors[] =
-      //     MapNode.dropNeighbors(nodesWithNeighbors);
-
-      // const edges: MapEdge[] = MapEdge.csvStringToEdges(
-      //     edgesFile[0].buffer.toString(),
-      // );
+      console.log(employees);
 
       // Insert all the provided map nodes and edges, but silently ignore duplicates
       await prisma.employee.createMany({
         data: employees,
         skipDuplicates: true,
       });
-      // await Prisma.mapEdge.createMany({
-      //     data: edges,
-      //     skipDuplicates: true,
-      // });
+
       res.sendStatus(200);
     } catch (e) {
       const typedError = e as Error;

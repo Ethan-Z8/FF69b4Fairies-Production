@@ -10,6 +10,7 @@ import AlgoStrategyPattern from "../algorithms/AlgoStrategyPattern.ts";
 import AStarAlgo from "../algorithms/AStarAlgo.ts";
 import BFSAlgo from "../algorithms/BFSAlgo.ts";
 import DFSAlgo from "../algorithms/DFSAlgo.ts";
+import DijkstraAlgo from "../algorithms/DijkstraAlgo.ts";
 
 export const mapRouter: Router = express.Router();
 const upload = multer();
@@ -93,11 +94,22 @@ mapRouter.get("/getTextDirections", async (req: Request, res: Response) => {
   type StartAndEndNodes = {
     start: string;
     end: string;
+    algo?: string;
   };
   try {
+    let strategyPattern: AlgoStrategyPattern = new AStarAlgo();
+    console.log(endpoints.algo);
+    if (endpoints.algo === "BFS") {
+      strategyPattern = new BFSAlgo();
+    } else if (endpoints.algo == "DFS") {
+      strategyPattern = new DFSAlgo();
+    } else if (endpoints.algo == "DijkstraAlgo") {
+      console.log("Dijkstra");
+      strategyPattern = new DijkstraAlgo();
+    }
     const nodes = await Prisma.mapNode.findMany();
     const edges = await Prisma.mapEdge.findMany();
-    const pathFindingGraph = new Pathfinder(nodes, edges);
+    const pathFindingGraph = new Pathfinder(nodes, edges, strategyPattern);
     console.log(endpoints.end);
     const getTextDirections: string[] = pathFindingGraph.generateDirections(
       endpoints.start,
@@ -175,6 +187,7 @@ mapRouter.get("/pathNodesShort", async (req: Request, res: Response) => {
       end?: string;
       algo?: string;
     };
+    console.log("im here");
     let strategyPattern: AlgoStrategyPattern = new AStarAlgo();
     const endpoints = req.query as StartAndEndNodes;
     console.log(endpoints.algo);
@@ -182,6 +195,9 @@ mapRouter.get("/pathNodesShort", async (req: Request, res: Response) => {
       strategyPattern = new BFSAlgo();
     } else if (endpoints.algo == "DFS") {
       strategyPattern = new DFSAlgo();
+    } else if (endpoints.algo == "DijkstraAlgo") {
+      console.log("Dijkstra");
+      strategyPattern = new DijkstraAlgo();
     }
 
     const nodes = await Prisma.mapNode.findMany();
@@ -211,6 +227,50 @@ mapRouter.get("/pathNodesShort", async (req: Request, res: Response) => {
   } catch (e) {
     console.error(e);
     res.status(500).send("Internal server error");
+  }
+});
+
+mapRouter.get("/nearestType", async (req: Request, res: Response) => {
+  console.log("endpoints");
+
+  try {
+    type nearestTypeParams = {
+      start: string;
+      type: string;
+    };
+    const strategyPattern: AlgoStrategyPattern = new AStarAlgo();
+    const endpoints = req.query as nearestTypeParams;
+
+    const nodes = await Prisma.mapNode.findMany();
+    const edges = await Prisma.mapEdge.findMany();
+    const pathFindingGraph = new Pathfinder(nodes, edges, strategyPattern);
+
+    const startNodeId = endpoints.start!;
+    const targetType = endpoints.type!;
+
+    if (!startNodeId || !targetType) {
+      res.status(400).json({
+        error: "One of your nodes is not in the database",
+      });
+      return;
+    }
+
+    const nearestTypeID: string | null = pathFindingGraph.findNearestType(
+      startNodeId,
+      targetType,
+    );
+    console.log(nearestTypeID);
+
+    if (nearestTypeID == null) {
+      res.status(400).json({
+        error: "couldnt find that :(",
+      });
+    } else {
+      res.status(200).json(nearestTypeID);
+    }
+  } catch (e) {
+    console.error(e);
+    res.status(500).send("Internal  error");
   }
 });
 

@@ -8,6 +8,7 @@ import RouteIcon from "@mui/icons-material/Route";
 import AddLocationIcon from "@mui/icons-material/AddLocation";
 import "../../styling/DisplayMapNodes.css";
 import TransformContainer from "./TransformContainer.tsx";
+import InfoOffCanvas from "../InfoOffCanvas.tsx";
 
 import LL1 from "../../assets/hospitalmaps/00_thelowerlevel1-min.png";
 import LL2 from "../../assets/hospitalmaps/00_thelowerlevel2-min.png";
@@ -30,6 +31,8 @@ import RenderPath from "./RenderPath.tsx";
 import StartEndSelect from "./StartEndSelect.tsx";
 import HoveredNodeData from "./HoveredNodeData.tsx";
 import { MenuItem, Select } from "@mui/material";
+import MouseClickMenu from "./MouseClickMenu.tsx";
+//import {ServiceRequestType} from "common/src/interfaces/ServiceRequest.ts";
 
 interface Node {
   nodeID: string;
@@ -53,9 +56,14 @@ const mapPathNames: string[] = ["L2", "L1", "1", "2", "3"];
 
 const floorNames: string[] = ["LL2", "LL1", "F1", "F2", "F3"];
 
-export function NavigationMode() {
+export interface NavigationModeProps {
+  destinationID?: string;
+}
+export function NavigationMode({ destinationID }: NavigationModeProps) {
   const [firstClickedNodeId, setFirstClickedNodeId] = useState<string>("");
-  const [secondClickedNodeId, setSecondClickedNodeId] = useState<string>("");
+  const [secondClickedNodeId, setSecondClickedNodeId] = useState<string>(
+    destinationID ? destinationID : "",
+  );
   const [nodes, setNodes] = useState<Node[]>([]);
   const [allNodes, setAllNodes] = useState<Node[]>([]);
   const [imageSizes, setImageSizes] = useState<{ [key: string]: ImageSize }>({
@@ -71,6 +79,10 @@ export function NavigationMode() {
     nodes: true,
     edges: false,
   });
+  const [localPosition, setLocalPosition] = useState<{
+    x: number | null;
+    y: number | null;
+  }>({ x: null, y: null });
 
   const [toggleNodes, setToggleNodes] = useState(true);
   const [toggleEdges, setToggleEdges] = useState(false);
@@ -79,6 +91,22 @@ export function NavigationMode() {
   const [zoomToCoords, setZoomToCoords] = useState<
     { x: number; y: number } | undefined
   >(undefined);
+
+  const [debouncedZoomToCoords, setDebouncedZoomToCoords] = useState<
+    | {
+        x: number;
+        y: number;
+      }
+    | undefined
+  >(undefined);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedZoomToCoords(zoomToCoords);
+    }, 800);
+
+    return () => clearTimeout(timer);
+  }, [zoomToCoords]);
 
   //const [defaultMap, setDefaultMap] = useState(0);
 
@@ -176,7 +204,7 @@ export function NavigationMode() {
       } else {
         clearTimeout(timeoutId);
       }
-    }, 1000);
+    }, 780);
     /*timeoutId = setTimeout(() => {
       setMapIndex(defaultMap);
     }, 100);*/
@@ -220,12 +248,10 @@ export function NavigationMode() {
     if (node) {
       switch (node.nodeID) {
         case firstClickedNodeId: {
-          console.log("undo first");
           setFirstClickedNodeId("");
           break;
         }
         case secondClickedNodeId: {
-          console.log("undo second");
           setSecondClickedNodeId("");
           break;
         }
@@ -246,14 +272,14 @@ export function NavigationMode() {
   };
 
   return (
-    <div>
+    <div style={{ overflow: "hidden" }}>
       <Box
         sx={{
           position: "absolute",
           height: 320,
-          top: 10,
-          left: "21%",
-          zIndex: 4,
+          top: 20,
+          left: "23%",
+          zIndex: 100,
           transform: "translateZ(0px)",
           flexGrow: 1,
         }}
@@ -283,9 +309,7 @@ export function NavigationMode() {
             onClick={handleToggleEdges}
             tooltipPlacement={"right"}
             sx={{
-              ".active": {
-                COLOR: "yellow",
-              },
+              backgroundColor: toggleEdges ? "lightblue" : "inherit",
             }}
           />
           <SpeedDialAction
@@ -294,6 +318,9 @@ export function NavigationMode() {
             tooltipTitle={"Toggle Node"}
             onClick={handleToggleNodes}
             tooltipPlacement={"right"}
+            sx={{
+              backgroundColor: toggleNodes ? "lightblue" : "inherit",
+            }}
           />
         </SpeedDial>
         <Select
@@ -323,8 +350,10 @@ export function NavigationMode() {
           <MenuItem value={"AStarAlgo"}>A*</MenuItem>
           <MenuItem value={"BFS"}>BFS</MenuItem>
           <MenuItem value={"DFS"}>DFS</MenuItem>
+          <MenuItem value={"DijkstraAlgo"}>Dijkstras</MenuItem>
         </Select>
       </Box>
+      <InfoOffCanvas />
       <div className="total">
         <div className="nodeSelectContainer" style={{}}>
           <StartEndSelect
@@ -334,15 +363,16 @@ export function NavigationMode() {
             onSelectEnd={handleEndSelect}
             onHoverNode={(node) => {
               setHoveredNode(node);
-              console.log(zoomToCoords);
               if (node) {
                 setZoomToCoords({ x: node.xcoord, y: node.ycoord });
               } else {
                 setZoomToCoords(undefined);
               }
             }}
+            algo={ChosenAlgorithim}
           />
         </div>
+
         <SelectorTabs
           mapIndex={mapIndex}
           onMapSelect={handleMapSelect}
@@ -350,7 +380,8 @@ export function NavigationMode() {
           start={firstClickedNodeId}
           end={secondClickedNodeId}
         />
-        <TransformContainer zoomToCoordinate={zoomToCoords}>
+
+        <TransformContainer zoomToCoordinate={debouncedZoomToCoords}>
           <div
             className="map-container"
             style={
@@ -375,6 +406,7 @@ export function NavigationMode() {
               />
             ))}
             <RenderCircles
+              setPosition={setLocalPosition}
               allNodes={allNodes}
               pathNodes={nodes}
               floor={mapPathNames[mapIndex]}
@@ -394,7 +426,8 @@ export function NavigationMode() {
             />
           </div>
         </TransformContainer>
-        <HoveredNodeData node={hoveredNode} />
+        <HoveredNodeData node={hoveredNode} handleNodeHover={setHoveredNode} />
+        <MouseClickMenu node={hoveredNode} localPosition={localPosition} />
       </div>
     </div>
   );

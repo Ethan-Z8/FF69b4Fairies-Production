@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import NodeOnMap from "./NodeOnMap.tsx";
 
 interface Node {
@@ -20,6 +20,7 @@ interface Props {
   pathNodes: Node[];
   handleNodeClick: (node: Node) => void;
   handleNodeHover: (node: Node | null) => void;
+  setPosition: (position: { x: number | null; y: number | null }) => void;
 }
 
 const RenderCircles: React.FC<Props> = ({
@@ -29,7 +30,17 @@ const RenderCircles: React.FC<Props> = ({
   pathNodes,
   handleNodeClick,
   handleNodeHover,
+  setPosition,
 }) => {
+  const itemRef = useRef<HTMLDivElement>(null);
+
+  const handleClick = () => {
+    if (itemRef.current) {
+      const { left, top } = itemRef.current.getBoundingClientRect();
+      setPosition({ x: left, y: top });
+    }
+  };
+
   return toggleNodes
     ? allNodes
         .filter((node) => node.floor === floor && node.nodeType !== "HALL")
@@ -38,8 +49,13 @@ const RenderCircles: React.FC<Props> = ({
             key={node.nodeID}
             onMouseEnter={() => handleNodeHover(node)}
             onMouseLeave={() => handleNodeHover(null)}
+            ref={itemRef}
+            onClick={() => {
+              handleNodeClick(node);
+              handleClick();
+            }}
           >
-            <NodeOnMap node={node} onNodeClick={() => handleNodeClick(node)} />
+            <NodeOnMap node={node} />
           </div>
         ))
     : pathNodes
@@ -49,8 +65,13 @@ const RenderCircles: React.FC<Props> = ({
             key={node.nodeID}
             onMouseEnter={() => handleNodeHover(node)}
             onMouseLeave={() => handleNodeHover(null)}
+            ref={itemRef}
+            onClick={() => {
+              handleNodeClick(node);
+              handleClick();
+            }}
           >
-            <NodeOnMap node={node} onNodeClick={() => handleNodeClick(node)} />
+            <NodeOnMap node={node} />
           </div>
         ));
 };

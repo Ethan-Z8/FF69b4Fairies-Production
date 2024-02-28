@@ -14,7 +14,7 @@ import { MapNodeInterface } from "common/src/interfaces/MapNodeInterface.ts";
 import { ServiceRequestType } from "common/src/interfaces/ServiceRequest.ts";
 import { ServiceRequestNode } from "./ServiceRequestNode.tsx";
 import { ServiceRequestsAtNode } from "./ServiceRequestsAtNode.tsx";
-import { Autocomplete, TextField } from "@mui/material";
+import ServiceAutocomplete from "./ServiceAutocomplete.tsx";
 
 const floorNames: string[] = ["LL1", "LL2", "F1", "F2", "F3"];
 
@@ -34,6 +34,15 @@ export function ServiceRequestMode() {
   const [requestCounts, setRequestCounts] = useState<{
     [nodeID: string]: number;
   }>({});
+  const [emergencyCounts, setEmergencyCounts] = useState<{
+    [nodeID: string]: number;
+  }>({});
+  const [completedCounts, setCompletedCounts] = useState<{
+    [nodeID: string]: number;
+  }>({});
+  const [completedEmergencyCounts, setCompletedEmergencyCounts] = useState<{
+    [nodeID: string]: number;
+  }>({});
   const [selectedNode, setSelectedNode] = useState("");
   const [requests, setRequests] = useState<ServiceRequestType[]>([]);
   const [imageSizes, setImageSizes] = useState<{ [key: string]: ImageSize }>({
@@ -43,6 +52,30 @@ export function ServiceRequestMode() {
     "2": { width: 0, height: 0 },
     "3": { width: 0, height: 0 },
   });
+
+  const [zoomToCoords, setZoomToCoords] = useState<
+    { x: number; y: number } | undefined
+  >(undefined);
+
+  const [zoomToIndex, setZoomToIndex] = useState<number | undefined>(undefined);
+
+  const [debouncedZoomToCoords, setDebouncedZoomToCoords] = useState<
+    | {
+        x: number;
+        y: number;
+      }
+    | undefined
+  >(undefined);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      console.log(zoomToCoords);
+      setDebouncedZoomToCoords(zoomToCoords);
+      if (zoomToIndex) setMapIndex(zoomToIndex);
+    }, 800);
+
+    return () => clearTimeout(timer);
+  }, [zoomToCoords, zoomToIndex]);
 
   useEffect(() => {
     axios.get("/api/map").then((res) => setNodes(res.data));
@@ -57,6 +90,37 @@ export function ServiceRequestMode() {
         {} as { [nodeID: string]: number },
       );
       setRequestCounts(counts);
+      const eCount = payload.reduce(
+        (acc, curr) => {
+          if (curr.priority === "Emergency") {
+            acc[curr.location] = ++acc[curr.location] || 1;
+          }
+          return acc;
+        },
+        {} as { [nodeID: string]: number },
+      );
+      setEmergencyCounts(eCount);
+
+      const completedCounts = payload.reduce(
+        (acc, curr) => {
+          if (curr.progress === "Completed") {
+            acc[curr.location] = ++acc[curr.location] || 1;
+          }
+          return acc;
+        },
+        {} as { [nodeID: string]: number },
+      );
+      setCompletedCounts(completedCounts);
+      const completedEmergencyCounts = payload.reduce(
+        (acc, curr) => {
+          if (curr.priority === "Emergency" && curr.progress === "Completed") {
+            acc[curr.location] = ++acc[curr.location] || 1;
+          }
+          return acc;
+        },
+        {} as { [nodeID: string]: number },
+      );
+      setCompletedEmergencyCounts(completedEmergencyCounts);
     });
 
     const preloadImages = () => {
@@ -92,7 +156,7 @@ export function ServiceRequestMode() {
           start={""}
           end={""}
         />
-        <TransformContainer>
+        <TransformContainer zoomToCoordinate={debouncedZoomToCoords}>
           <div
             className="map-container"
             style={
@@ -125,6 +189,9 @@ export function ServiceRequestMode() {
                     <ServiceRequestNode
                       nodeInfo={node}
                       numRequests={requestCounts[node.nodeID]}
+                      emergency={emergencyCounts[node.nodeID]}
+                      completed={completedCounts[node.nodeID]}
+                      emergencyCompleted={completedEmergencyCounts[node.nodeID]}
                       setSelectedNode={handleSelectedNode}
                       key={node.nodeID}
                     />
@@ -136,15 +203,14 @@ export function ServiceRequestMode() {
           style={{
             display: "flex",
             position: "absolute",
-            width: "23%",
+            width: "20%",
             top: 20,
             left: 20,
             flexDirection: "column",
             maxHeight: "60%",
-            overflow: "hidden",
           }}
         >
-          <Autocomplete
+          {/*<Autocomplete
             options={Object.values(nodes).filter(
               (node) => node.nodeType !== "HALL",
             )}
@@ -178,8 +244,27 @@ export function ServiceRequestMode() {
                 }}
               />
             )}
+          />*/}
+          <ServiceAutocomplete
+            start={selectedNode}
+            onSelectStart={setSelectedNode}
+            onHoverNode={(node) => {
+              if (node) {
+                setZoomToCoords({ x: node.xcoord, y: node.ycoord });
+                setZoomToIndex(
+                  mapPathNames.findIndex(
+                    (floor) => floor.toLowerCase() === node.floor.toLowerCase(),
+                  ),
+                );
+              } else {
+                setZoomToCoords(undefined);
+                setZoomToIndex(undefined);
+              }
+            }}
           />
-          <ServiceRequestsAtNode nodeID={selectedNode} requests={requests} />
+          {selectedNode && (
+            <ServiceRequestsAtNode nodeID={selectedNode} requests={requests} />
+          )}
         </div>
       </div>
     </div>
