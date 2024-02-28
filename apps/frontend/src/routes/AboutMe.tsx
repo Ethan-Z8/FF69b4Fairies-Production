@@ -90,7 +90,9 @@ const AboutMe = () => {
             Github={"https://github.com/z-altheimer"}
             Linkdin={"https://www.linkedin.com/in/zaltheimer/"}
             Imagepath={Zane}
-            Favorite_quote={""}
+            Favorite_quote={
+              "'The machine does not isolate man from the great problems of nature but plunges him more deeply into them.' - Antoine de Saint-Exupéry, The Little Prince"
+            }
           />
         </div>
         <div
