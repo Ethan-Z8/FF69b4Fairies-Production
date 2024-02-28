@@ -135,7 +135,9 @@ const AboutMe = () => {
             Github={"https://github.com/shawnp221"}
             Linkdin={"https://www.linkedin.com/in/shawn-patel-359a562a7/"}
             Imagepath={Shawn}
-            Favorite_quote={""}
+            Favorite_quote={
+              "Good software, like wine, takes time. - Joel Spolsky"
+            }
           />
 
           <AboutCard
