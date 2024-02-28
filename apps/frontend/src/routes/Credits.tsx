@@ -10,7 +10,7 @@ import NodeJSIcon from "../assets/softwareicons/node-js-icon.png";
 import AWSIcon from "../assets/softwareicons/Amazon_Web_Services_Logo.png";
 import AxiosIcon from "../assets/softwareicons/axios-icon.png";
 import PrismaIcon from "../assets/softwareicons/prisma-icon.png";
-import PostgresIcon from "../assets/softwareicons/PostgreSQL-Logo.png";
+import PostgresIcon from "../assets/softwareicons/postgres-icon.png";
 import DockerIcon from "../assets/softwareicons/docker-icon.png";
 import Auth0Icon from "../assets/softwareicons/auth0-icon.png";
 
@@ -22,10 +22,10 @@ const CreditsPage: React.FC = () => {
         my: "1rem",
         mx: "auto",
         display: "flex",
-        maxWidth: "50%",
+        maxWidth: "60%",
         flexWrap: "wrap",
         justifyContent: "space-around",
-        alignItems: "center",
+        alignItems: "flex-end",
         gap: "4rem",
         border: "0.5rem solid #012D5A",
         borderRadius: "0.5rem",
