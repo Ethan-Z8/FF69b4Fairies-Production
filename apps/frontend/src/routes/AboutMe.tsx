@@ -46,11 +46,19 @@ const AboutMe = () => {
           <AboutCardFaculty
             Name={"Wilson Wong"}
             role={"Professor"}
+            Email={"wwong2@wpi.edu"}
+            Github={"https://github.com/ajay-bhagava"}
+            Linkdin={"https://www.linkedin.com/in/wilson-wong-wpi/"}
             Imagepath={Wong}
           />
           <AboutCardFaculty
             Name={"Joseph Cardarelli"}
             role={"Team Coach"}
+            ClassYear={"2024"}
+            Major={"RBE/CS"}
+            Email={"jrcardarelli@wpi.edu"}
+            Github={"https://github.com/ajay-bhagava"}
+            Linkdin={"https://www.linkedin.com/in/joseph-cardarelli-3a12a1254/"}
             Imagepath={Joe}
           />
         </div>
