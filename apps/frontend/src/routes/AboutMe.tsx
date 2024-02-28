@@ -23,8 +23,11 @@ const AboutMe = () => {
         gap: "10px",
       }}
     >
+      <h5 style={{ textAlign: "center" }}>
+        Our sincerest gratitude towards Brigham and Women’s Hospital and their
+        representative, Mr. Andrew Shinn.
+      </h5>
       <h1 style={{ textAlign: "center" }}>Our Team</h1>
-
       <div className="team-members-flex">
         <div
           style={{
@@ -176,6 +179,10 @@ const AboutMe = () => {
           />
         </div>
       </div>
+      <h6 style={{ textAlign: "center", marginTop: "20px" }}>
+        ©The Brigham & Women’s Hospital maps and data used in this application
+        are copyrighted and provided for the sole use of educational purposes.
+      </h6>
     </div>
   );
 };
