@@ -81,9 +81,9 @@ const AboutMe = () => {
               devrole={"FullStack Engineer"}
               ClassYear={"2026"}
               Major={"Computer Science"}
-              Email={"asdf@wpi.edu"}
-              Github={"google.com"}
-              Linkdin={"asdf.com"}
+              Email={"abhagavatula@wpi.edu"}
+              Github={"https://github.com/ajay-bhagava"}
+              Linkdin={"https://www.linkedin.com/in/ajaywpi/"}
               Imagepath={Ajay}
               Favorite_quote={""}
             />
@@ -138,7 +138,9 @@ const AboutMe = () => {
               Github={"https://github.com/MaVeryo"}
               Linkdin={"https://www.linkedin.com/in/mahit-verma/"}
               Imagepath={Mahit}
-              Favorite_quote={""}
+              Favorite_quote={
+                "'Now, water can flow or it can crash. Be water, my friend.' ~Bruce Lee"
+              }
             />
           </div>
           <div
