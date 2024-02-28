@@ -157,7 +157,9 @@ const AboutMe = () => {
             Github={"https://github.com/shawnp221"}
             Linkdin={"https://www.linkedin.com/in/shawn-patel-359a562a7/"}
             Imagepath={Shawn}
-            Favorite_quote={""}
+            Favorite_quote={
+              "'Every man must do two things alone; he must do his own believing and his own dying.' - Martin Luther King Jr"
+            }
           />
 
           <AboutCard
