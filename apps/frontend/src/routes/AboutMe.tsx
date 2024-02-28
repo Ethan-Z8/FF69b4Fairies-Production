@@ -111,7 +111,9 @@ const AboutMe = () => {
             Github={"https://github.com/z-altheimer"}
             Linkdin={"https://www.linkedin.com/in/zaltheimer/"}
             Imagepath={Zane}
-            Favorite_quote={""}
+            Favorite_quote={
+              "'The machine does not isolate man from the great problems of nature but plunges him more deeply into them.' - Antoine de Saint-Exupéry, The Little Prince"
+            }
           />
           <AboutCard
             Name={"Justin Smith"}
@@ -152,8 +154,8 @@ const AboutMe = () => {
 
           <AboutCard
             Name={"Aishwarya Silam"}
-            role={"Team Lead"}
-            devrole={"FullStack Engineer"}
+            role={""}
+            devrole={"Backend Engineer"}
             ClassYear={"2026"}
             Major={"Computer Science"}
             Email={"asdf@wpi.edu"}
