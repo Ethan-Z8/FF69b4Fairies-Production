@@ -15,10 +15,8 @@ const TextDirectionRoute = () => {
             params: { start: startLocation, end: endLocation },
           });
           const processedDirections = res.data.map((direction: string) => {
-            // Remove the last word from each direction
-            let modifiedDirection = direction.replace(/\b\w*\d\w*\b/g, "");
+            let modifiedDirection = direction.replace(/ \S+$/, "");
 
-            // Identify keywords and append symbols
             if (/right/i.test(modifiedDirection)) {
               modifiedDirection += " ➡️";
             } else if (/left/i.test(modifiedDirection)) {
