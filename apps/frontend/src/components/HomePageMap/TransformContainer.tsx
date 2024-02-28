@@ -140,35 +140,48 @@ const TransformContainer: React.FC<TransformContainerProps> = ({
         clearTimeout(debounceTimeout.current);
       }
 
-      debounceTimeout.current = setTimeout(() => {
-        const container = containerRef.current;
-        const content = contentRef.current;
+      const container = containerRef.current;
+      const content = contentRef.current;
 
-        if (!container || !content) return;
+      if (!container || !content) return;
 
-        const rect = container.getBoundingClientRect();
-        const newScale = 0.9;
+      const rect = container.getBoundingClientRect();
+      const newScale = 0.9;
 
-        setScale(newScale);
-        content.style.transform = `scale(${newScale})`;
+      setScale(newScale);
+      content.style.transform = `scale(${newScale})`;
 
-        const targetLeft =
-          zoomToCoordinate.x * newScale - rect.width / 2 + rect.left;
-        const targetTop =
-          zoomToCoordinate.y * newScale - rect.height / 2 + rect.top;
+      const targetLeft =
+        zoomToCoordinate.x * newScale - rect.width / 2 + rect.left;
+      const targetTop =
+        zoomToCoordinate.y * newScale - rect.height / 2 + rect.top;
 
-        setLocX((container.scrollLeft + targetLeft - rect.left) / newScale);
-        setLocY((container.scrollTop + targetTop - rect.top) / newScale);
+      const startTime = performance.now();
+      const duration = 400;
 
-        setTimeout(() => {
-          container.scrollLeft = targetLeft;
-          container.scrollTop = targetTop;
-          content.style.transform = `scale(${newScale})`;
-        }, 10);
-      }, 10);
+      const startLeft = container.scrollLeft;
+      const startTop = container.scrollTop;
+
+      const animateScroll = (currentTime: number) => {
+        const elapsedTime = currentTime - startTime;
+        const progress = Math.min(elapsedTime / duration, 1);
+        const easeProgress = 1 - Math.pow(1 - progress, 4);
+
+        const scrollLeft = startLeft + (targetLeft - startLeft) * easeProgress;
+        const scrollTop = startTop + (targetTop - startTop) * easeProgress;
+
+        container.scrollLeft = scrollLeft;
+        container.scrollTop = scrollTop;
+
+        if (progress < 1) {
+          requestAnimationFrame(animateScroll);
+        }
+      };
+
+      requestAnimationFrame(animateScroll);
+
+      prevZoomToCoordinate.current = zoomToCoordinate;
     }
-
-    prevZoomToCoordinate.current = zoomToCoordinate;
   }, [zoomToCoordinate]);
 
   return (
