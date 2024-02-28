@@ -1,0 +1,21 @@
+.team-members {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+}
+.team-members-flex {
+  display: flex;
+  flex-direction: column;
+  /*flex-direction: column;*/
+  /*justify-content: flex-start;*/
+  /*justify-content: space-evenly;*/
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+}
+
+.team-member {
+  /*flex: 1;*/
+}

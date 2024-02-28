@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { SetStateAction, useEffect, useState } from "react";
 import {
   Box,
   Button,
@@ -8,6 +8,7 @@ import {
   MenuItem,
   Paper,
   Select,
+  Stack,
   Table,
   TableBody,
   TableCell,
@@ -20,7 +21,9 @@ import { PieChart } from "@mui/x-charts/PieChart";
 import RestartAltIcon from "@mui/icons-material/RestartAlt";
 import { ServiceRequestRow } from "../components/ServiceRequestRow.tsx";
 import { ServiceRequestType } from "common/src/interfaces/ServiceRequest.ts";
+import Carousel from "react-bootstrap/Carousel";
 import "../styling/viewRequestPage.css";
+import { BarChart } from "@mui/x-charts";
 
 export function ViewServiceRequestPage() {
   const [loaded, setLoaded] = useState<boolean>(false);
@@ -105,10 +108,53 @@ export function ViewServiceRequestPage() {
     (request) => request.progress === "Assigned",
   ).length;
 
+  function progressTypeFilter(progress: string) {
+    const progressRequests = serviceRequests.filter(
+      (request) => request.progress === progress,
+    );
+    const sanitationRequests = progressRequests.filter(
+      (request) => request.typeService === "Sanitation",
+    ).length;
+    const maintenanceRequests = progressRequests.filter(
+      (request) => request.typeService === "Maintenance",
+    ).length;
+    const religiousRequests = progressRequests.filter(
+      (request) => request.typeService === "Religious",
+    ).length;
+    const transportationRequests = progressRequests.filter(
+      (request) => request.typeService === "Transport",
+    ).length;
+    const flowerRequests = progressRequests.filter(
+      (request) => request.typeService === "Flowers",
+    ).length;
+    return {
+      Sanitation: sanitationRequests,
+      Maintenance: maintenanceRequests,
+      Religious: religiousRequests,
+      Transportation: transportationRequests,
+      Flowers: flowerRequests,
+      Progress: progress,
+    };
+  }
+
+  const dataSetFormer = [
+    progressTypeFilter("Unassigned"),
+    progressTypeFilter("Assigned"),
+    progressTypeFilter("InProgress"),
+    progressTypeFilter("Completed"),
+  ];
+
   const resetFilters = () => {
     setStatusFilter("");
     setTypeServiceFilter("");
     setEmployeeFilter("");
+  };
+
+  const [index, setIndex] = useState(0);
+
+  //remember that you hit "understand type from usage to make it less sad"
+  const handleSelect = (selectedIndex: SetStateAction<number>) => {
+    setIndex(selectedIndex);
   };
 
   return (
@@ -200,43 +246,138 @@ export function ViewServiceRequestPage() {
                 </div>
               </div>
             </div>
-            <div className={"dashboardMiddle"}>
-              <Typography variant="h5" sx={{ mb: 1, textAlign: "center" }}>
-                Service Type Distribution
-              </Typography>
-              <div style={{ flexGrow: 1, minHeight: 0 }}>
-                <PieChart
-                  series={[
-                    {
-                      data: calculateTypeCounts(),
-                      innerRadius: 30,
-                      outerRadius: "90%", // Keep outerRadius relative
-                      paddingAngle: 5,
-                      cornerRadius: 5,
-                    },
-                  ]}
-                  style={{ width: "100%", height: "100%" }}
-                />
-              </div>
-            </div>
             <div className={"dashboardRight"}>
-              <Typography variant="h5" sx={{ mb: 1, textAlign: "center" }}>
-                Task Assignment Distribution
-              </Typography>
-              <div style={{ flexGrow: 1, minHeight: 0 }}>
-                <PieChart
-                  series={[
-                    {
-                      data: calculateEmployeeCounts(),
-                      innerRadius: 30,
-                      outerRadius: "90%",
-                      paddingAngle: 5,
-                      cornerRadius: 5,
-                    },
-                  ]}
-                  style={{ width: "100%", height: "100%" }}
-                />
-              </div>
+              <Carousel
+                activeIndex={index}
+                onSelect={handleSelect}
+                interval={null}
+                variant={"dark"}
+              >
+                <Carousel.Item>
+                  <Stack
+                    direction="row"
+                    className="h-100 justify-content-center align-items-center"
+                    gap={3}
+                  >
+                    <Stack
+                      direction="column"
+                      className="justify-content-center align-items-center"
+                    >
+                      <Typography variant="h5" sx={{ textAlign: "center" }}>
+                        Task Assignment Distribution
+                      </Typography>
+                      <div style={{ flexGrow: 1, minHeight: 0 }}>
+                        <PieChart
+                          margin={{ top: 0, bottom: 0, left: 10, right: 0 }}
+                          series={[
+                            {
+                              data: calculateEmployeeCounts(),
+                              innerRadius: 30,
+                              outerRadius: "80%",
+                              paddingAngle: 5,
+                              cornerRadius: 5,
+                            },
+                          ]}
+                          slotProps={{
+                            legend: {
+                              direction: "row",
+                              position: { vertical: "top", horizontal: "left" },
+                              padding: 0,
+                              labelStyle: {
+                                fontSize: 14,
+                              },
+                            },
+                          }}
+                          width={400}
+                          height={300}
+                        />
+                      </div>
+                    </Stack>
+                    <Stack
+                      direction="column"
+                      className="justify-content-center align-items-center"
+                    >
+                      <Typography
+                        variant="h5"
+                        sx={{ mb: 1, textAlign: "left" }}
+                      >
+                        Service Type Distribution
+                      </Typography>
+                      <div style={{ flexGrow: 1, minHeight: 0 }}>
+                        <PieChart
+                          series={[
+                            {
+                              data: calculateTypeCounts(),
+                              innerRadius: 30,
+                              outerRadius: "80%", // Keep outerRadius relative
+                              paddingAngle: 5,
+                              cornerRadius: 5,
+                            },
+                          ]}
+                          slotProps={{
+                            legend: {
+                              direction: "column",
+                              position: {
+                                vertical: "top",
+                                horizontal: "right",
+                              },
+                              padding: 0,
+                              labelStyle: {
+                                fontSize: 14,
+                              },
+                            },
+                          }}
+                          width={400}
+                          height={300}
+                        />
+                      </div>
+                    </Stack>
+                  </Stack>
+                </Carousel.Item>
+                <Carousel.Item>
+                  <Stack
+                    direction="row"
+                    className="h-100 justify-content-center align-items-center"
+                    gap={3}
+                  >
+                    <Stack
+                      direction="column"
+                      className="h-100 justify-content-center align-items-center"
+                      gap={3}
+                    >
+                      <Typography variant="h5" sx={{ textAlign: "left" }}>
+                        Status By Request Type
+                      </Typography>
+                      <BarChart
+                        dataset={dataSetFormer}
+                        series={[
+                          { dataKey: "Sanitation", label: "Sanitation" },
+                          { dataKey: "Maintenance", label: "Maintenance" },
+                          {
+                            dataKey: "Transportation",
+                            label: "Transportation",
+                          },
+                          { dataKey: "Flowers", label: "Flowers" },
+                          { dataKey: "Religious", label: "Religious" },
+                        ]}
+                        xAxis={[{ scaleType: "band", dataKey: "Progress" }]}
+                        slotProps={{
+                          legend: {
+                            direction: "row",
+                            position: { vertical: "top", horizontal: "middle" },
+                            padding: 0,
+                            labelStyle: {
+                              fontSize: 14,
+                            },
+                          },
+                        }}
+                        width={800}
+                        height={300}
+                      ></BarChart>
+                    </Stack>
+                  </Stack>
+                </Carousel.Item>
+              </Carousel>
             </div>
           </div>
           <Typography variant="h4">Service Requests</Typography>
@@ -269,9 +410,7 @@ export function ViewServiceRequestPage() {
                 <MenuItem value="Religious">Religious</MenuItem>
                 <MenuItem value="Sanitation">Sanitation</MenuItem>
                 <MenuItem value="Flowers">Flowers</MenuItem>
-                <MenuItem value="InternalTransportation">
-                  Internal Transportation
-                </MenuItem>
+                <MenuItem value="Transport">Internal Transportation</MenuItem>
               </Select>
             </FormControl>
             <FormControl sx={{ flex: 1 }}>

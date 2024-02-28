@@ -14,7 +14,7 @@ import { MapNodeInterface } from "common/src/interfaces/MapNodeInterface.ts";
 import { ServiceRequestType } from "common/src/interfaces/ServiceRequest.ts";
 import { ServiceRequestNode } from "./ServiceRequestNode.tsx";
 import { ServiceRequestsAtNode } from "./ServiceRequestsAtNode.tsx";
-import { Autocomplete, TextField } from "@mui/material";
+import ServiceAutocomplete from "./ServiceAutocomplete.tsx";
 
 const floorNames: string[] = ["LL1", "LL2", "F1", "F2", "F3"];
 
@@ -52,6 +52,30 @@ export function ServiceRequestMode() {
     "2": { width: 0, height: 0 },
     "3": { width: 0, height: 0 },
   });
+
+  const [zoomToCoords, setZoomToCoords] = useState<
+    { x: number; y: number } | undefined
+  >(undefined);
+
+  const [zoomToIndex, setZoomToIndex] = useState<number | undefined>(undefined);
+
+  const [debouncedZoomToCoords, setDebouncedZoomToCoords] = useState<
+    | {
+        x: number;
+        y: number;
+      }
+    | undefined
+  >(undefined);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      console.log(zoomToCoords);
+      setDebouncedZoomToCoords(zoomToCoords);
+      if (zoomToIndex) setMapIndex(zoomToIndex);
+    }, 800);
+
+    return () => clearTimeout(timer);
+  }, [zoomToCoords, zoomToIndex]);
 
   useEffect(() => {
     axios.get("/api/map").then((res) => setNodes(res.data));
@@ -132,7 +156,7 @@ export function ServiceRequestMode() {
           start={""}
           end={""}
         />
-        <TransformContainer>
+        <TransformContainer zoomToCoordinate={debouncedZoomToCoords}>
           <div
             className="map-container"
             style={
@@ -179,15 +203,14 @@ export function ServiceRequestMode() {
           style={{
             display: "flex",
             position: "absolute",
-            width: "23%",
+            width: "20%",
             top: 20,
             left: 20,
             flexDirection: "column",
             maxHeight: "60%",
-            overflow: "hidden",
           }}
         >
-          <Autocomplete
+          {/*<Autocomplete
             options={Object.values(nodes).filter(
               (node) => node.nodeType !== "HALL",
             )}
@@ -221,8 +244,27 @@ export function ServiceRequestMode() {
                 }}
               />
             )}
+          />*/}
+          <ServiceAutocomplete
+            start={selectedNode}
+            onSelectStart={setSelectedNode}
+            onHoverNode={(node) => {
+              if (node) {
+                setZoomToCoords({ x: node.xcoord, y: node.ycoord });
+                setZoomToIndex(
+                  mapPathNames.findIndex(
+                    (floor) => floor.toLowerCase() === node.floor.toLowerCase(),
+                  ),
+                );
+              } else {
+                setZoomToCoords(undefined);
+                setZoomToIndex(undefined);
+              }
+            }}
           />
-          <ServiceRequestsAtNode nodeID={selectedNode} requests={requests} />
+          {selectedNode && (
+            <ServiceRequestsAtNode nodeID={selectedNode} requests={requests} />
+          )}
         </div>
       </div>
     </div>

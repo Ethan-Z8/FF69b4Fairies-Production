@@ -138,14 +138,29 @@ const RenderPath: React.FC<Props> = ({
                   position: "absolute",
                   left: `${one.xcoord}px`,
                   top: `${one.ycoord}px`,
-                  zIndex: 4,
+                  zIndex: 1000,
+                  textAlign: "center",
                 }}
                 onClick={() =>
                   setMapIndex(
                     mapPathNames.findIndex((item) => item === swapNode!.floor),
                   )
                 }
-              ></div>
+              >
+                <h4
+                  style={{
+                    position: "absolute",
+                    textWrap: "nowrap",
+                    zIndex: 1000,
+                    backgroundColor: "white",
+                    padding: "10px",
+                    borderRadius: "16px",
+                    fontSize: "15px",
+                  }}
+                >
+                  {`Going ${arrowDirection} to floor ${swapNode!.floor}`}
+                </h4>
+              </div>
             )}
             {showChangeFloorButton2 && (
               <div
@@ -168,7 +183,6 @@ const RenderPath: React.FC<Props> = ({
       );
     });
   }
-
   return <>{circles}</>;
 };
 

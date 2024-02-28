@@ -79,10 +79,13 @@
 }
 
 .nodeSelectContainer {
-  margin: 8px;
-  margin-left: 16px;
   position: absolute;
+  top: 10px;
+  left: 10px;
+  margin: 10px;
   width: 20%;
+  gap: 5px;
+  z-index: 1;
 }
 
 .arrow-up {
@@ -93,6 +96,8 @@
   border-bottom: 48px solid darkred;
   position: absolute;
   transform: translate(-50%, -120%);
+  text-align: center;
+
   transition: all 0.3s; /* Adding transition for smooth hover effect */
 }
 
@@ -103,6 +108,7 @@
   border-right: 24px solid transparent;
   border-top: 48px solid darkred;
   position: absolute;
+  text-align: center;
   transform: translate(-50%, 20%);
   transition: all 0.1s; /* Adding transition for smooth hover effect */
 }

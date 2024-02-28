@@ -14,7 +14,10 @@ import { Auth0Provider } from "@auth0/auth0-react";
 import AddEmployeePage from "./routes/AddEmployeePage.tsx";
 import ProtectPage from "./components/ProtectPage.tsx";
 import { ImportAndExportEmployeePage } from "./routes/ImportAndExportEmployeePage.tsx";
+import CreditsPage from "./routes/Credits.tsx";
 import Auth0Profile from "./components/Auth0Profile.tsx";
+import AboutMe from "./routes/AboutMe.tsx";
+import PhoneDirections from "./routes/PhoneDirections";
 
 function App() {
   const router = createBrowserRouter([
@@ -63,6 +66,18 @@ function App() {
           path: "/Auth0Profile",
           element: <ProtectPage Page={Auth0Profile} />,
         },
+        {
+          path: "/AboutUs",
+          element: <AboutMe />,
+        },
+        {
+          path: "/directions/:startAndStop",
+          element: <PhoneDirections />,
+        },
+        {
+          path: "/Credits",
+          element: <CreditsPage />,
+        },
       ],
     },
   ]);
@@ -75,6 +90,7 @@ function App() {
 
   function Root() {
     const navigate = useNavigate();
+    const showNavigation = !location.pathname.startsWith("/directions");
 
     return (
       <Auth0Provider
@@ -91,7 +107,7 @@ function App() {
           scope: "openid profile email offline_access",
         }}
       >
-        <Navigation />
+        {showNavigation && <Navigation />}
         <div className="pageAlignment">
           <Outlet />
         </div>

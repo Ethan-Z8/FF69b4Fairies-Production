@@ -94,11 +94,22 @@ mapRouter.get("/getTextDirections", async (req: Request, res: Response) => {
   type StartAndEndNodes = {
     start: string;
     end: string;
+    algo?: string;
   };
   try {
+    let strategyPattern: AlgoStrategyPattern = new AStarAlgo();
+    console.log(endpoints.algo);
+    if (endpoints.algo === "BFS") {
+      strategyPattern = new BFSAlgo();
+    } else if (endpoints.algo == "DFS") {
+      strategyPattern = new DFSAlgo();
+    } else if (endpoints.algo == "DijkstraAlgo") {
+      console.log("Dijkstra");
+      strategyPattern = new DijkstraAlgo();
+    }
     const nodes = await Prisma.mapNode.findMany();
     const edges = await Prisma.mapEdge.findMany();
-    const pathFindingGraph = new Pathfinder(nodes, edges);
+    const pathFindingGraph = new Pathfinder(nodes, edges, strategyPattern);
     console.log(endpoints.end);
     const getTextDirections: string[] = pathFindingGraph.generateDirections(
       endpoints.start,

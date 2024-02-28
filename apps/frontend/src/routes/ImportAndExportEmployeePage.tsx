@@ -15,23 +15,17 @@ export function ImportAndExportEmployeePage() {
   const [importErr, setImportErr] = useState<boolean>(false);
   const [exportErr, setExportErr] = useState<boolean>(false);
 
-  function handleImport(e: FormEvent<HTMLFormElement>) {
+  async function handleImport(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const target = e.target as HTMLFormElement;
-    // const edgesInput = target.querySelector("#edgesInput") as HTMLInputElement;
-    // const nodesInput = target.querySelector("#nodesInput") as HTMLInputElement;
+
     const employeesInput = target.querySelector(
       "#employeesInput",
     ) as HTMLInputElement;
     const formData = new FormData();
-    // if (edgesInput.files) {
-    //     formData.append("edges", edgesInput.files![0]);
-    // }
-    // if (nodesInput.files) {
-    //     formData.append("nodes", nodesInput.files![0]);
-    // }
+
     if (employeesInput.files) {
-      formData.append("employees", employeesInput.files![0]);
+      formData.append("employee", employeesInput.files![0]);
     }
 
     axios

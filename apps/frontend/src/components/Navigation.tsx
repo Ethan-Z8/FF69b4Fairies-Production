@@ -117,6 +117,7 @@ export function Navigation() {
         <NavDropdown
           title={<span style={{ color: "white" }}>Service Requests </span>}
           className="navbar-item"
+          id={"fa"}
         >
           <NavDropdown.Item href="/createServiceRequest">
             Create Service Request
@@ -142,11 +143,18 @@ export function Navigation() {
               <Nav.Link href="/addEmployee">Add Employee</Nav.Link>
               <Nav.Link href="/viewEmployeeData">View Employees</Nav.Link>
               <Nav.Link href="/importAndExportEmployee">
-                Import and Export Employee Data
+                Import & Export Employee Data
               </Nav.Link>
             </NavDropdown>
           </>
         )}
+        <NavDropdown
+          title={<span style={{ color: "white" }}>Information </span>}
+          className="navbar-item"
+        >
+          <NavDropdown.Item href="/AboutUs">About Us</NavDropdown.Item>
+          <NavDropdown.Item href="/Credits">Credited Software</NavDropdown.Item>
+        </NavDropdown>
       </Nav>
       {!isAuthenticated && (
         <Nav.Link
@@ -185,13 +193,24 @@ export function Navigation() {
           >
             <ClickAwayListener onClickAway={handleProfileMenuClose}>
               <Container className="profileContainer">
-                <button onClick={handleLogout}>
+                <IconButton
+                  color="inherit"
+                  onClick={handleLogout}
+                  style={{ position: "absolute", top: 0, left: 0 }}
+                >
                   <SvgIcon component={LogoutIcon} />
-                </button>
+                </IconButton>
                 <Avatar
                   alt={user?.name || "User"}
                   src={user?.picture}
-                  sx={{ width: 50, height: 50, margin: "auto" }}
+                  sx={{
+                    position: "center",
+                    top: 15,
+                    left: -4,
+                    width: 50,
+                    height: 50,
+                    margin: "auto",
+                  }}
                 />
                 <Typography
                   variant={"h6"}
