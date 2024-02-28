@@ -55,22 +55,23 @@ const Auth0Profile = () => {
       "#employeesInput",
     ) as HTMLInputElement;
 
-    const formData = new FormData();
+    const mapData = new FormData();
+    const employeeData = new FormData();
 
     if (edgesInput.files) {
-      formData.append("edges", edgesInput.files[0]);
+      mapData.append("edges", edgesInput.files[0]);
     }
 
     if (nodesInput.files) {
-      formData.append("nodes", nodesInput.files[0]);
+      mapData.append("nodes", nodesInput.files[0]);
     }
 
     if (employeesInput.files) {
-      formData.append("employees", employeesInput.files[0]);
+      employeeData.append("employees", employeesInput.files[0]);
     }
 
     axios
-      .post("/api/map/import", formData, {
+      .post("/api/map/import", mapData, {
         headers: {
           "Content-Type": "multipart/form",
         },
@@ -84,7 +85,7 @@ const Auth0Profile = () => {
       });
 
     axios
-      .post("/api/employee/import", formData, {
+      .post("/api/employee/import", employeeData, {
         headers: {
           "Content-Type": "multipart/form",
         },
@@ -257,7 +258,7 @@ const Auth0Profile = () => {
             as={Row}
             className="mb-3"
             style={{
-              width: "77.3%",
+              width: "77.3x%",
               display: "inline-flex",
               paddingTop: "5%",
             }}
