@@ -75,7 +75,7 @@ const AboutMe = () => {
             <AboutCard
               Name={"Ajay Bhagavatula"}
               role={"Team Lead"}
-              devrole={"FullStack Engineer"}
+              devrole={"Full-Stack Engineer"}
               ClassYear={"2026"}
               Major={"Computer Science"}
               Email={"abhagavatula@wpi.edu"}
@@ -90,7 +90,7 @@ const AboutMe = () => {
             <AboutCard
               Name={"Leo Hirano"}
               role={"Frontend Lead"}
-              devrole={"FullStack Engineer"}
+              devrole={"Full-Stack Engineer"}
               ClassYear={"2025"}
               Major={"Computer Science"}
               Email={"lkhirano@wpi.edu"}
@@ -102,7 +102,7 @@ const AboutMe = () => {
             <AboutCard
               Name={"Vaansh Mansharamani"}
               role={"Assistant Lead"}
-              devrole={"Algorithm Engineer"}
+              devrole={"Full-Stack Engineer"}
               ClassYear={"2026"}
               Major={"Computer Science"}
               Email={" vmansharamani@wpi.edu"}
@@ -116,7 +116,7 @@ const AboutMe = () => {
             <AboutCard
               Name={"Ethan Zhong"}
               role={"Product Manager"}
-              devrole={"Algorithm Engineer"}
+              devrole={"Full-Stack Engineer"}
               ClassYear={"2025"}
               Major={"Computer Science and Robotics Engineering"}
               Email={"ezhong@wpi.edu"}
@@ -129,8 +129,8 @@ const AboutMe = () => {
             />
             <AboutCard
               Name={"Mahit Verma"}
-              role={"Product Owner"}
-              devrole={"Full Stack Engineer"}
+              role={"Asst. Lead & Product Owner"}
+              devrole={"Full-Stack Engineer"}
               ClassYear={"2026"}
               Major={"Computer Science and Data Science"}
               Email={"mverma@wpi.edu"}
@@ -154,7 +154,7 @@ const AboutMe = () => {
             <AboutCard
               Name={"Zane Altheimer"}
               role={"Document Analyst"}
-              devrole={"Frontend Engineer"}
+              devrole={"Full-Stack Engineer"}
               ClassYear={"2024"}
               Major={"Robotics Engineering"}
               Email={"zaaltheimer@wpi.edu"}
@@ -168,7 +168,7 @@ const AboutMe = () => {
             <AboutCard
               Name={"Justin Smith"}
               role={"Full-time Developer"}
-              devrole={"Frontend Engineer"}
+              devrole={"Full-Stack Engineer"}
               ClassYear={"2025"}
               Major={"Computer Science and Game Development"}
               Email={"jmsmith2@wpi.edu"}
@@ -182,7 +182,7 @@ const AboutMe = () => {
             <AboutCard
               Name={"Maxwell Friedman"}
               role={"Scrum Master"}
-              devrole={"Frontend Engineer"}
+              devrole={"Full-Stack Engineer"}
               ClassYear={"2025"}
               Major={"Robotics Engineering"}
               Email={"mlfriedman@wpi.edu"}
@@ -195,8 +195,8 @@ const AboutMe = () => {
             />
             <AboutCard
               Name={"Shawn Patel"}
-              role={"Full-time Developer"}
-              devrole={"Backend Engineer"}
+              role={"Senior Developer"}
+              devrole={"Full-Stack Engineer"}
               ClassYear={"2026"}
               Major={"Computer Science"}
               Email={"snpatel@wpi.edu"}
