@@ -190,7 +190,7 @@ const AboutMe = () => {
               Linkdin={" https://www.linkedin.com/in/friedman-maxwell/"}
               Imagepath={Max}
               Favorite_quote={
-                "'You must be the change you wish to see in the world.' -Mahatma Gandhi"
+                "'That's something that could have been brought to my attention YESTERDAY!' - Adam Sandler"
               }
             />
             <AboutCard
