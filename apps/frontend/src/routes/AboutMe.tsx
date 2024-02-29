@@ -47,6 +47,7 @@ const AboutMe = () => {
             Name={"Wilson Wong"}
             role={"Professor"}
             Email={"wwong2@wpi.edu"}
+            //Github={"https://github.com/ajay-bhagava"}
             Linkdin={"https://www.linkedin.com/in/wilson-wong-wpi/"}
             Imagepath={Wong}
           />
@@ -54,8 +55,9 @@ const AboutMe = () => {
             Name={"Joseph Cardarelli"}
             role={"Team Coach"}
             ClassYear={"2024"}
-            Major={"Computer Science and Robotics Engineering"}
+            Major={"RBE/CS"}
             Email={"jrcardarelli@wpi.edu"}
+            //Github={"https://github.com/ajay-bhagava"}
             Linkdin={"https://www.linkedin.com/in/joseph-cardarelli-3a12a1254/"}
             Imagepath={Joe}
           />
@@ -93,7 +95,7 @@ const AboutMe = () => {
               Major={"Computer Science"}
               Email={"lkhirano@wpi.edu"}
               Github={"https://github.com/notLeoHirano"}
-              Linkdin={"asdf.com"}
+              //Linkdin={"asdf.com"}
               Imagepath={Leo}
               Favorite_quote={"'One million billion marbles' - Leo"}
             />
@@ -193,7 +195,7 @@ const AboutMe = () => {
             />
             <AboutCard
               Name={"Shawn Patel"}
-              role={""}
+              role={"Full-time Developer"}
               devrole={"Backend Engineer"}
               ClassYear={"2026"}
               Major={"Computer Science"}
@@ -208,13 +210,13 @@ const AboutMe = () => {
 
             <AboutCard
               Name={"Aishwarya Silam"}
-              role={""}
-              devrole={"Backend Engineer"}
+              // role={""}
+              // devrole={"Backend Engineer"}
               ClassYear={"2026"}
               Major={"Computer Science"}
-              Email={"asdf@wpi.edu"}
-              Github={"google.com"}
-              Linkdin={"asdf.com"}
+              Email={"arsilam@wpi.edu"}
+              // Github={"google.com"}
+              // Linkdin={"asdf.com"}
               Imagepath={Aish}
               Favorite_quote={
                 "'Spread love everywhere you go. Let no one ever come to you without leaving happier.' -Mother Teresa"
