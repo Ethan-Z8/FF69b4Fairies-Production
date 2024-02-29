@@ -39,11 +39,13 @@ const Auth0Profile = () => {
     [],
   );
 
-  const handleLogout = () => {
-    logout();
-    window.location.href = "/";
+  const handleLogout = async () => {
+    await logout({
+      logoutParams: {
+        returnTo: window.location.origin,
+      },
+    });
   };
-
   async function handleImport(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setExportErr(false); // Reset the import error state

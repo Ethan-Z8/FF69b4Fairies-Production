@@ -26,13 +26,13 @@ import GitHubIcon from "@mui/icons-material/GitHub";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
 interface AboutInfo {
   Name: string;
-  role: string;
-  devrole: string;
+  role?: string;
+  devrole?: string;
   ClassYear: string;
   Major: string;
   Email: string;
-  Github: string;
-  Linkdin: string;
+  Github?: string;
+  Linkdin?: string;
   Imagepath: string;
   Favorite_quote: string;
 }
@@ -109,12 +109,16 @@ const AboutCard = ({
             >
               {Name}
             </Typography>
-            <Typography variant="body2" color="text.secondary">
-              Role: {role}
-            </Typography>
-            <Typography variant="body2" color="text.secondary">
-              Software Role: {devrole}
-            </Typography>
+            {role && (
+              <Typography variant="body2" color="text.secondary">
+                Role: {role}
+              </Typography>
+            )}
+            {devrole && (
+              <Typography variant="body2" color="text.secondary">
+                Software Role: {devrole}
+              </Typography>
+            )}
             <Typography variant="body2" color="text.secondary">
               Class Year: {ClassYear}
             </Typography>
@@ -129,12 +133,16 @@ const AboutCard = ({
 
         <div>
           <CardActions sx={{ alignItems: "end" }}>
-            <IconButton href={Github} target="_blank">
-              <GitHubIcon sx={{ fontSize: "larger" }} />
-            </IconButton>
-            <IconButton href={Linkdin} target="_blank">
-              <LinkedInIcon sx={{ fontSize: "larger" }} />
-            </IconButton>
+            {Github && (
+              <IconButton href={Github} target="_blank">
+                <GitHubIcon sx={{ fontSize: "larger" }} />
+              </IconButton>
+            )}
+            {Linkdin && (
+              <IconButton href={Linkdin} target="_blank">
+                <LinkedInIcon sx={{ fontSize: "larger" }} />
+              </IconButton>
+            )}
           </CardActions>
         </div>
       </div>

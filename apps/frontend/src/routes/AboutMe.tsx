@@ -46,11 +46,19 @@ const AboutMe = () => {
           <AboutCardFaculty
             Name={"Wilson Wong"}
             role={"Professor"}
+            Email={"wwong2@wpi.edu"}
+            Github={"https://github.com/wwong2"}
+            Linkdin={"https://www.linkedin.com/in/wilson-wong-wpi/"}
             Imagepath={Wong}
           />
           <AboutCardFaculty
             Name={"Joseph Cardarelli"}
             role={"Team Coach"}
+            ClassYear={"2024"}
+            Major={"Computer Science and Robotics Engineering"}
+            Email={"jrcardarelli@wpi.edu"}
+            Github={"https://github.com/jrcardarelli"}
+            Linkdin={"https://www.linkedin.com/in/joseph-cardarelli-3a12a1254/"}
             Imagepath={Joe}
           />
         </div>
@@ -67,7 +75,7 @@ const AboutMe = () => {
             <AboutCard
               Name={"Ajay Bhagavatula"}
               role={"Team Lead"}
-              devrole={"FullStack Engineer"}
+              devrole={"Full-Stack Engineer"}
               ClassYear={"2026"}
               Major={"Computer Science"}
               Email={"abhagavatula@wpi.edu"}
@@ -82,19 +90,19 @@ const AboutMe = () => {
             <AboutCard
               Name={"Leo Hirano"}
               role={"Frontend Lead"}
-              devrole={"FullStack Engineer"}
+              devrole={"Full-Stack Engineer"}
               ClassYear={"2025"}
               Major={"Computer Science"}
               Email={"lkhirano@wpi.edu"}
               Github={"https://github.com/notLeoHirano"}
-              Linkdin={"asdf.com"}
+              //Linkdin={"asdf.com"}
               Imagepath={Leo}
               Favorite_quote={"'One million billion marbles' - Leo"}
             />
             <AboutCard
               Name={"Vaansh Mansharamani"}
               role={"Assistant Lead"}
-              devrole={"Algorithm Engineer"}
+              devrole={"Full-Stack Engineer"}
               ClassYear={"2026"}
               Major={"Computer Science"}
               Email={" vmansharamani@wpi.edu"}
@@ -108,7 +116,7 @@ const AboutMe = () => {
             <AboutCard
               Name={"Ethan Zhong"}
               role={"Product Manager"}
-              devrole={"Algorithm Engineer"}
+              devrole={"Full-Stack Engineer"}
               ClassYear={"2025"}
               Major={"Computer Science and Robotics Engineering"}
               Email={"ezhong@wpi.edu"}
@@ -121,8 +129,8 @@ const AboutMe = () => {
             />
             <AboutCard
               Name={"Mahit Verma"}
-              role={"Product Owner"}
-              devrole={"Full Stack Engineer"}
+              role={"Asst. Lead & Product Owner"}
+              //devrole={"Full-Stack Engineer"}
               ClassYear={"2026"}
               Major={"Computer Science and Data Science"}
               Email={"mverma@wpi.edu"}
@@ -146,7 +154,7 @@ const AboutMe = () => {
             <AboutCard
               Name={"Zane Altheimer"}
               role={"Document Analyst"}
-              devrole={"Frontend Engineer"}
+              devrole={"Full-Stack Engineer"}
               ClassYear={"2024"}
               Major={"Robotics Engineering"}
               Email={"zaaltheimer@wpi.edu"}
@@ -160,7 +168,7 @@ const AboutMe = () => {
             <AboutCard
               Name={"Justin Smith"}
               role={"Full-time Developer"}
-              devrole={"Frontend Engineer"}
+              devrole={"Full-Stack Engineer"}
               ClassYear={"2025"}
               Major={"Computer Science and Game Development"}
               Email={"jmsmith2@wpi.edu"}
@@ -174,7 +182,7 @@ const AboutMe = () => {
             <AboutCard
               Name={"Maxwell Friedman"}
               role={"Scrum Master"}
-              devrole={"Frontend Engineer"}
+              devrole={"Full-Stack Engineer"}
               ClassYear={"2025"}
               Major={"Robotics Engineering"}
               Email={"mlfriedman@wpi.edu"}
@@ -182,13 +190,13 @@ const AboutMe = () => {
               Linkdin={" https://www.linkedin.com/in/friedman-maxwell/"}
               Imagepath={Max}
               Favorite_quote={
-                "'You must be the change you wish to see in the world.' -Mahatma Gandhi"
+                "'That's something that could have been brought to my attention YESTERDAY!' - Adam Sandler"
               }
             />
             <AboutCard
               Name={"Shawn Patel"}
-              role={""}
-              devrole={"Backend Engineer"}
+              role={"Senior Developer"}
+              devrole={"Full-Stack Engineer"}
               ClassYear={"2026"}
               Major={"Computer Science"}
               Email={"snpatel@wpi.edu"}
@@ -202,13 +210,13 @@ const AboutMe = () => {
 
             <AboutCard
               Name={"Aishwarya Silam"}
-              role={""}
-              devrole={"Backend Engineer"}
+              // role={""}
+              // devrole={"Backend Engineer"}
               ClassYear={"2026"}
               Major={"Computer Science"}
-              Email={"asdf@wpi.edu"}
-              Github={"google.com"}
-              Linkdin={"asdf.com"}
+              Email={"arsilam@wpi.edu"}
+              // Github={"google.com"}
+              // Linkdin={"asdf.com"}
               Imagepath={Aish}
               Favorite_quote={
                 "'Spread love everywhere you go. Let no one ever come to you without leaving happier.' -Mother Teresa"

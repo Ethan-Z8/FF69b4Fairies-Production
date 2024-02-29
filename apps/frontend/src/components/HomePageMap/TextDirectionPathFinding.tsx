@@ -64,7 +64,24 @@ const TextDirectionPathFinding: React.FC<TextDirectionPathProps> = ({
           isElevator ? ` ` : `Directions for current floor ${floor}`,
         ];
       }
-      floorDirectionMap[floor].push(direction);
+
+      let modifiedDirection = direction.replace(/ \S+$/, "");
+
+      if (/right/i.test(modifiedDirection)) {
+        modifiedDirection += " ➡️";
+      } else if (/left/i.test(modifiedDirection)) {
+        modifiedDirection += " ⬅️";
+      } else if (/forward/i.test(modifiedDirection)) {
+        modifiedDirection += " ⬆️";
+      }
+
+      if (/stairs/i.test(modifiedDirection)) {
+        modifiedDirection += " 🚶‍♂️";
+      } else if (/elevator/i.test(modifiedDirection)) {
+        modifiedDirection += " 🚶";
+      }
+
+      floorDirectionMap[floor].push(modifiedDirection);
     });
 
     setFloorDirections(floorDirectionMap);

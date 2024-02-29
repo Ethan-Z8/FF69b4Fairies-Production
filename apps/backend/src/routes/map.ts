@@ -186,6 +186,7 @@ mapRouter.get("/pathNodesShort", async (req: Request, res: Response) => {
       start?: string;
       end?: string;
       algo?: string;
+      noStair?: string;
     };
     console.log("im here");
     let strategyPattern: AlgoStrategyPattern = new AStarAlgo();
@@ -199,11 +200,22 @@ mapRouter.get("/pathNodesShort", async (req: Request, res: Response) => {
       console.log("Dijkstra");
       strategyPattern = new DijkstraAlgo();
     }
+    const noStair = endpoints.noStair!;
+    let boolNoStair: boolean;
+    if (noStair === "true") {
+      boolNoStair = true;
+    } else {
+      boolNoStair = false;
+    }
 
     const nodes = await Prisma.mapNode.findMany();
     const edges = await Prisma.mapEdge.findMany();
-    const pathFindingGraph = new Pathfinder(nodes, edges, strategyPattern);
-
+    const pathFindingGraph = new Pathfinder(
+      nodes,
+      edges,
+      strategyPattern,
+      boolNoStair,
+    );
     const startNodeId = endpoints.start!;
     const endNodeId = endpoints.end!;
 
