@@ -285,118 +285,116 @@ export function NavigationMode({ destinationID }: NavigationModeProps) {
     <div style={{ overflow: "hidden" }}>
       <Box
         sx={{
+          display: "flex",
           position: "absolute",
+          width: "15%",
           height: 320,
           top: 20,
           left: "23%",
           zIndex: 100,
           transform: "translateZ(0px)",
-          flexGrow: 1,
-          justifyContent: "space-evenly",
+          justifyContent: "space-between",
+          flexDirection: "row",
+          gap: "0%",
         }}
       >
-        <SpeedDial
-          ariaLabel="SpeedDial basic example"
-          sx={{
-            position: "fixed",
-            top: 0,
-            left: 5,
-            zIndex: 1,
-            backgroundColor: "transparent",
-            ".MuiSpeedDial-fab": {
+        <div className="element">
+          <SpeedDial
+            ariaLabel="SpeedDial basic example"
+            sx={{
+              top: 0,
+              zIndex: 1,
+              backgroundColor: "transparent",
+              ".MuiSpeedDial-fab": {
+                backgroundColor: "#042c5c",
+              },
+              ".MuiSpeedDial-fab:hover": {
+                backgroundColor: "lightblue",
+              },
+            }}
+            icon={<MyLocationIcon />}
+            direction="down"
+          >
+            <SpeedDialAction
+              key={"Toggle Edge"}
+              icon={<RouteIcon />}
+              tooltipTitle={"Toggle Edge"}
+              onClick={handleToggleEdges}
+              tooltipPlacement={"right"}
+              sx={{
+                backgroundColor: toggleEdges ? "lightblue" : "inherit",
+              }}
+            />
+            <SpeedDialAction
+              key={"Toggle Node"}
+              icon={<AddLocationIcon />}
+              tooltipTitle={"Toggle Node"}
+              onClick={handleToggleNodes}
+              tooltipPlacement={"right"}
+              sx={{
+                backgroundColor: toggleNodes ? "lightblue" : "inherit",
+              }}
+            />
+          </SpeedDial>
+        </div>
+
+        <div className="element">
+          <Select
+            defaultValue={"AStarAlgo"}
+            inputProps={{
+              name: "age",
+              id: "uncontrolled-native",
+            }}
+            style={{
+              zIndex: 5,
+              height: "17%",
               backgroundColor: "#042c5c",
-            },
-            ".MuiSpeedDial-fab:hover": {
-              backgroundColor: "lightblue",
-            },
-          }}
-          icon={<MyLocationIcon />}
-          direction="down"
-        >
-          <SpeedDialAction
-            key={"Toggle Edge"}
-            icon={<RouteIcon />}
-            tooltipTitle={"Toggle Edge"}
-            onClick={handleToggleEdges}
-            tooltipPlacement={"right"}
-            sx={{
-              backgroundColor: toggleEdges ? "lightblue" : "inherit",
-            }}
-          />
-          <SpeedDialAction
-            key={"Toggle Node"}
-            icon={<AddLocationIcon />}
-            tooltipTitle={"Toggle Node"}
-            onClick={handleToggleNodes}
-            tooltipPlacement={"right"}
-            sx={{
-              backgroundColor: toggleNodes ? "lightblue" : "inherit",
-            }}
-          />
-        </SpeedDial>
-        <Select
-          defaultValue={"AStarAlgo"}
-          inputProps={{
-            name: "age",
-            id: "uncontrolled-native",
-          }}
-          style={{
-            position: "absolute",
-            left: 70,
-            zIndex: 5,
-            height: "17%",
-            backgroundColor: "#042c5c",
-            borderRadius: "16px",
-            color: "white",
-          }}
-          sx={{
-            ".MuiSelect-icon": {
+              borderRadius: "16px",
               color: "white",
-            },
-            ".MuiSelect": {
-              color: "#042c5c",
-            },
-          }}
-          onChange={(e) => setChosenAlgorithim(e.target.value)}
-        >
-          <MenuItem value={"AStarAlgo"}>A*</MenuItem>
-          <MenuItem value={"BFS"}>BFS</MenuItem>
-          <MenuItem value={"DFS"}>DFS</MenuItem>
-          <MenuItem value={"DijkstraAlgo"}>Dijkstras</MenuItem>
-        </Select>
-        <Box
-          sx={{
-            position: "absolute",
-            backgroundColor: "#042c5c",
-            zIndex: 24,
-            left: 145,
-            top: 0,
-            borderRadius: "16px",
-          }}
-        >
-          <FormControl
-            component="fieldset"
+            }}
             sx={{
-              left: 0,
+              ".MuiSelect-icon": {
+                color: "white",
+              },
+              ".MuiSelect": {
+                color: "#042c5c",
+              },
+            }}
+            onChange={(e) => setChosenAlgorithim(e.target.value)}
+          >
+            <MenuItem value={"AStarAlgo"}>A*</MenuItem>
+            <MenuItem value={"BFS"}>BFS</MenuItem>
+            <MenuItem value={"DFS"}>DFS</MenuItem>
+            <MenuItem value={"DijkstraAlgo"}>Dijkstra's</MenuItem>
+          </Select>
+        </div>
+        <div>
+          <Box
+            sx={{
+              backgroundColor: "#042c5c",
+              zIndex: 24,
+              borderRadius: "16px",
             }}
           >
-            <FormGroup>
-              <FormControlLabel
-                value={"start"}
-                control={
-                  <Switch
-                    checked={checked}
-                    onChange={handleChange}
-                    inputProps={{ "aria-label": "controlled" }}
-                  />
-                }
-                sx={{ margin: 1 }}
-                label={<ElevatorIcon sx={{ color: "white" }} />}
-                labelPlacement={"start"}
-              />
-            </FormGroup>
-          </FormControl>
-        </Box>
+            <FormControl component="fieldset">
+              <FormGroup>
+                <FormControlLabel
+                  value={"start"}
+                  control={
+                    <Switch
+                      checked={checked}
+                      onChange={handleChange}
+                      inputProps={{ "aria-label": "controlled" }}
+                    />
+                  }
+                  sx={{ margin: 1 }}
+                  label={<ElevatorIcon sx={{ color: "white" }} />}
+                  labelPlacement={"start"}
+                />
+              </FormGroup>
+            </FormControl>
+          </Box>
+        </div>
       </Box>
       <InfoOffCanvas />
       <div className="total">
