@@ -130,7 +130,7 @@ const AboutMe = () => {
             <AboutCard
               Name={"Mahit Verma"}
               role={"Asst. Lead & Product Owner"}
-              devrole={"Full-Stack Engineer"}
+              //devrole={"Full-Stack Engineer"}
               ClassYear={"2026"}
               Major={"Computer Science and Data Science"}
               Email={"mverma@wpi.edu"}
