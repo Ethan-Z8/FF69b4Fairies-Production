@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Box } from "@mui/material";
+import { Box, FormControl, FormControlLabel, FormGroup } from "@mui/material";
 import SpeedDial from "@mui/material/SpeedDial";
 import MyLocationIcon from "@mui/icons-material/MyLocation";
 import SpeedDialAction from "@mui/material/SpeedDialAction";
@@ -24,16 +24,14 @@ import F1LR from "../assets/hospitalmaps/01_thefirstfloor-lowRes.png";
 import F2LR from "../assets/hospitalmaps/02_thesecondfloor-lowRes.png";
 import F3LR from "../assets/hospitalmaps/03_thethirdfloor-lowRes.png";
 */
-
 import SelectorTabs from "./SelectorTabs.tsx";
 import RenderCircles from "./RenderCircles.tsx";
 import RenderPath from "./RenderPath.tsx";
 import StartEndSelect from "./StartEndSelect.tsx";
 import HoveredNodeData from "./HoveredNodeData.tsx";
-import { MenuItem, Select } from "@mui/material";
+import { MenuItem, Select, Switch } from "@mui/material";
 import MouseClickMenu from "./MouseClickMenu.tsx";
-//import {ServiceRequestType} from "common/src/interfaces/ServiceRequest.ts";
-
+import ElevatorIcon from "@mui/icons-material/Elevator";
 interface Node {
   nodeID: string;
   xcoord: number;
@@ -59,7 +57,12 @@ const floorNames: string[] = ["LL2", "LL1", "F1", "F2", "F3"];
 export interface NavigationModeProps {
   destinationID?: string;
 }
+
 export function NavigationMode({ destinationID }: NavigationModeProps) {
+  const [checked, setChecked] = React.useState(true);
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setChecked(event.target.checked);
+  };
   const [firstClickedNodeId, setFirstClickedNodeId] = useState<string>("");
   const [secondClickedNodeId, setSecondClickedNodeId] = useState<string>(
     destinationID ? destinationID : "",
@@ -100,6 +103,7 @@ export function NavigationMode({ destinationID }: NavigationModeProps) {
     | undefined
   >(undefined);
 
+  // Debounce effect for zoomToCoords
   useEffect(() => {
     const timer = setTimeout(() => {
       setDebouncedZoomToCoords(zoomToCoords);
@@ -156,6 +160,10 @@ export function NavigationMode({ destinationID }: NavigationModeProps) {
 
   useEffect(() => {
     if (secondClickedNodeId !== "" && firstClickedNodeId !== "") {
+      let bool = "false";
+      if (checked) {
+        bool = "true";
+      }
       const getPathNodes = async () => {
         try {
           const pathNodes = await axios.get(`/api/map/pathNodesShort`, {
@@ -163,6 +171,7 @@ export function NavigationMode({ destinationID }: NavigationModeProps) {
               start: firstClickedNodeId,
               end: secondClickedNodeId,
               algo: ChosenAlgorithim,
+              noStair: bool,
             },
           });
           const nodesData: Node[] = Object.values(pathNodes.data);
@@ -173,13 +182,13 @@ export function NavigationMode({ destinationID }: NavigationModeProps) {
       };
       getPathNodes();
       /*      const hoveredFloorIndex = mapPathNames.findIndex(
-        (floor) =>
-          floor.toLowerCase() ===
-          aNodes[firstClickedNodeId].floor.toLowerCase(),
-      );
-      if (hoveredFloorIndex !== -1) {
-        setMapIndex(hoveredFloorIndex);
-      }*/
+              (floor) =>
+                floor.toLowerCase() ===
+                aNodes[firstClickedNodeId].floor.toLowerCase(),
+            );
+            if (hoveredFloorIndex !== -1) {
+              setMapIndex(hoveredFloorIndex);
+            }*/
     } else {
       setNodes([]);
     }
@@ -189,6 +198,7 @@ export function NavigationMode({ destinationID }: NavigationModeProps) {
     secondClickedNodeId,
     firstClickedNodeId,
     ChosenAlgorithim,
+    checked,
   ]);
 
   useEffect(() => {
@@ -206,8 +216,8 @@ export function NavigationMode({ destinationID }: NavigationModeProps) {
       }
     }, 780);
     /*timeoutId = setTimeout(() => {
-      setMapIndex(defaultMap);
-    }, 100);*/
+          setMapIndex(defaultMap);
+        }, 100);*/
 
     return () => {
       if (timeoutId) {
@@ -275,83 +285,116 @@ export function NavigationMode({ destinationID }: NavigationModeProps) {
     <div style={{ overflow: "hidden" }}>
       <Box
         sx={{
+          display: "flex",
           position: "absolute",
+          width: "15%",
           height: 320,
           top: 20,
           left: "23%",
           zIndex: 100,
           transform: "translateZ(0px)",
-          flexGrow: 1,
+          justifyContent: "space-between",
+          flexDirection: "row",
+          gap: "0%",
         }}
       >
-        <SpeedDial
-          ariaLabel="SpeedDial basic example"
-          sx={{
-            position: "fixed",
-            top: 0,
-            left: 5,
-            zIndex: 1,
-            backgroundColor: "transparent",
-            ".MuiSpeedDial-fab": {
+        <div className="element">
+          <SpeedDial
+            ariaLabel="SpeedDial basic example"
+            sx={{
+              top: 0,
+              zIndex: 1,
+              backgroundColor: "transparent",
+              ".MuiSpeedDial-fab": {
+                backgroundColor: "#042c5c",
+              },
+              ".MuiSpeedDial-fab:hover": {
+                backgroundColor: "lightblue",
+              },
+            }}
+            icon={<MyLocationIcon />}
+            direction="down"
+          >
+            <SpeedDialAction
+              key={"Toggle Edge"}
+              icon={<RouteIcon />}
+              tooltipTitle={"Toggle Edge"}
+              onClick={handleToggleEdges}
+              tooltipPlacement={"right"}
+              sx={{
+                backgroundColor: toggleEdges ? "lightblue" : "inherit",
+              }}
+            />
+            <SpeedDialAction
+              key={"Toggle Node"}
+              icon={<AddLocationIcon />}
+              tooltipTitle={"Toggle Node"}
+              onClick={handleToggleNodes}
+              tooltipPlacement={"right"}
+              sx={{
+                backgroundColor: toggleNodes ? "lightblue" : "inherit",
+              }}
+            />
+          </SpeedDial>
+        </div>
+
+        <div className="element">
+          <Select
+            defaultValue={"AStarAlgo"}
+            inputProps={{
+              name: "age",
+              id: "uncontrolled-native",
+            }}
+            style={{
+              zIndex: 5,
+              height: "17%",
               backgroundColor: "#042c5c",
-            },
-            ".MuiSpeedDial-fab:hover": {
-              backgroundColor: "lightblue",
-            },
-          }}
-          icon={<MyLocationIcon />}
-          direction="down"
-        >
-          <SpeedDialAction
-            key={"Toggle Edge"}
-            icon={<RouteIcon />}
-            tooltipTitle={"Toggle Edge"}
-            onClick={handleToggleEdges}
-            tooltipPlacement={"right"}
-            sx={{
-              backgroundColor: toggleEdges ? "lightblue" : "inherit",
-            }}
-          />
-          <SpeedDialAction
-            key={"Toggle Node"}
-            icon={<AddLocationIcon />}
-            tooltipTitle={"Toggle Node"}
-            onClick={handleToggleNodes}
-            tooltipPlacement={"right"}
-            sx={{
-              backgroundColor: toggleNodes ? "lightblue" : "inherit",
-            }}
-          />
-        </SpeedDial>
-        <Select
-          defaultValue={"AStarAlgo"}
-          inputProps={{
-            name: "age",
-            id: "uncontrolled-native",
-          }}
-          style={{
-            position: "absolute",
-            left: 70,
-            zIndex: "5",
-            backgroundColor: "#042c5c",
-            borderRadius: 20,
-            color: "white",
-          }}
-          sx={{
-            ".MuiSelect-icon": {
+              borderRadius: "16px",
               color: "white",
-            },
-            ".MuiSelect": {
-              color: "#042c5c",
-            },
-          }}
-          onChange={(e) => setChosenAlgorithim(e.target.value)}
-        >
-          <MenuItem value={"AStarAlgo"}>A*</MenuItem>
-          <MenuItem value={"BFS"}>BFS</MenuItem>
-          <MenuItem value={"DFS"}>DFS</MenuItem>
-          <MenuItem value={"DijkstraAlgo"}>Dijkstras</MenuItem>
-        </Select>
+            }}
+            sx={{
+              ".MuiSelect-icon": {
+                color: "white",
+              },
+              ".MuiSelect": {
+                color: "#042c5c",
+              },
+            }}
+            onChange={(e) => setChosenAlgorithim(e.target.value)}
+          >
+            <MenuItem value={"AStarAlgo"}>A*</MenuItem>
+            <MenuItem value={"BFS"}>BFS</MenuItem>
+            <MenuItem value={"DFS"}>DFS</MenuItem>
+            <MenuItem value={"DijkstraAlgo"}>Dijkstra's</MenuItem>
+          </Select>
+        </div>
+        <div>
+          <Box
+            sx={{
+              backgroundColor: "#042c5c",
+              zIndex: 24,
+              borderRadius: "16px",
+            }}
+          >
+            <FormControl component="fieldset">
+              <FormGroup>
+                <FormControlLabel
+                  value={"start"}
+                  control={
+                    <Switch
+                      checked={checked}
+                      onChange={handleChange}
+                      inputProps={{ "aria-label": "controlled" }}
+                    />
+                  }
+                  sx={{ margin: 1 }}
+                  label={<ElevatorIcon sx={{ color: "white" }} />}
+                  labelPlacement={"start"}
+                />
+              </FormGroup>
+            </FormControl>
+          </Box>
+        </div>
       </Box>
       <InfoOffCanvas />
       <div className="total">

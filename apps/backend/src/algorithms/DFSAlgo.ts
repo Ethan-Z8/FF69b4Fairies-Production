@@ -3,6 +3,7 @@ import AlgoStrategyPattern from "./AlgoStrategyPattern.ts";
 
 class DFSAlgo implements AlgoStrategyPattern {
   nodes: Map<string, MapNode> = new Map();
+  noStair: boolean = true;
 
   findShortestPath(startNodeId: string, endNodeId: string): Array<string> {
     // For DFS, there's no concept of "shortest path", so just return the path found by DFS
@@ -53,6 +54,14 @@ class DFSAlgo implements AlgoStrategyPattern {
     const currentNode = this.nodes.get(currentNodeId)!;
 
     for (const neighborId of currentNode.neighbors) {
+      const neighborNode = this.nodes.get(neighborId)!;
+      if (
+        this.noStair &&
+        currentNode.nodeType === "STAI" &&
+        neighborNode.nodeType === "STAI"
+      ) {
+        continue; // Skip considering this path
+      }
       if (!visited.has(neighborId)) {
         const found = this.dfsRecursive(neighborId, endNodeId, visited, path);
         if (found) return true;

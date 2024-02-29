@@ -1,5 +1,6 @@
 import MapNode from "./MapNode.ts";
 interface AlgoStrategyPattern {
+  noStair: boolean;
   nodes: Map<string, MapNode>;
   findShortestPathNodes: (
     startNodeId: string,

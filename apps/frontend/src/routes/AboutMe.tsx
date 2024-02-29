@@ -47,7 +47,7 @@ const AboutMe = () => {
             Name={"Wilson Wong"}
             role={"Professor"}
             Email={"wwong2@wpi.edu"}
-            //Github={"https://github.com/ajay-bhagava"}
+            Github={"https://github.com/wwong2"}
             Linkdin={"https://www.linkedin.com/in/wilson-wong-wpi/"}
             Imagepath={Wong}
           />
@@ -55,9 +55,9 @@ const AboutMe = () => {
             Name={"Joseph Cardarelli"}
             role={"Team Coach"}
             ClassYear={"2024"}
-            Major={"RBE/CS"}
+            Major={"Computer Science and Robotics Engineering"}
             Email={"jrcardarelli@wpi.edu"}
-            //Github={"https://github.com/ajay-bhagava"}
+            Github={"https://github.com/jrcardarelli"}
             Linkdin={"https://www.linkedin.com/in/joseph-cardarelli-3a12a1254/"}
             Imagepath={Joe}
           />
@@ -190,7 +190,7 @@ const AboutMe = () => {
               Linkdin={" https://www.linkedin.com/in/friedman-maxwell/"}
               Imagepath={Max}
               Favorite_quote={
-                "'You must be the change you wish to see in the world.' -Mahatma Gandhi"
+                "'That's something that could have been brought to my attention YESTERDAY!' - Adam Sandler"
               }
             />
             <AboutCard
