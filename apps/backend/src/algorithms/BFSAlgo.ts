@@ -2,6 +2,7 @@ import MapNode from "./MapNode.ts";
 import AlgoStrategyPattern from "./AlgoStrategyPattern.ts";
 class BFSAlgo implements AlgoStrategyPattern {
   nodes: Map<string, MapNode> = new Map();
+  noStair: boolean = true;
 
   findShortestPath(startNodeId: string, endNodeId: string): Array<string> {
     return this.BFS(startNodeId, endNodeId);
@@ -54,6 +55,15 @@ class BFSAlgo implements AlgoStrategyPattern {
           this.nodes.get(currentNodeId)!.neighbors;
 
         for (const neighborNodeId of neighbors) {
+          const currentNode = this.nodes.get(currentNodeId)!;
+          const neighborNode = this.nodes.get(neighborNodeId)!;
+          if (
+            this.noStair &&
+            currentNode.nodeType === "STAI" &&
+            neighborNode.nodeType === "STAI"
+          ) {
+            continue; // Skip considering this path
+          }
           if (!visited.has(neighborNodeId)) {
             // Create a new path by extending the current path
             const newPath: Array<string> = [...path, neighborNodeId];

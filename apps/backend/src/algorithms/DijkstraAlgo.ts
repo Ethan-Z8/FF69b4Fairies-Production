@@ -3,6 +3,7 @@ import AlgoStrategyPattern from "./AlgoStrategyPattern.ts";
 
 class DijkstraAlgo implements AlgoStrategyPattern {
   nodes: Map<string, MapNode> = new Map();
+  noStair: boolean = true;
 
   findShortestPath(startNodeId: string, endNodeId: string): Array<string> {
     return this.dijkstra(startNodeId, endNodeId);
@@ -55,6 +56,15 @@ class DijkstraAlgo implements AlgoStrategyPattern {
       const currentNode = this.nodes.get(currentNodeId)!;
 
       for (const neighborId of currentNode.neighbors) {
+        const currentNode = this.nodes.get(currentNodeId)!;
+        const neighborNode = this.nodes.get(neighborId)!;
+        if (
+          this.noStair &&
+          currentNode.nodeType === "STAI" &&
+          neighborNode.nodeType === "STAI"
+        ) {
+          continue; // Skip considering this path
+        }
         if (!visited.has(neighborId)) {
           const distanceToNeighbor =
             distance.get(currentNodeId)! +

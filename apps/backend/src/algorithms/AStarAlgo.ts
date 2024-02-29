@@ -3,7 +3,7 @@ import AlgoStrategyPattern from "./AlgoStrategyPattern.ts";
 
 class AStarAlgo implements AlgoStrategyPattern {
   nodes: Map<string, MapNode> = new Map();
-
+  noStair: boolean = true;
   findShortestPath(startNodeId: string, endNodeId: string): Array<string> {
     return this.Astar(startNodeId, endNodeId);
   }
@@ -56,6 +56,15 @@ class AStarAlgo implements AlgoStrategyPattern {
       const currentNode = this.nodes.get(currentId)!;
 
       for (const neighborId of currentNode.neighbors) {
+        const neighborNode = this.nodes.get(neighborId);
+        if (
+          neighborNode &&
+          currentNode.nodeType === "STAI" &&
+          neighborNode.nodeType === "STAI" &&
+          this.noStair
+        ) {
+          continue;
+        }
         const tentativeGScore =
           gScore.get(currentId)! + this.distanceBetween(currentId, neighborId);
 
