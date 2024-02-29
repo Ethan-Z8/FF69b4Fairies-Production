@@ -122,9 +122,11 @@ export function Navigation() {
           <NavDropdown.Item href="/createServiceRequest">
             Create Service Request
           </NavDropdown.Item>
-          <NavDropdown.Item href="/viewServiceRequest">
-            View Service Requests
-          </NavDropdown.Item>
+          {isAuthenticated && (
+            <NavDropdown.Item href="/viewServiceRequest">
+              View Service Requests
+            </NavDropdown.Item>
+          )}
         </NavDropdown>
 
         {isAuthenticated && (
