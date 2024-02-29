@@ -191,9 +191,8 @@ class AStarAlgo implements AlgoStrategyPattern {
     const node1 = this.nodes.get(node1Id)!;
     const node2 = this.nodes.get(node2Id)!;
     if (
-      node1.floor !== node2.floor &&
-      node1.nodeType == "ELEV" &&
-      node2.nodeType == "ELEV"
+      node1.floor !== node2.floor ||
+      (node1.nodeType == "ELEV" && node2.nodeType == "ELEV")
     ) {
       return 1000;
     }
