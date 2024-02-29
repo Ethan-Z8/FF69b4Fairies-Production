@@ -40,7 +40,7 @@ function App() {
         },
         {
           path: "/viewServiceRequest",
-          element: <ViewServiceRequestPage />,
+          element: <ProtectPage Page={ViewServiceRequestPage} />,
         },
         {
           path: "/viewEmployeeData",
